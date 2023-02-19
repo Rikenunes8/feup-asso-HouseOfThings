@@ -34,5 +34,12 @@ Welcome to the repository for the _House of Things_ project, developed in the co
 
 ## Group members
 
-* Jane Doe - up201955551
-* John Doe - up201955552
+| Name                  | Number    |
+| --------------------- | --------- |
+| Henrique Nunes        | 201906852 |
+| Margarida Ferreira    | 201905046 |
+| Patrícia Oliveira     | 201905427 |
+| Pedro Correia         | 201905348 |
+| Sara Marinha          | 201906805 |
+| Victor Nunes          | 201907226 |
+

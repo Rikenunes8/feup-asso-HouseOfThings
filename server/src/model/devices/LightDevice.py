@@ -1,8 +1,8 @@
 from model.devices.Device import Device
 
-class GeneralLampDevice(Device):
+class LightDevice(Device):
 
-  def __init__(self, id : int, isTurnedOn : bool) -> None:
+  def __init__(self, id : int, isTurnedOn : bool = False) -> None:
     super().__init__(id)
     self._turnedOn = isTurnedOn
 

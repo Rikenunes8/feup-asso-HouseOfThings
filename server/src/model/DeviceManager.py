@@ -1,20 +1,19 @@
 from model.devices.Device import Device
+from controller.adapter.DeviceAdapter import DeviceAdapter
 
+# TODO error handling
 class DeviceManager:
   def __init__(self) -> None:
     self._devices = {}
 
-  def addDevice(self, port : int, socket, device : Device) -> None:
-    self._devices[port] = (socket, device)
+  def add(self, id : str, adapter: DeviceAdapter) -> None:
+    self._devices[id] = adapter
 
-  def removeDevice(self, port) -> None:
-    del self._devices[port]
+  def remove(self, id) -> None:
+    del self._devices[id]
 
-  def getSocket(self, port):
-    return self._devices[port][0]
+  def getDevice(self, id) -> DeviceAdapter:
+    return self._devices[id]
 
-  def getDevice(self, port) -> Device:
-    return self._devices[port][1]
-
-  def getPorts(self) -> list:
+  def getDeviceIds(self) -> list:
     return list(self._devices.keys())

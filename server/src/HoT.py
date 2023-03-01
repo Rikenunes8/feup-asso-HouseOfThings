@@ -1,6 +1,5 @@
 from model.DeviceManager import DeviceManager
-from model.devices.LightDevice import LightDevice
-from controller.adapter.LightSocketAdapter import LightSocketAdapter
+from controller.adapter.LightMqttAdapter import LightMqttAdapter
 
 class HoT():
   def __new__(cls):
@@ -22,8 +21,8 @@ class HoT():
     (deviceType, protocol) = config
 
     if deviceType == "light":
-      if protocol == "socket":
-        newDevice = LightSocketAdapter()
+      if protocol == "mqtt":
+        newDevice = LightMqttAdapter()
       else:
         return False
     else:

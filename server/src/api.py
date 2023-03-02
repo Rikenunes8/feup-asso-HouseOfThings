@@ -8,12 +8,12 @@ def heartbeat() -> str:
   return "Hello, world!"
 
 
-@app.get("/device/<id>/connect") # TODO change to post
+@app.get("/devices/<id>/connect") # TODO change to post
 def connect(id) -> str:
   res = hot.connect(("light", "mqtt"), id)
   return "Success" if res else "Failed"
 
-@app.get("/device/<id>/disconnect") # TODO change to post
+@app.get("/devices/<id>/disconnect") # TODO change to post
 def disconnect(id) -> str:
   res = hot.disconnect(id)
   return "Success" if res else "Failed"

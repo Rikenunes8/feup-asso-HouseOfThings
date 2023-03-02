@@ -1,4 +1,3 @@
-from paho.mqtt import client as mqtt_client
 from mqtt import connect_mqtt, subscribe, publish
 
 uid = "1"

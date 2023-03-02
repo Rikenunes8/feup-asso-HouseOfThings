@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 class Device(ABC):  
   def __init__(self, id : int) -> None:
@@ -7,4 +7,8 @@ class Device(ABC):
 
   def getId(self) -> int:
     return self._id
+  
+  @abstractmethod
+  def toJson(self) -> dict:
+    pass
   

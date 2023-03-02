@@ -11,8 +11,9 @@ The server is a REST API that provides the following endpoints:
 |---------------------------|:------: |-------------|
 | /heartbeat                | GET     | Checks the connection with the server |
 | /devices                  | GET     | Returns a list of all the connected devices |
-| /devices/{id}/connect     | GET     | Connects to a device using the {id} value | <!--this should be POST in the future and the body should send any information about the kind of the device -->
-| /devices/{id}/disconnect  | GET     | Disconnects from a device using the {id} value | <!-- same here -->
+| /devices/{id}/connect     | POST    | Connects to a device using the {id} value |
+| /devices/{id}/disconnect  | POST    | Disconnects from a device using the {id} value |
+| /devices/{id}/action      | POST    | Action to apply in device {id} explicit in JSON body |
 
 ## Requirements
 

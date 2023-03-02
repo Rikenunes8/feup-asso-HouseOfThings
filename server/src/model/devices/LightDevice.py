@@ -16,4 +16,10 @@ class LightDevice(Device):
     return self._turnedOn
 
   def __str__(self) -> str:
-    return f"{self._id} -> {self.isLightOn()}"
+    return "Light: {} -> State: {}".format(self._id, "On" if self._turnedOn else "Off")
+  
+  def toJson(self) -> dict:
+    return {self._id: {
+      "state": self._turnedOn
+      }
+    }

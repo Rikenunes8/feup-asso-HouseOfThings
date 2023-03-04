@@ -1,4 +1,6 @@
+import sys
 from mqtt import connect_mqtt, subscribe, publish
+
 
 uid = "1"
 cid = None # id of the controller that is connected to the light
@@ -53,4 +55,12 @@ def run():
 
 
 if __name__ == '__main__':
+  if (len(sys.argv) > 2):
+    print("Usage: python3 vLightMqtt.py [uuid]")
+    exit(1)
+  elif (len(sys.argv) == 2):
+    uid = sys.argv[1]
+    
+  print(type(uid))
+  print(f"Starting vLight with uid `{uid}`")
   run()

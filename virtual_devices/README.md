@@ -25,5 +25,5 @@ PASSWORD='public'
 Then run the following command, where `<device>` can be any of the devices in the `virtual_devices` directory (e.g. `vLightMqtt`):
 
 ```bash
-python3 <device>.py
+python3 <device>.py [uuid]
 ```

@@ -1,10 +1,13 @@
 export default {
-  primary: '#A9876A',
-  transparentPrimary: '#A9876A28',
-  accent: '#6AA760',
-  background: '#F0F0F0',
-  white: '#F9F9F9',
-  black: '#000000',
-  gray: '#9D9FA4',
-  darkGray: '#464B4E',
-} 
+  primary: "#A9876A",
+  background: "#F0F0F0",
+  active: "#6AA760",
+  desactive: "#9D9FA4",
+  red: "#FF4040",
+  white: "#F9F9F9",
+  black: "#000000",
+  gray: "#464B4E",
+  primaryText: "#2E2E2E",
+  secondaryText: "#7D7D7D",
+  transparentPrimary: "#A9876A28",
+};

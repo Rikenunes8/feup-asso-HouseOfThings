@@ -12,12 +12,14 @@ export default function DeviceCard({ name, division, enabled }) {
         style={styles.deviceIcon}
         source={require("../../../assets/lightbulb.png")}
       />
+
       <View style={{ justifyContent: "center" }}>
         <Text style={styles.deviceName}>{name}</Text>
-        <Text style={{ color: colors.gray }}>{division}</Text>
+        <Text style={{ color: colors.secondaryText }}>{division}</Text>
       </View>
+
       <Switch
-        trackColor={{ false: colors.gray, true: colors.accent }}
+        trackColor={{ false: colors.desactive, true: colors.active }}
         thumbColor={isEnabled ? colors.white : colors.white}
         onValueChange={toggleSwitch}
         value={isEnabled}
@@ -44,5 +46,6 @@ const styles = StyleSheet.create({
   deviceName: {
     fontSize: 15,
     fontWeight: "bold",
+    color: colors.primaryText,
   },
 });

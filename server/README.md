@@ -38,5 +38,5 @@ PASSWORD='public'
 Then run the following command:
 
 ```bash
-flask -A src/api.py run
+flask -A src/api.py run --host=0.0.0.0
 ```

@@ -3,5 +3,5 @@ import { StyleSheet, Text, View } from "react-native";
 import HomeScreen from "./app/src/HomeScreen";
 
 export default function App() {
-  return <HomeScreen></HomeScreen>;
+  return <HomeScreen/>;
 }

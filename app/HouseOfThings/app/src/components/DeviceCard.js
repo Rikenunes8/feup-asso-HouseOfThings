@@ -1,31 +1,20 @@
 import React, { useState } from "react";
-import { Image } from "react-native";
-import { Switch } from "react-native";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  SectionList,
-  Platform,
-} from "react-native";
+import { StyleSheet, Text, View, Switch, Image } from "react-native";
 import colors from "../../configs/colors";
 
-export default function DeviceCard() {
-  const [isEnabled, setIsEnabled] = useState(false); //TODO
+export default function DeviceCard({ name, division, enabled }) {
+  const [isEnabled, setIsEnabled] = useState(enabled); //TODO
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState); //TODO
 
   return (
     <View style={styles.deviceCard}>
       <Image
         style={styles.deviceIcon}
-        source={require("../../../assets/icon.png")}
+        source={require("../../../assets/lightbulb.png")}
       />
-      <View>
-        <Text style={styles.deviceName}>Philips Bulb</Text>
-        <Text style={{ color: colors.gray }}>Family Room</Text>
+      <View style={{ justifyContent: "center" }}>
+        <Text style={styles.deviceName}>{name}</Text>
+        <Text style={{ color: colors.gray }}>{division}</Text>
       </View>
       <Switch
         trackColor={{ false: colors.gray, true: colors.accent }}
@@ -50,6 +39,7 @@ const styles = StyleSheet.create({
   deviceIcon: {
     width: 50,
     height: 50,
+    objectFit: "contain",
   },
   deviceName: {
     fontSize: 15,

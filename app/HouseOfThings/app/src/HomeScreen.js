@@ -1,14 +1,10 @@
-import React, { useState } from "react";
-import { Image } from "react-native";
-import { Switch } from "react-native";
+import React from "react";
 import {
   StyleSheet,
   Text,
   View,
   SafeAreaView,
-  ScrollView,
   StatusBar,
-  SectionList,
   Platform,
 } from "react-native";
 import colors from "../configs/colors";
@@ -22,7 +18,16 @@ export default function HomeScreen() {
       </View>
       <View style={styles.body}>
         <Text style={styles.sectionHeader}>Devices</Text>
-        <DeviceCard />
+        <DeviceCard
+          name={"Philips Bulb"}
+          division={"Family Room"}
+          enabled={true}
+        />
+        <DeviceCard
+          name={"Philips Bulb"}
+          division={"Tiago Room"}
+          enabled={false}
+        />
       </View>
     </SafeAreaView>
   );
@@ -46,7 +51,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     alignItems: "flex-start",
     justifyContent: "flex-end",
-    padding: 30,
+    padding: 20,
   },
   sectionHeader: {
     fontSize: 17,
@@ -58,5 +63,6 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 30,
     fontWeight: "bold",
+    marginStart: 15,
   },
 });

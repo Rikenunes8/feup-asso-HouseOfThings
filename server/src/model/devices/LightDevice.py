@@ -19,7 +19,7 @@ class LightDevice(Device):
     return "Light: {} -> State: {}".format(self._id, "On" if self._turnedOn else "Off")
   
   def toJson(self) -> dict:
-    return {self._id: {
+    return {
+      "id": self._id,
       "state": self._turnedOn
-      }
     }

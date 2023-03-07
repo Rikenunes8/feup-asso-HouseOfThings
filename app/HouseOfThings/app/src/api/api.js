@@ -13,9 +13,20 @@ const getDevices = async () => {
   }
 };
 
-const addDevice = async () => {
+const addDevice = async (id) => {
   try {
-    const response = await apiClient.post("/devices/1/connect?type=light&protocol=mqtt");
+    const response = await apiClient.post(`/devices/${id}/connect?type=light&protocol=mqtt`);
+    if (response.data.error) {
+      console.error(response.data.error);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+const actionDevice = async (id, action) => {
+  try {
+    const response = await apiClient.post(`/devices/${id}/action`, { ...action });
     if (response.data.error) {
       console.error(response.data.error);
     }
@@ -25,7 +36,9 @@ const addDevice = async () => {
 }
 
 
+
 export default {
   getDevices,
   addDevice,
+  actionDevice,
 };

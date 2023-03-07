@@ -15,7 +15,7 @@ export default function AddDeviceScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Text>AddDeviceScreen</Text>
-      <Button title='Add Device' onPress={() => api.addDevice()}/>
+      <Button title='Add Device' onPress={() => api.addDevice("1")}/>
     </SafeAreaView>
   );
 }

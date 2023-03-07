@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Switch, Image } from "react-native";
 import colors from "../../configs/colors";
+import api from "../api/api";
+
 
 export default function DeviceCard({ name, division, enabled }) {
   const [isEnabled, setIsEnabled] = useState(enabled); //TODO
@@ -21,7 +23,16 @@ export default function DeviceCard({ name, division, enabled }) {
       <Switch
         trackColor={{ false: colors.desactive, true: colors.active }}
         thumbColor={isEnabled ? colors.white : colors.white}
-        onValueChange={toggleSwitch}
+        onValueChange={() => {
+          toggleSwitch()
+          if (isEnabled) {
+            console.log("Turning off device...")
+            api.actionDevice("1", {"action": "turnOff"})
+          } else {
+            console.log("Turning on device...")
+            api.actionDevice("1", {"action": "turnOn"})
+          }
+        }}
         value={isEnabled}
       />
     </View>

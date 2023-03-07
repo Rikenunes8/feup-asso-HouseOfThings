@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Switch, Image } from "react-native";
 import colors from "../../configs/colors";
 import api from "../api/api";
 
-
 export default function DeviceCard({ name, division, enabled }) {
   const [isEnabled, setIsEnabled] = useState(enabled); //TODO
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState); //TODO
@@ -24,13 +23,13 @@ export default function DeviceCard({ name, division, enabled }) {
         trackColor={{ false: colors.desactive, true: colors.active }}
         thumbColor={isEnabled ? colors.white : colors.white}
         onValueChange={() => {
-          toggleSwitch()
+          toggleSwitch();
           if (isEnabled) {
-            console.log("Turning off device...")
-            api.actionDevice("1", {"action": "turnOff"})
+            console.log("Turning off device...");
+            api.actionDevice("1", { action: "turnOff" });
           } else {
-            console.log("Turning on device...")
-            api.actionDevice("1", {"action": "turnOn"})
+            console.log("Turning on device...");
+            api.actionDevice("1", { action: "turnOn" });
           }
         }}
         value={isEnabled}
@@ -41,7 +40,7 @@ export default function DeviceCard({ name, division, enabled }) {
 
 const styles = StyleSheet.create({
   deviceCard: {
-    width: "85%",
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-evenly",
     backgroundColor: colors.white,

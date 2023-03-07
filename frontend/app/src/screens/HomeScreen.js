@@ -33,14 +33,18 @@ export default function HomeScreen() {
 
       <View style={styles.body}>
         <Text style={styles.sectionHeader}>Devices</Text>
-        {devices.map((device, key) => (
-          <DeviceCard
-            key={key}
-            name={"Philips Bulb"} // TODO: device.name
-            division={"Family Room"} // TODO: device.division
-            enabled={device.enabled}
-          />
-        ))}
+        {devices.length ? (
+          devices.map((device, key) => (
+            <DeviceCard
+              key={key}
+              name={"Philips Bulb"} // TODO: device.name
+              division={"Family Room"} // TODO: device.division
+              enabled={device.enabled}
+            />
+          ))
+        ) : (
+          <Text style={styles.sectionMessage}>No devices connected...</Text>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -49,6 +53,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   body: {
     flex: 0.85,
+    width: "85%",
     alignItems: "center",
     paddingVertical: 20,
   },
@@ -71,6 +76,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: colors.primary,
     alignSelf: "flex-start",
+  },
+  sectionMessage: {
+    color: colors.primaryText,
+    alignSelf: "flex-start",
+    fontStyle: "italic",
+    marginVertical: 5,
+    fontSize: 17,
   },
   welcomeMessage: {
     color: colors.white,

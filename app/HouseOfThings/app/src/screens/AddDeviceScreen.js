@@ -5,13 +5,17 @@ import {
   SafeAreaView,
   StatusBar,
   Platform,
+  Button,
 } from "react-native";
 import colors from "../../configs/colors";
+import api from "../api/api";
+
 
 export default function AddDeviceScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Text>AddDeviceScreen</Text>
+      <Button title='Add Device' onPress={() => api.addDevice()}/>
     </SafeAreaView>
   );
 }

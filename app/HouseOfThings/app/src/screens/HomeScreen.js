@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,12 +10,20 @@ import {
 import DeviceCard from "../components/DeviceCard";
 import colors from "../../configs/colors";
 
+import fetcher from "../api/fetcher";
+
 export default function HomeScreen() {
   const [name, setName] = useState("Tiago");
-  const [devices, setDevices] = useState([
-    { name: "Philips Bulb", division: "Family Room", enabled: true },
-    { name: "Philips Bulb", division: "Tiago Room", enabled: false },
-  ]);
+  const [devices, setDevices] = useState([]);
+
+  const fetchDevices = async () => {
+    const devs = await fetcher.getDevices();
+    setDevices(devs);
+  };
+
+  useEffect(() => {
+    fetchDevices();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,8 +36,8 @@ export default function HomeScreen() {
         {devices.map((device, key) => (
           <DeviceCard
             key={key}
-            name={device.name}
-            division={device.division}
+            name={"Philips Bulb"} // TODO: device.name
+            division={"Family Room"} // TODO: device.division
             enabled={device.enabled}
           />
         ))}

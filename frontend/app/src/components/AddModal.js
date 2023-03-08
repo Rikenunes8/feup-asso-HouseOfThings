@@ -12,7 +12,7 @@ import colors from "../../configs/colors";
 
 //INFO icon names: close, check and ellipsis1
 
-export default function HoTModal({
+export default function AddModal({
   title,
   modalVisible,
   leftIcon,

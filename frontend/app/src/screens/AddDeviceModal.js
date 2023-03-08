@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import HoTModal from "../components/HoTModal";
+import AddModal from "../components/AddModal";
 import ChooseDeviceScrollView from "../components/choose_device/ChooseDeviceScrollView";
 import ChooseDeviceSideBar from "../components/choose_device/ChooseDeviceSideBar";
 
@@ -20,7 +20,7 @@ export default function AddDeviceModal({ modalVisible, setModalVisible }) {
   );
 
   return (
-    <HoTModal
+    <AddModal
       title={"Add Device"}
       modalVisible={modalVisible}
       setModalVisible={setModalVisible}

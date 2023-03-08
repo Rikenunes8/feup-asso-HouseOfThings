@@ -15,7 +15,8 @@ export default function AddDeviceModal({ modalVisible, setModalVisible }) {
   }); // TODO: get categories from backend (get icon from backend too ??)
 
   const [selectedCategory, setSelectedCategory] = useState(
-    Object.keys(categories).length ? Object.keys(categories)[0] : null
+    "Light" // TODO: only for vertical prototype, change after
+    // Object.keys(categories).length ? Object.keys(categories)[0] : null
   );
 
   return (

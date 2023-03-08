@@ -12,6 +12,7 @@ export default function ChooseDeviceSideBar({
       {categories.map((category) => (
         <TouchableOpacity
           key={category}
+          disabled={category !== selectedCategory} // TODO: only for vertical prototype, remove when we have more devices
           onPress={() => setSelectedCategory(category)}
         >
           <Text

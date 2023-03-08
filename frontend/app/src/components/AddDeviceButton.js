@@ -1,12 +1,25 @@
-import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+import AddDeviceModal from "../screens/AddDeviceModal";
 import colors from "../../configs/colors";
 
-export default function AddDeviceButton({ children, onPress }) {
+export default function AddDeviceButton({ children }) {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
-    <TouchableOpacity style={styles.buttonOppacity} onPress={onPress}>
-      <View style={styles.button}>{children}</View>
-    </TouchableOpacity>
+    <View>
+      <AddDeviceModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
+
+      <TouchableOpacity
+        style={styles.buttonOppacity}
+        onPress={() => setModalVisible(!modalVisible)}
+      >
+        <View style={styles.button}>{children}</View>
+      </TouchableOpacity>
+    </View>
   );
 }
 

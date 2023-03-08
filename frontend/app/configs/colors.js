@@ -10,4 +10,5 @@ export default {
   primaryText: "#2E2E2E",
   secondaryText: "#7D7D7D",
   transparentPrimary: "#A9876A28",
+  transparentGray: "#464B4EBB",
 };

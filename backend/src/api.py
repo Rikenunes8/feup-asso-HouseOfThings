@@ -4,6 +4,11 @@ from HoT import HoT
 app = Flask(__name__)
 hot = HoT()
 
+def notJson():
+  return make_response(jsonify({'error': 'Content-Type not supported!'}), 400)
+def isContentJson(request):
+  return request.headers.get('Content-Type') == 'application/json'
+
 @app.get("/heartbeat")
 def heartbeat() -> str:
   return jsonify({'status': 'ok'})
@@ -11,8 +16,8 @@ def heartbeat() -> str:
 
 @app.post("/devices/<id>/connect")
 def connect(id):
-  config = tuple(request.args.to_dict().values())
-  hot.connect(config, id)
+  if (not isContentJson(request)): return notJson()
+  hot.connect(id, request.json)
   return jsonify({})
 
 @app.post("/devices/<id>/disconnect")
@@ -22,12 +27,9 @@ def disconnect(id):
 
 @app.post("/devices/<id>/action")
 def action(id):
-  content_type = request.headers.get('Content-Type')
-  if (content_type == 'application/json'):
-    hot.action(id, request.json)
-    return jsonify({})
-  else:
-    return make_response(jsonify({'error': 'Content-Type not supported!'}), 400)
+  if (not isContentJson(request)): return notJson()
+  hot.action(id, request.json)
+  return jsonify({})
   
 
 @app.get("/devices")
@@ -35,3 +37,4 @@ def connectedDevices() -> str:
   devices = hot.devices()
   return jsonify({'devices': list(map(lambda device: device.toJson(), devices))})
   
+

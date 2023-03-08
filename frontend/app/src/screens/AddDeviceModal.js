@@ -1,103 +1,52 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  SafeAreaView,
-  StatusBar,
-  Platform,
-  Modal,
-  View,
-  TouchableOpacity,
-} from "react-native";
-import Icon from "react-native-vector-icons/AntDesign";
-import ChooseDeviceScrollView from "../components/ChooseDeviceScrollView";
-import colors from "../../configs/colors";
-import ChooseDeviceSideBar from "../components/ChooseDeviceSideBar";
+import { StyleSheet, View } from "react-native";
+import HoTModal from "../components/HoTModal";
+import ChooseDeviceScrollView from "../components/choose_device/ChooseDeviceScrollView";
+import ChooseDeviceSideBar from "../components/choose_device/ChooseDeviceSideBar";
 
 export default function AddDeviceModal({ modalVisible, setModalVisible }) {
-  const [categories, setCategories] = useState([
-    "Light",
-    "Sensor",
-    "Security",
-    "Socket",
-    "Appliance",
-    "Other",
-  ]);
-  const [deviceTypes, setDeviceTypes] = useState([
-    "LightBulb 1",
-    "LightBulb 2",
-    "LightBulb 3",
-    "LightBulb 4",
-    "LightBulb 5",
-    "LightBulb 6",
-    "LightBulb 7",
-    "LightBulb 8",
-  ]);
-  const [selectedCategory, setSelectedCategory] = useState("Light");
+  const [categories, setCategories] = useState({
+    Light: ["Light Bulb"],
+    Sensor: ["Motion Sensor", "Temperature Sensor", "Humidity Sensor"],
+    Security: ["Camera", "Door Lock"],
+    Socket: ["Extension Socket", "Power Socket"],
+    Appliance: ["Fan", "TV", "AC", "Heater", "Oven", "Washer", "Dryer"],
+    Other: ["Door Bell", "TV"],
+  }); // TODO: get categories from backend (get icon from backend too ??)
+
+  const [selectedCategory, setSelectedCategory] = useState(
+    Object.keys(categories).length ? Object.keys(categories)[0] : null
+  );
 
   return (
-    <Modal animationType="slide" transparent={true} visible={modalVisible}>
-      {/* <SafeAreaView style={styles.container}> */}
-      <View style={{ flex: 1, backgroundColor: colors.transparentGray }}>
-        <View style={styles.modal}>
-          <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-            <Icon
-              name="close"
-              size={30}
-              color={colors.white}
-              style={styles.closeIcon}
-            />
-          </TouchableOpacity>
-          <Text style={styles.modalTitle}>Add Device</Text>
-          <View style={styles.modalBody}>
+    <HoTModal
+      title={"Add Device"}
+      modalVisible={modalVisible}
+      setModalVisible={setModalVisible}
+      leftIcon={"close"}
+      leftIconCallback={() => setModalVisible(false)}
+      modalContent={
+        categories && selectedCategory ? (
+          <View style={styles.modalContentView}>
             <ChooseDeviceSideBar
-              categories={categories}
+              categories={Object.keys(categories)}
               selectedCategory={selectedCategory}
               setSelectedCategory={setSelectedCategory}
             />
-            <ChooseDeviceScrollView deviceTypes={deviceTypes} />
+            <ChooseDeviceScrollView
+              deviceTypes={categories[selectedCategory]}
+            />
           </View>
-        </View>
-      </View>
-      {/* </SafeAreaView> */}
-    </Modal>
+        ) : null
+      }
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  closeIcon: {
-    marginLeft: 25,
-    marginBottom: 15,
-  },
-  container: {
-    flex: 1,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
-  modal: {
-    backgroundColor: colors.primary,
-    flex: 1,
-    marginTop: Platform.OS === "android" ? "15%" : "30%",
-    justifyContent: "flex-end",
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-  },
-  modalBackground: {
-    flex: 1,
-    backgroundColor: colors.gray,
-  },
-  modalBody: {
-    backgroundColor: colors.white,
-    flex: 0.97,
+  modalContentView: {
+    height: "100%",
     flexDirection: "row",
     paddingVertical: 15,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-  },
-  modalTitle: {
-    color: colors.white,
-    fontSize: 27,
-    fontWeight: "bold",
-    alignSelf: "center",
-    marginBottom: 15,
   },
 });

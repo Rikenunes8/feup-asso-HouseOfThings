@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import colors from "../../configs/colors";
+import colors from "../../../configs/colors";
 
 export default function ChooseDeviceSideBar({
   categories,

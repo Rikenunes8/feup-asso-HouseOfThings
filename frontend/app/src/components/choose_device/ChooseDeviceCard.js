@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity, Text, Image } from "react-native";
-import colors from "../../configs/colors";
+import colors from "../../../configs/colors";
 
 export default function ChooseDeviceCard({ type }) {
   return (
@@ -17,13 +17,14 @@ export default function ChooseDeviceCard({ type }) {
     >
       <Image
         style={[{ width: 80, height: 80, objectFit: "contain" }]}
-        source={require("../../../assets/lightbulb.png")}
+        source={require("../../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
       />
       <Text
         style={{
-          color: colors.primaryText,
           fontSize: 15,
+          textAlign: "center",
           marginBottom: "5%",
+          color: colors.primaryText,
         }}
       >
         {type}

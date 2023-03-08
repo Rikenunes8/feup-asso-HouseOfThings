@@ -26,10 +26,10 @@ export default function DeviceCard({ name, division, enabled }) {
           toggleSwitch();
           if (isEnabled) {
             console.log("Turning off device...");
-            api.actionDevice("1", { action: "turnOff" });
+            api.actionDevice("1", { action: "turnOff" }); // TODO changing the hardcode "1" to the real device id
           } else {
             console.log("Turning on device...");
-            api.actionDevice("1", { action: "turnOn" });
+            api.actionDevice("1", { action: "turnOn" }); // TODO changing the hardcode "1" to the real device id
           }
         }}
         value={isEnabled}

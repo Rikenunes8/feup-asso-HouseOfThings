@@ -22,10 +22,8 @@ class HoT(metaclass=HoTMeta):
   def _loadDevices(self):
     devices = DB().findAllDevices()
     for device in devices:
-      adapter : DeviceAdapter = self._createAdapter(device['uid'], device)
-      if adapter == None: continue
-      adapter.createModel()
-      self._devManager.add(device['uid'], adapter)
+      self.connect(device['uid'], device)
+      self._devManager.getDevice(device['uid']).createModel()
 
   def _createAdapter(self, uid : str, config : dict) -> DeviceAdapter:
     group = config.get("group")

@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeScreen from "../screens/HomeScreen";
-import AddDeviceModal from "../screens/AddDeviceModal";
+import ChooseDeviceModal from "../screens/ChooseDeviceModal";
 import SettingsScreen from "../screens/SettingsScreen";
 import RulesScreen from "../screens/RulesScreen";
 import HistoryScreen from "../screens/HistoryScreen";
@@ -51,7 +51,7 @@ export default function NavBar() {
       />
       <Tab.Screen
         name="Add Device"
-        component={AddDeviceModal}
+        component={ChooseDeviceModal}
         options={{
           tabBarIcon: ({ focused }) => <AddDeviceIcon focused={focused} />,
           tabBarButton: (props) => <AddDeviceButton {...props} />,

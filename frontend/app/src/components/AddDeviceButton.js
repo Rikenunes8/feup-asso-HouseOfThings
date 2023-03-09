@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-import AddDeviceModal from "../screens/AddDeviceModal";
+import ChooseDeviceModal from "../screens/ChooseDeviceModal";
 import colors from "../../configs/colors";
 
 export default function AddDeviceButton({ children }) {
@@ -8,7 +8,7 @@ export default function AddDeviceButton({ children }) {
 
   return (
     <View>
-      <AddDeviceModal
+      <ChooseDeviceModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />

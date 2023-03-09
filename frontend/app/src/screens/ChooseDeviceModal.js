@@ -4,7 +4,7 @@ import AddModal from "../components/AddModal";
 import ChooseDeviceScrollView from "../components/choose_device/ChooseDeviceScrollView";
 import ChooseDeviceSideBar from "../components/choose_device/ChooseDeviceSideBar";
 
-export default function AddDeviceModal({ modalVisible, setModalVisible }) {
+export default function ChooseDeviceModal({ modalVisible, setModalVisible }) {
   const [categories, setCategories] = useState({
     Light: ["Light Bulb"],
     Sensor: ["Motion Sensor", "Temperature Sensor", "Humidity Sensor"],

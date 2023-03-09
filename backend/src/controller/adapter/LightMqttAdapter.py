@@ -21,7 +21,7 @@ class LightMqttAdapter(DeviceAdapter):
     self.createModel()
 
 
-  def connect(self, id):
+  def connect(self):
     self._client = connect_mqtt()
     self._client.loop_start()
 

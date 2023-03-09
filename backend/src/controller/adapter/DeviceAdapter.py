@@ -14,7 +14,7 @@ class DeviceAdapter(ABC):
     return self._model
 
   @abstractmethod
-  def connect(self, id) -> bool:
+  def connect(self) -> bool:
     pass
 
   @abstractmethod

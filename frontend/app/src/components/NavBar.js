@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Icon from "react-native-vector-icons/AntDesign";
 
 import HomeScreen from "../screens/HomeScreen";
 import ChooseDeviceModal from "../screens/ChooseDeviceModal";
@@ -9,7 +10,6 @@ import RulesScreen from "../screens/RulesScreen";
 import HistoryScreen from "../screens/HistoryScreen";
 
 import NavBarIcon from "./NavBarIcon";
-import AddDeviceIcon from "./AddDeviceIcon";
 import AddDeviceButton from "./AddDeviceButton";
 
 import colors from "../../configs/colors";
@@ -30,10 +30,7 @@ export default function NavBar() {
         component={HomeScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <NavBarIcon
-              image={require("../../../assets/home_icon.png")}
-              focused={focused}
-            />
+            <NavBarIcon name={"home"} focused={focused} />
           ),
         }}
       />
@@ -42,10 +39,7 @@ export default function NavBar() {
         component={RulesScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <NavBarIcon
-              image={require("../../../assets/rules_icon.png")}
-              focused={focused}
-            />
+            <NavBarIcon name={"list"} focused={focused} />
           ),
         }}
       />
@@ -53,7 +47,7 @@ export default function NavBar() {
         name="Add Device"
         component={ChooseDeviceModal}
         options={{
-          tabBarIcon: ({ focused }) => <AddDeviceIcon focused={focused} />,
+          tabBarIcon: () => <Icon name="plus" size={40} color={colors.white} />,
           tabBarButton: (props) => <AddDeviceButton {...props} />,
         }}
       />
@@ -62,10 +56,7 @@ export default function NavBar() {
         component={HistoryScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <NavBarIcon
-              image={require("../../../assets/history_icon.png")}
-              focused={focused}
-            />
+            <NavBarIcon name={"chart"} focused={focused} />
           ),
         }}
       />
@@ -74,10 +65,7 @@ export default function NavBar() {
         component={SettingsScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <NavBarIcon
-              image={require("../../../assets/settings_icon.png")}
-              focused={focused}
-            />
+            <NavBarIcon name={"settings"} focused={focused} />
           ),
         }}
       />
@@ -94,7 +82,7 @@ const styles = StyleSheet.create({
     height: 90,
     shadowColor: colors.black,
     shadowOffset: { width: 0, height: -3 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.05,
     shadowRadius: 3.5,
     elevation: 5,
   },

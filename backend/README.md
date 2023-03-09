@@ -26,16 +26,21 @@ pip install -r requirements.txt
 
 ## How to run
 
+First of all, make sure have mongoDB installed and running.
 Make sure you have a `.env` file in the root of the server directory. The `.env` file should contain the following variables:
 
-```
+```bash
+# MongoDB connection
+MONGO_URI='mongodb://localhost:27017/'
+
+# MQTT Broker
 BROKER='broker.emqx.io'
 PORT=1883
 USERNAME='emqx'
 PASSWORD='public'
 ```
 
-Then run the following command:
+Then run the following command to start the flask application exposing the REST API to the private network on port 5000 (by default):
 
 ```bash
 flask -A src/api.py run --host=0.0.0.0

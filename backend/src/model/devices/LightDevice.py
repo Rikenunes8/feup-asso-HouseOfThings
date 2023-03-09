@@ -1,25 +1,26 @@
 from model.devices.Device import Device
+from database.DB import DB
 
 class LightDevice(Device):
 
-  def __init__(self, id : int, isTurnedOn : bool = False) -> None:
+  def __init__(self, id : int, on : bool = False) -> None:
     super().__init__(id)
-    self._turnedOn = isTurnedOn
+    self._group = "light"
+    DB().addDevice(self._id, self._group, self.state(on))
+  
+  def state(self, on : bool) -> dict:
+    return {
+      'on': on,
+    }
 
   def turnOn(self) -> None:
-    self._turnedOn = True
+    DB().updateDevice(self._id, self.state(True))
   
   def turnOff(self) -> None:
-    self._turnedOn = False
+    DB().updateDevice(self._id, self.state(False))
 
   def isLightOn(self) -> bool:
-    return self._turnedOn
-
-  def __str__(self) -> str:
-    return "Light: {} -> State: {}".format(self._id, "On" if self._turnedOn else "Off")
+    return DB().findDevice(self._id)['on']
   
   def toJson(self) -> dict:
-    return {
-      "id": self._id,
-      "state": self._turnedOn
-    }
+    return DB().findDevice(self._id)

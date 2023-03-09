@@ -13,12 +13,12 @@ class HoT():
     self._cid = "HoT" # TODO: set this to something better
 
   def _createAdapter(self, config) -> DeviceAdapter:
-    if type(config) != tuple or len(config) != 2:
-      return None
-    (deviceType, protocol) = config
+    group = config.get("group")
 
-    if deviceType == "light":
-      if protocol == "mqtt": return LightMqttAdapter(self._cid)
+    if group == "light":
+      return LightMqttAdapter(self._cid)
+    else:
+      print("No device for group: " + group)
     return None
 
 
@@ -26,7 +26,7 @@ class HoT():
     ids = self._devManager.getDeviceIds()
     return [self._devManager.getDevice(id).getModel() for id in ids]
 
-  def connect(self, config, id):
+  def connect(self, id, config):
     newDevice = self._createAdapter(config)
     if newDevice == None: return
     newDevice.connect(id)

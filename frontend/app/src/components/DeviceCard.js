@@ -26,10 +26,10 @@ export default function DeviceCard({ name, division, enabled }) {
           toggleSwitch();
           if (isEnabled) {
             console.log("Turning off device...");
-            api.actionDevice("1", { action: "turnOff" });
+            api.actionDevice("1", { action: "turnOff" }); // TODO changing the hardcode "1" to the real device id
           } else {
             console.log("Turning on device...");
-            api.actionDevice("1", { action: "turnOn" });
+            api.actionDevice("1", { action: "turnOn" }); // TODO changing the hardcode "1" to the real device id
           }
         }}
         value={isEnabled}
@@ -40,7 +40,7 @@ export default function DeviceCard({ name, division, enabled }) {
 
 const styles = StyleSheet.create({
   deviceCard: {
-    width: "85%",
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-evenly",
     backgroundColor: colors.white,

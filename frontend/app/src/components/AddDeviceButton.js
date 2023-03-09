@@ -32,8 +32,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  buttonBackgroud: {
+    top: -40,
+    width: 85,
+    height: 85,
+    borderRadius: 42.5,
+    backgroundColor: colors.background,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   buttonOppacity: {
-    top: -30,
     justifyContent: "center",
     alignItems: "center",
     shadowColor: colors.black,

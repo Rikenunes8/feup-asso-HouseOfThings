@@ -13,12 +13,14 @@ export default function AddDeviceButton({ children }) {
         setModalVisible={setModalVisible}
       />
 
-      <TouchableOpacity
-        style={styles.buttonOppacity}
-        onPress={() => setModalVisible(!modalVisible)}
-      >
-        <View style={styles.button}>{children}</View>
-      </TouchableOpacity>
+      <View style={styles.buttonBackgroud}>
+        <TouchableOpacity
+          style={styles.buttonOppacity}
+          onPress={() => setModalVisible(!modalVisible)}
+        >
+          <View style={styles.button}>{children}</View>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

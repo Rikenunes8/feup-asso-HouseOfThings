@@ -6,11 +6,15 @@ class DeviceAdapter(ABC):
     super().__init__()
     self._model = None
 
+  @abstractmethod
+  def createModel(self) -> None:
+    pass
+
   def getModel(self) -> Device:
     return self._model
 
   @abstractmethod
-  def connect(self, id) -> bool:
+  def connect(self) -> bool:
     pass
 
   @abstractmethod

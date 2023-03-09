@@ -20,13 +20,21 @@ class DB():
     self._db = self._client[DB._name]
   
   def addDevice(self, uid, group, props):
-    self._db['devices'].insert_one({'uid': uid, 'group': group} | props)
+    if not self.findDevice(uid):
+      self._db['devices'].insert_one({'uid': uid, 'group': group, **props})
+
+  def deleteDevice(self, uid):
+    self._db['devices'].delete_one({'uid': uid})
   
   def updateDevice(self, uid, props):
     self._db['devices'].update_one({'uid': uid}, {'$set': props})
 
   def findDevice(self, uid) -> dict:
     return self._db['devices'].find_one({'uid': uid}, {'_id': 0})
+  
+  def findAllDevices(self) -> list[dict]:
+    return list(self._db['devices'].find({}, {'_id': 0}))
+
 
 
   

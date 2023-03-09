@@ -5,22 +5,23 @@ from controller.mqtt import connect_mqtt, disconnect_mqtt, publish, subscribe
 
 class LightMqttAdapter(DeviceAdapter):
 
-  def __init__(self, cid : str = None):
+  def __init__(self, cid : str, uid : str):
     super().__init__()
     self._client = None
     self._cid = cid
-    self._uid = None
+    self._uid = uid
+
+  def createModel(self) -> None:
+    self._model = LightDevice(self._uid)
 
   def on_connect(self, client, userdata, msg):
     if self._uid != msg.payload.decode():
-      self._model = None
       return
     print(f"Connected to device with id: {self._uid}")
-    self._model = LightDevice(self._uid)
+    self.createModel()
 
 
-  def connect(self, id):
-    self._uid = id
+  def connect(self):
     self._client = connect_mqtt()
     self._client.loop_start()
 
@@ -30,6 +31,7 @@ class LightMqttAdapter(DeviceAdapter):
 
   def disconnect(self) -> None:
     if (self._model != None):
+      self._model.clear()
       publish(self._client, f"{self._uid}-disconnect", self._cid)
     disconnect_mqtt(self._client)
     self._client = None

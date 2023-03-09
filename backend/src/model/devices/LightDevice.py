@@ -22,5 +22,8 @@ class LightDevice(Device):
   def isLightOn(self) -> bool:
     return DB().findDevice(self._id)['on']
   
+  def clear(self) -> None:
+    DB().deleteDevice(self._id)
+  
   def toJson(self) -> dict:
     return DB().findDevice(self._id)

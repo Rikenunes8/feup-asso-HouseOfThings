@@ -61,8 +61,17 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"group\": \"light\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:5000/devices/1/connect?type=light&protocol=mqtt",
+					"raw": "http://localhost:5000/devices/1/connect",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -72,16 +81,6 @@
 						"devices",
 						"1",
 						"connect"
-					],
-					"query": [
-						{
-							"key": "type",
-							"value": "light"
-						},
-						{
-							"key": "protocol",
-							"value": "mqtt"
-						}
 					]
 				}
 			},

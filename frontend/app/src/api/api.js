@@ -15,27 +15,29 @@ const getDevices = async () => {
 
 const addDevice = async (id) => {
   try {
-    const response = await apiClient.post(`/devices/${id}/connect?type=light&protocol=mqtt`);
+    const response = await apiClient.post(`/devices/${id}/connect`, {
+      group: "light",
+    }); // TODO extract hardcoded
     if (response.data.error) {
       console.error(response.data.error);
     }
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 const actionDevice = async (id, action) => {
   try {
-    const response = await apiClient.post(`/devices/${id}/action`, { ...action });
+    const response = await apiClient.post(`/devices/${id}/action`, {
+      ...action,
+    });
     if (response.data.error) {
       console.error(response.data.error);
     }
   } catch (error) {
     console.error(error);
   }
-}
-
-
+};
 
 export default {
   getDevices,

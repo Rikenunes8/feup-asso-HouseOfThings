@@ -1,4 +1,4 @@
 #!/bin/bash
 
-flask -A src/api.py run --host=0.0.0.0
+flask -A app.py run --host=0.0.0.0
 

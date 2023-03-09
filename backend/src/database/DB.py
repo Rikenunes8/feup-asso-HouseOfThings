@@ -1,4 +1,6 @@
 import pymongo
+from dotenv import load_dotenv
+import os
 
 class DB():
   _name = 'HoT'
@@ -9,7 +11,9 @@ class DB():
     return cls.instance
 
   def __init__(self):
-    self._client = pymongo.MongoClient('mongodb://localhost:27017/')
+    load_dotenv('.env')
+    mongo_uri = os.environ.get('MONGO_URI') or 'mongodb://localhost:27017/'
+    self._client = pymongo.MongoClient(mongo_uri)
     dblist = self._client.list_database_names()
     if DB._name not in dblist:
       print(f"Creating database {DB._name}.")

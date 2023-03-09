@@ -31,6 +31,7 @@ class LightMqttAdapter(DeviceAdapter):
 
   def disconnect(self) -> None:
     if (self._model != None):
+      self._model.clear()
       publish(self._client, f"{self._uid}-disconnect", self._cid)
     disconnect_mqtt(self._client)
     self._client = None

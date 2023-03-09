@@ -22,6 +22,9 @@ class DB():
   def addDevice(self, uid, group, props):
     if not self.findDevice(uid):
       self._db['devices'].insert_one({'uid': uid, 'group': group, **props})
+
+  def deleteDevice(self, uid):
+    self._db['devices'].delete_one({'uid': uid})
   
   def updateDevice(self, uid, props):
     self._db['devices'].update_one({'uid': uid}, {'$set': props})

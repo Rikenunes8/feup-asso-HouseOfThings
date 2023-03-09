@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   StatusBar,
   Platform,
+  TouchableOpacity,
 } from "react-native";
 import DeviceCard from "../components/DeviceCard";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
@@ -29,9 +30,12 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.iconView}>
+        <TouchableOpacity
+          disabled={true} //TODO remove when we have a profile page
+          style={styles.iconView}
+        >
           <Icon name={"user"} size={20} color={colors.primaryText} />
-        </View>
+        </TouchableOpacity>
         <Text style={styles.welcomeMessage}>Hello, {name}!</Text>
       </View>
 

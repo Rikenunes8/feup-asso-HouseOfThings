@@ -43,5 +43,5 @@ PASSWORD='public'
 Then run the following command to start the flask application exposing the REST API to the private network on port 5000 (by default):
 
 ```bash
-flask -A app.py run --host=0.0.0.0
+python3 app.py
 ```

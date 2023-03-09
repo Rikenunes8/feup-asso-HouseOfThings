@@ -1,20 +1,14 @@
 import React from "react";
-import { Image } from "react-native";
+import Icon from "react-native-vector-icons/SimpleLineIcons";
 import colors from "../../configs/colors";
 
-export default function NavBarIcon({ image, focused }) {
+export default function NavBarIcon({ name, focused }) {
   return (
-    <Image
-      source={image}
-      resizeMode="contain"
-      style={{
-        width: 30,
-        height: 30,
-        alignItems: "center",
-        justifyContent: "center",
-        top: 10,
-        tintColor: focused ? colors.primary : colors.primaryText,
-      }}
+    <Icon
+      name={name}
+      size={30}
+      color={focused ? colors.primary : colors.primaryText}
+      style={{ alignItems: "center", justifyContent: "center", top: 10 }}
     />
   );
 }

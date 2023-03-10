@@ -8,25 +8,14 @@ export default function ChooseDeviceSideBar({
   setSelectedCategory,
 }) {
   return (
-    <View style={styles.modalSideBar}>
+    <View style={styles().modalSideBar}>
       {categories.map((category) => (
         <TouchableOpacity
           key={category}
           disabled={category !== "Light"} // TODO: only for vertical prototype, remove when we have more devices
           onPress={() => setSelectedCategory(category)}
         >
-          <Text
-            style={[
-              styles.categoryTitle,
-              category === selectedCategory
-                ? {
-                    color: colors.primary,
-                    borderRightWidth: 4,
-                    borderRightColor: colors.primary,
-                  }
-                : null,
-            ]}
-          >
+          <Text style={styles(category === selectedCategory).categoryTitle}>
             {category}
           </Text>
         </TouchableOpacity>
@@ -35,17 +24,25 @@ export default function ChooseDeviceSideBar({
   );
 }
 
-const styles = StyleSheet.create({
-  categoryTitle: {
-    fontSize: 17,
-    paddingVertical: 7,
-    color: colors.secondaryText,
-  },
-  modalSideBar: {
-    flex: 0.35,
-    flexDirection: "column",
-    paddingLeft: 20,
-    borderColor: colors.secondaryText,
-    borderRightWidth: 1,
-  },
-});
+const styles = (isSelected = false) =>
+  StyleSheet.create({
+    categoryTitle: {
+      fontSize: 17,
+      paddingVertical: 7,
+      color: colors.secondaryText,
+      ...(isSelected
+        ? {
+            color: colors.primary,
+            borderRightWidth: 4,
+            borderRightColor: colors.primary,
+          }
+        : null),
+    },
+    modalSideBar: {
+      flex: 0.35,
+      flexDirection: "column",
+      paddingLeft: 20,
+      borderColor: colors.secondaryText,
+      borderRightWidth: 1,
+    },
+  });

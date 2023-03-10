@@ -11,12 +11,12 @@ export default function DeviceCard({ name, division, enabled }) {
     <View style={styles.deviceCard}>
       <Image
         style={styles.deviceIcon}
-        source={require("../../../assets/lightbulb.png")}
+        source={require("../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
       />
 
       <View style={{ justifyContent: "center" }}>
         <Text style={styles.deviceName}>{name}</Text>
-        <Text style={{ color: colors.secondaryText }}>{division}</Text>
+        <Text style={styles.divisionText}>{division}</Text>
       </View>
 
       <Switch
@@ -57,5 +57,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "bold",
     color: colors.primaryText,
+  },
+  divisionText: {
+    color: colors.secondaryText,
   },
 });

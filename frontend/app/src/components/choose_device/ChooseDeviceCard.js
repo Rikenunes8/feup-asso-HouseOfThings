@@ -2,9 +2,15 @@ import React from "react";
 import { StyleSheet, TouchableOpacity, Text, Image } from "react-native";
 import colors from "../../../configs/colors";
 
+import api from "../../api/api";
+
 export default function ChooseDeviceCard({ type }) {
   return (
-    <TouchableOpacity key={type} style={styles.card}>
+    <TouchableOpacity
+      key={type}
+      style={styles.card}
+      onPress={() => api.addDevice("1")} // TODO: Change this hardecoded 1
+    >
       <Image
         style={styles.cardImage}
         source={require("../../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image

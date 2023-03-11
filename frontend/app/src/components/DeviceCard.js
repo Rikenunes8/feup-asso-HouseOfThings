@@ -7,14 +7,18 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import api from "../api/api";
+
 import DetailsModal from "./DetailsModal";
-import LightDetails from "./device_details/LightDetails.js";
+import LightDetails from "./device_details/light/LightDetails.js";
+import LightDetailsContextMenu from "./device_details/light/LightDetailsContextMenu";
+
+import api from "../api/api";
 import colors from "../../configs/colors";
 
 export default function DeviceCard({ name, division, enabled }) {
   const [isEnabled, setIsEnabled] = useState(enabled); //TODO
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false); //TODO
+  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false); //TODO
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState); //TODO
 
   onOfHandler = (isEnabled) => {
@@ -39,8 +43,15 @@ export default function DeviceCard({ name, division, enabled }) {
         leftIcon="close"
         rightIcon="ellipsis1"
         leftIconCallback={() => setIsDetailsModalVisible(false)}
-        rightIconCallback={() => console.log("TODO: Add settings context menu")}
-        modalContent={<LightDetails on={isEnabled} onPress={onOfHandler} />}
+        rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
+        contextMenu={
+          // TODO: Change this to a dynamic component (depending on device type)
+          <LightDetailsContextMenu
+            isContextMenuVisible={isContextMenuVisible}
+            setIsContextMenuVisible={setIsContextMenuVisible}
+          />
+        }
+        modalContent={<LightDetails on={isEnabled} handler={onOfHandler} />} // TODO: Change this to a dynamic component (depending on device type)
       />
 
       <Image

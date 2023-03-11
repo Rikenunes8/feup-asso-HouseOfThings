@@ -2,11 +2,11 @@ import React from "react";
 import {
   StyleSheet,
   Text,
-  Platform,
   Modal,
   View,
   Image,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../../configs/colors";
@@ -21,12 +21,15 @@ export default function DetailsModal({
   rightIcon,
   leftIconCallback,
   rightIconCallback,
+  contextMenu,
   modalContent,
 }) {
   return (
     <Modal animationType="slide" transparent={true} visible={modalVisible}>
       {/*TODO: remove the transparent view when we get the bottom page to be darker*/}
-      <View style={{ flex: 1, backgroundColor: colors.transparentGray }}>
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: colors.transparentGray }}
+      >
         <View style={styles.modalView}>
           <View style={styles.modalHeader}>
             <View style={styles.iconsView}>
@@ -62,11 +65,13 @@ export default function DetailsModal({
                 source={require("../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
               />
             </View>
+
+            {contextMenu}
           </View>
 
           <View style={styles.modalBody}>{modalContent}</View>
         </View>
-      </View>
+      </SafeAreaView>
     </Modal>
   );
 }
@@ -75,6 +80,7 @@ const styles = StyleSheet.create({
   iconsView: {
     flexDirection: "row",
     justifyContent: "space-between",
+    position: "relative",
   },
   leftIcon: {
     marginLeft: 25,
@@ -86,8 +92,8 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
   },
   detailsIcon: {
-    width: 180,
-    height: 180,
+    width: 180, // TODO: make this relative to the screen size ??
+    height: 180, // TODO: make this relative to the screen size ??
     resizeMode: "contain",
     alignSelf: "flex-end",
   },
@@ -113,7 +119,7 @@ const styles = StyleSheet.create({
   modalView: {
     backgroundColor: colors.primary,
     flex: 1,
-    marginTop: Platform.OS === "android" ? "15%" : "30%",
+    marginTop: "15%",
     justifyContent: "flex-end",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,

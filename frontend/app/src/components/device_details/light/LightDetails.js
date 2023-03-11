@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
-import colors from "../../../configs/colors";
+import colors from "../../../../configs/colors";
 
-export default function LightDetails({ on, onPress }) {
+export default function LightDetails({ on, handler }) {
   const stateText = on ? "On" : "Off";
 
   return (
@@ -16,7 +16,7 @@ export default function LightDetails({ on, onPress }) {
         <View style={styles().powerButton}>
           <TouchableOpacity
             style={styles(on).powerButtonOppacity}
-            onPress={onPress(on)}
+            onPress={() => handler(on)}
           >
             <Icon name="power" size={50} color={colors.white} />
           </TouchableOpacity>
@@ -48,7 +48,9 @@ const styles = (on = false) =>
       backgroundColor: colors.white,
       borderRadius: 100,
       shadowColor: colors.gray,
-      shadowOpacity: 0.01,
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: 0.1,
+      shadowRadius: 3.5,
       elevation: 2,
     },
     powerButtonOppacity: {

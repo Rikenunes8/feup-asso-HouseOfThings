@@ -9,7 +9,12 @@ export default function ChooseDeviceCard({ type }) {
     <TouchableOpacity
       key={type}
       style={styles.card}
-      onPress={() => api.addDevice("1")} // TODO: Change this hardecoded 1
+      onPress={() => {
+        if (type === "Light Bulb") {
+          console.log(`Adding ${type}...`);
+          api.addDevice("1");
+        }
+      }} // TODO: Change this hardecoded 1 and use a different logic for device type
     >
       <Image
         style={styles.cardImage}

@@ -16,9 +16,7 @@ import api from "../api/api";
 
 export default function HomeScreen() {
   const [name, setName] = useState("Tiago");
-  const [devices, setDevices] = useState([
-    { name: "Philips Bulb", division: "Family Room", enabled: true },
-  ]);
+  const [devices, setDevices] = useState([]);
 
   const fetchDevices = async () => {
     const devs = await api.getDevices();

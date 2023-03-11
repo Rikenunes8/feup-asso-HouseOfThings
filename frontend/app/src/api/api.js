@@ -26,6 +26,17 @@ const addDevice = async (id) => {
   }
 };
 
+const disconnectDevice = async (id) => {
+  try {
+    const response = await apiClient.post(`/devices/${id}/disconnect`);
+    if (response.data.error) {
+      console.error(response.data.error);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const actionDevice = async (id, action) => {
   try {
     const response = await apiClient.post(`/devices/${id}/action`, {
@@ -42,5 +53,6 @@ const actionDevice = async (id, action) => {
 export default {
   getDevices,
   addDevice,
+  disconnectDevice,
   actionDevice,
 };

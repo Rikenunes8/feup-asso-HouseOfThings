@@ -2,6 +2,8 @@ import React from "react";
 import ContextMenu from "../../ContextMenu";
 import colors from "../../../../configs/colors";
 
+import api from "../../../api/api";
+
 export default function LightDetailsContextMenu({
   isContextMenuVisible,
   setIsContextMenuVisible,
@@ -21,7 +23,10 @@ export default function LightDetailsContextMenu({
           name: "Disconnect",
           icon: "wifi-off",
           color: colors.red,
-          callback: () => console.log("TODO: Disconnect"),
+          callback: () => {
+            console.log("Disconnecting device...");
+            api.disconnectDevice("1"); // TODO: Change this hardecoded 1
+          },
         },
       ]}
     />

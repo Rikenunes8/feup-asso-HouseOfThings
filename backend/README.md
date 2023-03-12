@@ -15,33 +15,18 @@ The server is a REST API that provides the following endpoints:
 | /devices/{id}/disconnect  | POST    | Disconnects from a device using the {id} value |
 | /devices/{id}/action      | POST    | Action to apply in device {id} explicit in JSON body |
 
-## Requirements
-
-To install the dependecies, you may run the following command:
-
-```bash
-pip install -r requirements.txt
-```
-
-
 ## How to run
 
-First of all, make sure have mongoDB installed and running.
-Make sure you have a `.env` file in the root of the server directory. The `.env` file should contain the following variables:
+You can conveniently run the backend server by simply running `docker-compose up`. You may feel the need to tweak some of the environment variables: for that you may just create a `.env` file in the `backend` folder and set the variables there. The variables are:
 
-```bash
-# MongoDB connection
-MONGO_URI='mongodb://localhost:27017/'
-
-# MQTT Broker
-BROKER='broker.emqx.io'
-PORT=1883
-USERNAME='emqx'
-PASSWORD='public'
-```
-
-Then run the following command to start the flask application exposing the REST API to the private network on port 5000 (by default):
-
-```bash
-flask -A src/api.py run --host=0.0.0.0
-```
+| Variable | Description | Default value |
+|----------|-------------|---------------|
+| MONGODB_USERNAME | Username for the MongoDB database | user |
+| MONGODB_PASSWORD | Password for the MongoDB database. Only use the default for development! | DEFAULT_PASSWORD_DO_NOT_USE |
+| MONGO_ROOT_USERNAME | MongoDB root username | user |
+| MONGO_ROOT_PASSWORD | MongoDB root password. Only use the default for development! | DEFAULT_PASSWORD_DO_NOT_USE |
+| MONGODB_DATABASE | Database name for the MongoDB database | HoT |
+| MQTT_BROKER | MQTT broker address | broker.emqx.io |
+| MQTT_PORT | MQTT broker port | 1883 |
+| MQTT_USERNAME | MQTT broker username | emqx |
+| MQTT_PASSWORD | MQTT broker password. Only use the default for development! | DEFAULT_PASSWORD_DO_NOT_USE |

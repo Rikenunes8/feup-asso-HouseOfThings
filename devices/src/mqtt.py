@@ -7,10 +7,10 @@ import os
 
 load_dotenv('.env')
 
-broker = os.environ.get('BROKER')
-port = int(os.environ.get('PORT'))
-username = os.environ.get('USERNAME')
-password = os.environ.get('PASSWORD')
+broker = os.environ.get('MQTT_BROKER')
+port = int(os.environ.get('MQTT_PORT'))
+username = os.environ.get('MQTT_USERNAME')
+password = os.environ.get('MQTT_PASSWORD')
 
 def connect_mqtt() -> mqtt_client.Client:
   def on_connect(client, userdata, flags, rc):

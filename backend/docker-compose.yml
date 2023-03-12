@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  flask:
+    container_name: flask
+    build:
+      context: .
+    #restart: unless-stopped
+    environment:
+      APP_ENV: development # TODO later on we can create a .yml file specifically for production
+      MONGODB_USERNAME: ${MONGODB_USERNAME:-user} # TODO currently the user is the root. Ideally we should have a separate user for the app
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD:-DEFAULT_PASSWORD_DO_NOT_USE}
+      MONGODB_HOSTNAME: mongodb
+      MONGODB_PORT: 27017
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-HoT}
+      MQTT_BROKER: ${MQTT_BROKER:-broker.emqx.io}
+      MQTT_PORT: ${MQTT_PORT:-1883}
+      MQTT_USERNAME: ${MQTT_USERNAME:-emqx}
+      MQTT_PASSWORD: ${MQTT_PASSWORD:-DEFAULT_PASSWORD_DO_NOT_USE}
+    volumes:
+      - .:/app/backend
+    ports:
+      - 5000:5000
+    depends_on:
+      - mongodb
+    networks:
+      - backend
+  
+  mongodb:
+    image: mongo:6.0.4
+    container_name: mongodb
+    #restart: unless-stopped
+    command: mongod --auth
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME:-user}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD:-DEFAULT_PASSWORD_DO_NOT_USE}
+      MONGO_INITDB_DATABASE: ${MONGODB_DATABASE:-HoT}
+      MONGODB_DATA_DIR: /data/db
+      MONDODB_LOG_DIR: /dev/null
+    volumes:
+      - ./data/db:/data/db
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

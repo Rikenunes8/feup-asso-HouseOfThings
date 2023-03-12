@@ -1,23 +1,25 @@
 import pymongo
-from dotenv import load_dotenv
 import os
 
 class DB():
-  _name = 'HoT'
-
   def __new__(cls):
     if not hasattr(cls, 'instance'):
       cls.instance = super(DB, cls).__new__(cls)
     return cls.instance
 
   def __init__(self):
-    load_dotenv('.env')
-    mongo_uri = os.environ.get('MONGO_URI') or 'mongodb://localhost:27017/'
+    user = os.environ.get('MONGODB_USERNAME')
+    password = os.environ.get('MONGODB_PASSWORD')
+    host = os.environ.get('MONGODB_HOSTNAME')
+    port = os.environ.get('MONGODB_PORT')
+    database = os.environ.get('MONGODB_DATABASE')
+    mongo_uri = f"mongodb://{user}:{password}@{host}:{port}"
+
     self._client = pymongo.MongoClient(mongo_uri)
-    dblist = self._client.list_database_names()
-    if DB._name not in dblist:
-      print(f"Creating database {DB._name}.")
-    self._db = self._client[DB._name]
+    #dblist = self._client.list_database_names()
+    #if DB._name not in dblist:
+    #  print(f"Creating database {DB._name}.")
+    self._db = self._client[database]
   
   def addDevice(self, uid, group, props):
     if not self.findDevice(uid):

@@ -31,6 +31,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/devices'
+  /devices/available:
+    get:
+      tags:
+      - Devices
+      operationId: discovery
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/connect_body'
+      responses:
+        "200":
+          description: Succesfully retrieved available devices
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/available'
   /devices/{uid}/connect:
     post:
       tags:
@@ -155,7 +172,6 @@ components:
                 type: array
                 items:
                   type: string
-
       example:
         categories:
         - name: "light"
@@ -187,6 +203,17 @@ components:
           subcategories: 
             - door bell
             - tv
+    available:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            type: string
+      example:
+        devices:
+        - "1"
+        - "2"
     connect_body:
       type: object
       properties:

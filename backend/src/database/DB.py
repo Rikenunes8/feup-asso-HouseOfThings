@@ -19,9 +19,6 @@ class DB(metaclass=DBMeta):
     mongo_uri = f"mongodb://{user}:{password}@{host}:{port}"
 
     self._client = pymongo.MongoClient(mongo_uri)
-    #dblist = self._client.list_database_names()
-    #if DB._name not in dblist:
-    #  print(f"Creating database {DB._name}.")
     self._db = self._client[database]
   
   def addDevice(self, uid, group, props):

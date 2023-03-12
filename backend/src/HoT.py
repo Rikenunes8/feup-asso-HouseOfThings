@@ -54,3 +54,6 @@ class HoT(metaclass=HoTMeta):
     adapter = self._devManager.getDevice(uid)
     adapter.disconnect()
     self._devManager.remove(uid)
+
+  def categories(self):
+    return DB().findAllCategories()

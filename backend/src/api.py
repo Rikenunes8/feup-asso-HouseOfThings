@@ -9,9 +9,12 @@ def isContentJson(request):
   return request.headers.get('Content-Type') == 'application/json'
 
 @api.get("/heartbeat")
-def heartbeat() -> str:
+def heartbeat():
   return jsonify({'status': 'ok'})
 
+@api.get("/categories")
+def categories():
+  return jsonify({'categories': HoT().categories()})
 
 @api.post("/devices/<id>/connect")
 def connect(id):
@@ -32,8 +35,6 @@ def action(id):
   
 
 @api.get("/devices")
-def connectedDevices() -> str:
+def connectedDevices():
   devices = HoT().devices()
   return jsonify({'devices': list(map(lambda device: device.toJson(), devices))})
-  
-

@@ -17,7 +17,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200'
+                $ref: '#/components/schemas/status_ok'
   /devices:
     get:
       tags:
@@ -30,7 +30,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/devices'
   /devices/{uid}/connect:
     post:
       tags:
@@ -48,7 +48,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/uid_connect_body'
+              $ref: '#/components/schemas/connect_body'
       responses:
         "200":
           description: Successfully connected device
@@ -85,7 +85,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/uid_action_body'
+              $ref: '#/components/schemas/action_body'
             examples:
               Turn Light On:
                 value:
@@ -96,38 +96,105 @@ paths:
       responses:
         "200":
           description: Successfully actioned device
+  /categories:
+    get:
+      tags:
+      - Categories
+      description: Returns all the device categories available
+      operationId: getCategories
+      responses:
+        "200":
+          description: All the device categories available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/categories'
+
 components:
   schemas:
-    inline_response_200:
+    status_ok:
       type: object
       properties:
         status:
           type: string
       example:
         status: ok
-    inline_response_200_1:
+    devices:
       type: object
       properties:
         devices:
           type: array
           items:
             type: object
+            properties:
+              uid:
+                type: string
+              group:
+                type: string
+            additionalProperties:
+              type: string
       example:
         devices:
         - uid: "1"
           group: light
-          "true": true
+          turnedOn: true
         - uid: "2"
           group: thermostat
           last_temp: 23
-    uid_connect_body:
+    categories:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              subcategories:
+                type: array
+                items:
+                  type: string
+
+      example:
+        categories:
+        - name: "light"
+          subcategories:
+            - light bulb
+        - name: "sensor"
+          subcategories:
+            - montion sensor
+            - temperature sensor
+            - humidity sensor
+        - name: security,
+          subcategories: 
+            - camera
+            - door lock
+        - name: socket,
+          subcategories: 
+            - extension socket
+            - power socket
+        - name: appliance,
+          subcategories: 
+            - fan
+            - tv
+            - ac
+            - heater
+            - oven
+            - washer
+            - dryer
+        - name: other,
+          subcategories: 
+            - door bell
+            - tv
+    connect_body:
       type: object
       properties:
         group:
           type: string
           enum:
           - light
-    uid_action_body:
+    action_body:
       type: object
       properties:
         action:

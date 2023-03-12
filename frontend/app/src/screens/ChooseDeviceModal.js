@@ -12,11 +12,10 @@ export default function ChooseDeviceModal({ modalVisible, setModalVisible }) {
     Socket: ["Extension Socket", "Power Socket"],
     Appliance: ["Fan", "TV", "AC", "Heater", "Oven", "Washer", "Dryer"],
     Other: ["Door Bell", "TV"],
-  }); // TODO: get categories from backend (get icon from backend too ??)
+  }); // TODO: get categories from backend
 
   const [selectedCategory, setSelectedCategory] = useState(
-    "Light" // TODO: only for vertical prototype, change after
-    // Object.keys(categories).length ? Object.keys(categories)[0] : null
+    Object.keys(categories).length ? Object.keys(categories)[0] : null
   );
 
   return (

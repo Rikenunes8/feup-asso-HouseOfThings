@@ -16,10 +16,11 @@ import api from "../api/api";
 import colors from "../../configs/colors";
 
 export default function DeviceCard({ name, division, enabled }) {
-  const [isEnabled, setIsEnabled] = useState(enabled); //TODO
-  const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false); //TODO
-  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false); //TODO
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState); //TODO
+  // TODO: use react's useContext
+  const [isEnabled, setIsEnabled] = useState(enabled);
+  const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
+  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   onOfHandler = (isEnabled) => {
     if (isEnabled) {

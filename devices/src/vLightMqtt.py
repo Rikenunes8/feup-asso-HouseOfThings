@@ -11,7 +11,7 @@ state = False
 drawer = None
 
 def on_connect(client, userdata, msg):
-  global cid, drawer
+  global cid, state, drawer
   if (cid != None):
     print(f"Light was already connected by `{cid}`")
     return

@@ -1,21 +1,23 @@
+import pygame
 import sys
 from mqtt import connect_mqtt, subscribe, publish
-
+from Drawer import Drawer
 
 uid = "1"
 cid = None # id of the controller that is connected to the light
 
 state = False
-
+drawer = None
 
 def on_connect(client, userdata, msg):
-  global cid
+  global cid, drawer
   if (cid != None):
     print(f"Light was already connected by `{cid}`")
     return
   cid = msg.payload.decode()
   print(f"Light was connected by `{cid}`")
   publish(client, f"{cid}-connected", uid)
+  drawer.drawLight(True, state)
 
 def on_disconnect(client, userdata, msg):
   global cid, state
@@ -25,6 +27,7 @@ def on_disconnect(client, userdata, msg):
   print(f"Light was disconnected by `{cid}`")
   cid = None
   state = False
+  drawer.drawLight(False, state)
 
 
 def on_turnOn(client, userdata, msg):
@@ -34,6 +37,7 @@ def on_turnOn(client, userdata, msg):
     return
   state = True
   print(f"Light was turned on by `{cid}`")
+  drawer.drawLight(True, state)
 
 def on_turnOff(client, userdata, msg):
   global state
@@ -42,6 +46,8 @@ def on_turnOff(client, userdata, msg):
     return
   state = False
   print(f"Light was turned off by `{cid}`")
+  drawer.drawLight(True, state)
+
 
 def run():
   client = connect_mqtt()
@@ -53,6 +59,15 @@ def run():
 
   client.loop_forever()
 
+def start():
+  pygame.init()
+  
+  print(type(uid))
+  print(f"Starting vLight with uid `{uid}`")
+
+  drawer = Drawer(f"vLight uid `{uid}`")
+  drawer.drawLight(False, False)
+
 
 if __name__ == '__main__':
   if (len(sys.argv) > 2):
@@ -61,6 +76,5 @@ if __name__ == '__main__':
   elif (len(sys.argv) == 2):
     uid = sys.argv[1]
     
-  print(type(uid))
-  print(f"Starting vLight with uid `{uid}`")
+  start()
   run()

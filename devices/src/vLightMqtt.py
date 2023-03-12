@@ -1,4 +1,5 @@
 import pygame
+import time
 import sys
 from mqtt import connect_mqtt, subscribe, publish
 from Drawer import Drawer
@@ -20,7 +21,7 @@ def on_connect(client, userdata, msg):
   drawer.drawLight(True, state)
 
 def on_disconnect(client, userdata, msg):
-  global cid, state
+  global cid, state, drawer
   if (cid == None or cid != msg.payload.decode()):
     print(f"Light is not connected or is connected to other cid")
     return
@@ -31,7 +32,7 @@ def on_disconnect(client, userdata, msg):
 
 
 def on_turnOn(client, userdata, msg):
-  global state
+  global state, drawer
   if (cid == None or cid != msg.payload.decode()):
     print(f"Light is not connected or is connected to other cid")
     return
@@ -40,7 +41,7 @@ def on_turnOn(client, userdata, msg):
   drawer.drawLight(True, state)
 
 def on_turnOff(client, userdata, msg):
-  global state
+  global state, drawer
   if (cid == None or cid != msg.payload.decode()):
     print(f"Light is not connected or is connected to other cid")
     return
@@ -60,6 +61,7 @@ def run():
   client.loop_forever()
 
 def start():
+  global drawer
   pygame.init()
   
   print(type(uid))

@@ -3,8 +3,10 @@ from src.HoT import HoT
 
 api = Blueprint('api', __name__)
 
-def notJson():
-  return make_response(jsonify({'error': 'Content-Type not supported!'}), 400)
+def makeError(error, code=400):
+  return make_response(jsonify({'error': error}), code)
+def notJsonError():
+  return makeError("Content-Type not supported!", 400)
 def isContentJson(request):
   return request.headers.get('Content-Type') == 'application/json'
 
@@ -15,9 +17,10 @@ def heartbeat() -> str:
 
 @api.post("/devices/<id>/connect")
 def connect(id):
-  if (not isContentJson(request)): return notJson()
-  HoT().connect(id, request.json)
-  return jsonify({})
+  if (not isContentJson(request)): return notJsonError()
+  succ = HoT().connect(id, request.json)
+  if succ: return jsonify({})
+  else: return makeError("Device not found!", 404)
 
 @api.post("/devices/<id>/disconnect")
 def disconnect(id):
@@ -26,7 +29,7 @@ def disconnect(id):
 
 @api.post("/devices/<id>/action")
 def action(id):
-  if (not isContentJson(request)): return notJson()
+  if (not isContentJson(request)): return notJsonError()
   HoT().action(id, request.json)
   return jsonify({})
   
@@ -34,6 +37,6 @@ def action(id):
 @api.get("/devices")
 def connectedDevices() -> str:
   devices = HoT().devices()
-  return jsonify({'devices': list(map(lambda device: device.toJson(), devices))})
+  return jsonify({'devices': list(map(lambda device: device.toJson() if device != None else {}, devices))})
   
 

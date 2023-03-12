@@ -1,12 +1,15 @@
-import pymongo
 import os
+import pymongo
 
-class DB():
-  def __new__(cls):
-    if not hasattr(cls, 'instance'):
-      cls.instance = super(DB, cls).__new__(cls)
-    return cls.instance
+class DBMeta(type):
+  _instances = {}
+  def __call__(cls, *args, **kwargs):
+    if cls not in cls._instances:
+      instance = super().__call__(*args, **kwargs)
+      cls._instances[cls] = instance
+    return cls._instances[cls]
 
+class DB(metaclass=DBMeta):
   def __init__(self):
     user = os.environ.get('MONGODB_USERNAME')
     password = os.environ.get('MONGODB_PASSWORD')
@@ -36,7 +39,3 @@ class DB():
   
   def findAllDevices(self) -> list[dict]:
     return list(self._db['devices'].find({}, {'_id': 0}))
-
-
-
-  

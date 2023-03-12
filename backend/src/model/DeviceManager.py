@@ -1,5 +1,5 @@
-from model.devices.Device import Device
-from controller.adapter.DeviceAdapter import DeviceAdapter
+from src.model.devices.Device import Device
+from src.controller.adapter.DeviceAdapter import DeviceAdapter
 
 # TODO error handling
 class DeviceManager:

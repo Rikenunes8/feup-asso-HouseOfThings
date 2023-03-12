@@ -1,5 +1,5 @@
-from model.devices.Device import Device
-from database.DB import DB
+from src.model.devices.Device import Device
+from src.database.DB import DB
 
 class LightDevice(Device):
 

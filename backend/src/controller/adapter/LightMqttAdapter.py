@@ -1,6 +1,6 @@
-from controller.adapter.DeviceAdapter import DeviceAdapter
-from model.devices.LightDevice import LightDevice
-from controller.mqtt import connect_mqtt, disconnect_mqtt, publish, subscribe
+from src.controller.adapter.DeviceAdapter import DeviceAdapter
+from src.model.devices.LightDevice import LightDevice
+from src.controller.mqtt import connect_mqtt, disconnect_mqtt, publish, subscribe
 
 
 class LightMqttAdapter(DeviceAdapter):

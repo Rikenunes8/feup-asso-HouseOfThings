@@ -24,4 +24,4 @@ ENV MQTT_USERNAME=$MQTT_USERNAME
 ARG MQTT_PASSWORD
 ENV MQTT_PASSWORD=$MQTT_PASSWORD
 
-CMD ["flask", "-A", "src/api.py", "run", "--host=0.0.0.0"]
+CMD ["python3", "app.py"]

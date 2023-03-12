@@ -38,3 +38,9 @@ def action(id):
 def connectedDevices():
   devices = HoT().devices()
   return jsonify({'devices': list(map(lambda device: device.toJson(), devices))})
+
+@api.get("/devices/available")
+def available():
+  if (not isContentJson(request)): return notJson()
+  devices = HoT().available(request.json)
+  return jsonify({'devices': devices})

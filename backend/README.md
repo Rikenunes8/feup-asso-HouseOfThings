@@ -15,6 +15,9 @@ The server is a REST API that provides the following endpoints:
 | /devices/{id}/disconnect  | POST    | Disconnects from a device using the {id} value |
 | /devices/{id}/action      | POST    | Action to apply in device {id} explicit in JSON body |
 
+The swagger documentation for the API is available at `/swagger` endpoint when the server is running.
+**NOTE:** The documentation is not self generated, so it can be outdated sometimes.
+
 ## Requirements
 
 To install the dependecies, you may run the following command:
@@ -43,5 +46,5 @@ PASSWORD='public'
 Then run the following command to start the flask application exposing the REST API to the private network on port 5000 (by default):
 
 ```bash
-flask -A src/api.py run --host=0.0.0.0
+python3 app.py
 ```

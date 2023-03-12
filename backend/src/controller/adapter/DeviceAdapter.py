@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from model.devices.Device import Device
+from src.model.devices.Device import Device
 
 class DeviceAdapter(ABC):  
   def __init__(self):

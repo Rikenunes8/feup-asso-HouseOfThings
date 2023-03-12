@@ -1,0 +1,134 @@
+---
+openapi: 3.0.0
+info:
+  title: House of Things
+  description: The API for the House of Things IOT project
+  version: 1.0.0
+paths:
+  /heartbeat:
+    get:
+      tags:
+      - Health check
+      description: Checks the server connection
+      operationId: heartbeat
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+  /devices:
+    get:
+      tags:
+      - Devices
+      description: Returns all the connected devices
+      operationId: getDevices
+      responses:
+        "200":
+          description: All the connected devices
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+  /devices/{uid}/connect:
+    post:
+      tags:
+      - Devices
+      operationId: connect
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/uid_connect_body'
+      responses:
+        "200":
+          description: Successfully connected device
+  /devices/{uid}/disconnect:
+    post:
+      tags:
+      - Devices
+      operationId: disconnect
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successfully disconnected device
+  /devices/{uid}/action:
+    post:
+      tags:
+      - Devices
+      operationId: action
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/uid_action_body'
+            examples:
+              Turn Light On:
+                value:
+                  action: turnOn
+              Turn Light Off:
+                value:
+                  action: turnOff
+      responses:
+        "200":
+          description: Successfully actioned device
+components:
+  schemas:
+    inline_response_200:
+      type: object
+      properties:
+        status:
+          type: string
+      example:
+        status: ok
+    inline_response_200_1:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            type: object
+      example:
+        devices:
+        - uid: "1"
+          group: light
+          "true": true
+        - uid: "2"
+          group: thermostat
+          last_temp: 23
+    uid_connect_body:
+      type: object
+      properties:
+        group:
+          type: string
+          enum:
+          - light
+    uid_action_body:
+      type: object
+      properties:
+        action:
+          type: string

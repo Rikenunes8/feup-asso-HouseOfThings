@@ -43,6 +43,15 @@ def on_turnOff(client, userdata, msg):
   state = False
   print(f"Light was turned off by `{cid}`")
 
+
+def on_available(client, userdata, msg):
+  global cid
+  if (cid != None):
+    print(f"Light is not available")
+    return
+  cidTemp = msg.payload.decode()
+  publish(client, f"{cidTemp}-light-available", uid)
+
 def run():
   client = connect_mqtt()
 
@@ -50,6 +59,7 @@ def run():
   subscribe(client, f"{uid}-disconnect", on_disconnect)
   subscribe(client, f"{uid}-turnOn", on_turnOn)
   subscribe(client, f"{uid}-turnOff", on_turnOff)
+  subscribe(client, "light-available", on_available)
 
   client.loop_forever()
 

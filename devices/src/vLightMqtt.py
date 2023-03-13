@@ -12,43 +12,39 @@ state : bool = False
 drawer : Drawer = None
 
 def on_connect(client, userdata, msg):
-  global cid, state, drawer
+  global cid
   if (cid != None):
     print(f"Light was already connected by `{cid}`")
     return
   cid = msg.payload.decode()
   print(f"Light was connected by `{cid}`")
   publish(client, f"{cid}-connected", uid)
-  drawer.drawLight(isConnected(), state)
 
 def on_disconnect(client, userdata, msg):
-  global cid, state, drawer
+  global cid, state
   if (cid == None or cid != msg.payload.decode()):
     print(f"Light is not connected or is connected to other cid")
     return
   print(f"Light was disconnected by `{cid}`")
   cid = None
   state = False
-  drawer.drawLight(isConnected(), state)
 
 
 def on_turnOn(client, userdata, msg):
-  global state, drawer
+  global state
   if (cid == None or cid != msg.payload.decode()):
     print(f"Light is not connected or is connected to other cid")
     return
   state = True
   print(f"Light was turned on by `{cid}`")
-  drawer.drawLight(isConnected(), state)
 
 def on_turnOff(client, userdata, msg):
-  global state, drawer
+  global state
   if (cid == None or cid != msg.payload.decode()):
     print(f"Light is not connected or is connected to other cid")
     return
   state = False
   print(f"Light was turned off by `{cid}`")
-  drawer.drawLight(isConnected(), state)
 
 def on_available(client, userdata, msg):
   global cid
@@ -78,7 +74,6 @@ def start_drawer():
   print(f"Starting vLight with uid `{uid}`")
 
   drawer = Drawer(f"vLight uid `{uid}`")
-  drawer.drawLight(isConnected(), False)
 
 
 if __name__ == '__main__':
@@ -93,10 +88,10 @@ if __name__ == '__main__':
   run = True
   while run:
     drawer.drawLight(isConnected(), state)
+    time.sleep(0.1)
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
         run = False
-    time.sleep(0.1)
   pygame.quit()
 
     

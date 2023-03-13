@@ -12,7 +12,7 @@ state : bool = False
 drawer : Drawer = None
 
 def on_connect(client, userdata, msg):
-  global cid, state, drawer
+  global cid
   if (cid != None):
     print(f"Light was already connected by `{cid}`")
     return
@@ -21,7 +21,7 @@ def on_connect(client, userdata, msg):
   publish(client, f"{cid}-connected", uid)
 
 def on_disconnect(client, userdata, msg):
-  global cid, state, drawer
+  global cid, state
   if (cid == None or cid != msg.payload.decode()):
     print(f"Light is not connected or is connected to other cid")
     return
@@ -31,7 +31,7 @@ def on_disconnect(client, userdata, msg):
 
 
 def on_turnOn(client, userdata, msg):
-  global state, drawer
+  global state
   if (cid == None or cid != msg.payload.decode()):
     print(f"Light is not connected or is connected to other cid")
     return
@@ -39,7 +39,7 @@ def on_turnOn(client, userdata, msg):
   print(f"Light was turned on by `{cid}`")
 
 def on_turnOff(client, userdata, msg):
-  global state, drawer
+  global state
   if (cid == None or cid != msg.payload.decode()):
     print(f"Light is not connected or is connected to other cid")
     return

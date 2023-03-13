@@ -113,6 +113,27 @@ paths:
       responses:
         "200":
           description: Successfully actioned device
+  /devices/{uid}/rename:
+    post:
+      tags:
+      - Devices
+      operationId: rename
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/rename_body'
+      responses:
+        "200":
+          description: Successfully renamed device
   /categories:
     get:
       tags:
@@ -148,15 +169,25 @@ components:
                 type: string
               group:
                 type: string
+              name:
+                type: string
+              divisions:
+                type: array
+                items:
+                  type: string
             additionalProperties:
               type: string
       example:
         devices:
         - uid: "1"
           group: light
-          turnedOn: true
+          name: Bulb
+          divisions: ["Room"]
+          on: true
         - uid: "2"
           group: thermostat
+          name: Termo
+          divisions: ["Kitchen"]
           last_temp: 23
     categories:
       type: object
@@ -221,8 +252,19 @@ components:
           type: string
           enum:
           - light
+        name: 
+          type: string
+        divisions:
+          type: array
+          items: 
+            type: string
     action_body:
       type: object
       properties:
         action:
+          type: string
+    rename_body:
+      type: object
+      properties:
+        name:
           type: string

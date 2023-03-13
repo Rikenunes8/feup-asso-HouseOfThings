@@ -42,29 +42,40 @@ class HoT(metaclass=HoTMeta):
     ids = self._devManager.getDeviceIds()
     return [self._devManager.getDevice(id).getModel() for id in ids]
 
-  def connect(self, uid, config):
+  def connect(self, uid : str, config : dict) -> str:
     newDevice = self._createAdapter(uid, config)
-    if newDevice == None: return
+    if newDevice == None: return "No device for group: " + config.get("group")
     success = newDevice.connect()
-    if success:
-      self._devManager.add(uid, newDevice)
-    return success
+    if not success: return "Failed to connect to device"
+    name = config.get("name")
+    divisions = config.get("divisions")
+    if name != None: newDevice.getModel().rename(name)
+    if divisions != None: newDevice.getModel().setDivisions(divisions)
+    self._devManager.add(uid, newDevice)
 
-  def action(self, uid, rules):
+
+  def disconnect(self, uid : str):
+    adapter = self._devManager.getDevice(uid)
+    adapter.disconnect()
+    self._devManager.remove(uid)
+
+  def action(self, uid : str, rules : dict):
     adapter : DeviceAdapter = self._devManager.getDevice(uid)
     # TODO send rules to adapter to perform action instead of this
     if rules["action"] == "turnOn": adapter.turnOn()
     elif rules["action"] == "turnOff": adapter.turnOff()
 
-  def disconnect(self, uid):
+  def rename(self, uid : str, config : dict):
+    name = config.get("name")
+    if name == None: return "No name provided"
     adapter = self._devManager.getDevice(uid)
-    adapter.disconnect()
-    self._devManager.remove(uid)
+    if adapter == None: return "No device with that uid"
+    adapter.getModel().rename(name)
 
   def categories(self):
     return DB().findAllCategories()
 
-  def available(self, config):
+  def available(self, config : dict):
     adapter = self._createAdapter(None, config)
     if adapter == None: return
 

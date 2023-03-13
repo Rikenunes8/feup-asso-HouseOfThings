@@ -16,7 +16,7 @@ export default function ChooseDeviceCard({ type }) {
       api.addDevice("1").then((success) => {
         success
           ? addDevice({
-              id: "1",
+              uid: "1",
               name: "Light Bulb",
               division: "Living Room",
               enabled: false,

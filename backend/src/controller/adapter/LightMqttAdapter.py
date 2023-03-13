@@ -18,6 +18,9 @@ class LightMqttAdapter(DeviceAdapter):
 
   def createModel(self) -> None:
     self._model = LightDevice(self._uid)
+  
+  def getModel(self) -> LightDevice:
+    return self._model
 
   def on_connect(self, client, userdata, msg):
     if self._uid != msg.payload.decode():

@@ -22,9 +22,9 @@ class DB(metaclass=DBMeta):
       print(f"Creating database {DB._name}.")
     self._db = self._client[DB._name]
   
-  def addDevice(self, uid, group, props):
+  def addDevice(self, uid, props):
     if not self.findDevice(uid):
-      self._db['devices'].insert_one({'uid': uid, 'group': group, **props})
+      self._db['devices'].insert_one({'uid': uid, **props})
 
   def deleteDevice(self, uid):
     self._db['devices'].delete_one({'uid': uid})

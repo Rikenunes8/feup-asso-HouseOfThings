@@ -21,9 +21,9 @@ def categories():
 @api.post("/devices/<id>/connect")
 def connect(id):
   if (not isContentJson(request)): return notJsonError()
-  succ = HoT().connect(id, request.json)
-  if succ: return jsonify({})
-  else: return makeError("Device not found!", 404)
+  error = HoT().connect(id, request.json)
+  if error: return makeError(error, 404)
+  else: return jsonify({})
 
 @api.post("/devices/<id>/disconnect")
 def disconnect(id):
@@ -35,7 +35,13 @@ def action(id):
   if (not isContentJson(request)): return notJsonError()
   HoT().action(id, request.json)
   return jsonify({})
-  
+
+@api.post("/devices/<id>/rename")
+def rename(id):
+  if (not isContentJson(request)): return notJsonError()
+  error = HoT().rename(id, request.json)
+  if error: return makeError(error)
+  else: return jsonify({})
 
 @api.get("/devices")
 def connectedDevices():
@@ -44,6 +50,6 @@ def connectedDevices():
 
 @api.get("/devices/available")
 def available():
-  if (not isContentJson(request)): return notJson()
+  if (not isContentJson(request)): return notJsonError()
   devices = HoT().available(request.json)
   return jsonify({'devices': devices})

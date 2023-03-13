@@ -23,15 +23,11 @@ export default function DeviceCard({ device }) {
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
   onOfHandler = (isEnabled) => {
-    if (isEnabled) {
-      console.log("Turning off device...");
-      api.actionDevice(device.uid, { action: "turnOff" }); // TODO changing the hardcode "1" to the real device id
-    } else {
-      console.log("Turning on device...");
-      api.actionDevice(device.uid, { action: "turnOn" }); // TODO changing the hardcode "1" to the real device id
-    }
+    console.log(`Turning ${isEnabled ? "off" : "on"} device...`);
 
-    updateDevice({ on: !device.on }, device.uid); // TODO: only change if the request was successful
+    const action = isEnabled ? "turnOff" : "turnOn";
+    api.actionDevice(device.uid, { action: action });
+    updateDevice({ on: !device.on }, device.uid);
   };
 
   return (
@@ -54,12 +50,7 @@ export default function DeviceCard({ device }) {
             setIsContextMenuVisible={setIsContextMenuVisible}
           />
         }
-        modalContent={
-          <LightDetails
-            on={device.on}
-            handler={/*onOfHandler(device.on)*/ () => {}}
-          />
-        } // TODO: Change this to a dynamic component (depending on device type)
+        modalContent={<LightDetails on={device.on} handler={onOfHandler} />} // TODO: Change this to a dynamic component (depending on device type)
       />
 
       <Image

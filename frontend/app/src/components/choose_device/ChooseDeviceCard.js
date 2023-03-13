@@ -10,7 +10,7 @@ export default function ChooseDeviceCard({ type }) {
       key={type}
       style={styles.card}
       onPress={() => {
-        if (type === "Light Bulb") {
+        if (type === "light bulb") {
           console.log(`Adding ${type}...`);
           api.addDevice("1");
         }
@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: "center",
     marginBottom: "5%",
+    textTransform: "capitalize",
     color: colors.primaryText,
   },
 });

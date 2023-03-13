@@ -1,7 +1,11 @@
+import time
+
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
 from src.controller.adapter.LightMqttAdapter import LightMqttAdapter
 from src.model.DeviceManager import DeviceManager
 from src.database.DB import DB
+from src.controller.mqtt import connect_mqtt, disconnect_mqtt, publish, subscribe
+
 
 class HoTMeta(type):
   _instances = {}
@@ -41,8 +45,10 @@ class HoT(metaclass=HoTMeta):
   def connect(self, uid, config):
     newDevice = self._createAdapter(uid, config)
     if newDevice == None: return
-    newDevice.connect()
-    self._devManager.add(uid, newDevice) # TODO add device after it has connected
+    success = newDevice.connect()
+    if success:
+      self._devManager.add(uid, newDevice)
+    return success
 
   def action(self, uid, rules):
     adapter : DeviceAdapter = self._devManager.getDevice(uid)
@@ -54,3 +60,18 @@ class HoT(metaclass=HoTMeta):
     adapter = self._devManager.getDevice(uid)
     adapter.disconnect()
     self._devManager.remove(uid)
+
+  def categories(self):
+    return DB().findAllCategories()
+
+  def available(self, config):
+    adapter = self._createAdapter(None, config)
+    if adapter == None: return
+
+    adapter.startDiscovery()
+    start = time.time()
+    while time.time() - start < 4:
+      pass
+    devicesFound = adapter.finishDiscovery()
+  
+    return devicesFound

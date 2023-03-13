@@ -50,7 +50,15 @@ def on_turnOff(client, userdata, msg):
   print(f"Light was turned off by `{cid}`")
   drawer.drawLight(isConnected(), state)
 
+def on_available(client, userdata, msg):
+  global cid
+  if (cid != None):
+    print(f"Light is not available")
+    return
+  cidTemp = msg.payload.decode()
+  publish(client, f"{cidTemp}-light-available", uid)
 
+  
 def start_mqtt():
   client = connect_mqtt()
 
@@ -58,6 +66,7 @@ def start_mqtt():
   subscribe(client, f"{uid}-disconnect", on_disconnect)
   subscribe(client, f"{uid}-turnOn", on_turnOn)
   subscribe(client, f"{uid}-turnOff", on_turnOff)
+  subscribe(client, "light-available", on_available)
 
   client.loop_start()
 

@@ -20,3 +20,11 @@ class DeviceAdapter(ABC):
   @abstractmethod
   def disconnect(self) -> None:
     pass
+
+  @abstractmethod
+  def startDiscovery(self):
+    pass
+
+  @abstractmethod
+  def finishDiscovery(self):
+    pass

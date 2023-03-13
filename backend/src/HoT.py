@@ -45,8 +45,10 @@ class HoT(metaclass=HoTMeta):
   def connect(self, uid, config):
     newDevice = self._createAdapter(uid, config)
     if newDevice == None: return
-    newDevice.connect()
-    self._devManager.add(uid, newDevice) # TODO add device after it has connected
+    success = newDevice.connect()
+    if success:
+      self._devManager.add(uid, newDevice)
+    return success
 
   def action(self, uid, rules):
     adapter : DeviceAdapter = self._devManager.getDevice(uid)

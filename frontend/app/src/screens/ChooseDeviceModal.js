@@ -1,23 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import AddModal from "../components/AddModal";
 import ChooseDeviceScrollView from "../components/choose_device/ChooseDeviceScrollView";
 import ChooseDeviceSideBar from "../components/choose_device/ChooseDeviceSideBar";
 
-export default function ChooseDeviceModal({ modalVisible, setModalVisible }) {
-  const [categories, setCategories] = useState({
-    Light: ["Light Bulb"],
-    Sensor: ["Motion Sensor", "Temperature Sensor", "Humidity Sensor"],
-    Security: ["Camera", "Door Lock"],
-    Socket: ["Extension Socket", "Power Socket"],
-    Appliance: ["Fan", "TV", "AC", "Heater", "Oven", "Washer", "Dryer"],
-    Other: ["Door Bell", "TV"],
-  }); // TODO: get categories from backend (get icon from backend too ??)
+import api from "../api/api";
 
-  const [selectedCategory, setSelectedCategory] = useState(
-    "Light" // TODO: only for vertical prototype, change after
-    // Object.keys(categories).length ? Object.keys(categories)[0] : null
-  );
+export default function ChooseDeviceModal({ modalVisible, setModalVisible }) {
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const fetchCategories = async () => {
+    return await api.getCategories();
+  };
+
+  useEffect(() => {
+    fetchCategories().then((categories) => {
+      setCategories(categories);
+      setSelectedCategory(categories.length ? categories[0] : null);
+    });
+  }, []);
 
   return (
     <AddModal
@@ -30,12 +32,12 @@ export default function ChooseDeviceModal({ modalVisible, setModalVisible }) {
         categories && selectedCategory ? (
           <View style={styles.modalContentView}>
             <ChooseDeviceSideBar
-              categories={Object.keys(categories)}
+              categories={categories}
               selectedCategory={selectedCategory}
               setSelectedCategory={setSelectedCategory}
             />
             <ChooseDeviceScrollView
-              deviceTypes={categories[selectedCategory]}
+              deviceTypes={selectedCategory.subcategories}
             />
           </View>
         ) : null

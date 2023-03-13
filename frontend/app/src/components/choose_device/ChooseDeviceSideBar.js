@@ -11,12 +11,12 @@ export default function ChooseDeviceSideBar({
     <View style={styles().modalSideBar}>
       {categories.map((category) => (
         <TouchableOpacity
-          key={category}
-          disabled={category !== "Light"} // TODO: only for vertical prototype, remove when we have more devices
+          key={category.name}
+          disabled={category.name !== "light"} // TODO: only for vertical prototype, remove when we have more devices
           onPress={() => setSelectedCategory(category)}
         >
           <Text style={styles(category === selectedCategory).categoryTitle}>
-            {category}
+            {category.name}
           </Text>
         </TouchableOpacity>
       ))}
@@ -29,6 +29,7 @@ const styles = (isSelected = false) =>
     categoryTitle: {
       fontSize: 17,
       paddingVertical: 7,
+      textTransform: "capitalize",
       color: colors.secondaryText,
       ...(isSelected
         ? {

@@ -36,3 +36,6 @@ class DB(metaclass=DBMeta):
   
   def findAllDevices(self) -> list[dict]:
     return list(self._db['devices'].find({}, {'_id': 0}))
+  
+  def findAllCategories(self) -> list[dict]:
+    return list(self._db['categories'].find({}, {'_id': 0}))

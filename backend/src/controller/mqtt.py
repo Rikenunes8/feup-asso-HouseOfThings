@@ -42,4 +42,4 @@ def publish(client, topic, msg):
 
 def subscribe(client: mqtt_client, topic: str, on_message: callable):
   client.subscribe(topic)
-  client.message_callback_add(topic, on_message) # TODO test this
+  client.message_callback_add(topic, on_message)

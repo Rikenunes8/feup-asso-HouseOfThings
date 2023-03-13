@@ -13,11 +13,32 @@ const getDevices = async () => {
   }
 };
 
+const getCategories = async () => {
+  try {
+    const response = await apiClient.get("/categories");
+    return response.data.categories;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
 const addDevice = async (id) => {
   try {
     const response = await apiClient.post(`/devices/${id}/connect`, {
       group: "light",
     }); // TODO extract hardcoded
+    if (response.data.error) {
+      console.error(response.data.error);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const disconnectDevice = async (id) => {
+  try {
+    const response = await apiClient.post(`/devices/${id}/disconnect`);
     if (response.data.error) {
       console.error(response.data.error);
     }
@@ -41,6 +62,8 @@ const actionDevice = async (id, action) => {
 
 export default {
   getDevices,
+  getCategories,
   addDevice,
+  disconnectDevice,
   actionDevice,
 };

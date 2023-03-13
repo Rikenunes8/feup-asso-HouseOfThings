@@ -1,14 +1,60 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Switch, Image } from "react-native";
-import colors from "../../configs/colors";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Switch,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+
+import DetailsModal from "./DetailsModal";
+import LightDetails from "./device_details/light/LightDetails.js";
+import LightDetailsContextMenu from "./device_details/light/LightDetailsContextMenu";
+
 import api from "../api/api";
+import colors from "../../configs/colors";
 
 export default function DeviceCard({ name, division, enabled }) {
-  const [isEnabled, setIsEnabled] = useState(enabled); //TODO
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState); //TODO
+  // TODO: use react's useContext
+  const [isEnabled, setIsEnabled] = useState(enabled);
+  const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
+  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+
+  onOfHandler = (isEnabled) => {
+    if (isEnabled) {
+      console.log("Turning off device...");
+      api.actionDevice("1", { action: "turnOff" }); // TODO changing the hardcode "1" to the real device id
+    } else {
+      console.log("Turning on device...");
+      api.actionDevice("1", { action: "turnOn" }); // TODO changing the hardcode "1" to the real device id
+    }
+  };
 
   return (
-    <View style={styles.deviceCard}>
+    <TouchableOpacity
+      style={styles.deviceCard}
+      onPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
+    >
+      <DetailsModal
+        title={name}
+        subtitle={division}
+        modalVisible={isDetailsModalVisible}
+        leftIcon="close"
+        rightIcon="ellipsis1"
+        leftIconCallback={() => setIsDetailsModalVisible(false)}
+        rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
+        contextMenu={
+          // TODO: Change this to a dynamic component (depending on device type)
+          <LightDetailsContextMenu
+            isContextMenuVisible={isContextMenuVisible}
+            setIsContextMenuVisible={setIsContextMenuVisible}
+          />
+        }
+        modalContent={<LightDetails on={isEnabled} handler={onOfHandler} />} // TODO: Change this to a dynamic component (depending on device type)
+      />
+
       <Image
         style={styles.deviceIcon}
         source={require("../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
@@ -24,17 +70,11 @@ export default function DeviceCard({ name, division, enabled }) {
         thumbColor={isEnabled ? colors.white : colors.white}
         onValueChange={() => {
           toggleSwitch();
-          if (isEnabled) {
-            console.log("Turning off device...");
-            api.actionDevice("1", { action: "turnOff" }); // TODO changing the hardcode "1" to the real device id
-          } else {
-            console.log("Turning on device...");
-            api.actionDevice("1", { action: "turnOn" }); // TODO changing the hardcode "1" to the real device id
-          }
+          onOfHandler(isEnabled);
         }}
         value={isEnabled}
       />
-    </View>
+    </TouchableOpacity>
   );
 }
 

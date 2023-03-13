@@ -12,16 +12,16 @@ export const DevicesProvider = ({ children }) => {
     setDevices([newDevice, ...devices]);
   };
 
-  const updateDevice = (newUpdateDevice, id) => {
+  const updateDevice = (newUpdateDevice, uid) => {
     setDevices(
       devices.map((device) =>
-        device.id === id ? { ...device, ...newUpdateDevice } : device
+        device.uid === uid ? { ...device, ...newUpdateDevice } : device
       )
     );
   };
 
   const removeDevice = (newRemovedDevice) => {
-    setDevices(devices.filter((device) => device.id !== newRemovedDevice.id));
+    setDevices(devices.filter((device) => device.uid !== newRemovedDevice.uid));
   };
 
   const editDevice = (newEditDevice) => {

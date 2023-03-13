@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,25 +11,27 @@ import {
 import DetailsModal from "./DetailsModal";
 import LightDetails from "./device_details/light/LightDetails.js";
 import LightDetailsContextMenu from "./device_details/light/LightDetailsContextMenu";
+import DevicesContext from "../contexts/DevicesContext";
 
 import api from "../api/api";
 import colors from "../../configs/colors";
 
-export default function DeviceCard({ name, division, enabled }) {
-  // TODO: use react's useContext
-  const [isEnabled, setIsEnabled] = useState(enabled);
+export default function DeviceCard({ device }) {
+  const { updateDevice } = useContext(DevicesContext);
+
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   onOfHandler = (isEnabled) => {
     if (isEnabled) {
       console.log("Turning off device...");
-      api.actionDevice("1", { action: "turnOff" }); // TODO changing the hardcode "1" to the real device id
+      api.actionDevice(device.uid, { action: "turnOff" }); // TODO changing the hardcode "1" to the real device id
     } else {
       console.log("Turning on device...");
-      api.actionDevice("1", { action: "turnOn" }); // TODO changing the hardcode "1" to the real device id
+      api.actionDevice(device.uid, { action: "turnOn" }); // TODO changing the hardcode "1" to the real device id
     }
+
+    updateDevice({ on: !device.on }, device.uid); // TODO: only change if the request was successful
   };
 
   return (
@@ -38,8 +40,8 @@ export default function DeviceCard({ name, division, enabled }) {
       onPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
     >
       <DetailsModal
-        title={name}
-        subtitle={division}
+        title={device.name || "Philips Bulb"}
+        subtitle={device.division || "Living Room"}
         modalVisible={isDetailsModalVisible}
         leftIcon="close"
         rightIcon="ellipsis1"
@@ -52,7 +54,12 @@ export default function DeviceCard({ name, division, enabled }) {
             setIsContextMenuVisible={setIsContextMenuVisible}
           />
         }
-        modalContent={<LightDetails on={isEnabled} handler={onOfHandler} />} // TODO: Change this to a dynamic component (depending on device type)
+        modalContent={
+          <LightDetails
+            on={device.on}
+            handler={/*onOfHandler(device.on)*/ () => {}}
+          />
+        } // TODO: Change this to a dynamic component (depending on device type)
       />
 
       <Image
@@ -61,18 +68,19 @@ export default function DeviceCard({ name, division, enabled }) {
       />
 
       <View style={{ justifyContent: "center" }}>
-        <Text style={styles.deviceName}>{name}</Text>
-        <Text style={styles.divisionText}>{division}</Text>
+        <Text style={styles.deviceName}>{device.name || "Philips Bulb"}</Text>
+        <Text style={styles.divisionText}>
+          {device.division || "Living Room"}
+        </Text>
       </View>
 
       <Switch
         trackColor={{ false: colors.desactive, true: colors.active }}
-        thumbColor={isEnabled ? colors.white : colors.white}
+        thumbColor={device.on ? colors.white : colors.white}
         onValueChange={() => {
-          toggleSwitch();
-          onOfHandler(isEnabled);
+          onOfHandler(device.on);
         }}
-        value={isEnabled}
+        value={device.on}
       />
     </TouchableOpacity>
   );

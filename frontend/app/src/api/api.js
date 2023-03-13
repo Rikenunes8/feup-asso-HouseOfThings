@@ -50,6 +50,7 @@ const disconnectDevice = async (id) => {
   }
 };
 
+// TODO: return a boolean to indicate if the action was successful
 const actionDevice = async (id, action) => {
   try {
     const response = await apiClient.post(`/devices/${id}/action`, {

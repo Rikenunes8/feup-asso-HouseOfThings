@@ -44,14 +44,7 @@ export default function HomeScreen() {
       <View style={styles.body}>
         <Text style={styles.sectionHeader}>Devices</Text>
         {devices.length ? (
-          devices.map((device, key) => (
-            <DeviceCard
-              key={key}
-              name={"Philips Bulb"} // TODO: device.name
-              division={"Family Room"} // TODO: device.division
-              enabled={device.enabled}
-            />
-          ))
+          devices.map((device, key) => <DeviceCard key={key} device={device} />)
         ) : (
           <Text style={styles.sectionMessage}>No devices connected...</Text>
         )}

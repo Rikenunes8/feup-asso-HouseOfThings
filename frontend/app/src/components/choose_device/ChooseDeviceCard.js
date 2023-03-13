@@ -1,20 +1,36 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, TouchableOpacity, Text, Image } from "react-native";
-import colors from "../../../configs/colors";
+import DevicesContext from "../../contexts/DevicesContext";
 
+import colors from "../../../configs/colors";
 import api from "../../api/api";
 
 export default function ChooseDeviceCard({ type }) {
+  const { addDevice } = useContext(DevicesContext);
+
+  // TODO: Change hardecoded and use a different logic for device type
+  addDeviceHandler = () => {
+    if (type === "light bulb") {
+      console.log(`Adding ${type}...`);
+
+      api.addDevice("1").then((success) => {
+        success
+          ? addDevice({
+              uid: "1",
+              name: "Light Bulb",
+              division: "Living Room",
+              enabled: false,
+            })
+          : console.log("Failed to add device");
+      });
+    }
+  };
+
   return (
     <TouchableOpacity
       key={type}
       style={styles.card}
-      onPress={() => {
-        if (type === "light bulb") {
-          console.log(`Adding ${type}...`);
-          api.addDevice("1");
-        }
-      }} // TODO: Change this hardecoded 1 and use a different logic for device type
+      onPress={() => addDeviceHandler(type)}
     >
       <Image
         style={styles.cardImage}

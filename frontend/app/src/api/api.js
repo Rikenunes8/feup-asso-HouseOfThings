@@ -30,9 +30,12 @@ const addDevice = async (id) => {
     }); // TODO extract hardcoded
     if (response.data.error) {
       console.error(response.data.error);
+      return false;
     }
+    return true;
   } catch (error) {
     console.error(error);
+    return false;
   }
 };
 

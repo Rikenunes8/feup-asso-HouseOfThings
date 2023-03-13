@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,15 +8,17 @@ import {
   Platform,
   TouchableOpacity,
 } from "react-native";
-import DeviceCard from "../components/DeviceCard";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
-import colors from "../../configs/colors";
+import DeviceCard from "../components/DeviceCard";
+import DevicesContext from "../contexts/DevicesContext";
 
+import colors from "../../configs/colors";
 import api from "../api/api";
 
 export default function HomeScreen() {
   const [name, setName] = useState("Tiago");
-  const [devices, setDevices] = useState([]);
+
+  const { devices, setDevices } = useContext(DevicesContext);
 
   const fetchDevices = async () => {
     const devs = await api.getDevices();

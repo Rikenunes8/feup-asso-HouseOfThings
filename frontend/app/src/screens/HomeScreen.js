@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
-import colors from "../../configs/colors";
+
 import UsernameContext from "../contexts/UsernameContext";
 import DeviceCard from "../components/DeviceCard";
 import DevicesContext from "../contexts/DevicesContext";

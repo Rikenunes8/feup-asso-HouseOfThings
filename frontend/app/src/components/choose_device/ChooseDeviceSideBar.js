@@ -9,9 +9,9 @@ export default function ChooseDeviceSideBar({
 }) {
   return (
     <View style={styles().modalSideBar}>
-      {categories.map((category) => (
+      {categories.map((category, index) => (
         <TouchableOpacity
-          key={category.name}
+          key={index}
           disabled={category.name !== "light"} // TODO: only for vertical prototype, remove when we have more devices
           onPress={() => setSelectedCategory(category)}
         >

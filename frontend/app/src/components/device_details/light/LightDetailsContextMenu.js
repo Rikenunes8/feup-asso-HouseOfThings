@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import ContextMenu from "../../ContextMenu";
-import colors from "../../../../configs/colors";
+import DevicesContext from "../../../contexts/DevicesContext";
 
+import colors from "../../../../configs/colors";
 import api from "../../../api/api";
+import utils from "../../../utils/utils";
 
 export default function LightDetailsContextMenu({
+  setIsDetailsModalVisible,
   isContextMenuVisible,
   setIsContextMenuVisible,
+  deviceContextMenuUid,
 }) {
+  const { removeDevice } = useContext(DevicesContext);
+
   return (
     <ContextMenu
       isContextMenuVisible={isContextMenuVisible}
@@ -24,8 +30,18 @@ export default function LightDetailsContextMenu({
           icon: "wifi-off",
           color: colors.red,
           callback: () => {
-            console.log("Disconnecting device...");
-            api.disconnectDevice("1"); // TODO: Change this hardecoded 1
+            utils.showConfirmDialog(
+              "Disconnect device", 
+              "Are you sure you want to disconnect this device?" , () => { 
+                console.log("Disconnecting device..."); 
+                api.disconnectDevice(deviceContextMenuUid);
+                setIsDetailsModalVisible(false); 
+                setIsContextMenuVisible(false); 
+                removeDevice(deviceContextMenuUid);
+              }, () => { 
+                console.log("Canceling disconnect..."); 
+              }
+            );
           },
         },
       ]}

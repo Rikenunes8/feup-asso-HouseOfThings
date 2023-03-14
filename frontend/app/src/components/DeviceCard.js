@@ -46,11 +46,16 @@ export default function DeviceCard({ device }) {
         contextMenu={
           // TODO: Change this to a dynamic component (depending on device type)
           <LightDetailsContextMenu
+            setIsDetailsModalVisible={setIsDetailsModalVisible}
             isContextMenuVisible={isContextMenuVisible}
             setIsContextMenuVisible={setIsContextMenuVisible}
+            deviceContextMenuUid={device.uid}
           />
         }
-        modalContent={<LightDetails on={device.on} handler={onOfHandler} />} // TODO: Change this to a dynamic component (depending on device type)
+        modalContent={
+          // TODO: Change this to a dynamic component (depending on device type)
+          <LightDetails on={device.on} handler={onOfHandler} />
+        } 
       />
 
       <Image

@@ -1,0 +1,270 @@
+---
+openapi: 3.0.0
+info:
+  title: House of Things
+  description: The API for the House of Things IOT project
+  version: 1.0.0
+paths:
+  /heartbeat:
+    get:
+      tags:
+      - Health check
+      description: Checks the server connection
+      operationId: heartbeat
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_ok'
+  /devices:
+    get:
+      tags:
+      - Devices
+      description: Returns all the connected devices
+      operationId: getDevices
+      responses:
+        "200":
+          description: All the connected devices
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/devices'
+  /devices/available:
+    get:
+      tags:
+      - Devices
+      operationId: discovery
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/connect_body'
+      responses:
+        "200":
+          description: Succesfully retrieved available devices
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/available'
+  /devices/{uid}/connect:
+    post:
+      tags:
+      - Devices
+      operationId: connect
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/connect_body'
+      responses:
+        "200":
+          description: Successfully connected device
+  /devices/{uid}/disconnect:
+    post:
+      tags:
+      - Devices
+      operationId: disconnect
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successfully disconnected device
+  /devices/{uid}/action:
+    post:
+      tags:
+      - Devices
+      operationId: action
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/action_body'
+            examples:
+              Turn Light On:
+                value:
+                  action: turnOn
+              Turn Light Off:
+                value:
+                  action: turnOff
+      responses:
+        "200":
+          description: Successfully actioned device
+  /devices/{uid}/rename:
+    post:
+      tags:
+      - Devices
+      operationId: rename
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/rename_body'
+      responses:
+        "200":
+          description: Successfully renamed device
+  /categories:
+    get:
+      tags:
+      - Categories
+      description: Returns all the device categories available
+      operationId: getCategories
+      responses:
+        "200":
+          description: All the device categories available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/categories'
+
+components:
+  schemas:
+    status_ok:
+      type: object
+      properties:
+        status:
+          type: string
+      example:
+        status: ok
+    devices:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            type: object
+            properties:
+              uid:
+                type: string
+              group:
+                type: string
+              name:
+                type: string
+              divisions:
+                type: array
+                items:
+                  type: string
+            additionalProperties:
+              type: string
+      example:
+        devices:
+        - uid: "1"
+          group: light
+          name: Bulb
+          divisions: ["Room"]
+          on: true
+        - uid: "2"
+          group: thermostat
+          name: Termo
+          divisions: ["Kitchen"]
+          last_temp: 23
+    categories:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              subcategories:
+                type: array
+                items:
+                  type: string
+      example:
+        categories:
+        - name: "light"
+          subcategories:
+            - light bulb
+        - name: "sensor"
+          subcategories:
+            - montion sensor
+            - temperature sensor
+            - humidity sensor
+        - name: security,
+          subcategories: 
+            - camera
+            - door lock
+        - name: socket,
+          subcategories: 
+            - extension socket
+            - power socket
+        - name: appliance,
+          subcategories: 
+            - fan
+            - tv
+            - ac
+            - heater
+            - oven
+            - washer
+            - dryer
+        - name: other,
+          subcategories: 
+            - door bell
+            - tv
+    available:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            type: string
+      example:
+        devices:
+        - "1"
+        - "2"
+    connect_body:
+      type: object
+      properties:
+        group:
+          type: string
+          enum:
+          - light
+        name: 
+          type: string
+        divisions:
+          type: array
+          items: 
+            type: string
+    action_body:
+      type: object
+      properties:
+        action:
+          type: string
+    rename_body:
+      type: object
+      properties:
+        name:
+          type: string

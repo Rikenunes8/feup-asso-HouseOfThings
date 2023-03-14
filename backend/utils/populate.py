@@ -12,7 +12,7 @@ def main():
   port = os.environ.get('MONGODB_PORT')
   database = os.environ.get('MONGODB_DATABASE')
   mongo_uri = f"mongodb://{user}:{password}@{host}:{port}"
-  if os.environ.get('NOT_CONTAINERIZED') is not None:
+  if not os.environ.get('NOT_CONTAINERIZED'):
       mongo_uri = f"mongodb://localhost:27017"
       database = 'HoT'
   client = pymongo.MongoClient(mongo_uri)

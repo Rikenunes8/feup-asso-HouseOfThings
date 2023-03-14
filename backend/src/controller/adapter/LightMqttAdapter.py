@@ -7,7 +7,7 @@ from src.controller.mqtt import connect_mqtt, disconnect_mqtt, publish, subscrib
 
 class LightMqttAdapter(DeviceAdapter):
 
-  MAX_TIME_TO_CONNECT = 2
+  MAX_TIME_TO_CONNECT = 5
 
   def __init__(self, cid : str, uid : str):
     super().__init__()

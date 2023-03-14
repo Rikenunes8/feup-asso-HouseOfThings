@@ -2,13 +2,23 @@ from dotenv import load_dotenv
 import os
 import pymongo
 
-name = 'HoT'
+categories = 'categories'
 
 def main():
   load_dotenv('.env')
-  mongo_uri = os.environ.get('MONGO_URI') or 'mongodb://localhost:27017/'
+  user = os.environ.get('MONGODB_USERNAME')
+  password = os.environ.get('MONGODB_PASSWORD')
+  host = os.environ.get('MONGODB_HOSTNAME')
+  port = os.environ.get('MONGODB_PORT')
+  database = os.environ.get('MONGODB_DATABASE')
+  mongo_uri = f"mongodb://{user}:{password}@{host}:{port}"
+  if os.environ.get('NOT_CONTAINERIZED') is not None:
+      mongo_uri = f"mongodb://localhost:27017"
+      database = 'HoT'
   client = pymongo.MongoClient(mongo_uri)
-  buildCategories(client[name]['categories'])
+  if categories not in client[database].list_collection_names():
+    buildCategories(client[database][categories])
+    
 
 def buildCategories(db):
   addLights(db)

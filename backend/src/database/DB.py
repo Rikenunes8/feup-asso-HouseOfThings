@@ -19,7 +19,7 @@ class DB(metaclass=DBMeta):
     port = os.environ.get('MONGODB_PORT')
     database = os.environ.get('MONGODB_DATABASE')
     mongo_uri = f"mongodb://{user}:{password}@{host}:{port}"
-    if not os.environ.get('NOT_CONTAINERIZED'):
+    if os.environ.get('NOT_CONTAINERIZED'):
       mongo_uri = f"mongodb://localhost:27017"
       database = 'HoT'
 

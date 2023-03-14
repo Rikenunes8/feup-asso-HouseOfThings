@@ -41,16 +41,21 @@ export default function DeviceCard({ device }) {
         modalVisible={isDetailsModalVisible}
         leftIcon="close"
         rightIcon="ellipsis1"
-        leftIconCallback={() => setIsDetailsModalVisible(false)}
+        leftIconCallback={() => {setIsDetailsModalVisible(false); setIsContextMenuVisible(false)}}
         rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
         contextMenu={
           // TODO: Change this to a dynamic component (depending on device type)
           <LightDetailsContextMenu
+            setIsDetailsModalVisible={setIsDetailsModalVisible}
             isContextMenuVisible={isContextMenuVisible}
             setIsContextMenuVisible={setIsContextMenuVisible}
+            deviceContextMenuUid={device.uid}
           />
         }
-        modalContent={<LightDetails on={device.on} handler={onOfHandler} />} // TODO: Change this to a dynamic component (depending on device type)
+        modalContent={
+          // TODO: Change this to a dynamic component (depending on device type)
+          <LightDetails on={device.on} handler={onOfHandler} />
+        } 
       />
 
       <Image

@@ -44,9 +44,12 @@ const disconnectDevice = async (id) => {
     const response = await apiClient.post(`/devices/${id}/disconnect`);
     if (response.data.error) {
       console.error(response.data.error);
+      return false;
     }
+    return true;
   } catch (error) {
     console.error(error);
+    return false;
   }
 };
 

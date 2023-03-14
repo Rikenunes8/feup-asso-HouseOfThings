@@ -1,7 +1,6 @@
 from src.model.devices.Device import Device
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
 
-# TODO error handling
 class DeviceManager:
   def __init__(self) -> None:
     self._devices = {}
@@ -10,10 +9,11 @@ class DeviceManager:
     self._devices[id] = adapter
 
   def remove(self, id) -> None:
-    del self._devices[id]
+    if self._devices.get(id) != None:
+      del self._devices[id]
 
   def getDevice(self, id) -> DeviceAdapter:
-    return self._devices[id]
+    return self._devices.get(id)
 
   def getDeviceIds(self) -> list:
     return list(self._devices.keys())

@@ -20,8 +20,8 @@ export const DevicesProvider = ({ children }) => {
     );
   };
 
-  const removeDevice = (newRemovedDevice) => {
-    setDevices(devices.filter((device) => device.uid !== newRemovedDevice.uid));
+  const removeDevice = (uid) => {
+    setDevices(devices.filter((device) => device.uid !== uid));
   };
 
   const editDevice = (newEditDevice) => {

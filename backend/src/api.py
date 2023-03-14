@@ -27,8 +27,9 @@ def connect(id):
 
 @api.post("/devices/<id>/disconnect")
 def disconnect(id):
-  HoT().disconnect(id)
-  return jsonify({})
+  error = HoT().disconnect(id)
+  if error: return makeError(error, 404)
+  else: return jsonify({})
 
 @api.post("/devices/<id>/action")
 def action(id):

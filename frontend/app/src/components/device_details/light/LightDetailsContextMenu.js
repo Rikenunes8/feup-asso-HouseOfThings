@@ -18,6 +18,35 @@ export default function LightDetailsContextMenu({
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const disconnectCallback = () => {
+    utils.showConfirmDialog(
+      "Disconnect device", 
+      "Are you sure you want to disconnect this device?", 
+      () => { 
+        console.log("Disconnecting device..."); 
+        setIsLoading(true);
+
+        api.disconnectDevice(deviceContextMenuUid).then((success) => {
+          setIsLoading(false);
+          setIsContextMenuVisible(false); 
+
+          if (success) {
+            console.log("Device disconnected successfully");
+            setIsDetailsModalVisible(false); 
+            removeDevice(deviceContextMenuUid);
+            return;
+          }
+          
+          console.log("Failed to disconnect device");
+          utils.showErrorMessage("Failed to disconnect device");
+        });
+      }, 
+      () => { 
+        console.log("Canceling disconnect..."); 
+      }
+    );
+  };
+
   return (
     <>
       <ContextMenu
@@ -34,34 +63,7 @@ export default function LightDetailsContextMenu({
             name: "Disconnect",
             icon: "wifi-off",
             color: colors.red,
-            callback: () => {
-              utils.showConfirmDialog(
-                "Disconnect device", 
-                "Are you sure you want to disconnect this device?", 
-                () => { 
-                  console.log("Disconnecting device..."); 
-                  setIsLoading(true);
-
-                  api.disconnectDevice(deviceContextMenuUid).then((success) => {
-                    setIsLoading(false);
-                    setIsContextMenuVisible(false); 
-
-                    if (success) {
-                      console.log("Device disconnected successfully");
-                      setIsDetailsModalVisible(false); 
-                      removeDevice(deviceContextMenuUid);
-                      return;
-                    }
-                    
-                    console.log("Failed to disconnect device");
-                    utils.showErrorMessage("Failed to disconnect device");
-                  });
-                }, 
-                () => { 
-                  console.log("Canceling disconnect..."); 
-                }
-              );
-            },
+            callback: disconnectCallback,
           },
         ]}
       />

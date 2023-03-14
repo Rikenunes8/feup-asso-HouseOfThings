@@ -33,3 +33,29 @@ You can conveniently run the backend server by simply running `docker-compose up
 | MQTT_PORT | MQTT broker port | 1883 |
 | MQTT_USERNAME | MQTT broker username | emqx |
 | MQTT_PASSWORD | MQTT broker password. Only use the default for development! | DEFAULT_PASSWORD_DO_NOT_USE |
+
+
+Otherwise, if you are not a docker fan, you can create a .env file in the root, install the dependecies with `pip install -r requirements.txt`, and run `python3 app.py`.
+
+An example of a .env:
+
+```
+# The following variable must to be set with any value in order to run outside docker
+# If so the mongoDB uri will be "http://localhost:27017" and the database will be "HoT"
+# No MONGODB_* vars are needed
+NOT_CONTAINERZED=true 
+
+MONGODB_ROOT_USERNAME=user
+MONGODB_ROOT_PASSWORD=DEFAULT_PASSWORD_DO_NOT_USE
+
+MONGODB_USERNAME=user
+MONGODB_PASSWORD=DEFAULT_PASSWORD_DO_NOT_USE
+MONGODB_HOSTNAME=mongodb
+MONGODB_PORT=27017
+MONGODB_DATABASE=HoT
+
+MQTT_BROKER='broker.emqx.io'
+MQTT_PORT=1883
+MQTT_USERNAME='emqx'
+MQTT_PASSWORD='DEFAULT_PASSWORD_DO_NOT_USE'
+```

@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import ChooseDeviceModal from "../screens/ChooseDeviceModal";
-import AddDeviceFormCard from "./device_form/AddDeviceFormCard";
 import colors from "../../configs/colors";
 
 export default function AddDeviceButton({ children }) {
   const [modalVisible, setModalVisible] = useState(false);
-  // Quando acabar trocar para AddDeviceFormCard->ChooseDeviceModal
+ 
   return (
     <View>
        
-      <AddDeviceFormCard
+      <ChooseDeviceModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />

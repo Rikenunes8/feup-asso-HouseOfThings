@@ -32,13 +32,24 @@ export default function LightDetailsContextMenu({
           callback: () => {
             utils.showConfirmDialog(
               "Disconnect device", 
-              "Are you sure you want to disconnect this device?" , () => { 
+              "Are you sure you want to disconnect this device?", 
+              () => { 
                 console.log("Disconnecting device..."); 
-                api.disconnectDevice(deviceContextMenuUid);
-                setIsDetailsModalVisible(false); 
-                setIsContextMenuVisible(false); 
-                removeDevice(deviceContextMenuUid);
-              }, () => { 
+                api.disconnectDevice(deviceContextMenuUid).then((success) => {
+                  if (success) {
+                    console.log("Device disconnected successfully");
+                    setIsContextMenuVisible(false); 
+                    setIsDetailsModalVisible(false); 
+                    removeDevice(deviceContextMenuUid);
+                    return;
+                  }
+                  
+                  console.log("Failed to disconnect device");
+                  setIsContextMenuVisible(false);
+                  utils.showErrorMessage("Failed to disconnect device");
+                });
+              }, 
+              () => { 
                 console.log("Canceling disconnect..."); 
               }
             );

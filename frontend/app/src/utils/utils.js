@@ -21,6 +21,12 @@ const showConfirmDialog = (title, message, onConfirm, onCancel) => {
   );
 }
 
+const showErrorMessage = (message) => {
+  return Alert.alert(message);
+}
+
+
 export default {
   showConfirmDialog,
+  showErrorMessage,
 };

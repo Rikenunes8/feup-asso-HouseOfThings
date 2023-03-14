@@ -41,7 +41,7 @@ export default function DeviceCard({ device }) {
         modalVisible={isDetailsModalVisible}
         leftIcon="close"
         rightIcon="ellipsis1"
-        leftIconCallback={() => setIsDetailsModalVisible(false)}
+        leftIconCallback={() => {setIsDetailsModalVisible(false); setIsContextMenuVisible(false)}}
         rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
         contextMenu={
           // TODO: Change this to a dynamic component (depending on device type)

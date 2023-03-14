@@ -1,5 +1,6 @@
 import os
 import pymongo
+from dotenv import load_dotenv
 
 class DBMeta(type):
   _instances = {}
@@ -11,12 +12,16 @@ class DBMeta(type):
 
 class DB(metaclass=DBMeta):
   def __init__(self):
+    load_dotenv('.env')
     user = os.environ.get('MONGODB_USERNAME')
     password = os.environ.get('MONGODB_PASSWORD')
     host = os.environ.get('MONGODB_HOSTNAME')
     port = os.environ.get('MONGODB_PORT')
     database = os.environ.get('MONGODB_DATABASE')
     mongo_uri = f"mongodb://{user}:{password}@{host}:{port}"
+    if os.environ.get('NOT_CONTAINERIZED'):
+      mongo_uri = f"mongodb://localhost:27017"
+      database = 'HoT'
 
     self._client = pymongo.MongoClient(mongo_uri)
     self._db = self._client[database]

@@ -1,9 +1,9 @@
-import random
-import time
-
-from paho.mqtt import client as mqtt_client
-from dotenv import load_dotenv
 import os
+import time
+import random
+from dotenv import load_dotenv
+from paho.mqtt import client as mqtt_client
+
 
 load_dotenv('.env')
 

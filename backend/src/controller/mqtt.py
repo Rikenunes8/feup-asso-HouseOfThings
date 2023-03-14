@@ -1,9 +1,10 @@
-import random
-import time
-
-from paho.mqtt import client as mqtt_client
 import os
+import time
+import random
+from dotenv import load_dotenv
+from paho.mqtt import client as mqtt_client
 
+load_dotenv('.env')
 broker = os.environ.get('MQTT_BROKER')
 port = int(os.environ.get('MQTT_PORT'))
 username = os.environ.get('MQTT_USERNAME')

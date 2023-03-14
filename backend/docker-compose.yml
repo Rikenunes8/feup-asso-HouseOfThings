@@ -10,7 +10,7 @@ services:
       APP_ENV: development # TODO later on we can create a .yml file specifically for production
       MONGODB_USERNAME: ${MONGODB_USERNAME:-user} # TODO currently the user is the root. Ideally we should have a separate user for the app
       MONGODB_PASSWORD: ${MONGODB_PASSWORD:-DEFAULT_PASSWORD_DO_NOT_USE}
-      MONGODB_HOSTNAME: mongodb
+      MONGODB_HOSTNAME: ${MONGODB_HOSTNAME:-mongodb}
       MONGODB_PORT: 27017
       MONGODB_DATABASE: ${MONGODB_DATABASE:-HoT}
       MQTT_BROKER: ${MQTT_BROKER:-broker.emqx.io}

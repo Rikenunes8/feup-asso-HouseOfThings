@@ -1,7 +1,7 @@
 import apiClient from "./client";
 
 const getDevices = async () => {
-  try {
+  /*try {
     const response = await apiClient.get("/devices");
     return response.data.devices;
   } catch (error) {
@@ -10,7 +10,11 @@ const getDevices = async () => {
       { name: "Philips Bulb", division: "Family Room", enabled: true },
       { name: "Philips Bulb", division: "Tiago Room", enabled: false },
     ];
-  }
+  }*/
+  return [
+    { name: "Philips Bulb", division: "Family Room", enabled: true },
+    { name: "Philips Bulb", division: "Tiago Room", enabled: false },
+  ];
 };
 
 const getCategories = async () => {

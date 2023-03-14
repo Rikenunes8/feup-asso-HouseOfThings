@@ -13,6 +13,7 @@ import NavBarIcon from "./NavBarIcon";
 import AddDeviceButton from "./AddDeviceButton";
 
 import colors from "../../configs/colors";
+import AddDeviceFormCard from "./device_form/AddDeviceFormCard";
 
 export default function NavBar() {
   const Tab = createBottomTabNavigator();
@@ -45,7 +46,8 @@ export default function NavBar() {
       />
       <Tab.Screen
         name="Add Device"
-        component={ChooseDeviceModal}
+        // TODO: quando acabar mudar para ChooseDeviceModal
+        component={AddDeviceFormCard}
         options={{
           tabBarIcon: () => <Icon name="plus" size={40} color={colors.white} />,
           tabBarButton: (props) => <AddDeviceButton {...props} />,

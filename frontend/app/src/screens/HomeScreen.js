@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
   Text,
@@ -9,6 +10,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
+
+import UsernameContext from "../contexts/UsernameContext";
 import DeviceCard from "../components/DeviceCard";
 import DevicesContext from "../contexts/DevicesContext";
 
@@ -16,9 +19,10 @@ import colors from "../../configs/colors";
 import api from "../api/api";
 
 export default function HomeScreen() {
-  const [name, setName] = useState("Tiago");
-
   const { devices, setDevices } = useContext(DevicesContext);
+  const { username } = useContext(UsernameContext);
+
+  const navigation = useNavigation();
 
   const fetchDevices = async () => {
     const devs = await api.getDevices();
@@ -33,12 +37,13 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity
-          disabled={true} //TODO remove when we have a profile page
+          // on press should open the profile screen
+          onPress={() => navigation.navigate("Profile")}
           style={styles.iconView}
         >
           <Icon name={"user"} size={20} color={colors.primaryText} />
         </TouchableOpacity>
-        <Text style={styles.welcomeMessage}>Hello, {name}!</Text>
+        <Text style={styles.welcomeMessage}>Hello, {username.trim()}!</Text>
       </View>
 
       <View style={styles.body}>

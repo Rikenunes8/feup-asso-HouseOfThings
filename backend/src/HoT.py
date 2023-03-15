@@ -46,7 +46,7 @@ class HoT(metaclass=HoTMeta):
     newDevice = self._createAdapter(uid, config)
     if newDevice == None: return "No device for group: " + config.get("group")
     success = newDevice.connect()
-    if not success: return "Failed to connect to device"
+    if not success: return "Failed to connect to device with uid: " + uid
     name = config.get("name")
     divisions = config.get("divisions")
     if name != None: newDevice.getModel().rename(name)
@@ -54,8 +54,9 @@ class HoT(metaclass=HoTMeta):
     self._devManager.add(uid, newDevice)
 
 
-  def disconnect(self, uid : str):
+  def disconnect(self, uid : str) -> str:
     adapter = self._devManager.getDevice(uid)
+    if adapter == None: return "No device with uid " + uid + " to disconnect"
     adapter.disconnect()
     self._devManager.remove(uid)
 

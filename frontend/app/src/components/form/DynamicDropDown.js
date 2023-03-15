@@ -32,7 +32,7 @@ export default function DynamicDropDown({ label, items, setItems, value, setValu
 const styles = (on = false) =>
   StyleSheet.create({
     container: {
-        margin:20
+        margin:20,
     },
     dropdown: {
         backgroundColor: colors.background

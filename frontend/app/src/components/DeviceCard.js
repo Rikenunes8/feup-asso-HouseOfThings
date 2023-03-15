@@ -15,8 +15,6 @@ import DevicesContext from "../contexts/DevicesContext";
 
 import api from "../api/api";
 import colors from "../../configs/colors";
-import AddDeviceForm from "./device_form/AddDeviceForm";
-
 
 export default function DeviceCard({ device }) {
   const { updateDevice } = useContext(DevicesContext);
@@ -38,31 +36,52 @@ export default function DeviceCard({ device }) {
       onPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
     >
       <DetailsModal
-        title={"Light Bulb"}
+        title={device.name || "Philips Bulb"}
+        subtitle={device.division || "Living Room"}
         modalVisible={isDetailsModalVisible}
         leftIcon="close"
-        rightIcon="check"
-        leftIconCallback={() => setIsDetailsModalVisible(false)}
+        rightIcon="ellipsis1"
+        leftIconCallback={() => {setIsDetailsModalVisible(false); setIsContextMenuVisible(false)}}
         rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
-     
+        contextMenu={
           // TODO: Change this to a dynamic component (depending on device type)
-        
-        //modalContent={<LightDetails on={device.on} handler={onOfHandler} />} // TODO: Change this to a dynamic component (depending on device type)
-        modalContent={<AddDeviceForm on={device.on} handler={onOfHandler} />}
-        // forma
+          <LightDetailsContextMenu
+            setIsDetailsModalVisible={setIsDetailsModalVisible}
+            isContextMenuVisible={isContextMenuVisible}
+            setIsContextMenuVisible={setIsContextMenuVisible}
+            deviceContextMenuUid={device.uid}
+          />
+        }
+        modalContent={
+          // TODO: Change this to a dynamic component (depending on device type)
+          <LightDetails on={device.on} handler={onOfHandler} />
+        } 
       />
 
+      <Image
+        style={styles.deviceIcon}
+        source={require("../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
+      />
 
+      <View style={{ justifyContent: "center" }}>
+        <Text style={styles.deviceName}>{device.name || "Philips Bulb"}</Text>
+        <Text style={styles.divisionText}>
+          {device.division || "Living Room"}
+        </Text>
+      </View>
+
+      <Switch
+        trackColor={{ false: colors.desactive, true: colors.active }}
+        thumbColor={device.on ? colors.white : colors.white}
+        onValueChange={() => {
+          onOfHandler(device.on);
+        }}
+        value={device.on}
+      />
     </TouchableOpacity>
   );
 }
 
-/*<View style={{ justifyContent: "center" }}>
-  <Text style={styles.deviceName}>{device.name || "Philips Bulb"}</Text>
-  <Text style={styles.divisionText}>
-    {device.division || "Living Room"}
-  </Text>
-</View>*/
 
 const styles = StyleSheet.create({
   deviceCard: {
@@ -83,5 +102,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "bold",
     color: colors.primaryText,
+  },
+  divisionText: {
+    color: colors.secondaryText,
   },
 });

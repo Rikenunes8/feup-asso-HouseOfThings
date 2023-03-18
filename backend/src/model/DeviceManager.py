@@ -1,4 +1,3 @@
-from src.model.devices.Device import Device
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
 
 class DeviceManager:

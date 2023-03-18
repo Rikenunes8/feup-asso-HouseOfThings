@@ -2,6 +2,7 @@ import time
 
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
 from src.controller.adapter.LightMqttAdapter import LightMqttAdapter
+from src.controller.adapter.ThermostatPIAdapter import ThermostatPIAdapter
 from src.model.DeviceManager import DeviceManager
 from src.database.DB import DB
 from src.controller.mqtt import connect_mqtt, disconnect_mqtt, publish, subscribe
@@ -33,6 +34,8 @@ class HoT(metaclass=HoTMeta):
     group = config.get("group")
     if group == "light":
       return LightMqttAdapter(self._cid, uid)
+    elif group == "thermostat":
+      return ThermostatPIAdapter(self._cid, uid)
     else:
       print("No device for group: " + group)
     return None

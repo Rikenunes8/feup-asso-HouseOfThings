@@ -31,7 +31,7 @@ def disconnect_mqtt(client: mqtt_client.Client):
   client.disconnect()
 
 
-def publish(client, topic, msg):
+def publish(client : mqtt_client.Client, topic : str, msg : str):
   while True:
     time.sleep(1)
     result = client.publish(topic, msg)
@@ -43,6 +43,6 @@ def publish(client, topic, msg):
     else:
       print(f"Failed to send message to topic {topic}")
 
-def subscribe(client: mqtt_client, topic: str, on_message: callable):
+def subscribe(client: mqtt_client.Client, topic: str, on_message: callable):
   client.subscribe(topic)
   client.message_callback_add(topic, on_message) 

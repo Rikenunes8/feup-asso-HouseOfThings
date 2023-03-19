@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import DetailsModal from "../components/DetailsModal";
 import AddDeviceForm from "../components/device_form/AddDeviceForm";
 import DevicesContext from "../contexts/DevicesContext";
-
+import utils from "../utils/utils";
 import api from "../api/api";
 
 export default function AddDeviceModal({
@@ -16,10 +16,7 @@ export default function AddDeviceModal({
 
   return (
     <DetailsModal
-      title={type
-        .split(" ")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ")} //TODO
+      title={type && utils.capitalize(type)}
       modalVisible={modalVisible}
       leftIcon="close"
       rightIcon="check"
@@ -51,6 +48,10 @@ export default function AddDeviceModal({
           setValue={setValue}
         />
       }
+      onShow={() => {
+        setName("");
+        setValue(null);
+      }}
     />
   );
 }

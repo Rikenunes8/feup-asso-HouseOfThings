@@ -5,12 +5,14 @@ import colors from "../../configs/colors";
 import AddDeviceModal from "../screens/AddDeviceModal";
 
 export default function AddDeviceButton({ children }) {
+  const [type, setType] = useState(null);
   const [isChooseModalVisible, setChooseModalVisible] = useState(false);
   const [isAddModalVisible, setAddModalVisible] = useState(false);
 
   return (
     <View>
       <ChooseDeviceModal
+        setType={setType}
         modalVisible={isChooseModalVisible}
         setModalVisible={setChooseModalVisible}
         setAddModalVisible={setAddModalVisible}
@@ -19,7 +21,7 @@ export default function AddDeviceButton({ children }) {
       <AddDeviceModal
         modalVisible={isAddModalVisible}
         setModalVisible={setAddModalVisible}
-        type={"light bulb"} //TODO
+        type={type} //TODO
       />
 
       <View style={styles.buttonBackgroud}>

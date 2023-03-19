@@ -23,9 +23,15 @@ export default function DetailsModal({
   rightIconCallback,
   contextMenu,
   modalContent,
+  onShow,
 }) {
   return (
-    <Modal animationType="slide" transparent={true} visible={modalVisible}>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      onShow={onShow}
+    >
       {/*TODO: remove the transparent view when we get the bottom page to be darker*/}
       <SafeAreaView
         style={{ flex: 1, backgroundColor: colors.transparentGray }}

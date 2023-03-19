@@ -7,6 +7,7 @@ import ChooseDeviceSideBar from "../components/choose_device/ChooseDeviceSideBar
 import api from "../api/api";
 
 export default function ChooseDeviceModal({
+  setType,
   modalVisible,
   setModalVisible,
   setAddModalVisible,
@@ -41,6 +42,7 @@ export default function ChooseDeviceModal({
               setSelectedCategory={setSelectedCategory}
             />
             <ChooseDeviceScrollView
+              setType={setType}
               deviceTypes={selectedCategory.subcategories}
               setChooseModalVisible={setModalVisible}
               setAddModalVisible={setAddModalVisible}

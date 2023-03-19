@@ -5,12 +5,13 @@ import colors from "../../../configs/colors";
 
 export default function ChooseDeviceCard({
   type,
+  setType,
   setChooseModalVisible,
   setAddModalVisible,
 }) {
-
   // TODO: Change hardecoded and use a different logic for device type
   addDeviceHandler = () => {
+    setType(type);
     setChooseModalVisible(false);
     setAddModalVisible(true);
   };

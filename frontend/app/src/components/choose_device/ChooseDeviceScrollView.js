@@ -3,6 +3,7 @@ import { StyleSheet, View, ScrollView } from "react-native";
 import ChooseDeviceCard from "./ChooseDeviceCard";
 
 export default function ChooseDeviceScrollView({
+  setType,
   deviceTypes,
   setChooseModalVisible,
   setAddModalVisible,
@@ -14,6 +15,7 @@ export default function ChooseDeviceScrollView({
           <ChooseDeviceCard
             key={type}
             type={type}
+            setType={setType}
             setChooseModalVisible={setChooseModalVisible}
             setAddModalVisible={setAddModalVisible}
           />

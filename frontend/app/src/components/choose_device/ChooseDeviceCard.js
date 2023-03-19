@@ -8,24 +8,38 @@ import api from "../../api/api";
 export default function ChooseDeviceCard({ type }) {
   const { addDevice } = useContext(DevicesContext);
 
-  // TODO: Change hardecoded and use a different logic for device type
   addDeviceHandler = () => {
 
-    if (type === "light bulb") {
-      console.log(`Adding ${type}...`);
+    console.log(`Adding ${type}...`);
+    let id = Math.random();
 
-      api.addDevice("1").then((success) => {
+    switch (type) {
+      case "light bulb":
+        api.addDevice(id).then((success) => {
         success
           ? addDevice({
-              uid: "1",
+              uid: id,
               name: "Light Bulb",
-              division: "Living Room",
+              type: "light bulb",
+              division: "Living Room", //TODO: Change this later
               enabled: false,
             })
           : console.log("Failed to add device");
-      });
+        });
+        break;
+      default:
+        break;
     }
-  };
+  }
+
+  function getDeviceImage(type){
+    switch (type) {
+      case "light bulb":
+        return require("../../../../assets/lightbulb.png");
+      default:
+        require("../../../../assets/lightbulb.png");
+    }
+  }
 
   return (
     <TouchableOpacity
@@ -35,7 +49,7 @@ export default function ChooseDeviceCard({ type }) {
     >
       <Image
         style={styles.cardImage}
-        source={require("../../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
+        source={getDeviceImage(type)}
       />
       <Text style={styles.cardText}>{type}</Text>
     </TouchableOpacity>

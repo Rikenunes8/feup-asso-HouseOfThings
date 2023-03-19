@@ -30,6 +30,46 @@ export default function DeviceCard({ device }) {
     updateDevice({ on: !device.on }, device.uid);
   };
 
+  function getDeviceContextMenu(device) {
+    //TODO: list to be expanded
+    switch (device.type) {
+      case 'light bulb':
+        return <LightDetailsContextMenu
+        setIsDetailsModalVisible={setIsDetailsModalVisible}
+        isContextMenuVisible={isContextMenuVisible}
+        setIsContextMenuVisible={setIsContextMenuVisible}
+        deviceContextMenuUid={device.uid}
+        />
+      default:
+        return <LightDetailsContextMenu
+        setIsDetailsModalVisible={setIsDetailsModalVisible}
+        isContextMenuVisible={isContextMenuVisible}
+        setIsContextMenuVisible={setIsContextMenuVisible}
+        deviceContextMenuUid={device.uid}
+        />
+    }
+  }
+  
+  function getDeviceModalContent(device) {
+    //TODO: list to be expanded
+    switch (device.type) {
+      case 'light bulb':
+        return <LightDetails on={device.on} handler={onOfHandler} />
+      default:
+        return <LightDetails on={device.on} handler={onOfHandler} />
+    }
+  }
+
+  function getDeviceIcon(device) {
+    //TODO: list to be expanded
+    switch (device.type) {
+      case 'light bulb':
+        return require("../../../assets/lightbulb.png")
+      default:
+        return require("../../../assets/lightbulb.png")
+    }
+  }
+
   return (
     <TouchableOpacity
       style={styles.deviceCard}
@@ -43,24 +83,13 @@ export default function DeviceCard({ device }) {
         rightIcon="ellipsis1"
         leftIconCallback={() => {setIsDetailsModalVisible(false); setIsContextMenuVisible(false)}}
         rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
-        contextMenu={
-          // TODO: Change this to a dynamic component (depending on device type)
-          <LightDetailsContextMenu
-            setIsDetailsModalVisible={setIsDetailsModalVisible}
-            isContextMenuVisible={isContextMenuVisible}
-            setIsContextMenuVisible={setIsContextMenuVisible}
-            deviceContextMenuUid={device.uid}
-          />
-        }
-        modalContent={
-          // TODO: Change this to a dynamic component (depending on device type)
-          <LightDetails on={device.on} handler={onOfHandler} />
-        } 
+        contextMenu={getDeviceContextMenu(device)}
+        modalContent={getDeviceModalContent(device)} 
       />
 
       <Image
         style={styles.deviceIcon}
-        source={require("../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
+        source={getDeviceIcon(device)}
       />
 
       <View style={{ justifyContent: "center" }}>

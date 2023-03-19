@@ -10,6 +10,7 @@ export default function ChooseDeviceCard({ type }) {
 
   // TODO: Change hardecoded and use a different logic for device type
   addDeviceHandler = () => {
+
     if (type === "light bulb") {
       console.log(`Adding ${type}...`);
 

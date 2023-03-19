@@ -7,8 +7,8 @@ const getDevices = async () => {
   } catch (error) {
     console.error(error);
     return [
-      { name: "Philips Bulb", type: "light", division: "Family Room", enabled: true },
-      { name: "Philips Bulb", type: "light", division: "Tiago Room", enabled: false },
+      { name: "Philips Bulb", type: "light bulb", division: "Family Room", enabled: true },
+      { name: "Philips Bulb", type: "light bulb", division: "Tiago Room", enabled: false },
     ];
   }
 };
@@ -23,11 +23,11 @@ const getCategories = async () => {
   }
 };
 
-const addDevice = async (id) => {
+const addDevice = async (id, type) => {
   try {
     const response = await apiClient.post(`/devices/${id}/connect`, {
-      group: "light",
-    }); // TODO extract hardcoded
+      group: type,
+    });
     if (response.data.error) {
       console.error(response.data.error);
       return false;

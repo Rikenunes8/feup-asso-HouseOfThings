@@ -15,7 +15,7 @@ export default function ChooseDeviceCard({ type }) {
 
     switch (type) {
       case "light bulb":
-        api.addDevice(id).then((success) => {
+        api.addDevice(id, type).then((success) => {
         success
           ? addDevice({
               uid: id,

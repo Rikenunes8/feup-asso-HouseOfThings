@@ -41,4 +41,3 @@ class Device(ABC):
   @abstractmethod
   def toJson(self) -> dict:
     pass
-  

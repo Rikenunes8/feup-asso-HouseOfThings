@@ -188,7 +188,7 @@ components:
           group: thermostat
           name: Termo
           divisions: ["Kitchen"]
-          last_temp: 23
+          temperature: 23
     categories:
       type: object
       properties:
@@ -252,6 +252,7 @@ components:
           type: string
           enum:
           - light
+          - thermostat
         name: 
           type: string
         divisions:

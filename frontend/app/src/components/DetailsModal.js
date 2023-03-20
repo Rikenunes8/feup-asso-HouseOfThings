@@ -7,6 +7,9 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
+  KeyboardAvoidingView, 
+  TouchableWithoutFeedback, 
+  Keyboard
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../../configs/colors";
@@ -24,6 +27,7 @@ export default function DetailsModal({
   contextMenu,
   modalContent,
   onShow,
+  inputOnFocus
 }) {
   return (
     <Modal
@@ -33,56 +37,65 @@ export default function DetailsModal({
       onShow={onShow}
     >
       {/*TODO: remove the transparent view when we get the bottom page to be darker*/}
-      <SafeAreaView
-        style={{ flex: 1, backgroundColor: colors.transparentGray }}
-      >
-        <View style={styles.modalView}>
-          <View style={styles.modalHeader}>
-            <View style={styles.iconsView}>
-              {leftIcon ? (
-                <TouchableOpacity onPress={leftIconCallback}>
-                  <Icon
-                    name={leftIcon}
-                    size={30}
-                    color={colors.white}
-                    style={styles.leftIcon}
-                  />
-                </TouchableOpacity>
-              ) : null}
-              {rightIcon ? (
-                <TouchableOpacity onPress={rightIconCallback}>
-                  <Icon
-                    name={rightIcon}
-                    size={30}
-                    color={colors.white}
-                    style={styles.rightIcon}
-                  />
-                </TouchableOpacity>
-              ) : null}
-            </View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <SafeAreaView
+          style={{ flex: 1, backgroundColor: colors.transparentGray }}
+          >
+            <View style={styles.modalView}>
+            
+              <View style={styles.modalHeader}>
+              
+                <View style={styles.iconsView}>
+                  {leftIcon ? (
+                    <TouchableOpacity onPress={leftIconCallback}>
+                      <Icon
+                        name={leftIcon}
+                        size={30}
+                        color={colors.white}
+                        style={styles.leftIcon}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+                  {rightIcon ? (
+                    <TouchableOpacity onPress={rightIconCallback}>
+                      <Icon
+                        name={rightIcon}
+                        size={30}
+                        color={colors.white}
+                        style={styles.rightIcon}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
 
-            <View style={styles.detailsView}>
-              <View style={styles.detailsInfo}>
-                <Text style={styles.detailsTitle}>{title}</Text>
-                <Text style={styles.detailsSubtitle}>{subtitle}</Text>
+                <View style={styles.detailsView}>
+                  <View style={styles.detailsInfo}>
+                    <Text style={styles.detailsTitle}>{title}</Text>
+                    <Text style={styles.detailsSubtitle}>{subtitle}</Text>
+                  </View>
+                  {inputOnFocus ? null :<Image
+                    style={styles.detailsIcon}
+                    source={require("../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
+                  />}
+                </View>
+                {contextMenu}
               </View>
-              <Image
-                style={styles.detailsIcon}
-                source={require("../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
-              />
+              <View style={styles.modalBody}>{modalContent}</View>
             </View>
-
-            {contextMenu}
-          </View>
-
-          <View style={styles.modalBody}>{modalContent}</View>
-        </View>
-      </SafeAreaView>
+          </SafeAreaView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex:1
+  },
   iconsView: {
     flexDirection: "row",
     justifyContent: "space-between",

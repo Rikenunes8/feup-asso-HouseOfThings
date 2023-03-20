@@ -1,10 +1,10 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import {StyleSheet, View} from "react-native";
 
 import DynamicTextInput from "../form/DynamicTextInput";
 import DynamicDropDown from "../form/DynamicDropDown";
 
-export default function AddDeviceForm({ name, value, setName, setValue }) {
+export default function AddDeviceForm({ name, value, setName, setValue, inputOnFocus, setInputOnFocus }) {
   const [items, setItems] = React.useState([
     { label: "Living Room", value: "living" },
     { label: "Kitchen", value: "kitchen" },
@@ -16,6 +16,8 @@ export default function AddDeviceForm({ name, value, setName, setValue }) {
         label={"NAME*"}
         name={name}
         setName={setName}
+        inputOnFocus={inputOnFocus}
+        setInputOnFocus={setInputOnFocus}
       ></DynamicTextInput>
       <DynamicDropDown
         label={"DIVISION"}

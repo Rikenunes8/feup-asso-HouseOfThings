@@ -13,6 +13,7 @@ export default function AddDeviceModal({
   const { addDevice } = useContext(DevicesContext);
   const [name, setName] = React.useState("");
   const [value, setValue] = React.useState(null);
+  const [inputOnFocus, setInputOnFocus] = React.useState(false);
 
   return (
     <DetailsModal
@@ -46,12 +47,15 @@ export default function AddDeviceModal({
           value={value}
           setName={setName}
           setValue={setValue}
+          inputOnFocus={inputOnFocus}
+          setInputOnFocus={setInputOnFocus}
         />
       }
       onShow={() => {
         setName("");
         setValue(null);
       }}
+      inputOnFocus = {inputOnFocus}
     />
   );
 }

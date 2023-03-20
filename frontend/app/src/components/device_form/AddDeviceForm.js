@@ -1,12 +1,16 @@
-import React from "react";
-import {StyleSheet, View} from "react-native";
+import React, { useContext } from "react";
+import { StyleSheet, View } from "react-native";
 
 import DynamicTextInput from "../form/DynamicTextInput";
 import DynamicDropDown from "../form/DynamicDropDown";
+import AddDeviceContext from "../../contexts/AddDeviceContext";
 
-export default function AddDeviceForm({ name, value, setName, setValue, inputOnFocus, setInputOnFocus }) {
+export default function AddDeviceForm({inputOnFocus, setInputOnFocus}) {
+  const { deviceName, deviceDivision, setDeviceName, setDeviceDivision } =
+    useContext(AddDeviceContext);
+
   const [items, setItems] = React.useState([
-    { label: "Living Room", value: "living" },
+    { label: "Living Room", value: "living room" },
     { label: "Kitchen", value: "kitchen" },
   ]);
 
@@ -14,18 +18,18 @@ export default function AddDeviceForm({ name, value, setName, setValue, inputOnF
     <View style={styles.container}>
       <DynamicTextInput
         label={"NAME*"}
-        name={name}
-        setName={setName}
+        name={deviceName}
+        setName={setDeviceName}
         inputOnFocus={inputOnFocus}
         setInputOnFocus={setInputOnFocus}
-      ></DynamicTextInput>
+      />
       <DynamicDropDown
         label={"DIVISION"}
         items={items}
         setItems={setItems}
-        value={value}
-        setValue={setValue}
-      ></DynamicDropDown>
+        value={deviceDivision}
+        setValue={setDeviceDivision}
+      />
     </View>
   );
 }

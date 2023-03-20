@@ -22,7 +22,7 @@ export default function AddDeviceModal({ modalVisible, setModalVisible }) {
 
   return (
     <DetailsModal
-      title={deviceType && utils.capitalize(deviceType) || "Title"}
+      title={(deviceType && utils.capitalize(deviceType)) || "Title"}
       modalVisible={modalVisible}
       leftIcon="close"
       rightIcon="check"
@@ -52,12 +52,17 @@ export default function AddDeviceModal({ modalVisible, setModalVisible }) {
             : console.log("Failed to add device");
         });
       }}
-      modalContent={<AddDeviceForm inputOnFocus={inputOnFocus} setInputOnFocus={setInputOnFocus}/>}
-      onShow={() => {
+      modalContent={
+        <AddDeviceForm
+          inputOnFocus={inputOnFocus}
+          setInputOnFocus={setInputOnFocus}
+        />
+      }
+      onDismiss={() => {
         setDeviceName("");
         setDeviceDivision(null);
       }}
-      inputOnFocus = {inputOnFocus}
+      inputOnFocus={inputOnFocus}
     />
   );
 }

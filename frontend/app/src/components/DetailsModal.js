@@ -26,7 +26,7 @@ export default function DetailsModal({
   rightIconCallback,
   contextMenu,
   modalContent,
-  onShow,
+  onDismiss,
   inputOnFocus
 }) {
   return (
@@ -34,7 +34,7 @@ export default function DetailsModal({
       animationType="slide"
       transparent={true}
       visible={modalVisible}
-      onShow={onShow}
+      onDismiss={onDismiss}
     >
       {/*TODO: remove the transparent view when we get the bottom page to be darker*/}
       <KeyboardAvoidingView

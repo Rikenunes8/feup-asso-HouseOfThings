@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { StyleSheet, TouchableOpacity, Text, Image } from "react-native";
 
-import DeviceTypeContext from "../../contexts/DeviceTypeContext";
+import AddDeviceContext from "../../contexts/AddDeviceContext";
 import colors from "../../../configs/colors";
 
 export default function ChooseDeviceCard({
@@ -9,7 +9,7 @@ export default function ChooseDeviceCard({
   setChooseModalVisible,
   setAddModalVisible,
 }) {
-  const { setDeviceType } = useContext(DeviceTypeContext);
+  const { setDeviceType } = useContext(AddDeviceContext);
 
   chooseDeviceTypeHandler = () => {
     setDeviceType(type);

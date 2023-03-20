@@ -3,10 +3,10 @@ import { StyleSheet, View, TouchableOpacity } from "react-native";
 import ChooseDeviceModal from "../screens/modals/ChooseDeviceModal";
 import colors from "../../configs/colors";
 import AddDeviceModal from "../screens/modals/AddDeviceModal";
-import DeviceTypeContext from "../contexts/DeviceTypeContext";
+import AddDeviceContext from "../contexts/AddDeviceContext";
 
 export default function AddDeviceButton({ children }) {
-  const { deviceType } = useContext(DeviceTypeContext);
+  const { deviceType } = useContext(AddDeviceContext);
   const [isChooseModalVisible, setChooseModalVisible] = useState(false);
   const [isAddModalVisible, setAddModalVisible] = useState(false);
 

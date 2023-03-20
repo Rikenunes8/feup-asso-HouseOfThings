@@ -12,7 +12,7 @@ import HistoryScreen from "../screens/HistoryScreen";
 import NavBarIcon from "./NavBarIcon";
 import AddDeviceButton from "./AddDeviceButton";
 
-import { DeviceTypeProvider } from "../contexts/DeviceTypeContext";
+import { AddDeviceProvider } from "../contexts/AddDeviceContext";
 import colors from "../../configs/colors";
 
 export default function NavBar() {
@@ -50,9 +50,9 @@ export default function NavBar() {
         options={{
           tabBarIcon: () => <Icon name="plus" size={40} color={colors.white} />,
           tabBarButton: (props) => (
-            <DeviceTypeProvider>
+            <AddDeviceProvider>
               <AddDeviceButton {...props} />
-            </DeviceTypeProvider>
+            </AddDeviceProvider>
           ),
         }}
       />

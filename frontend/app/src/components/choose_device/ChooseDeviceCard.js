@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, TouchableOpacity, Text, Image } from "react-native";
 
+import DeviceTypeContext from "../../contexts/DeviceTypeContext";
 import colors from "../../../configs/colors";
 
 export default function ChooseDeviceCard({
   type,
-  setType,
   setChooseModalVisible,
   setAddModalVisible,
 }) {
-  // TODO: Change hardecoded and use a different logic for device type
-  addDeviceHandler = () => {
-    setType(type);
+  const { setDeviceType } = useContext(DeviceTypeContext);
+
+  chooseDeviceTypeHandler = () => {
+    setDeviceType(type);
     setChooseModalVisible(false);
     setAddModalVisible(true);
   };
@@ -20,7 +21,7 @@ export default function ChooseDeviceCard({
     <TouchableOpacity
       key={type}
       style={styles.card}
-      onPress={() => addDeviceHandler(type)}
+      onPress={() => chooseDeviceTypeHandler(type)}
     >
       <Image
         style={styles.cardImage}

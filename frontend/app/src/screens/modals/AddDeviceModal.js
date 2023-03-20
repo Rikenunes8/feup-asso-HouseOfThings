@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import DetailsModal from "../components/DetailsModal";
-import AddDeviceForm from "../components/device_form/AddDeviceForm";
-import DevicesContext from "../contexts/DevicesContext";
-import utils from "../utils/utils";
-import api from "../api/api";
+import DetailsModal from "../../components/DetailsModal";
+import AddDeviceForm from "../../components/device_form/AddDeviceForm";
+import DevicesContext from "../../contexts/DevicesContext";
+import utils from "../../utils/utils";
+import api from "../../api/api";
 
 export default function AddDeviceModal({
   modalVisible,

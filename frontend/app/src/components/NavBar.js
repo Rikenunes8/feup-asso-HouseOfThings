@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/AntDesign";
 
 import HomeScreen from "../screens/HomeScreen";
-import ChooseDeviceModal from "../screens/ChooseDeviceModal";
+import ChooseDeviceModal from "../screens/modals/ChooseDeviceModal";
 import SettingsScreen from "../screens/SettingsScreen";
 import RulesScreen from "../screens/RulesScreen";
 import HistoryScreen from "../screens/HistoryScreen";
@@ -12,6 +12,7 @@ import HistoryScreen from "../screens/HistoryScreen";
 import NavBarIcon from "./NavBarIcon";
 import AddDeviceButton from "./AddDeviceButton";
 
+import { DeviceTypeProvider } from "../contexts/DeviceTypeContext";
 import colors from "../../configs/colors";
 
 export default function NavBar() {
@@ -48,7 +49,11 @@ export default function NavBar() {
         component={ChooseDeviceModal}
         options={{
           tabBarIcon: () => <Icon name="plus" size={40} color={colors.white} />,
-          tabBarButton: (props) => <AddDeviceButton {...props} />,
+          tabBarButton: (props) => (
+            <DeviceTypeProvider>
+              <AddDeviceButton {...props} />
+            </DeviceTypeProvider>
+          ),
         }}
       />
       <Tab.Screen

@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-import ChooseDeviceModal from "../screens/ChooseDeviceModal";
+import ChooseDeviceModal from "../screens/modals/ChooseDeviceModal";
 import colors from "../../configs/colors";
-import AddDeviceModal from "../screens/AddDeviceModal";
+import AddDeviceModal from "../screens/modals/AddDeviceModal";
+import AddDeviceContext from "../contexts/AddDeviceContext";
 
 export default function AddDeviceButton({ children }) {
-  const [type, setType] = useState(null);
+  const { deviceType } = useContext(AddDeviceContext);
   const [isChooseModalVisible, setChooseModalVisible] = useState(false);
   const [isAddModalVisible, setAddModalVisible] = useState(false);
 
   return (
     <View>
       <ChooseDeviceModal
-        setType={setType}
         modalVisible={isChooseModalVisible}
         setModalVisible={setChooseModalVisible}
         setAddModalVisible={setAddModalVisible}
@@ -21,7 +21,7 @@ export default function AddDeviceButton({ children }) {
       <AddDeviceModal
         modalVisible={isAddModalVisible}
         setModalVisible={setAddModalVisible}
-        type={type} //TODO
+        type={deviceType}
       />
 
       <View style={styles.buttonBackgroud}>

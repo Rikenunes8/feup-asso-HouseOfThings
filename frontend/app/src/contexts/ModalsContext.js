@@ -11,6 +11,9 @@ export const ModalsProvider = ({ children }) => {
   const [addDeviceFormModalVisible, changeAddDeviceFormModalVisibility] = useState(false);    
   const setAddDeviceFormModalVisible = (visible) => changeAddDeviceFormModalVisibility(visible);
 
+  const [availableDevicesMenuVisible, changeAvailableDevicesMenuVisibility] = useState(false);
+  const setAvailableDevicesMenuVisible = (visible) => changeAvailableDevicesMenuVisibility(visible);
+
   return (
     <ModalsContext.Provider
       value={{
@@ -20,6 +23,8 @@ export const ModalsProvider = ({ children }) => {
         setDeviceDetailsModalVisible,
         addDeviceFormModalVisible,
         setAddDeviceFormModalVisible,
+        availableDevicesMenuVisible,
+        setAvailableDevicesMenuVisible,
       }}
     >
       {children}

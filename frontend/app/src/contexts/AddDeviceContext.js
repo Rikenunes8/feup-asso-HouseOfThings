@@ -2,6 +2,7 @@ import { createContext, useState } from "react";
 const AddDeviceContext = createContext({});
 
 export const AddDeviceProvider = ({ children }) => {
+  const [deviceUUID, setDeviceUUID] = useState("");
   const [deviceName, setDeviceName] = useState("");
   const [deviceDivision, setDeviceDivision] = useState(null);
   const [deviceGroup, setDeviceGroup] = useState("");
@@ -9,6 +10,7 @@ export const AddDeviceProvider = ({ children }) => {
   const [availableDevices, setAvailableDevices] = useState([]);
 
   const resetAddDeviceContext = () => {
+    setDeviceUUID("");
     setDeviceName("");
     setDeviceDivision(null);
     setDeviceGroup("");
@@ -19,6 +21,8 @@ export const AddDeviceProvider = ({ children }) => {
   return (
     <AddDeviceContext.Provider
       value={{
+        deviceUUID,
+        setDeviceUUID,
         deviceName,
         setDeviceName,
         deviceDivision,

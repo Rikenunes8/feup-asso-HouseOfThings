@@ -8,16 +8,15 @@ import colors from "../../../configs/colors";
 import api from "../../api/api";
 
 export default function ChooseDeviceCard({ type }) {
-  const { setDeviceType, setAvailableDevices } = useContext(AddDeviceContext);
-  const { setChooseDeviceModalVisible, setAddDeviceFormModalVisible } =
-    useContext(ModalsContext);
+  const { setDeviceType, setAvailableDevices, deviceGroup } = useContext(AddDeviceContext);
+  const { setAvailableDevicesMenuVisible } = useContext(ModalsContext);
 
   chooseDeviceTypeHandler = () => {
-    api.availableDevices({ group: "light" }).then((devices) => {
+    api.availableDevices({ group: deviceGroup }).then((devices) => {
       setDeviceType(type);
+      console.log(devices)
       setAvailableDevices(devices);
-      setChooseDeviceModalVisible(false);
-      setAddDeviceFormModalVisible(true);
+      setAvailableDevicesMenuVisible(true);
     });
   };
 

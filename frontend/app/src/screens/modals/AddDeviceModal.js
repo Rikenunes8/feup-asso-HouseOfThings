@@ -12,6 +12,7 @@ export default function AddDeviceModal() {
   const { addDevice } = useContext(DevicesContext);
   const { addDeviceFormModalVisible, setAddDeviceFormModalVisible} = useContext(ModalsContext);
   const {
+    deviceUUID,
     deviceType,
     deviceGroup,
     deviceName,
@@ -43,11 +44,10 @@ export default function AddDeviceModal() {
           group: deviceGroup,
         };
 
-        // TODO: remove hardcoded
-        api.addDevice("1", device).then((success) => {
+        api.addDevice(deviceUUID, device).then((success) => {
           success
             ? addDevice({
-                uid: "1",
+                uid: deviceUUID,
                 ...device,
                 enabled: false,
               })

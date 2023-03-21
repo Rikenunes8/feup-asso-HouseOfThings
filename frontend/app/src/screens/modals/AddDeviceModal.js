@@ -28,10 +28,12 @@ export default function AddDeviceModal({ modalVisible, setModalVisible }) {
       leftIconCallback={() => {
         setModalVisible(false);
         resetAddDeviceContext();
+        setInputOnFocus(false);
       }}
       rightIconCallback={() => {
         if (deviceName === "") {
           utils.showErrorMessage("Device name is required.");
+          setInputOnFocus(false);
           return;
         }
         console.log(`Adding ${deviceType}...`);

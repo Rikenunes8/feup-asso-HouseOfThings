@@ -14,8 +14,7 @@ export default function AddDeviceModal({ modalVisible, setModalVisible }) {
     deviceGroup,
     deviceName,
     deviceDivision,
-    setDeviceName,
-    setDeviceDivision,
+    resetAddDeviceContext,
   } = useContext(AddDeviceContext);
 
   const [inputOnFocus, setInputOnFocus] = React.useState(false);
@@ -28,6 +27,7 @@ export default function AddDeviceModal({ modalVisible, setModalVisible }) {
       rightIcon="check"
       leftIconCallback={() => {
         setModalVisible(false);
+        resetAddDeviceContext();
       }}
       rightIconCallback={() => {
         if (deviceName === "") {
@@ -50,6 +50,8 @@ export default function AddDeviceModal({ modalVisible, setModalVisible }) {
                 enabled: false,
               })
             : console.log("Failed to add device");
+          setModalVisible(false);
+          resetAddDeviceContext();
         });
       }}
       modalContent={
@@ -58,10 +60,6 @@ export default function AddDeviceModal({ modalVisible, setModalVisible }) {
           setInputOnFocus={setInputOnFocus}
         />
       }
-      onDismiss={() => {
-        setDeviceName("");
-        setDeviceDivision(null);
-      }}
       inputOnFocus={inputOnFocus}
     />
   );

@@ -7,6 +7,13 @@ export const AddDeviceProvider = ({ children }) => {
   const [deviceGroup, setDeviceGroup] = useState("");
   const [deviceType, setDeviceType] = useState(null);
 
+  const resetAddDeviceContext = () => {
+    setDeviceName("");
+    setDeviceDivision(null);
+    setDeviceGroup("");
+    setDeviceType(null);
+  };
+
   return (
     <AddDeviceContext.Provider
       value={{
@@ -18,6 +25,7 @@ export const AddDeviceProvider = ({ children }) => {
         setDeviceGroup,
         deviceType,
         setDeviceType,
+        resetAddDeviceContext,
       }}
     >
       {children}

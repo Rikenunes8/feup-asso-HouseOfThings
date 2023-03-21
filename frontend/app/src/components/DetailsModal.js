@@ -26,16 +26,10 @@ export default function DetailsModal({
   rightIconCallback,
   contextMenu,
   modalContent,
-  onDismiss,
   inputOnFocus,
 }) {
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={modalVisible}
-      onDismiss={onDismiss}
-    >
+    <Modal animationType="slide" transparent={true} visible={modalVisible}>
       {/*TODO: remove the transparent view when we get the bottom page to be darker*/}
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}

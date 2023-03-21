@@ -11,16 +11,17 @@ export default function ChooseDeviceCard({ type }) {
   addDeviceHandler = () => {
 
     console.log(`Adding ${type}...`);
-    let id = Math.random();
+    //let id = Math.random();
+    let id = 1;
 
     switch (type) {
-      case "light bulb":
+      case "light":
         api.addDevice(id, type).then((success) => {
         success
           ? addDevice({
               uid: id,
               name: "Light Bulb",
-              type: "light bulb",
+              type: "light",
               division: "Living Room", //TODO: Change this later
               enabled: false,
             })
@@ -34,10 +35,10 @@ export default function ChooseDeviceCard({ type }) {
 
   function getDeviceImage(type){
     switch (type) {
-      case "light bulb":
+      case "light":
         return require("../../../../assets/lightbulb.png");
       default:
-        require("../../../../assets/lightbulb.png");
+        return require("../../../../assets/lightbulb.png");
     }
   }
 

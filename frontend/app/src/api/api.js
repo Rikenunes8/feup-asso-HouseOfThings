@@ -7,8 +7,8 @@ const getDevices = async () => {
   } catch (error) {
     console.error(error);
     return [
-      { name: "Philips Bulb", type: "light bulb", division: "Family Room", enabled: true },
-      { name: "Philips Bulb", type: "light bulb", division: "Tiago Room", enabled: false },
+      { name: "Philips Bulb", type: "light", division: "Family Room", enabled: true },
+      { name: "Philips Bulb", type: "light", division: "Tiago Room", enabled: false },
     ];
   }
 };

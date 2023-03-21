@@ -11,6 +11,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import LoadingSpinner from "../../components/LoadingSpinner";
 import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../../../configs/colors";
 
@@ -28,6 +29,7 @@ export default function IconModal({
   contextMenu,
   modalContent,
   inputOnFocus,
+  isLoading = false,
 }) {
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
@@ -36,6 +38,7 @@ export default function IconModal({
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
       >
+        <LoadingSpinner isLoading={isLoading} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <SafeAreaView
             style={{ flex: 1, backgroundColor: colors.transparentGray }}

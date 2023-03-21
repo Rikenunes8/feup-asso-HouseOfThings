@@ -9,6 +9,13 @@ export const ModalsProvider = ({ children }) => {
   const [addDeviceFormModalVisible, setAddDeviceFormModalVisible] =
     useState(false);
 
+  const [isChooseDeviceModalLoading, setIsChooseDeviceModalLoading] =
+    useState(false);
+  const [isDeviceDetailsModalLoading, setIsDeviceDetailsModalLoading] =
+    useState(false);
+  const [isDeviceFormModalLoading, setIsDeviceFormModalLoading] =
+    useState(false);
+
   return (
     <ModalsContext.Provider
       value={{
@@ -18,6 +25,12 @@ export const ModalsProvider = ({ children }) => {
         setDeviceDetailsModalVisible,
         addDeviceFormModalVisible,
         setAddDeviceFormModalVisible,
+        isChooseDeviceModalLoading,
+        setIsChooseDeviceModalLoading,
+        isDeviceDetailsModalLoading,
+        setIsDeviceDetailsModalLoading,
+        isDeviceFormModalLoading,
+        setIsDeviceFormModalLoading,
       }}
     >
       {children}

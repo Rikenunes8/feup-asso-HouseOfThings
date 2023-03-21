@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import NavBar from "./app/src/components/NavBar";
+import NavBar from "./app/src/components/navbar/NavBar";
 import { UsernameProvider } from "./app/src/contexts/UsernameContext";
 import { DevicesProvider } from "./app/src/contexts/DevicesContext";
 import { ModalsProvider } from "./app/src/contexts/ModalsContext";

@@ -10,7 +10,7 @@ import {
 
 import DevicesContext from "../contexts/DevicesContext";
 import ModalsContext from "../contexts/ModalsContext";
-import DetailsDeviceModal from "../screens/modals/DetailsDeviceModal";
+import DeviceDetailsModal from "../screens/modals/DeviceDetailsModal";
 
 import api from "../api/api";
 import colors from "../../configs/colors";
@@ -33,7 +33,7 @@ export default function DeviceCard({ device }) {
       style={styles.deviceCard}
       onPress={() => setDeviceDetailsModalVisible(!deviceDetailsModalVisible)}
     >
-      <DetailsDeviceModal device={device} />
+      <DeviceDetailsModal device={device} />
 
       <Image
         style={styles.deviceIcon}

@@ -6,12 +6,14 @@ export const AddDeviceProvider = ({ children }) => {
   const [deviceDivision, setDeviceDivision] = useState(null);
   const [deviceGroup, setDeviceGroup] = useState("");
   const [deviceType, setDeviceType] = useState(null);
+  const [availableDevices, setAvailableDevices] = useState([]);
 
   const resetAddDeviceContext = () => {
     setDeviceName("");
     setDeviceDivision(null);
     setDeviceGroup("");
     setDeviceType(null);
+    setAvailableDevices([]);
   };
 
   return (
@@ -25,6 +27,8 @@ export const AddDeviceProvider = ({ children }) => {
         setDeviceGroup,
         deviceType,
         setDeviceType,
+        availableDevices,
+        setAvailableDevices,
         resetAddDeviceContext,
       }}
     >

@@ -5,16 +5,20 @@ import AddDeviceContext from "../../contexts/AddDeviceContext";
 import ModalsContext from "../../contexts/ModalsContext";
 
 import colors from "../../../configs/colors";
+import api from "../../api/api";
 
 export default function ChooseDeviceCard({ type }) {
-  const { setDeviceType } = useContext(AddDeviceContext);
+  const { setDeviceType, setAvailableDevices } = useContext(AddDeviceContext);
   const { setChooseDeviceModalVisible, setAddDeviceFormModalVisible } =
     useContext(ModalsContext);
 
   chooseDeviceTypeHandler = () => {
-    setDeviceType(type);
-    setChooseDeviceModalVisible(false);
-    setAddDeviceFormModalVisible(true);
+    api.availableDevices({ group: "light" }).then((devices) => {
+      setDeviceType(type);
+      setAvailableDevices(devices);
+      setChooseDeviceModalVisible(false);
+      setAddDeviceFormModalVisible(true);
+    });
   };
 
   return (

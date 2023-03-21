@@ -5,7 +5,7 @@ import DynamicTextInput from "../form/DynamicTextInput";
 import DynamicDropDown from "../form/DynamicDropDown";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 
-export default function AddDeviceForm({inputOnFocus, setInputOnFocus}) {
+export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
   const { deviceName, deviceDivision, setDeviceName, setDeviceDivision } =
     useContext(AddDeviceContext);
 

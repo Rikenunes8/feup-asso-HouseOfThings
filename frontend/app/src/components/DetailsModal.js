@@ -7,9 +7,9 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
-  KeyboardAvoidingView, 
-  TouchableWithoutFeedback, 
-  Keyboard
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../../configs/colors";
@@ -27,7 +27,7 @@ export default function DetailsModal({
   contextMenu,
   modalContent,
   onDismiss,
-  inputOnFocus
+  inputOnFocus,
 }) {
   return (
     <Modal
@@ -38,16 +38,15 @@ export default function DetailsModal({
     >
       {/*TODO: remove the transparent view when we get the bottom page to be darker*/}
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}>
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <SafeAreaView
-          style={{ flex: 1, backgroundColor: colors.transparentGray }}
+            style={{ flex: 1, backgroundColor: colors.transparentGray }}
           >
             <View style={styles.modalView}>
-            
               <View style={styles.modalHeader}>
-              
                 <View style={styles.iconsView}>
                   {leftIcon ? (
                     <TouchableOpacity onPress={leftIconCallback}>
@@ -76,10 +75,12 @@ export default function DetailsModal({
                     <Text style={styles.detailsTitle}>{title}</Text>
                     <Text style={styles.detailsSubtitle}>{subtitle}</Text>
                   </View>
-                  {inputOnFocus ? null :<Image
-                    style={styles.detailsIcon}
-                    source={require("../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
-                  />}
+                  {inputOnFocus ? null : (
+                    <Image
+                      style={styles.detailsIcon}
+                      source={require("../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
+                    />
+                  )}
                 </View>
                 {contextMenu}
               </View>
@@ -94,7 +95,7 @@ export default function DetailsModal({
 
 const styles = StyleSheet.create({
   container: {
-    flex:1
+    flex: 1,
   },
   iconsView: {
     flexDirection: "row",

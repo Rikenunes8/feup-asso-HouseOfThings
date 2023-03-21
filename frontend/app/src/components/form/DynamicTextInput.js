@@ -1,19 +1,22 @@
 import React from "react";
-import { StyleSheet, View, Text, TextInput} from "react-native";
+import { StyleSheet, View, Text, TextInput } from "react-native";
 
 import colors from "../../../configs/colors";
-export default function DynamicTextInput({ label, name, setName, inputOnFocus, setInputOnFocus}) {
-
+export default function DynamicTextInput({
+  label,
+  name,
+  setName,
+  inputOnFocus,
+  setInputOnFocus,
+}) {
   //const [expanded, expandInput] = React.useState(false);
 
-  function handleEndTyping()
-  {
+  function handleEndTyping() {
     //if (name=="") expandInput(false);
     setInputOnFocus(false);
   }
 
-  function handleTyping()
-  {
+  function handleTyping() {
     setInputOnFocus(true);
     //expandInput(true);
   }

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Platform } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import colors from "../../../configs/colors";
@@ -35,7 +35,8 @@ export default function DynamicDropDown({
 const styles = (on = false) =>
   StyleSheet.create({
     container: {
-      margin: 20,
+      margin: 15,
+      zIndex: 10,
     },
     dropdown: {
       backgroundColor: colors.background,

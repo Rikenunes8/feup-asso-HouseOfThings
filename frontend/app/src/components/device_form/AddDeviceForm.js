@@ -30,14 +30,14 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
   return (
     <View style={styles.container}>
       <DynamicDropDown
-        label={"UUID"}
+        label={"UUID *"}
         items={uuidItems}
         setItems={setUUIDItems}
         value={deviceUUID}
         setValue={setDeviceUUID}
       />
       <DynamicTextInput
-        label={"NAME*"}
+        label={"NAME *"}
         name={deviceName}
         setName={setDeviceName}
         inputOnFocus={inputOnFocus}

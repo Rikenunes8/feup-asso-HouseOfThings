@@ -28,6 +28,21 @@ export default function AddDeviceModal() {
 
   const [inputOnFocus, setInputOnFocus] = React.useState(false);
 
+  const requiredFields = [
+    { field: deviceUUID, message: "Device UUID is required." },
+    { field: deviceName, message: "Device name is required." },
+  ];
+
+  const checkRequiredFields = () => {
+    for (let i = 0; i < requiredFields.length; i++) {
+      if (!requiredFields[i].field) {
+        utils.showErrorMessage(requiredFields[i].message);
+        return false;
+      }
+    }
+    return true;
+  };
+
   return (
     <IconModal
       visible={addDeviceFormModalVisible}
@@ -40,10 +55,8 @@ export default function AddDeviceModal() {
         resetAddDeviceContext();
       }}
       rightIconCallback={() => {
-        if (deviceName === "") {
-          utils.showErrorMessage("Device name is required.");
-          return;
-        }
+        if (!checkRequiredFields()) return;
+
         console.log(`Adding ${deviceType}...`);
         const device = {
           name: deviceName,

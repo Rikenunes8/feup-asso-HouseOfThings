@@ -2,19 +2,24 @@ import { createContext, useState } from "react";
 const ModalsContext = createContext({});
 
 export const ModalsProvider = ({ children }) => {
-  const [chooseDeviceModalVisible, setChooseDeviceModalVisible] = useState(false);    
-  const changeChooseDeviceModalVisible = (visible) => setChooseDeviceModalVisible(visible);
+  const [chooseDeviceModalVisible, changeChooseDeviceModalVisibility] = useState(false);    
+  const setChooseDeviceModalVisible = (visible) => changeChooseDeviceModalVisibility(visible);
 
-  const [detailsModalVisible, setDetailsModalVisible] = useState(false);    
-  const changeDetailsModalVisible = (visible) => setDetailsModalVisible(visible);
+  const [deviceDetailsModalVisible, changeDeviceDetailsModalVisibility] = useState(false);    
+  const setDeviceDetailsModalVisible = (visible) => changeDeviceDetailsModalVisibility(visible);
+
+  const [addDeviceFormModalVisible, changeAddDeviceFormModalVisibility] = useState(false);    
+  const setAddDeviceFormModalVisible = (visible) => changeAddDeviceFormModalVisibility(visible);
 
   return (
     <ModalsContext.Provider
       value={{
         chooseDeviceModalVisible,
-        changeChooseDeviceModalVisible,
-        detailsModalVisible,
-        changeDetailsModalVisible,
+        setChooseDeviceModalVisible,
+        deviceDetailsModalVisible,
+        setDeviceDetailsModalVisible,
+        addDeviceFormModalVisible,
+        setAddDeviceFormModalVisible,
       }}
     >
       {children}

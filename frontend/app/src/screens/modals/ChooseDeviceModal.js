@@ -9,7 +9,7 @@ import ChooseDeviceSideBar from "../../components/choose_device/ChooseDeviceSide
 import api from "../../api/api";
 
 export default function ChooseDeviceModal({ setAddModalVisible }) {
-  const { chooseDeviceModalVisible, changeChooseDeviceModalVisible} = useContext(ModalsContext);
+  const { chooseDeviceModalVisible, setChooseDeviceModalVisible} = useContext(ModalsContext);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -29,7 +29,7 @@ export default function ChooseDeviceModal({ setAddModalVisible }) {
       visible={chooseDeviceModalVisible}
       title={"Add Device"}
       leftIcon={"close"}
-      leftIconCallback={() => changeChooseDeviceModalVisible(false)}
+      leftIconCallback={() => setChooseDeviceModalVisible(false)}
       modalContent={
         categories && selectedCategory ? (
           <View style={styles.modalContentView}>
@@ -40,7 +40,7 @@ export default function ChooseDeviceModal({ setAddModalVisible }) {
             />
             <ChooseDeviceScrollView
               deviceTypes={selectedCategory.subcategories}
-              setChooseModalVisible={changeChooseDeviceModalVisible}
+              setChooseModalVisible={setChooseDeviceModalVisible}
               setAddModalVisible={setAddModalVisible}
             />
           </View>

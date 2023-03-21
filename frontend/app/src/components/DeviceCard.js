@@ -17,7 +17,7 @@ import colors from "../../configs/colors";
 
 export default function DeviceCard({ device }) {
   const { updateDevice } = useContext(DevicesContext);
-  const { detailsModalVisible, changeDetailsModalVisible } =
+  const { deviceDetailsModalVisible, setDeviceDetailsModalVisible } =
     useContext(ModalsContext);
 
   onOfHandler = (isEnabled) => {
@@ -31,7 +31,7 @@ export default function DeviceCard({ device }) {
   return (
     <TouchableOpacity
       style={styles.deviceCard}
-      onPress={() => changeDetailsModalVisible(!detailsModalVisible)}
+      onPress={() => setDeviceDetailsModalVisible(!deviceDetailsModalVisible)}
     >
       <DetailsDeviceModal device={device} />
 

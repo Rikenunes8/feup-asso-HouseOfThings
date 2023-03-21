@@ -8,7 +8,7 @@ import ModalsContext from "../contexts/ModalsContext";
 
 export default function AddDeviceButton({ children }) {
   const { deviceType } = useContext(AddDeviceContext);
-  const { chooseDeviceModalVisible, changeChooseDeviceModalVisible } =
+  const { chooseDeviceModalVisible, setChooseDeviceModalVisible } =
     useContext(ModalsContext);
 
   const [isAddModalVisible, setAddModalVisible] = useState(false);
@@ -27,7 +27,7 @@ export default function AddDeviceButton({ children }) {
         <TouchableOpacity
           style={styles.buttonOppacity}
           onPress={() =>
-            changeChooseDeviceModalVisible(!chooseDeviceModalVisible)
+            setChooseDeviceModalVisible(!chooseDeviceModalVisible)
           }
         >
           <View style={styles.button}>{children}</View>

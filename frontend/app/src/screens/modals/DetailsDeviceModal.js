@@ -6,19 +6,19 @@ import LightDetails from "../../components/device_details/light/LightDetails.js"
 import LightDetailsContextMenu from "../../components/device_details/light/LightDetailsContextMenu";
 
 export default function DetailsDeviceModal({ device }) {
-  const { detailsModalVisible, changeDetailsModalVisible } =
+  const { deviceDetailsModalVisible, setDeviceDetailsModalVisible } =
     useContext(ModalsContext);
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
   return (
     <IconModal
-      visible={detailsModalVisible}
+      visible={deviceDetailsModalVisible}
       title={device.name}
       subtitle={device.divisions[0]}
       leftIcon="close"
       rightIcon="ellipsis1"
       leftIconCallback={() => {
-        changeDetailsModalVisible(false);
+        setDeviceDetailsModalVisible(false);
         setIsContextMenuVisible(false);
       }}
       rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
@@ -26,7 +26,7 @@ export default function DetailsDeviceModal({ device }) {
       contextMenu={
         // TODO: Change this to a dynamic component (depending on device type)
         <LightDetailsContextMenu
-          setIsDetailsModalVisible={changeDetailsModalVisible}
+          setIsDetailsModalVisible={setDeviceDetailsModalVisible}
           isContextMenuVisible={isContextMenuVisible}
           setIsContextMenuVisible={setIsContextMenuVisible}
           deviceContextMenuUid={device.uid}

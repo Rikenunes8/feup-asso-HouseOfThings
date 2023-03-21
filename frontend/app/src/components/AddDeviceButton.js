@@ -4,19 +4,18 @@ import ChooseDeviceModal from "../screens/modals/ChooseDeviceModal";
 import colors from "../../configs/colors";
 import AddDeviceModal from "../screens/modals/AddDeviceModal";
 import AddDeviceContext from "../contexts/AddDeviceContext";
+import ModalsContext from "../contexts/ModalsContext";
 
 export default function AddDeviceButton({ children }) {
   const { deviceType } = useContext(AddDeviceContext);
-  const [isChooseModalVisible, setChooseModalVisible] = useState(false);
+  const { chooseDeviceModalVisible, changeChooseDeviceModalVisible } =
+    useContext(ModalsContext);
+
   const [isAddModalVisible, setAddModalVisible] = useState(false);
 
   return (
     <View>
-      <ChooseDeviceModal
-        modalVisible={isChooseModalVisible}
-        setModalVisible={setChooseModalVisible}
-        setAddModalVisible={setAddModalVisible}
-      />
+      <ChooseDeviceModal setAddModalVisible={setAddModalVisible} />
 
       <AddDeviceModal
         modalVisible={isAddModalVisible}
@@ -27,7 +26,9 @@ export default function AddDeviceButton({ children }) {
       <View style={styles.buttonBackgroud}>
         <TouchableOpacity
           style={styles.buttonOppacity}
-          onPress={() => setChooseModalVisible(!isChooseModalVisible)}
+          onPress={() =>
+            changeChooseDeviceModalVisible(!chooseDeviceModalVisible)
+          }
         >
           <View style={styles.button}>{children}</View>
         </TouchableOpacity>

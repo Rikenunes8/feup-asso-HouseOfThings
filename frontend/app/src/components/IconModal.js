@@ -16,20 +16,21 @@ import colors from "../../configs/colors";
 
 //INFO detailsIcon names: close, check and ellipsis1
 
-export default function DetailsModal({
+export default function IconModal({
+  visible,
   title,
   subtitle,
-  modalVisible,
   leftIcon,
   rightIcon,
   leftIconCallback,
   rightIconCallback,
+  icon,
   contextMenu,
   modalContent,
   inputOnFocus,
 }) {
   return (
-    <Modal animationType="slide" transparent={true} visible={modalVisible}>
+    <Modal animationType="slide" transparent={true} visible={visible}>
       {/*TODO: remove the transparent view when we get the bottom page to be darker*/}
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -70,10 +71,7 @@ export default function DetailsModal({
                     <Text style={styles.detailsSubtitle}>{subtitle}</Text>
                   </View>
                   {inputOnFocus ? null : (
-                    <Image
-                      style={styles.detailsIcon}
-                      source={require("../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
-                    />
+                    <Image style={styles.detailsIcon} source={icon} />
                   )}
                 </View>
                 {contextMenu}

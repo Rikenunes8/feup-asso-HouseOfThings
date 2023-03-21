@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View } from "react-native";
-import AddModal from "../../components/AddModal";
+import ModalsContext from "../../contexts/ModalsContext";
+import TitleModal from "../../components/TitleModal";
 import ChooseDeviceScrollView from "../../components/choose_device/ChooseDeviceScrollView";
 import ChooseDeviceSideBar from "../../components/choose_device/ChooseDeviceSideBar";
 
+
 import api from "../../api/api";
 
-export default function ChooseDeviceModal({
-  modalVisible,
-  setModalVisible,
-  setAddModalVisible,
-}) {
+export default function ChooseDeviceModal({ setAddModalVisible }) {
+  const { chooseDeviceModalVisible, changeChooseDeviceModalVisible} = useContext(ModalsContext);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -26,12 +25,11 @@ export default function ChooseDeviceModal({
   }, []);
 
   return (
-    <AddModal
+    <TitleModal
+      visible={chooseDeviceModalVisible}
       title={"Add Device"}
-      modalVisible={modalVisible}
-      setModalVisible={setModalVisible}
       leftIcon={"close"}
-      leftIconCallback={() => setModalVisible(false)}
+      leftIconCallback={() => changeChooseDeviceModalVisible(false)}
       modalContent={
         categories && selectedCategory ? (
           <View style={styles.modalContentView}>
@@ -42,7 +40,7 @@ export default function ChooseDeviceModal({
             />
             <ChooseDeviceScrollView
               deviceTypes={selectedCategory.subcategories}
-              setChooseModalVisible={setModalVisible}
+              setChooseModalVisible={changeChooseDeviceModalVisible}
               setAddModalVisible={setAddModalVisible}
             />
           </View>

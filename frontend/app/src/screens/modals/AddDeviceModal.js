@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import DetailsModal from "../../components/DetailsModal";
+import IconModal from "../../components/IconModal";
 import AddDeviceForm from "../../components/device_form/AddDeviceForm";
 import DevicesContext from "../../contexts/DevicesContext";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
@@ -20,9 +20,9 @@ export default function AddDeviceModal({ modalVisible, setModalVisible }) {
   const [inputOnFocus, setInputOnFocus] = React.useState(false);
 
   return (
-    <DetailsModal
+    <IconModal
+      visible={modalVisible}
       title={(deviceType && utils.capitalize(deviceType)) || "Title"}
-      modalVisible={modalVisible}
       leftIcon="close"
       rightIcon="check"
       leftIconCallback={() => {
@@ -54,6 +54,7 @@ export default function AddDeviceModal({ modalVisible, setModalVisible }) {
           resetAddDeviceContext();
         });
       }}
+      icon={require("../../../../assets/lightbulb.png")} // TODO: Change this to a dynamic icon
       modalContent={
         <AddDeviceForm
           inputOnFocus={inputOnFocus}

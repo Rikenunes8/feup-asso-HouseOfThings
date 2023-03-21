@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,19 +8,17 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import DetailsModal from "./DetailsModal";
-import LightDetails from "./device_details/light/LightDetails.js";
-import LightDetailsContextMenu from "./device_details/light/LightDetailsContextMenu";
 import DevicesContext from "../contexts/DevicesContext";
+import ModalsContext from "../contexts/ModalsContext";
+import DetailsDeviceModal from "../screens/modals/DetailsDeviceModal";
 
 import api from "../api/api";
 import colors from "../../configs/colors";
 
 export default function DeviceCard({ device }) {
   const { updateDevice } = useContext(DevicesContext);
-
-  const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
-  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
+  const { detailsModalVisible, changeDetailsModalVisible } =
+    useContext(ModalsContext);
 
   onOfHandler = (isEnabled) => {
     console.log(`Turning ${isEnabled ? "off" : "on"} device...`);
@@ -33,33 +31,9 @@ export default function DeviceCard({ device }) {
   return (
     <TouchableOpacity
       style={styles.deviceCard}
-      onPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
+      onPress={() => changeDetailsModalVisible(!detailsModalVisible)}
     >
-      <DetailsModal
-        title={device.name}
-        subtitle={device.divisions[0]}
-        modalVisible={isDetailsModalVisible}
-        leftIcon="close"
-        rightIcon="ellipsis1"
-        leftIconCallback={() => {
-          setIsDetailsModalVisible(false);
-          setIsContextMenuVisible(false);
-        }}
-        rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
-        contextMenu={
-          // TODO: Change this to a dynamic component (depending on device type)
-          <LightDetailsContextMenu
-            setIsDetailsModalVisible={setIsDetailsModalVisible}
-            isContextMenuVisible={isContextMenuVisible}
-            setIsContextMenuVisible={setIsContextMenuVisible}
-            deviceContextMenuUid={device.uid}
-          />
-        }
-        modalContent={
-          // TODO: Change this to a dynamic component (depending on device type)
-          <LightDetails on={device.on} handler={onOfHandler} />
-        }
-      />
+      <DetailsDeviceModal device={device} />
 
       <Image
         style={styles.deviceIcon}

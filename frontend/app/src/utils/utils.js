@@ -7,6 +7,10 @@ const capitalize = (str) => {
     .join(" ");
 };
 
+const removeDuplicates = (arr) => {
+  return arr.filter((item, index) => arr.indexOf(item) === index);
+};
+
 const showConfirmDialog = (title, message, onConfirm, onCancel) => {
   return Alert.alert(title, message, [
     {
@@ -28,13 +32,9 @@ const showErrorMessage = (message) => {
   return Alert.alert(message);
 };
 
-const removeDuplicates = (arr) => {
-  return arr.filter((item, index) => arr.indexOf(item) === index);
-};
-
 export default {
   capitalize,
+  removeDuplicates,
   showConfirmDialog,
   showErrorMessage,
-  removeDuplicates,
 };

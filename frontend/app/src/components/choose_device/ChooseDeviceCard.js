@@ -17,9 +17,17 @@ export default function ChooseDeviceCard({ type }) {
 
   chooseDeviceTypeHandler = () => {
     api.availableDevices({ group: deviceGroup }).then((devices) => {
+      devices = utils.removeDuplicates(devices);
+
       setDeviceType(type);
-      setAvailableDevices(utils.removeDuplicates(devices));
-      console.log(devices);
+      setAvailableDevices(devices);
+      if (0 === devices.length) {
+        utils.showErrorMessage(
+          `No ${deviceGroup} device found! Please make sure the device is available and try again.`
+        );
+        return;
+      }
+
       setChooseDeviceModalVisible(false);
       setAddDeviceFormModalVisible(true);
     });

@@ -10,7 +10,13 @@ import api from "../../api/api";
 
 export default function AddDeviceModal() {
   const { addDevice } = useContext(DevicesContext);
-  const { addDeviceFormModalVisible, setAddDeviceFormModalVisible} = useContext(ModalsContext);
+
+  const {
+    addDeviceFormModalVisible,
+    setAddDeviceFormModalVisible,
+    setChooseDeviceModalVisible,
+  } = useContext(ModalsContext);
+
   const {
     deviceUUID,
     deviceType,
@@ -29,6 +35,7 @@ export default function AddDeviceModal() {
       leftIcon="close"
       rightIcon="check"
       leftIconCallback={() => {
+        setChooseDeviceModalVisible(true);
         setAddDeviceFormModalVisible(false);
         resetAddDeviceContext();
       }}

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 
 import ModalsContext from "../../contexts/ModalsContext";
-import IconModal from "../../components/IconModal";
+import IconModal from "../../components/modal/IconModal";
 import LightDetails from "../../components/device_details/light/LightDetails.js";
 import LightDetailsContextMenu from "../../components/device_details/light/LightDetailsContextMenu";
 

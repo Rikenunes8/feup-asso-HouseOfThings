@@ -12,7 +12,7 @@ import {
   Keyboard,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
-import colors from "../../configs/colors";
+import colors from "../../../configs/colors";
 
 //INFO detailsIcon names: close, check and ellipsis1
 

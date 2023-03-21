@@ -10,7 +10,7 @@ import RulesScreen from "../../screens/RulesScreen";
 import HistoryScreen from "../../screens/HistoryScreen";
 
 import NavBarIcon from "./NavBarIcon";
-import AddDeviceButton from "../AddDeviceButton";
+import AddDeviceButton from "./AddDeviceButton";
 
 import { AddDeviceProvider } from "../../contexts/AddDeviceContext";
 import colors from "../../../configs/colors";

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import IconModal from "../../components/IconModal";
+import IconModal from "../../components/modal/IconModal";
 import AddDeviceForm from "../../components/device_form/AddDeviceForm";
 import ModalsContext from "../../contexts/ModalsContext";
 import DevicesContext from "../../contexts/DevicesContext";

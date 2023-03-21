@@ -16,19 +16,12 @@ export default function AddDeviceButton({ children }) {
   return (
     <View>
       <ChooseDeviceModal setAddModalVisible={setAddModalVisible} />
-
-      <AddDeviceModal
-        modalVisible={isAddModalVisible}
-        setModalVisible={setAddModalVisible}
-        type={deviceType}
-      />
+      <AddDeviceModal />
 
       <View style={styles.buttonBackgroud}>
         <TouchableOpacity
           style={styles.buttonOppacity}
-          onPress={() =>
-            setChooseDeviceModalVisible(!chooseDeviceModalVisible)
-          }
+          onPress={() => setChooseDeviceModalVisible(!chooseDeviceModalVisible)}
         >
           <View style={styles.button}>{children}</View>
         </TouchableOpacity>

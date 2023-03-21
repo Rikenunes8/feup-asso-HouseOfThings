@@ -2,21 +2,12 @@ import React from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 import ChooseDeviceCard from "./ChooseDeviceCard";
 
-export default function ChooseDeviceScrollView({
-  deviceTypes,
-  setChooseModalVisible,
-  setAddModalVisible,
-}) {
+export default function ChooseDeviceScrollView({ deviceTypes }) {
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
       <View style={styles.gridView}>
         {deviceTypes.map((type) => (
-          <ChooseDeviceCard
-            key={type}
-            type={type}
-            setChooseModalVisible={setChooseModalVisible}
-            setAddModalVisible={setAddModalVisible}
-          />
+          <ChooseDeviceCard key={type} type={type} />
         ))}
       </View>
     </ScrollView>

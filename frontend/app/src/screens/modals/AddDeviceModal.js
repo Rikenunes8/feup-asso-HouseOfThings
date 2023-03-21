@@ -1,14 +1,16 @@
 import React, { useContext } from "react";
 import IconModal from "../../components/IconModal";
 import AddDeviceForm from "../../components/device_form/AddDeviceForm";
+import ModalsContext from "../../contexts/ModalsContext";
 import DevicesContext from "../../contexts/DevicesContext";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 
 import utils from "../../utils/utils";
 import api from "../../api/api";
 
-export default function AddDeviceModal({ modalVisible, setModalVisible }) {
+export default function AddDeviceModal() {
   const { addDevice } = useContext(DevicesContext);
+  const { addDeviceFormModalVisible, setAddDeviceFormModalVisible} = useContext(ModalsContext);
   const {
     deviceType,
     deviceGroup,
@@ -21,12 +23,12 @@ export default function AddDeviceModal({ modalVisible, setModalVisible }) {
 
   return (
     <IconModal
-      visible={modalVisible}
+      visible={addDeviceFormModalVisible}
       title={(deviceType && utils.capitalize(deviceType)) || "Title"}
       leftIcon="close"
       rightIcon="check"
       leftIconCallback={() => {
-        setModalVisible(false);
+        setAddDeviceFormModalVisible(false);
         resetAddDeviceContext();
       }}
       rightIconCallback={() => {
@@ -50,7 +52,7 @@ export default function AddDeviceModal({ modalVisible, setModalVisible }) {
                 enabled: false,
               })
             : console.log("Failed to add device");
-          setModalVisible(false);
+          setAddDeviceFormModalVisible(false);
           resetAddDeviceContext();
         });
       }}

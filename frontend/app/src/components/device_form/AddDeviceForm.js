@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, View } from "react-native";
 
 import DynamicTextInput from "../form/DynamicTextInput";
@@ -6,16 +6,36 @@ import DynamicDropDown from "../form/DynamicDropDown";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 
 export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
-  const { deviceName, deviceDivision, setDeviceName, setDeviceDivision } =
-    useContext(AddDeviceContext);
+  const {
+    deviceUUID,
+    deviceName,
+    deviceDivision,
+    setDeviceUUID,
+    setDeviceName,
+    setDeviceDivision,
+    availableDevices,
+  } = useContext(AddDeviceContext);
 
-  const [items, setItems] = React.useState([
+  const [items, setItems] = useState([
     { label: "Living Room", value: "living room" },
     { label: "Kitchen", value: "kitchen" },
   ]);
 
+  const [uuidItems, setUUIDItems] = useState(
+    availableDevices.map((item) => {
+      return { label: item, value: item };
+    })
+  );
+
   return (
     <View style={styles.container}>
+      <DynamicDropDown
+        label={"UUID"}
+        items={uuidItems}
+        setItems={setUUIDItems}
+        value={deviceUUID}
+        setValue={setDeviceUUID}
+      />
       <DynamicTextInput
         label={"NAME*"}
         name={deviceName}

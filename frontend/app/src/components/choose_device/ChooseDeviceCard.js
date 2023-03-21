@@ -4,19 +4,24 @@ import { StyleSheet, TouchableOpacity, Text, Image } from "react-native";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 import ModalsContext from "../../contexts/ModalsContext";
 
+import utils from "../../utils/utils";
 import colors from "../../../configs/colors";
 import api from "../../api/api";
 
 export default function ChooseDeviceCard({ type }) {
-  const { setDeviceType, setAvailableDevices, deviceGroup } = useContext(AddDeviceContext);
-  const { setAvailableDevicesMenuVisible } = useContext(ModalsContext);
+  const { deviceGroup, setDeviceType, setAvailableDevices } =
+    useContext(AddDeviceContext);
+
+  const { setChooseDeviceModalVisible, setAddDeviceFormModalVisible } =
+    useContext(ModalsContext);
 
   chooseDeviceTypeHandler = () => {
     api.availableDevices({ group: deviceGroup }).then((devices) => {
       setDeviceType(type);
-      console.log(devices)
-      setAvailableDevices(devices);
-      setAvailableDevicesMenuVisible(true);
+      setAvailableDevices(utils.removeDuplicates(devices));
+      console.log(devices);
+      setChooseDeviceModalVisible(false);
+      setAddDeviceFormModalVisible(true);
     });
   };
 

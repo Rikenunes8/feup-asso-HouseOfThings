@@ -28,8 +28,13 @@ const showErrorMessage = (message) => {
   return Alert.alert(message);
 };
 
+const removeDuplicates = (arr) => {
+  return arr.filter((item, index) => arr.indexOf(item) === index);
+};
+
 export default {
   capitalize,
   showConfirmDialog,
   showErrorMessage,
+  removeDuplicates,
 };

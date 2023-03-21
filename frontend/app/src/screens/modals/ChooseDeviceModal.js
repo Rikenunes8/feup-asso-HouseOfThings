@@ -30,30 +30,26 @@ export default function ChooseDeviceModal() {
   }, []);
 
   return (
-    <>
-      {/* TODO: put this popup working */}
-      <AvailableDevicesPopup isVisible={true} />
-      <TitleModal
-        visible={chooseDeviceModalVisible}
-        title={"Add Device"}
-        leftIcon={"close"}
-        leftIconCallback={() => setChooseDeviceModalVisible(false)}
-        modalContent={
-          categories && selectedCategory ? (
-            <View style={styles.modalContentView}>
-              <ChooseDeviceSideBar
-                categories={categories}
-                selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
-              />
-              <ChooseDeviceScrollView
-                deviceTypes={selectedCategory.subcategories}
-              />
-            </View>
-          ) : null
-        }
-      />
-    </>
+    <TitleModal
+      visible={chooseDeviceModalVisible}
+      title={"Add Device"}
+      leftIcon={"close"}
+      leftIconCallback={() => setChooseDeviceModalVisible(false)}
+      modalContent={
+        categories && selectedCategory ? (
+          <View style={styles.modalContentView}>
+            <ChooseDeviceSideBar
+              categories={categories}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
+            <ChooseDeviceScrollView
+              deviceTypes={selectedCategory.subcategories}
+            />
+          </View>
+        ) : null
+      }
+    />
   );
 }
 

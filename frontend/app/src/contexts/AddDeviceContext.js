@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 const AddDeviceContext = createContext({});
 
 export const AddDeviceProvider = ({ children }) => {
-  const [deviceUUID, setDeviceUUID] = useState("");
+  const [deviceUUID, setDeviceUUID] = useState(null);
   const [deviceName, setDeviceName] = useState("");
   const [deviceDivision, setDeviceDivision] = useState(null);
   const [deviceGroup, setDeviceGroup] = useState("");

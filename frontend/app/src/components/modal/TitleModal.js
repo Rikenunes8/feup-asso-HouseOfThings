@@ -8,13 +8,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
-import colors from "../../configs/colors";
+import colors from "../../../configs/colors";
 
 //INFO icon names: close, check and ellipsis1
 
-export default function AddModal({
+export default function TitleModal({
+  visible,
   title,
-  modalVisible,
   leftIcon,
   rightIcon,
   leftIconCallback,
@@ -22,7 +22,7 @@ export default function AddModal({
   modalContent,
 }) {
   return (
-    <Modal animationType="slide" transparent={true} visible={modalVisible}>
+    <Modal animationType="slide" transparent={true} visible={visible}>
       {/*TODO: remove the transparent view when we get the bottom page to be darker*/}
       <View style={{ flex: 1, backgroundColor: colors.transparentGray }}>
         <View style={styles.modalView}>

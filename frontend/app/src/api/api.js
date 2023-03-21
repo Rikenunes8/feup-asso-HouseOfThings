@@ -1,5 +1,17 @@
 import apiClient from "./client";
 
+const getDivisions = async () => {
+  try {
+    const response = await apiClient.get("/divisions");
+    return response.data.divisions;
+  } catch (error) {
+    console.error(error);
+    return [
+      { name: "Kitchen", icon: "kitchen-icon", numDevices: 1 },
+    ];
+  }
+};
+
 const getDevices = async () => {
   try {
     const response = await apiClient.get("/devices");

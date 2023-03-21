@@ -13,13 +13,16 @@ import Icon from "react-native-vector-icons/SimpleLineIcons";
 
 import UsernameContext from "../contexts/UsernameContext";
 import DeviceCard from "../components/DeviceCard";
+import DivisionCard from "../components/DivisionCard";
 import DevicesContext from "../contexts/DevicesContext";
+import DivisionsContext from "../contexts/DivisionsContext";
 
 import colors from "../../configs/colors";
 import api from "../api/api";
 
 export default function HomeScreen() {
   const { devices, setDevices } = useContext(DevicesContext);
+  const { divisions, setDivisions } = useContext(DivisionsContext);
   const { username } = useContext(UsernameContext);
 
   const navigation = useNavigation();
@@ -29,8 +32,14 @@ export default function HomeScreen() {
     setDevices(devs);
   };
 
+  const fetchDivisions = async () => {
+    const divs = await api.getDivisions();
+    setDivisions(divs);
+  };
+
   useEffect(() => {
     fetchDevices();
+    fetchDivisions();
   }, []);
 
   return (
@@ -46,7 +55,15 @@ export default function HomeScreen() {
         <Text style={styles.welcomeMessage}>Hello, {username.trim()}!</Text>
       </View>
 
+      
       <View style={styles.body}>
+        <Text style={styles.sectionHeader}>Divisions</Text>
+        <View style={styles.divisionsBar}>
+          <DivisionCard division={{ name: "Kitchen", icon: "kitchen-icon", numDevices: 1 }} />
+          <DivisionCard division={{ name: "Kitchen", icon: "kitchen-icon", numDevices: 1 }} />
+          {divisions.map((division, key) => <DivisionCard key={key} division={division} />)}
+          {/* <NewDivisionCard /> */}
+        </View>
         <Text style={styles.sectionHeader}>Devices</Text>
         {devices.length ? (
           devices.map((device, key) => <DeviceCard key={key} device={device} />)
@@ -64,6 +81,13 @@ const styles = StyleSheet.create({
     width: "85%",
     alignItems: "center",
     paddingVertical: 20,
+  },
+  divisionsBar: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    justifyContent: "flex-start",
+    width: "100%",
+    gap: 20,
   },
   container: {
     flex: 1,

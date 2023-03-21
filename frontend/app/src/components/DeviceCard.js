@@ -36,12 +36,15 @@ export default function DeviceCard({ device }) {
       onPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
     >
       <DetailsModal
-        title={device.name || "Philips Bulb"}
-        subtitle={device.division || "Living Room"}
+        title={device.name}
+        subtitle={device.divisions[0]}
         modalVisible={isDetailsModalVisible}
         leftIcon="close"
         rightIcon="ellipsis1"
-        leftIconCallback={() => {setIsDetailsModalVisible(false); setIsContextMenuVisible(false)}}
+        leftIconCallback={() => {
+          setIsDetailsModalVisible(false);
+          setIsContextMenuVisible(false);
+        }}
         rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
         contextMenu={
           // TODO: Change this to a dynamic component (depending on device type)
@@ -55,7 +58,7 @@ export default function DeviceCard({ device }) {
         modalContent={
           // TODO: Change this to a dynamic component (depending on device type)
           <LightDetails on={device.on} handler={onOfHandler} />
-        } 
+        }
       />
 
       <Image
@@ -64,10 +67,8 @@ export default function DeviceCard({ device }) {
       />
 
       <View style={{ justifyContent: "center" }}>
-        <Text style={styles.deviceName}>{device.name || "Philips Bulb"}</Text>
-        <Text style={styles.divisionText}>
-          {device.division || "Living Room"}
-        </Text>
+        <Text style={styles.deviceName}>{device.name}</Text>
+        <Text style={styles.divisionText}>{device.divisions[0]}</Text>
       </View>
 
       <Switch
@@ -104,5 +105,6 @@ const styles = StyleSheet.create({
   },
   divisionText: {
     color: colors.secondaryText,
+    textTransform: "capitalize",
   },
 });

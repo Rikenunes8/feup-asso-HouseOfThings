@@ -12,9 +12,7 @@ import colors from "../../../configs/colors";
 export default function HoTTextInput({ label, value, onChangeText }) {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.text}>
-        {label}
-      </Text>
+      <Text style={styles.text}>{label}</Text>
       <TextInput
         style={styles.input}
         onChangeText={(text) => onChangeText(text)}

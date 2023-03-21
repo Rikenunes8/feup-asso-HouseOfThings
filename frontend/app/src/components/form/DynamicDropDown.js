@@ -10,6 +10,8 @@ export default function DynamicDropDown({
   setItems,
   value,
   setValue,
+  disabled = false,
+  showArrowIcon = true,
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -27,6 +29,8 @@ export default function DynamicDropDown({
         placeholder=""
         dropDownContainerStyle={styles().dropdown}
         style={styles().selector}
+        disabled={disabled}
+        showArrowIcon={showArrowIcon}
       />
     </View>
   );

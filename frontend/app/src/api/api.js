@@ -7,7 +7,9 @@ const getDivisions = async () => {
   } catch (error) {
     console.error(error);
     return [
-      { name: "Kitchen", icon: "kitchen-icon", numDevices: 1 },
+      { name: "Family Room", icon: "bedroom-icon", numDevices: 1 },
+      { name: "Tiago Room", icon: "bedroom-icon", numDevices: 1 },
+      { name: "Kitchen", icon: "kitchen-icon", numDevices: 0 },
     ];
   }
 };
@@ -84,4 +86,5 @@ export default {
   addDevice,
   disconnectDevice,
   actionDevice,
+  getDivisions,
 };

@@ -1,39 +1,20 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
   View,
-  Switch,
-  Image,
   TouchableOpacity,
 } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
-// import DetailsModal from "./DetailsModal";
-// import LightDetails from "./division_details/light/LightDetails.js";
-// import LightDetailsContextMenu from "./division_details/light/LightDetailsContextMenu";
-import DivisionsContext from "../contexts/DivisionsContext";
-
-// import api from "../api/api";
 import colors from "../../configs/colors";
 
-export default function DivisionCard({ division }) {
-  const { updateDivision } = useContext(DivisionsContext);
-
-//   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
-//   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
-
-//   onOfHandler = (isEnabled) => {
-//     console.log(`Turning ${isEnabled ? "off" : "on"} division...`);
-
-//     const action = isEnabled ? "turnOff" : "turnOn";
-//     api.actionDivision(division.uid, { action: action });
-//     updateDivision({ on: !division.on }, division.uid);
-//   };
-
+export default function DivisionCard({ division, onPress }) {
   return (
     <TouchableOpacity
       style={styles.divisionCard}
-      onPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
+      onPress={onPress}
+      // onLongPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
     >
       {/* <DetailsModal
         title={division.name || "Philips Bulb"}
@@ -58,15 +39,12 @@ export default function DivisionCard({ division }) {
         } 
       /> */}
 
-      <Image
-        style={styles.divisionIcon}
-        source={require("../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
-      />
+      <Icon name={"bed"} size={30} color={colors.primaryText} />
 
       <View style={{ justifyContent: "center" }}>
         <Text style={styles.divisionName}>{division.name}</Text>
         <Text style={styles.divisionText}>
-          {division.numDevices} devices
+          {division.numDevices} {division.numDevices == 1? "device" : "devices"}
         </Text>
       </View>
     </TouchableOpacity>
@@ -75,18 +53,14 @@ export default function DivisionCard({ division }) {
 
 const styles = StyleSheet.create({
   divisionCard: {
-    width: "40%",
+    width: 130,
+    marginRight: 15,
     flexDirection: "column",
     alignItems: "center",
     backgroundColor: colors.white,
     borderRadius: 15,
     marginVertical: 10,
     padding: 10,
-  },
-  divisionIcon: {
-    width: 50,
-    height: 50,
-    objectFit: "contain",
   },
   divisionName: {
     fontSize: 15,

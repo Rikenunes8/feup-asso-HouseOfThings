@@ -31,7 +31,10 @@ export default function DynamicTextInput({
         onEndEditing={handleEndTyping}
         value={name}
         style={expanded ? styles.inputExpanded : styles.input}
-      />
+      > 
+        
+      </TextInput>
+      
     </View>
   );
 }
@@ -41,21 +44,23 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width:"90%",
     margin: 20,
-    paddingVertical: 15,
     borderBottomWidth:1,
   },
   container_expanded: {
+    borderBottomWidth:1,
     flexDirection: "column",
-    paddingVertical: 0,
   },
   input: {
-    flex:1,
+    position: "absolute",
+    width:"100%",
+    paddingBottom: 15,
   },
   inputExpanded: {
-    paddingVertical: 15,
+    paddingBottom: 15,
     paddingHorizontal: 8,
   },
   fieldName: {
-    color: colors.primary
+    color: colors.primary,
+    paddingBottom: 15,
   }
 });

@@ -6,8 +6,11 @@ import LightDetails from "../../components/device_details/light/LightDetails.js"
 import LightDetailsContextMenu from "../../components/device_details/light/LightDetailsContextMenu";
 
 export default function DeviceDetailsModal({ device }) {
-  const { deviceDetailsModalVisible, setDeviceDetailsModalVisible } =
-    useContext(ModalsContext);
+  const {
+    deviceDetailsModalVisible,
+    setDeviceDetailsModalVisible,
+    isDeviceDetailsModalLoading,
+  } = useContext(ModalsContext);
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
   return (
@@ -36,6 +39,7 @@ export default function DeviceDetailsModal({ device }) {
         // TODO: Change this to a dynamic component (depending on device type)
         <LightDetails on={device.on} handler={onOfHandler} />
       }
+      isLoading={isDeviceDetailsModalLoading}
     />
   );
 }

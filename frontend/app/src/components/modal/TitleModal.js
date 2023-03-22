@@ -7,6 +7,7 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
+import LoadingSpinner from "../../components/LoadingSpinner";
 import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../../../configs/colors";
 
@@ -20,11 +21,13 @@ export default function TitleModal({
   leftIconCallback,
   rightIconCallback,
   modalContent,
+  isLoading = false,
 }) {
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
       {/*TODO: remove the transparent view when we get the bottom page to be darker*/}
       <View style={{ flex: 1, backgroundColor: colors.transparentGray }}>
+        <LoadingSpinner isLoading={isLoading} />
         <View style={styles.modalView}>
           <View style={styles.iconsView}>
             {leftIcon ? (

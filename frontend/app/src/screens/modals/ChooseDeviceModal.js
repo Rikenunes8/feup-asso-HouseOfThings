@@ -12,7 +12,7 @@ export default function ChooseDeviceModal() {
   const {
     chooseDeviceModalVisible,
     setChooseDeviceModalVisible,
-    availableDevicesMenuVisible,
+    isChooseDeviceModalLoading
   } = useContext(ModalsContext);
 
   const [categories, setCategories] = useState([]);
@@ -49,6 +49,7 @@ export default function ChooseDeviceModal() {
           </View>
         ) : null
       }
+      isLoading={isChooseDeviceModalLoading}
     />
   );
 }

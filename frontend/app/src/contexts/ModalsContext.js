@@ -2,14 +2,19 @@ import { createContext, useState } from "react";
 const ModalsContext = createContext({});
 
 export const ModalsProvider = ({ children }) => {
-  const [chooseDeviceModalVisible, changeChooseDeviceModalVisibility] = useState(false);    
-  const setChooseDeviceModalVisible = (visible) => changeChooseDeviceModalVisibility(visible);
+  const [chooseDeviceModalVisible, setChooseDeviceModalVisible] =
+    useState(false);
+  const [deviceDetailsModalVisible, setDeviceDetailsModalVisible] =
+    useState(false);
+  const [addDeviceFormModalVisible, setAddDeviceFormModalVisible] =
+    useState(false);
 
-  const [deviceDetailsModalVisible, changeDeviceDetailsModalVisibility] = useState(false);    
-  const setDeviceDetailsModalVisible = (visible) => changeDeviceDetailsModalVisibility(visible);
-
-  const [addDeviceFormModalVisible, changeAddDeviceFormModalVisibility] = useState(false);    
-  const setAddDeviceFormModalVisible = (visible) => changeAddDeviceFormModalVisibility(visible);
+  const [isChooseDeviceModalLoading, setIsChooseDeviceModalLoading] =
+    useState(false);
+  const [isDeviceDetailsModalLoading, setIsDeviceDetailsModalLoading] =
+    useState(false);
+  const [isDeviceFormModalLoading, setIsDeviceFormModalLoading] =
+    useState(false);
 
   return (
     <ModalsContext.Provider
@@ -20,6 +25,12 @@ export const ModalsProvider = ({ children }) => {
         setDeviceDetailsModalVisible,
         addDeviceFormModalVisible,
         setAddDeviceFormModalVisible,
+        isChooseDeviceModalLoading,
+        setIsChooseDeviceModalLoading,
+        isDeviceDetailsModalLoading,
+        setIsDeviceDetailsModalLoading,
+        isDeviceFormModalLoading,
+        setIsDeviceFormModalLoading,
       }}
     >
       {children}

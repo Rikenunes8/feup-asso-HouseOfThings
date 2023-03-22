@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import IconModal from "../../components/IconModal";
+import IconModal from "../../components/modal/IconModal";
 import AddDeviceForm from "../../components/device_form/AddDeviceForm";
 import ModalsContext from "../../contexts/ModalsContext";
 import DevicesContext from "../../contexts/DevicesContext";
@@ -15,6 +15,8 @@ export default function AddDeviceModal() {
     addDeviceFormModalVisible,
     setAddDeviceFormModalVisible,
     setChooseDeviceModalVisible,
+    isDeviceFormModalLoading,
+    setIsDeviceFormModalLoading,
   } = useContext(ModalsContext);
 
   const {
@@ -43,6 +45,34 @@ export default function AddDeviceModal() {
     return true;
   };
 
+  const connectCallback = () => {
+    if (!checkRequiredFields()) return;
+
+    const device = {
+      name: deviceName,
+      divisions: [deviceDivision],
+      group: deviceGroup,
+    };
+
+    console.log(`Adding ${deviceType}...`);
+    setIsDeviceFormModalLoading(true);
+    api.addDevice(deviceUUID, device).then((success) => {
+      setIsDeviceFormModalLoading(false);
+      if (success) {
+        addDevice({
+            uid: deviceUUID,
+            ...device,
+            enabled: false,
+          })
+        setAddDeviceFormModalVisible(false);
+        resetAddDeviceContext();
+      } else {
+        console.log("Failed to connect device");
+        utils.showErrorMessage("Failed to connect device");
+      }
+    });
+  };
+
   return (
     <IconModal
       visible={addDeviceFormModalVisible}
@@ -55,26 +85,7 @@ export default function AddDeviceModal() {
         resetAddDeviceContext();
       }}
       rightIconCallback={() => {
-        if (!checkRequiredFields()) return;
-
-        console.log(`Adding ${deviceType}...`);
-        const device = {
-          name: deviceName,
-          divisions: [deviceDivision],
-          group: deviceGroup,
-        };
-
-        api.addDevice(deviceUUID, device).then((success) => {
-          success
-            ? addDevice({
-                uid: deviceUUID,
-                ...device,
-                enabled: false,
-              })
-            : console.log("Failed to add device");
-          setAddDeviceFormModalVisible(false);
-          resetAddDeviceContext();
-        });
+        connectCallback();
       }}
       icon={require("../../../../assets/lightbulb.png")} // TODO: Change this to a dynamic icon
       modalContent={
@@ -84,6 +95,7 @@ export default function AddDeviceModal() {
         />
       }
       inputOnFocus={inputOnFocus}
+      isLoading={isDeviceFormModalLoading}
     />
   );
 }

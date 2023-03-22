@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View } from "react-native";
 import ModalsContext from "../../contexts/ModalsContext";
-import TitleModal from "../../components/TitleModal";
+import TitleModal from "../../components/modal/TitleModal";
 import ChooseDeviceScrollView from "../../components/choose_device/ChooseDeviceScrollView";
 import ChooseDeviceSideBar from "../../components/choose_device/ChooseDeviceSideBar";
 import AvailableDevicesPopup from "../../components/AvailableDevicesPopup";

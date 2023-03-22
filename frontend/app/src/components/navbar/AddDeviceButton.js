@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-import ChooseDeviceModal from "../screens/modals/ChooseDeviceModal";
-import colors from "../../configs/colors";
-import AddDeviceModal from "../screens/modals/AddDeviceModal";
-import AddDeviceContext from "../contexts/AddDeviceContext";
-import ModalsContext from "../contexts/ModalsContext";
+import ChooseDeviceModal from "../../screens/modals/ChooseDeviceModal";
+import colors from "../../../configs/colors";
+import AddDeviceModal from "../../screens/modals/AddDeviceModal";
+import AddDeviceContext from "../../contexts/AddDeviceContext";
+import ModalsContext from "../../contexts/ModalsContext";
 
 export default function AddDeviceButton({ children }) {
   const { deviceType } = useContext(AddDeviceContext);

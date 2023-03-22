@@ -3,17 +3,17 @@ import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/AntDesign";
 
-import HomeScreen from "../screens/HomeScreen";
-import ChooseDeviceModal from "../screens/modals/ChooseDeviceModal";
-import SettingsScreen from "../screens/SettingsScreen";
-import RulesScreen from "../screens/RulesScreen";
-import HistoryScreen from "../screens/HistoryScreen";
+import HomeScreen from "../../screens/HomeScreen";
+import ChooseDeviceModal from "../../screens/modals/ChooseDeviceModal";
+import SettingsScreen from "../../screens/SettingsScreen";
+import RulesScreen from "../../screens/RulesScreen";
+import HistoryScreen from "../../screens/HistoryScreen";
 
 import NavBarIcon from "./NavBarIcon";
 import AddDeviceButton from "./AddDeviceButton";
 
-import { AddDeviceProvider } from "../contexts/AddDeviceContext";
-import colors from "../../configs/colors";
+import { AddDeviceProvider } from "../../contexts/AddDeviceContext";
+import colors from "../../../configs/colors";
 
 export default function NavBar() {
   const Tab = createBottomTabNavigator();

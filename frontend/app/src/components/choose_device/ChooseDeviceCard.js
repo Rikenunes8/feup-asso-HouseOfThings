@@ -2,19 +2,19 @@ import React, { useContext } from "react";
 import { StyleSheet, TouchableOpacity, Text, Image } from "react-native";
 
 import AddDeviceContext from "../../contexts/AddDeviceContext";
+import ModalsContext from "../../contexts/ModalsContext";
+
 import colors from "../../../configs/colors";
 
-export default function ChooseDeviceCard({
-  type,
-  setChooseModalVisible,
-  setAddModalVisible,
-}) {
+export default function ChooseDeviceCard({ type }) {
   const { setDeviceType } = useContext(AddDeviceContext);
+  const { setChooseDeviceModalVisible, setAddDeviceFormModalVisible } =
+    useContext(ModalsContext);
 
   chooseDeviceTypeHandler = () => {
     setDeviceType(type);
-    setChooseModalVisible(false);
-    setAddModalVisible(true);
+    setChooseDeviceModalVisible(false);
+    setAddDeviceFormModalVisible(true);
   };
 
   return (

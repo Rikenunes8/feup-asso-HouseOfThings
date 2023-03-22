@@ -1,6 +1,6 @@
 import React from "react";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
-import colors from "../../configs/colors";
+import colors from "../../../configs/colors";
 
 export default function NavBarIcon({ name, focused }) {
   return (

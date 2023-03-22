@@ -1,8 +1,8 @@
-import React, { useState, useContext } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import React, { useContext } from "react";
 
 import ContextMenu from "../../ContextMenu";
 import DevicesContext from "../../../contexts/DevicesContext";
+import ModalsContext from "../../../contexts/ModalsContext";
 
 import colors from "../../../../configs/colors";
 import api from "../../../api/api";
@@ -15,8 +15,7 @@ export default function LightDetailsContextMenu({
   deviceContextMenuUid,
 }) {
   const { removeDevice } = useContext(DevicesContext);
-
-  const [isLoading, setIsLoading] = useState(false);
+  const { setIsDeviceDetailsModalLoading } = useContext(ModalsContext);
 
   const disconnectCallback = () => {
     utils.showConfirmDialog(
@@ -24,10 +23,10 @@ export default function LightDetailsContextMenu({
       "Are you sure you want to disconnect this device?",
       () => {
         console.log("Disconnecting device...");
-        setIsLoading(true);
+        setIsDeviceDetailsModalLoading(true);
 
         api.disconnectDevice(deviceContextMenuUid).then((success) => {
-          setIsLoading(false);
+          setIsDeviceDetailsModalLoading(false);
           setIsContextMenuVisible(false);
 
           if (success) {
@@ -67,22 +66,6 @@ export default function LightDetailsContextMenu({
           },
         ]}
       />
-
-      {isLoading && (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.white} />
-        </View>
-      )}
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  // TODO: better position loading indicator so it
-  // covers the entire screen!
-  loadingContainer: {
-    ...StyleSheet.absoluteFill,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,18 +7,23 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
+import DivisionDetailsContextMenu from "./division_details/DivisionDetailsContextMenu";
+import DetailsModal from "./DetailsModal";
 import colors from "../../configs/colors";
 
 export default function DivisionCard({ division, onPress, highlighted }) {
+  const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
+  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
+
   return (
     <TouchableOpacity
       style={highlighted? [styles.divisionCard, styles.selectedDivisionCard] : styles.divisionCard}
       onPress={onPress}
-      // onLongPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
+      onLongPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
     >
-      {/* <DetailsModal
-        title={division.name || "Philips Bulb"}
-        subtitle={division.division || "Living Room"}
+      <DetailsModal
+        title={division.name}
+        subtitle={division.numDevices + " devices"}
         modalVisible={isDetailsModalVisible}
         leftIcon="close"
         rightIcon="ellipsis1"
@@ -26,7 +31,7 @@ export default function DivisionCard({ division, onPress, highlighted }) {
         rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
         contextMenu={
           // TODO: Change this to a dynamic component (depending on division type)
-          <LightDetailsContextMenu
+          <DivisionDetailsContextMenu
             setIsDetailsModalVisible={setIsDetailsModalVisible}
             isContextMenuVisible={isContextMenuVisible}
             setIsContextMenuVisible={setIsContextMenuVisible}
@@ -35,9 +40,9 @@ export default function DivisionCard({ division, onPress, highlighted }) {
         }
         modalContent={
           // TODO: Change this to a dynamic component (depending on division type)
-          <LightDetails on={division.on} handler={onOfHandler} />
+          <View></View>
         } 
-      /> */}
+      />
 
       <Icon name={"bed"} size={30} color={colors.primaryText} />
 

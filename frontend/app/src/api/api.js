@@ -56,12 +56,17 @@ const actionDevice = async (id, action) => {
     const response = await apiClient.post(`/devices/${id}/action`, {
       ...action,
     });
+
     if (response.data.error) {
       console.error(response.data.error);
+      return false;
     }
+    return true;
   } catch (error) {
     console.error(error);
+    return false;
   }
+  
 };
 
 export default {

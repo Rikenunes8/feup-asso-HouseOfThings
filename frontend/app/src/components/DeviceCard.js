@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -14,18 +14,33 @@ import DeviceDetailsModal from "../screens/modals/DeviceDetailsModal";
 
 import api from "../api/api";
 import colors from "../../configs/colors";
+import utils from "../utils/utils";
 
 export default function DeviceCard({ device }) {
   const { updateDevice } = useContext(DevicesContext);
   const { deviceDetailsModalVisible, setDeviceDetailsModalVisible } =
     useContext(ModalsContext);
+  const [disabled, setDisabled] = useState(false);
 
   onOfHandler = (isEnabled) => {
     console.log(`Turning ${isEnabled ? "off" : "on"} device...`);
-
+    
+    setDisabled(true);
+    device.on = !device.on;
+    
     const action = isEnabled ? "turnOff" : "turnOn";
-    api.actionDevice(device.uid, { action: action });
-    updateDevice({ on: !device.on }, device.uid);
+    api.actionDevice(device.uid, { action: action }).then((success) =>{
+      setDisabled(false);
+      if (success) {
+        console.log(`Changed light status successfully`);
+        updateDevice({ on: device.on }, device.uid);
+        return;
+      }
+
+      console.log("Failed to change light status");
+      utils.showErrorMessage("Failed to change light status");
+    })
+    
   };
 
   return (
@@ -52,6 +67,7 @@ export default function DeviceCard({ device }) {
           onOfHandler(device.on);
         }}
         value={device.on}
+        disabled={disabled}
       />
     </TouchableOpacity>
   );

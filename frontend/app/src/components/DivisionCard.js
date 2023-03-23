@@ -9,10 +9,10 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 
 import colors from "../../configs/colors";
 
-export default function DivisionCard({ division, onPress }) {
+export default function DivisionCard({ division, onPress, highlighted }) {
   return (
     <TouchableOpacity
-      style={styles.divisionCard}
+      style={highlighted? [styles.divisionCard, styles.selectedDivisionCard] : styles.divisionCard}
       onPress={onPress}
       // onLongPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
     >
@@ -41,12 +41,10 @@ export default function DivisionCard({ division, onPress }) {
 
       <Icon name={"bed"} size={30} color={colors.primaryText} />
 
-      <View style={{ justifyContent: "center" }}>
-        <Text style={styles.divisionName}>{division.name}</Text>
-        <Text style={styles.divisionText}>
-          {division.numDevices} {division.numDevices == 1? "device" : "devices"}
-        </Text>
-      </View>
+      <Text style={styles.divisionName}>{division.name}</Text>
+      <Text style={styles.divisionText}>
+        {division.numDevices} {division.numDevices == 1? "device" : "devices"}
+      </Text>
     </TouchableOpacity>
   );
 }
@@ -61,6 +59,9 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginVertical: 10,
     padding: 10,
+  },
+  selectedDivisionCard: {
+    backgroundColor: colors.transparentPrimary, // TODO change this color?
   },
   divisionName: {
     fontSize: 15,

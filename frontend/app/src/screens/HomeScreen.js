@@ -83,9 +83,16 @@ export default function HomeScreen() {
             <DivisionCard
               division={{ name: "All", icon: "all-icon", numDevices: devices.length }}
               onPress={() => setSelectedDivision(null)}
+              highlighted={selectedDivision === null}
             />
             {divisions.map((division, key) =>
-              <DivisionCard key={key} division={division} onPress={() => setSelectedDivision(division.name)} />)}
+              <DivisionCard
+                key={key}
+                division={division}
+                onPress={() => setSelectedDivision(division.name)}
+                highlighted={selectedDivision === division.name}
+              />
+            )}
             <NewDivisionCard />
           </ScrollView>
         </View>

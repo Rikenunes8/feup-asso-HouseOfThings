@@ -5,10 +5,10 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome5";
 
 import DivisionDetailsContextMenu from "./division_details/DivisionDetailsContextMenu";
-import DetailsModal from "./DetailsModal";
+import IconModal from "./modal/IconModal";
+import DivisionIcon from "./DivisionIcon";
 import colors from "../../configs/colors";
 
 export default function DivisionCard({ division, onPress, highlighted }) {
@@ -21,30 +21,27 @@ export default function DivisionCard({ division, onPress, highlighted }) {
       onPress={onPress}
       onLongPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
     >
-      <DetailsModal
+      <IconModal
         title={division.name}
         subtitle={division.numDevices + " devices"}
-        modalVisible={isDetailsModalVisible}
+        visible={isDetailsModalVisible}
         leftIcon="close"
         rightIcon="ellipsis1"
         leftIconCallback={() => {setIsDetailsModalVisible(false); setIsContextMenuVisible(false)}}
         rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
         contextMenu={
-          // TODO: Change this to a dynamic component (depending on division type)
           <DivisionDetailsContextMenu
-            setIsDetailsModalVisible={setIsDetailsModalVisible}
             isContextMenuVisible={isContextMenuVisible}
             setIsContextMenuVisible={setIsContextMenuVisible}
-            divisionContextMenuUid={division.uid}
           />
         }
         modalContent={
-          // TODO: Change this to a dynamic component (depending on division type)
+          // TODO
           <View></View>
         } 
       />
 
-      <Icon name={"bed"} size={30} color={colors.primaryText} />
+      <DivisionIcon icon={division.icon} size={30} color={colors.primaryText} />
 
       <Text style={styles.divisionName}>{division.name}</Text>
       <Text style={styles.divisionText}>
@@ -66,7 +63,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   selectedDivisionCard: {
-    backgroundColor: colors.transparentPrimary, // TODO change this color?
+    backgroundColor: colors.transparentPrimary,
   },
   divisionName: {
     fontSize: 15,

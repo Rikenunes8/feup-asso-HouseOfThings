@@ -31,10 +31,7 @@ export default function DynamicTextInput({
         onEndEditing={handleEndTyping}
         value={name}
         style={expanded ? styles.inputExpanded : styles.input}
-      > 
-        
-      </TextInput>
-      
+      /> 
     </View>
   );
 }

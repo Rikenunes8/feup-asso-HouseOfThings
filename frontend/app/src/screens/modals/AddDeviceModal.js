@@ -83,6 +83,7 @@ export default function AddDeviceModal() {
         setChooseDeviceModalVisible(true);
         setAddDeviceFormModalVisible(false);
         resetAddDeviceContext();
+        setInputOnFocus(false);
       }}
       rightIconCallback={() => {
         connectCallback();

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Platform } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import colors from "../../../configs/colors";
@@ -10,6 +10,8 @@ export default function DynamicDropDown({
   setItems,
   value,
   setValue,
+  disabled = false,
+  showArrowIcon = true,
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -27,6 +29,8 @@ export default function DynamicDropDown({
         placeholder=""
         dropDownContainerStyle={styles().dropdown}
         style={styles().selector}
+        disabled={disabled}
+        showArrowIcon={showArrowIcon}
       />
     </View>
   );
@@ -35,7 +39,8 @@ export default function DynamicDropDown({
 const styles = (on = false) =>
   StyleSheet.create({
     container: {
-      margin: 20,
+      margin: 15,
+      zIndex: 10,
     },
     dropdown: {
       backgroundColor: colors.background,

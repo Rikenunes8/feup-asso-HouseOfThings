@@ -4,17 +4,38 @@ import { StyleSheet, TouchableOpacity, Text, Image } from "react-native";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 import ModalsContext from "../../contexts/ModalsContext";
 
+import utils from "../../utils/utils";
 import colors from "../../../configs/colors";
+import api from "../../api/api";
 
 export default function ChooseDeviceCard({ type }) {
-  const { setDeviceType } = useContext(AddDeviceContext);
-  const { setChooseDeviceModalVisible, setAddDeviceFormModalVisible } =
-    useContext(ModalsContext);
+  const { deviceGroup, setDeviceType, setAvailableDevices } =
+    useContext(AddDeviceContext);
+
+  const {
+    setChooseDeviceModalVisible,
+    setAddDeviceFormModalVisible,
+    setIsChooseDeviceModalLoading,
+  } = useContext(ModalsContext);
 
   chooseDeviceTypeHandler = () => {
-    setDeviceType(type);
-    setChooseDeviceModalVisible(false);
-    setAddDeviceFormModalVisible(true);
+    setIsChooseDeviceModalLoading(true);
+    api.availableDevices({ group: deviceGroup }).then((devices) => {
+      devices = utils.removeDuplicates(devices);
+
+      setDeviceType(type);
+      setAvailableDevices(devices);
+      setIsChooseDeviceModalLoading(false);
+      if (0 === devices.length) {
+        utils.showErrorMessage(
+          `No ${deviceGroup} device found!`
+        );
+        return;
+      }
+
+      setChooseDeviceModalVisible(false);
+      setAddDeviceFormModalVisible(true);
+    });
   };
 
   return (

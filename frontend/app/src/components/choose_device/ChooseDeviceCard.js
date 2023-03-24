@@ -28,7 +28,7 @@ export default function ChooseDeviceCard({ type }) {
       setIsChooseDeviceModalLoading(false);
       if (0 === devices.length) {
         utils.showErrorMessage(
-          `No ${deviceGroup} device found! Please make sure the device is available and try again.`
+          `No ${deviceGroup} device found!`
         );
         return;
       }

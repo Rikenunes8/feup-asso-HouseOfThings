@@ -24,7 +24,7 @@ class HoT(metaclass=HoTMeta):
   def _loadDevices(self):
     devices = DB().findAllDevices()
     for device in devices:
-      newDevice = self._createAdapter(device['uid'], device)
+      newDevice = DeviceAdapterManager.factory(self._cid, device['uid'], device)
       if newDevice == None: continue
       newDevice.createModel()
       newDevice.connect()

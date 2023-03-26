@@ -15,7 +15,7 @@ export default function DeviceDetailsModal({ device }) {
 
   function getDeviceContextMenu(device) {
     //TODO: list to be expanded
-    switch (device.type) {
+    switch (device.group) {
       case 'light':
         return <LightDetailsContextMenu
           setIsDetailsModalVisible={setDeviceDetailsModalVisible}
@@ -35,7 +35,7 @@ export default function DeviceDetailsModal({ device }) {
   
   function getDeviceModalContent(device) {
     //TODO: list to be expanded
-    switch (device.type) {
+    switch (device.group) {
       case 'light':
         return <LightDetails on={device.on} handler={onOfHandler} />
       default:
@@ -45,7 +45,7 @@ export default function DeviceDetailsModal({ device }) {
 
   function getDeviceIcon(device) {
     //TODO: list to be expanded
-    switch (device.type) {
+    switch (device.group) {
       case 'light':
         return require("../../../../assets/lightbulb.png")
       default:

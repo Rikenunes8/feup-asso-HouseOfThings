@@ -30,7 +30,7 @@ export default function DeviceCard({ device }) {
 
   function getDeviceIcon(device) {
     //TODO: list to be expanded
-    switch (device.type) {
+    switch (device.group) {
       case 'light':
         return require("../../../assets/lightbulb.png")
       default:

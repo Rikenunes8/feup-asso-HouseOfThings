@@ -41,7 +41,7 @@ export default function ChooseDeviceCard({ type }) {
   function getDeviceImage(type) {
     //TODO: List to be extended
     switch(type) {
-      case 'light':
+      case 'light bulb':
         return require("../../../../assets/lightbulb.png")
       default:
         return require("../../../../assets/lightbulb.png")

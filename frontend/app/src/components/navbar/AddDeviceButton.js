@@ -1,22 +1,27 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-import ChooseDeviceModal from "../screens/ChooseDeviceModal";
-import colors from "../../configs/colors";
+import ChooseDeviceModal from "../../screens/modals/ChooseDeviceModal";
+import colors from "../../../configs/colors";
+import AddDeviceModal from "../../screens/modals/AddDeviceModal";
+import AddDeviceContext from "../../contexts/AddDeviceContext";
+import ModalsContext from "../../contexts/ModalsContext";
 
 export default function AddDeviceButton({ children }) {
-  const [modalVisible, setModalVisible] = useState(false);
+  const { deviceType } = useContext(AddDeviceContext);
+  const { chooseDeviceModalVisible, setChooseDeviceModalVisible } =
+    useContext(ModalsContext);
+
+  const [isAddModalVisible, setAddModalVisible] = useState(false);
 
   return (
     <View>
-      <ChooseDeviceModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      />
+      <ChooseDeviceModal setAddModalVisible={setAddModalVisible} />
+      <AddDeviceModal />
 
       <View style={styles.buttonBackgroud}>
         <TouchableOpacity
           style={styles.buttonOppacity}
-          onPress={() => setModalVisible(!modalVisible)}
+          onPress={() => setChooseDeviceModalVisible(!chooseDeviceModalVisible)}
         >
           <View style={styles.button}>{children}</View>
         </TouchableOpacity>

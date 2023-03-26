@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,19 +8,17 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import DetailsModal from "./DetailsModal";
-import LightDetails from "./device_details/light/LightDetails.js";
-import LightDetailsContextMenu from "./device_details/light/LightDetailsContextMenu";
 import DevicesContext from "../contexts/DevicesContext";
+import ModalsContext from "../contexts/ModalsContext";
+import DeviceDetailsModal from "../screens/modals/DeviceDetailsModal";
 
 import api from "../api/api";
 import colors from "../../configs/colors";
 
 export default function DeviceCard({ device }) {
   const { updateDevice } = useContext(DevicesContext);
-
-  const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
-  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
+  const { deviceDetailsModalVisible, setDeviceDetailsModalVisible } =
+    useContext(ModalsContext);
 
   onOfHandler = (isEnabled) => {
     console.log(`Turning ${isEnabled ? "off" : "on"} device...`);
@@ -29,36 +27,6 @@ export default function DeviceCard({ device }) {
     api.actionDevice(device.uid, { action: action });
     updateDevice({ on: !device.on }, device.uid);
   };
-
-  function getDeviceContextMenu(device) {
-    //TODO: list to be expanded
-    switch (device.type) {
-      case 'light':
-        return <LightDetailsContextMenu
-        setIsDetailsModalVisible={setIsDetailsModalVisible}
-        isContextMenuVisible={isContextMenuVisible}
-        setIsContextMenuVisible={setIsContextMenuVisible}
-        deviceContextMenuUid={device.uid}
-        />
-      default:
-        return <LightDetailsContextMenu
-        setIsDetailsModalVisible={setIsDetailsModalVisible}
-        isContextMenuVisible={isContextMenuVisible}
-        setIsContextMenuVisible={setIsContextMenuVisible}
-        deviceContextMenuUid={device.uid}
-        />
-    }
-  }
-  
-  function getDeviceModalContent(device) {
-    //TODO: list to be expanded
-    switch (device.type) {
-      case 'light':
-        return <LightDetails on={device.on} handler={onOfHandler} />
-      default:
-        return <LightDetails on={device.on} handler={onOfHandler} />
-    }
-  }
 
   function getDeviceIcon(device) {
     //TODO: list to be expanded
@@ -73,19 +41,9 @@ export default function DeviceCard({ device }) {
   return (
     <TouchableOpacity
       style={styles.deviceCard}
-      onPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
+      onPress={() => setDeviceDetailsModalVisible(!deviceDetailsModalVisible)}
     >
-      <DetailsModal
-        title={device.name || "Philips Bulb"}
-        subtitle={device.division || "Living Room"}
-        modalVisible={isDetailsModalVisible}
-        leftIcon="close"
-        rightIcon="ellipsis1"
-        leftIconCallback={() => {setIsDetailsModalVisible(false); setIsContextMenuVisible(false)}}
-        rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
-        contextMenu={getDeviceContextMenu(device)}
-        modalContent={getDeviceModalContent(device)} 
-      />
+      <DeviceDetailsModal device={device} />
 
       <Image
         style={styles.deviceIcon}
@@ -93,10 +51,8 @@ export default function DeviceCard({ device }) {
       />
 
       <View style={{ justifyContent: "center" }}>
-        <Text style={styles.deviceName}>{device.name || "Philips Bulb"}</Text>
-        <Text style={styles.divisionText}>
-          {device.division || "Living Room"}
-        </Text>
+        <Text style={styles.deviceName}>{device.name}</Text>
+        <Text style={styles.divisionText}>{device.divisions[0]}</Text>
       </View>
 
       <Switch
@@ -133,5 +89,6 @@ const styles = StyleSheet.create({
   },
   divisionText: {
     color: colors.secondaryText,
+    textTransform: "capitalize",
   },
 });

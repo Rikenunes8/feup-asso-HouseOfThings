@@ -7,8 +7,8 @@ const getDevices = async () => {
   } catch (error) {
     console.error(error);
     return [
-      { name: "Philips Bulb", type: "light", division: "Family Room", enabled: true },
-      { name: "Philips Bulb", type: "light", division: "Tiago Room", enabled: false },
+      { name: "Philips Bulb", divisions: ["Family Room"], enabled: true },
+      { name: "Philips Bulb", divisions: ["Tiago Room"], enabled: false },
     ];
   }
 };
@@ -19,15 +19,15 @@ const getCategories = async () => {
     return response.data.categories;
   } catch (error) {
     console.error(error);
-    return [];
+    return [{
+      name: "light", subcategories: ["light1"]
+    }];
   }
 };
 
-const addDevice = async (id, type) => {
+const addDevice = async (id, device) => {
   try {
-    const response = await apiClient.post(`/devices/${id}/connect`, {
-      group: type,
-    });
+    const response = await apiClient.post(`/devices/${id}/connect`, device);
     if (response.data.error) {
       console.error(response.data.error);
       return false;
@@ -66,10 +66,23 @@ const actionDevice = async (id, action) => {
   }
 };
 
+const availableDevices = async (body) => {
+  try {
+    const response = await apiClient.get("/devices/available", {
+      params: { ...body },
+    });
+    return response.data.devices;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
 export default {
   getDevices,
   getCategories,
   addDevice,
   disconnectDevice,
   actionDevice,
+  availableDevices,
 };

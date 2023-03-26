@@ -1,10 +1,8 @@
 import time
 
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
-from src.controller.adapter.LightMqttAdapter import LightMqttAdapter
-from src.model.DeviceManager import DeviceManager
+from src.controller.DeviceAdapterManager import DeviceAdapterManager
 from src.database.DB import DB
-from src.controller.mqtt import connect_mqtt, disconnect_mqtt, publish, subscribe
 
 
 class HoTMeta(type):
@@ -20,30 +18,26 @@ class HoTMeta(type):
 class HoT(metaclass=HoTMeta):
     def __init__(self):
         print("HoT init")
-        self._devManager = DeviceManager()
+        self._devManager = DeviceAdapterManager()
         self._cid = "HoT"  # TODO: set this to something better
         self._loadDevices()
 
     def _loadDevices(self):
         devices = DB().findAllDevices()
         for device in devices:
-            self.connect(device['uid'], device)
-            self._devManager.getDevice(device['uid']).createModel()
-
-    def _createAdapter(self, uid: str, config: dict) -> DeviceAdapter:
-        group = config.get("group")
-        if group == "light":
-            return LightMqttAdapter(self._cid, uid)
-        else:
-            print("No device for group: " + group)
-        return None
+            newDevice = self._createAdapter(device['uid'], device)
+            if newDevice == None:
+                continue
+            newDevice.createModel()
+            newDevice.connect()
+            self._devManager.add(device['uid'], newDevice)
 
     def devices(self) -> list:
         ids = self._devManager.getDeviceIds()
         return [self._devManager.getDevice(id).getModel() for id in ids]
 
     def connect(self, uid: str, config: dict) -> str:
-        newDevice = self._createAdapter(uid, config)
+        newDevice = DeviceAdapterManager.factory(self._cid, uid, config)
         if newDevice == None:
             return "No device for group: " + config.get("group")
         success = newDevice.connect()
@@ -85,7 +79,7 @@ class HoT(metaclass=HoTMeta):
         return DB().findAllCategories()
 
     def available(self, config: dict):
-        adapter = self._createAdapter(None, config)
+        adapter = DeviceAdapterManager.factory(self._cid, None, config)
         if adapter == None:
             return
 

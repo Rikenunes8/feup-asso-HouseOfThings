@@ -1,44 +1,50 @@
 import React, { useContext } from "react";
 import { StyleSheet, TouchableOpacity, Text, Image } from "react-native";
-import DevicesContext from "../../contexts/DevicesContext";
 
+import AddDeviceContext from "../../contexts/AddDeviceContext";
+import ModalsContext from "../../contexts/ModalsContext";
+
+import utils from "../../utils/utils";
 import colors from "../../../configs/colors";
 import api from "../../api/api";
 
 export default function ChooseDeviceCard({ type }) {
-  const { addDevice } = useContext(DevicesContext);
+  const { deviceGroup, setDeviceType, setAvailableDevices } =
+    useContext(AddDeviceContext);
 
-  addDeviceHandler = () => {
+  const {
+    setChooseDeviceModalVisible,
+    setAddDeviceFormModalVisible,
+    setIsChooseDeviceModalLoading,
+  } = useContext(ModalsContext);
 
-    console.log(`Adding ${type}...`);
-    //let id = Math.random();
-    let id = 1;
+  chooseDeviceTypeHandler = () => {
+    setIsChooseDeviceModalLoading(true);
+    api.availableDevices({ group: deviceGroup }).then((devices) => {
+      devices = utils.removeDuplicates(devices);
 
-    switch (type) {
-      case "light":
-        api.addDevice(id, type).then((success) => {
-        success
-          ? addDevice({
-              uid: id,
-              name: "Light Bulb",
-              type: "light",
-              division: "Living Room", //TODO: Change this later
-              enabled: false,
-            })
-          : console.log("Failed to add device");
-        });
-        break;
+      setDeviceType(type);
+      setAvailableDevices(devices);
+      setIsChooseDeviceModalLoading(false);
+      if (0 === devices.length) {
+        utils.showErrorMessage(
+          `No ${deviceGroup} device found!`
+        );
+        return;
+      }
+
+      setChooseDeviceModalVisible(false);
+      setAddDeviceFormModalVisible(true);
+    });
+  };
+
+  function getDeviceImage(type) {
+    //TODO: List to be extended
+    switch(type) {
+      case 'light':
+        return require("../../../../assets/lightbulb.png")
       default:
-        break;
-    }
-  }
-
-  function getDeviceImage(type){
-    switch (type) {
-      case "light":
-        return require("../../../../assets/lightbulb.png");
-      default:
-        return require("../../../../assets/lightbulb.png");
+        return require("../../../../assets/lightbulb.png")
     }
   }
 
@@ -46,7 +52,7 @@ export default function ChooseDeviceCard({ type }) {
     <TouchableOpacity
       key={type}
       style={styles.card}
-      onPress={() => addDeviceHandler(type)}
+      onPress={() => chooseDeviceTypeHandler(type)}
     >
       <Image
         style={styles.cardImage}

@@ -51,6 +51,5 @@ def connectedDevices():
 
 @api.get("/devices/available")
 def available():
-  if (not isContentJson(request)): return notJsonError()
-  devices = HoT().available(request.json)
+  devices = HoT().available(request.args.to_dict())
   return jsonify({'devices': devices})

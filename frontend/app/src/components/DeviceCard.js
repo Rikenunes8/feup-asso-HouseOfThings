@@ -11,6 +11,7 @@ import {
 import DevicesContext from "../contexts/DevicesContext";
 import ModalsContext from "../contexts/ModalsContext";
 import DeviceDetailsModal from "../screens/modals/DeviceDetailsModal";
+import { getDeviceIcon } from "../utils/DevicePropsUtils";
 
 import api from "../api/api";
 import colors from "../../configs/colors";
@@ -28,16 +29,6 @@ export default function DeviceCard({ device }) {
     updateDevice({ on: !device.on }, device.uid);
   };
 
-  function getDeviceIcon(device) {
-    //TODO: list to be expanded
-    switch (device.group) {
-      case 'light':
-        return require("../../../assets/lightbulb.png")
-      default:
-        return require("../../../assets/lightbulb.png")
-    }
-  }
-
   return (
     <TouchableOpacity
       style={styles.deviceCard}
@@ -47,7 +38,7 @@ export default function DeviceCard({ device }) {
 
       <Image
         style={styles.deviceIcon}
-        source={getDeviceIcon(device)}
+        source={getDeviceIcon(device.group)}
       />
 
       <View style={{ justifyContent: "center" }}>

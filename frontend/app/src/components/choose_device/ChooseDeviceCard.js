@@ -8,6 +8,8 @@ import utils from "../../utils/utils";
 import colors from "../../../configs/colors";
 import api from "../../api/api";
 
+import { getDeviceImage } from "../../utils/DevicePropsUtils";
+
 export default function ChooseDeviceCard({ type }) {
   const { deviceGroup, setDeviceType, setAvailableDevices } =
     useContext(AddDeviceContext);
@@ -37,16 +39,6 @@ export default function ChooseDeviceCard({ type }) {
       setAddDeviceFormModalVisible(true);
     });
   };
-
-  function getDeviceImage(type) {
-    //TODO: List to be extended
-    switch(type) {
-      case 'light bulb':
-        return require("../../../../assets/lightbulb.png")
-      default:
-        return require("../../../../assets/lightbulb.png")
-    }
-  }
 
   return (
     <TouchableOpacity

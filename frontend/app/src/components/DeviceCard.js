@@ -11,6 +11,7 @@ import {
 import DevicesContext from "../contexts/DevicesContext";
 import ModalsContext from "../contexts/ModalsContext";
 import DeviceDetailsModal from "../screens/modals/DeviceDetailsModal";
+import { getDeviceIcon } from "../utils/DevicePropsUtils";
 
 import api from "../api/api";
 import colors from "../../configs/colors";
@@ -37,7 +38,7 @@ export default function DeviceCard({ device }) {
 
       <Image
         style={styles.deviceIcon}
-        source={require("../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
+        source={getDeviceIcon(device.group)}
       />
 
       <View style={{ justifyContent: "center" }}>

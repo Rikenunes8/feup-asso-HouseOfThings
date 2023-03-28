@@ -8,6 +8,8 @@ import utils from "../../utils/utils";
 import colors from "../../../configs/colors";
 import api from "../../api/api";
 
+import { getDeviceImage } from "../../utils/DevicePropsUtils";
+
 export default function ChooseDeviceCard({ type }) {
   const { deviceGroup, setDeviceType, setAvailableDevices } =
     useContext(AddDeviceContext);
@@ -46,7 +48,7 @@ export default function ChooseDeviceCard({ type }) {
     >
       <Image
         style={styles.cardImage}
-        source={require("../../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
+        source={getDeviceImage(type)}
       />
       <Text style={styles.cardText}>{type}</Text>
     </TouchableOpacity>

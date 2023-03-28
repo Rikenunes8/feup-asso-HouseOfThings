@@ -6,6 +6,7 @@ import DevicesContext from "../../contexts/DevicesContext";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 
 import utils from "../../utils/utils";
+import { getDeviceIcon } from "../../utils/DevicePropsUtils";
 import api from "../../api/api";
 
 export default function AddDeviceModal() {
@@ -88,7 +89,7 @@ export default function AddDeviceModal() {
       rightIconCallback={() => {
         connectCallback();
       }}
-      icon={require("../../../../assets/lightbulb.png")} // TODO: Change this to a dynamic icon
+      icon={getDeviceIcon(deviceGroup)}
       modalContent={
         <AddDeviceForm
           inputOnFocus={inputOnFocus}

@@ -26,10 +26,15 @@ export default function DeviceDetailsModal({ device }) {
     setDeviceDetailsModalVisible(false);
     setIsContextMenuVisible(false);
     setIsMenuModalRenaming(false);
+    resetDeviceName();
   };
 
   const renameCallback = (name) => {
     setDeviceName(name);
+  };
+
+  const resetDeviceName = () => {
+    setDeviceName(device.name);
   };
 
   return (
@@ -49,7 +54,8 @@ export default function DeviceDetailsModal({ device }) {
         deviceName,
         setDeviceDetailsModalVisible,
         isContextMenuVisible,
-        setIsContextMenuVisible
+        setIsContextMenuVisible,
+        resetDeviceName
       )}
       modalContent={getDeviceModalContent(device)}
       isLoading={isDeviceDetailsModalLoading}

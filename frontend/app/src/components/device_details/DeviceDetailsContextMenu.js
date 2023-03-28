@@ -14,6 +14,7 @@ export default function DeviceDetailsContextMenu({
   setIsContextMenuVisible,
   deviceContextMenuUid,
   deviceContextMenuName,
+  resetDeviceContextMenuName,
 }) {
   const { removeDevice, renameDevice } = useContext(DevicesContext);
 
@@ -79,36 +80,48 @@ export default function DeviceDetailsContextMenu({
       });
   };
 
+  const cancelCallback = () => {
+    setIsContextMenuVisible(false);
+    setIsMenuModalRenaming(false);
+    resetDeviceContextMenuName();
+  };
+
+  const mainMenuOptions = [
+    {
+      name: "Rename",
+      icon: "edit-2",
+      color: colors.primaryText,
+      callback: renameCallback,
+    },
+    {
+      name: "Disconnect",
+      icon: "wifi-off",
+      color: colors.red,
+      callback: disconnectCallback,
+    },
+  ];
+
+  const renameMenuOptions = [
+    {
+      name: "Save",
+      icon: "save",
+      color: colors.active,
+      callback: saveCallback,
+    },
+    {
+      name: "Cancel",
+      icon: "slash",
+      color: colors.red,
+      callback: cancelCallback,
+    },
+  ];
+
   return (
     <>
       <ContextMenu
         isContextMenuVisible={isContextMenuVisible}
         setIsContextMenuVisible={setIsContextMenuVisible}
-        options={
-          isMenuModalRenaming
-            ? [
-                {
-                  name: "Save",
-                  icon: "save",
-                  color: colors.active,
-                  callback: saveCallback,
-                },
-              ]
-            : [
-                {
-                  name: "Rename",
-                  icon: "edit-2",
-                  color: colors.primaryText,
-                  callback: renameCallback,
-                },
-                {
-                  name: "Disconnect",
-                  icon: "wifi-off",
-                  color: colors.red,
-                  callback: disconnectCallback,
-                },
-              ]
-        }
+        options={isMenuModalRenaming ? renameMenuOptions : mainMenuOptions}
       />
     </>
   );

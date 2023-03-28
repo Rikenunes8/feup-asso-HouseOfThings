@@ -16,17 +16,17 @@ class LightMqttAdapter(DeviceAdapter):
         self._uid = uid
         self._available = []
 
-    def createModel(self) -> None:
+    def create_model(self) -> None:
         self._model = LightDevice(self._uid)
 
-    def getModel(self) -> LightDevice:
+    def get_model(self) -> LightDevice:
         return self._model
 
     def on_connect(self, client, userdata, msg):
         if self._uid != msg.payload.decode():
             return
         print(f"Connected to device with id: {self._uid}")
-        self.createModel()
+        self.create_model()
 
     def on_available(self, client, userdata, msg):
         self._available.append(msg.payload.decode())
@@ -55,15 +55,15 @@ class LightMqttAdapter(DeviceAdapter):
         disconnect_mqtt(self._client)
         self._client = None
 
-    def turnOn(self) -> None:
+    def turn_on(self) -> None:
         publish(self._client, f"{self._uid}-turnOn", self._cid)
-        self._model.turnOn()
+        self._model.turn_on()
 
-    def turnOff(self) -> None:
+    def turn_off(self) -> None:
         publish(self._client, f"{self._uid}-turnOff", self._cid)
-        self._model.turnOff()
+        self._model.turn_off()
 
-    def startDiscovery(self):
+    def start_discovery(self):
         self._client = connect_mqtt()
         self._client.loop_start()
 
@@ -71,7 +71,7 @@ class LightMqttAdapter(DeviceAdapter):
                   f"{self._cid}-light-available", self.on_available)
         publish(self._client, "light-available", self._cid)
 
-    def finishDiscovery(self):
+    def finish_discovery(self):
         disconnect_mqtt(self._client)
         self._client = None
         aux = self._available

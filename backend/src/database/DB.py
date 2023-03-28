@@ -29,21 +29,21 @@ class DB(metaclass=DBMeta):
         self._client = pymongo.MongoClient(mongo_uri)
         self._db = self._client[database]
 
-    def addDevice(self, uid, props):
-        if not self.findDevice(uid):
+    def add_device(self, uid, props):
+        if not self.find_device(uid):
             self._db['devices'].insert_one({'uid': uid, **props})
 
-    def deleteDevice(self, uid):
+    def delete_device(self, uid):
         self._db['devices'].delete_one({'uid': uid})
 
-    def updateDevice(self, uid, props):
+    def update_device(self, uid, props):
         self._db['devices'].update_one({'uid': uid}, {'$set': props})
 
-    def findDevice(self, uid) -> dict:
+    def find_device(self, uid) -> dict:
         return self._db['devices'].find_one({'uid': uid}, {'_id': 0})
 
-    def findAllDevices(self) -> list[dict]:
+    def find_all_devices(self) -> list[dict]:
         return list(self._db['devices'].find({}, {'_id': 0}))
 
-    def findAllCategories(self) -> list[dict]:
+    def find_all_categories(self) -> list[dict]:
         return list(self._db['categories'].find({}, {'_id': 0}))

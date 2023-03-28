@@ -5,16 +5,16 @@ export const AddDeviceProvider = ({ children }) => {
   const [deviceUUID, setDeviceUUID] = useState(null);
   const [deviceName, setDeviceName] = useState("");
   const [deviceDivision, setDeviceDivision] = useState(null);
-  const [deviceGroup, setDeviceGroup] = useState("");
-  const [deviceType, setDeviceType] = useState(null);
+  const [deviceCategory, setDeviceCategory] = useState("");
+  const [deviceSubcategory, setDeviceSubcategory] = useState(null);
   const [availableDevices, setAvailableDevices] = useState([]);
 
   const resetAddDeviceContext = () => {
     setDeviceUUID("");
     setDeviceName("");
     setDeviceDivision(null);
-    setDeviceGroup("");
-    setDeviceType(null);
+    setDeviceCategory("");
+    setDeviceSubcategory(null);
     setAvailableDevices([]);
   };
 
@@ -27,10 +27,10 @@ export const AddDeviceProvider = ({ children }) => {
         setDeviceName,
         deviceDivision,
         setDeviceDivision,
-        deviceGroup,
-        setDeviceGroup,
-        deviceType,
-        setDeviceType,
+        deviceCategory,
+        setDeviceCategory,
+        deviceSubcategory,
+        setDeviceSubcategory,
         availableDevices,
         setAvailableDevices,
         resetAddDeviceContext,

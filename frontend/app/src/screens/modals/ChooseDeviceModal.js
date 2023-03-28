@@ -44,7 +44,7 @@ export default function ChooseDeviceModal() {
               setSelectedCategory={setSelectedCategory}
             />
             <ChooseDeviceScrollView
-              deviceTypes={selectedCategory.subcategories}
+              deviceSubcategories={selectedCategory.subcategories}
             />
           </View>
         ) : null

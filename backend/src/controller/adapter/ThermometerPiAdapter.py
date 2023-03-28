@@ -1,11 +1,11 @@
 import time
 
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
-from src.model.devices.ThermostatDevice import ThermostatDevice
+from src.model.devices.ThermometerDevice import ThermometerDevice
 from src.controller.mqtt import connect_mqtt, disconnect_mqtt, publish, subscribe
 
 
-class ThermostatPIAdapter(DeviceAdapter):
+class ThermometerPiAdapter(DeviceAdapter):
 
     MAX_TIME_TO_CONNECT = 5
 
@@ -17,9 +17,9 @@ class ThermostatPIAdapter(DeviceAdapter):
         self._available = []
 
     def create_model(self) -> None:
-        self._model = ThermostatDevice(self._uid)
+        self._model = ThermometerDevice(self._uid)
 
-    def get_model(self) -> ThermostatDevice:
+    def get_model(self) -> ThermometerDevice:
         return self._model
 
     def on_connect(self, client, userdata, msg):
@@ -64,8 +64,8 @@ class ThermostatPIAdapter(DeviceAdapter):
         self._client.loop_start()
 
         subscribe(self._client,
-                  f"{self._cid}-thermostat-available", self.on_available)
-        publish(self._client, "thermostat-available", self._cid)
+                  f"{self._cid}-thermometer-available", self.on_available)
+        publish(self._client, "thermometer-available", self._cid)
 
     def finish_discovery(self):
         disconnect_mqtt(self._client)

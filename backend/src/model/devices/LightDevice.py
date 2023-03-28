@@ -5,7 +5,7 @@ class LightDevice(Device):
 
     def __init__(self, id: int, on: bool = False) -> None:
         super().__init__(id)
-        self._group = "light"
+        self._category = "light"
         super().add(self.state(on))
 
     def state(self, on: bool) -> dict:

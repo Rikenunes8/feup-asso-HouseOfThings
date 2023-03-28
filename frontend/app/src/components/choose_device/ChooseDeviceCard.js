@@ -10,8 +10,8 @@ import api from "../../api/api";
 
 import { getDeviceImage } from "../../utils/DevicePropsUtils";
 
-export default function ChooseDeviceCard({ type }) {
-  const { deviceGroup, setDeviceType, setAvailableDevices } =
+export default function ChooseDeviceCard({ subcategory }) {
+  const { deviceCategory, setDeviceSubcategory, setAvailableDevices } =
     useContext(AddDeviceContext);
 
   const {
@@ -22,15 +22,15 @@ export default function ChooseDeviceCard({ type }) {
 
   chooseDeviceTypeHandler = () => {
     setIsChooseDeviceModalLoading(true);
-    api.availableDevices({ group: deviceGroup }).then((devices) => {
+    api.availableDevices({ category: deviceCategory }).then((devices) => {
       devices = utils.removeDuplicates(devices);
 
-      setDeviceType(type);
+      setDeviceSubcategory(subcategory);
       setAvailableDevices(devices);
       setIsChooseDeviceModalLoading(false);
       if (0 === devices.length) {
         utils.showErrorMessage(
-          `No ${deviceGroup} device found!`
+          `No ${deviceCategory} device found!`
         );
         return;
       }
@@ -42,15 +42,15 @@ export default function ChooseDeviceCard({ type }) {
 
   return (
     <TouchableOpacity
-      key={type}
+      key={subcategory}
       style={styles.card}
-      onPress={() => chooseDeviceTypeHandler(type)}
+      onPress={() => chooseDeviceTypeHandler(subcategory)}
     >
       <Image
         style={styles.cardImage}
-        source={getDeviceImage(type)}
+        source={getDeviceImage(subcategory)}
       />
-      <Text style={styles.cardText}>{type}</Text>
+      <Text style={styles.cardText}>{subcategory}</Text>
     </TouchableOpacity>
   );
 }

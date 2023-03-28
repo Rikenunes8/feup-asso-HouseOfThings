@@ -16,28 +16,28 @@ temp : float = sense.get_temperature()
 def on_connect(client, userdata, msg):
   global cid
   if (cid != None):
-    print(f"Thermostat was already connected by `{cid}`")
+    print(f"Thermometer was already connected by `{cid}`")
     return
   cid = msg.payload.decode()
-  print(f"Thermostat was connected by `{cid}`")
+  print(f"Thermometer was connected by `{cid}`")
   publish(client, f"{cid}-connected", uid)
 
 def on_disconnect(client, userdata, msg):
   global cid, state
   if (cid == None or cid != msg.payload.decode()):
-    print(f"Thermostat is not connected or is connected to other cid")
+    print(f"Thermometer is not connected or is connected to other cid")
     return
-  print(f"Thermostat was disconnected by `{cid}`")
+  print(f"Thermometer was disconnected by `{cid}`")
   cid = None
 
 
 def on_available(client, userdata, msg):
   global cid
   if (cid != None):
-    print(f"Thermostat is not available")
+    print(f"Thermometer is not available")
     return
   cidTemp = msg.payload.decode()
-  publish(client, f"{cidTemp}-thermostat-available", uid)
+  publish(client, f"{cidTemp}-thermometer-available", uid)
 
   
 def start_mqtt():
@@ -45,14 +45,14 @@ def start_mqtt():
 
   subscribe(client, f"{uid}-connect", on_connect)
   subscribe(client, f"{uid}-disconnect", on_disconnect)
-  subscribe(client, "thermostat-available", on_available)
+  subscribe(client, "thermometer-available", on_available)
 
   client.loop_start()
   return client
 
 if __name__ == '__main__':
   if (len(sys.argv) > 2):
-    print("Usage: python3 vThermostatPI.py [uuid]")
+    print("Usage: python3 vThermometerPI.py [uuid]")
     exit(1)
   elif (len(sys.argv) == 2):
     uid = sys.argv[1]

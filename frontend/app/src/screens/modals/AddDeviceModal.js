@@ -22,8 +22,8 @@ export default function AddDeviceModal() {
 
   const {
     deviceUUID,
-    deviceType,
-    deviceGroup,
+    deviceSubcategory,
+    deviceCategory,
     deviceName,
     deviceDivision,
     resetAddDeviceContext,
@@ -52,10 +52,10 @@ export default function AddDeviceModal() {
     const device = {
       name: deviceName,
       divisions: [deviceDivision],
-      group: deviceGroup,
+      category: deviceCategory,
     };
 
-    console.log(`Adding ${deviceType}...`);
+    console.log(`Adding ${deviceSubcategory}...`);
     setIsDeviceFormModalLoading(true);
     api.addDevice(deviceUUID, device).then((success) => {
       setIsDeviceFormModalLoading(false);
@@ -77,7 +77,7 @@ export default function AddDeviceModal() {
   return (
     <IconModal
       visible={addDeviceFormModalVisible}
-      title={(deviceType && utils.capitalize(deviceType)) || "Title"}
+      title={(deviceSubcategory && utils.capitalize(deviceSubcategory)) || "Title"}
       leftIcon="close"
       rightIcon="check"
       leftIconCallback={() => {
@@ -89,7 +89,7 @@ export default function AddDeviceModal() {
       rightIconCallback={() => {
         connectCallback();
       }}
-      icon={getDeviceIcon(deviceGroup)}
+      icon={getDeviceIcon(deviceCategory)}
       modalContent={
         <AddDeviceForm
           inputOnFocus={inputOnFocus}

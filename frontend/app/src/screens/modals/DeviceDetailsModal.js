@@ -25,7 +25,7 @@ export default function DeviceDetailsModal({ device }) {
         setIsContextMenuVisible(false);
       }}
       rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
-      icon={getDeviceIcon(device.group)}
+      icon={getDeviceIcon(device.category)}
       contextMenu={getDeviceContextMenu(device, setDeviceDetailsModalVisible, isContextMenuVisible, setIsContextMenuVisible)}
       modalContent={getDeviceModalContent(device)}
       isLoading={isDeviceDetailsModalLoading}

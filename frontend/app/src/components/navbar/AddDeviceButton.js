@@ -7,7 +7,7 @@ import AddDeviceContext from "../../contexts/AddDeviceContext";
 import ModalsContext from "../../contexts/ModalsContext";
 
 export default function AddDeviceButton({ children }) {
-  const { deviceType } = useContext(AddDeviceContext);
+  const { deviceSubcategory } = useContext(AddDeviceContext);
   const { chooseDeviceModalVisible, setChooseDeviceModalVisible } =
     useContext(ModalsContext);
 

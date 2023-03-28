@@ -14,8 +14,13 @@ export default function LightDetailsContextMenu({
   setIsContextMenuVisible,
   deviceContextMenuUid,
 }) {
-  const { removeDevice } = useContext(DevicesContext);
-  const { setIsDeviceDetailsModalLoading } = useContext(ModalsContext);
+  const { removeDevice, renameDevice } = useContext(DevicesContext);
+
+  const {
+    setIsDeviceDetailsModalLoading,
+    isMenuModalRenaming,
+    setIsMenuModalRenaming,
+  } = useContext(ModalsContext);
 
   const disconnectCallback = () => {
     utils.showConfirmDialog(
@@ -46,25 +51,62 @@ export default function LightDetailsContextMenu({
     );
   };
 
+  const renameCallback = () => {
+    setIsContextMenuVisible(false);
+    setIsMenuModalRenaming(true);
+  };
+
+  const saveCallback = () => {
+    console.log("Renaming device...");
+    setIsDeviceDetailsModalLoading(true);
+
+    const name = "ahhhhhh";
+    api.renameDevice(deviceContextMenuUid, name).then((success) => {
+      setIsDeviceDetailsModalLoading(false);
+      setIsContextMenuVisible(false);
+      setIsMenuModalRenaming(false);
+
+      if (success) {
+        console.log("Device renamed successfully");
+        renameDevice(deviceContextMenuUid, name);
+        return;
+      }
+
+      console.log("Failed to rename device");
+      utils.showErrorMessage("Failed to rename device");
+    });
+  };
+
   return (
     <>
       <ContextMenu
         isContextMenuVisible={isContextMenuVisible}
         setIsContextMenuVisible={setIsContextMenuVisible}
-        options={[
-          {
-            name: "Rename",
-            icon: "edit-2",
-            color: colors.primaryText,
-            callback: () => console.log("TODO: Rename"),
-          },
-          {
-            name: "Disconnect",
-            icon: "wifi-off",
-            color: colors.red,
-            callback: disconnectCallback,
-          },
-        ]}
+        options={
+          isMenuModalRenaming
+            ? [
+                {
+                  name: "Save",
+                  icon: "save",
+                  color: colors.active,
+                  callback: saveCallback,
+                },
+              ]
+            : [
+                {
+                  name: "Rename",
+                  icon: "edit-2",
+                  color: colors.primaryText,
+                  callback: renameCallback,
+                },
+                {
+                  name: "Disconnect",
+                  icon: "wifi-off",
+                  color: colors.red,
+                  callback: disconnectCallback,
+                },
+              ]
+        }
       />
     </>
   );

@@ -19,9 +19,12 @@ const getCategories = async () => {
     return response.data.categories;
   } catch (error) {
     console.error(error);
-    return [{
-      name: "light", subcategories: ["light1"]
-    }];
+    return [
+      {
+        name: "light",
+        subcategories: ["light1"],
+      },
+    ];
   }
 };
 
@@ -66,6 +69,22 @@ const actionDevice = async (id, action) => {
   }
 };
 
+const renameDevice = async (id, name) => {
+  try {
+    const response = await apiClient.post(`/devices/${id}/rename`, {
+      name: name,
+    });
+    if (response.data.error) {
+      console.error(response.data.error);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 const availableDevices = async (body) => {
   try {
     const response = await apiClient.get("/devices/available", {
@@ -84,5 +103,6 @@ export default {
   addDevice,
   disconnectDevice,
   actionDevice,
+  renameDevice,
   availableDevices,
 };

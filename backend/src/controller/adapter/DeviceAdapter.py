@@ -1,30 +1,31 @@
 from abc import ABC, abstractmethod
 from src.model.devices.Device import Device
 
-class DeviceAdapter(ABC):  
-  def __init__(self):
-    super().__init__()
-    self._model = None
 
-  @abstractmethod
-  def createModel(self) -> None:
-    pass
+class DeviceAdapter(ABC):
+    def __init__(self):
+        super().__init__()
+        self._model = None
 
-  def getModel(self) -> Device:
-    return self._model
+    @abstractmethod
+    def createModel(self) -> None:
+        pass
 
-  @abstractmethod
-  def connect(self) -> bool:
-    pass
+    def getModel(self) -> Device:
+        return self._model
 
-  @abstractmethod
-  def disconnect(self) -> None:
-    pass
+    @abstractmethod
+    def connect(self) -> bool:
+        pass
 
-  @abstractmethod
-  def startDiscovery(self):
-    pass
+    @abstractmethod
+    def disconnect(self) -> None:
+        pass
 
-  @abstractmethod
-  def finishDiscovery(self):
-    pass
+    @abstractmethod
+    def startDiscovery(self):
+        pass
+
+    @abstractmethod
+    def finishDiscovery(self):
+        pass

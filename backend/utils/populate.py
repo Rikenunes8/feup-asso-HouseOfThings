@@ -20,19 +20,19 @@ def main():
         database = 'HoT'
     client = pymongo.MongoClient(mongo_uri)
     if categories not in client[database].list_collection_names():
-        buildCategories(client[database][categories])
+        build_categories(client[database][categories])
 
 
-def buildCategories(db):
-    addLights(db)
-    addSensors(db)
-    addSecurity(db)
-    addSockets(db)
-    addAppliances(db)
-    addOthers(db)
+def build_categories(db):
+    add_lights(db)
+    add_sensors(db)
+    add_security(db)
+    add_sockets(db)
+    add_appliances(db)
+    add_others(db)
 
 
-def addLights(db):
+def add_lights(db):
     db.insert_one({
         'name': 'light',
         'subcategories': [
@@ -41,7 +41,7 @@ def addLights(db):
     })
 
 
-def addSensors(db):
+def add_sensors(db):
     db.insert_one({
         'name': 'sensor',
         'subcategories': [
@@ -52,7 +52,7 @@ def addSensors(db):
     })
 
 
-def addSecurity(db):
+def add_security(db):
     db.insert_one({
         'name': 'security',
         'subcategories': [
@@ -62,7 +62,7 @@ def addSecurity(db):
     })
 
 
-def addSockets(db):
+def add_sockets(db):
     db.insert_one({
         'name': 'socket',
         'subcategories': [
@@ -72,7 +72,7 @@ def addSockets(db):
     })
 
 
-def addAppliances(db):
+def add_appliances(db):
     db.insert_one({
         'name': 'appliance',
         'subcategories': [
@@ -87,7 +87,7 @@ def addAppliances(db):
     })
 
 
-def addOthers(db):
+def add_others(db):
     db.insert_one({
         'name': 'other',
         'subcategories': [

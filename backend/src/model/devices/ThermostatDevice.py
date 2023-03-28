@@ -10,14 +10,14 @@ class ThermostatDevice(Device):
     def state(self, temperature: float) -> dict:
         return {"temperature": temperature}
 
-    def setTemperature(self, temperature: float) -> None:
+    def set_temperature(self, temperature: float) -> None:
         super().update(self.state(temperature))
 
-    def getTemperature(self) -> float:
+    def get_temperature(self) -> float:
         return super().find()["temperature"]
 
     def clear(self) -> None:
         super().remove()
 
-    def toJson(self) -> dict:
+    def to_json(self) -> dict:
         return super().find()

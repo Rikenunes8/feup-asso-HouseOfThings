@@ -14,10 +14,10 @@ class DeviceAdapterManager:
         if self._devices.get(id) != None:
             del self._devices[id]
 
-    def getDevice(self, id) -> DeviceAdapter:
+    def get_device(self, id) -> DeviceAdapter:
         return self._devices.get(id)
 
-    def getDeviceIds(self) -> list:
+    def get_device_ids(self) -> list:
         return list(self._devices.keys())
 
     @staticmethod

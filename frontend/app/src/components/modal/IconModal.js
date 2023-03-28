@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  TextInput,
 } from "react-native";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Icon from "react-native-vector-icons/AntDesign";
@@ -20,6 +21,8 @@ import colors from "../../../configs/colors";
 export default function IconModal({
   visible,
   title,
+  titleIsTextInput = false,
+  titleOnChangeCallback,
   subtitle,
   leftIcon,
   rightIcon,
@@ -70,7 +73,16 @@ export default function IconModal({
 
                 <View style={styles.detailsView}>
                   <View style={styles.detailsInfo}>
-                    <Text style={styles.detailsTitle}>{title}</Text>
+                    {!titleIsTextInput ? (
+                      <Text style={styles.detailsTitle}>{title}</Text>
+                    ) : (
+                      <TextInput
+                        maxLength={40}
+                        onChangeText={(title) => titleOnChangeCallback(title)}
+                        value={title}
+                        style={styles.detailsTitle}
+                      />
+                    )}
                     <Text style={styles.detailsSubtitle}>{subtitle}</Text>
                   </View>
                   {inputOnFocus ? null : (

@@ -14,10 +14,13 @@ export default function DeviceDetailsModal({ device }) {
     deviceDetailsModalVisible,
     setDeviceDetailsModalVisible,
     isDeviceDetailsModalLoading,
+    isMenuModalRenaming,
     setIsMenuModalRenaming,
   } = useContext(ModalsContext);
 
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
+
+  const [deviceName, setDeviceName] = useState(device.name);
 
   const closeCallback = () => {
     setDeviceDetailsModalVisible(false);
@@ -25,10 +28,16 @@ export default function DeviceDetailsModal({ device }) {
     setIsMenuModalRenaming(false);
   };
 
+  const renameCallback = (name) => {
+    setDeviceName(name);
+  };
+
   return (
     <IconModal
       visible={deviceDetailsModalVisible}
-      title={device.name}
+      title={deviceName}
+      titleIsTextInput={isMenuModalRenaming}
+      titleOnChangeCallback={renameCallback}
       subtitle={device.divisions[0]}
       leftIcon="close"
       rightIcon="ellipsis1"
@@ -36,7 +45,8 @@ export default function DeviceDetailsModal({ device }) {
       rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
       icon={getDeviceIcon(device.group)}
       contextMenu={getDeviceContextMenu(
-        device,
+        device.uid,
+        deviceName,
         setDeviceDetailsModalVisible,
         isContextMenuVisible,
         setIsContextMenuVisible

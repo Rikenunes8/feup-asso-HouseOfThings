@@ -1,18 +1,19 @@
 import React, { useContext } from "react";
 
-import ContextMenu from "../../ContextMenu";
-import DevicesContext from "../../../contexts/DevicesContext";
-import ModalsContext from "../../../contexts/ModalsContext";
+import ContextMenu from "../ContextMenu";
+import DevicesContext from "../../contexts/DevicesContext";
+import ModalsContext from "../../contexts/ModalsContext";
 
-import colors from "../../../../configs/colors";
-import api from "../../../api/api";
-import utils from "../../../utils/utils";
+import colors from "../../../configs/colors";
+import api from "../../api/api";
+import utils from "../../utils/utils";
 
-export default function LightDetailsContextMenu({
+export default function DeviceDetailsContextMenu({
   setIsDetailsModalVisible,
   isContextMenuVisible,
   setIsContextMenuVisible,
   deviceContextMenuUid,
+  deviceContextMenuName,
 }) {
   const { removeDevice, renameDevice } = useContext(DevicesContext);
 
@@ -60,21 +61,22 @@ export default function LightDetailsContextMenu({
     console.log("Renaming device...");
     setIsDeviceDetailsModalLoading(true);
 
-    const name = "ahhhhhh";
-    api.renameDevice(deviceContextMenuUid, name).then((success) => {
-      setIsDeviceDetailsModalLoading(false);
-      setIsContextMenuVisible(false);
-      setIsMenuModalRenaming(false);
+    api
+      .renameDevice(deviceContextMenuUid, deviceContextMenuName)
+      .then((success) => {
+        setIsDeviceDetailsModalLoading(false);
+        setIsContextMenuVisible(false);
+        setIsMenuModalRenaming(false);
 
-      if (success) {
-        console.log("Device renamed successfully");
-        renameDevice(deviceContextMenuUid, name);
-        return;
-      }
+        if (success) {
+          console.log("Device renamed successfully");
+          renameDevice(deviceContextMenuUid, deviceContextMenuName);
+          return;
+        }
 
-      console.log("Failed to rename device");
-      utils.showErrorMessage("Failed to rename device");
-    });
+        console.log("Failed to rename device");
+        utils.showErrorMessage("Failed to rename device");
+      });
   };
 
   return (

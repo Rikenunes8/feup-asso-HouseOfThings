@@ -10,7 +10,7 @@ sense = SenseHat()
 uid = "2"
 cid = None # id of the controller that is connected to the light
 
-def isConnected() -> bool: return cid != None
+def is_connected() -> bool: return cid != None
 temp : float = sense.get_temperature()
 
 def on_connect(client, userdata, msg):
@@ -61,7 +61,7 @@ if __name__ == '__main__':
   running = True
   while running:
     if (mqtt_client == None): running = False
-    if (isConnected()):
+    if (is_connected()):
       temp = sense.get_temperature()
       print(temp)
       publish(mqtt_client, f"{uid}-temperature", temp)

@@ -19,9 +19,7 @@ const getCategories = async () => {
     return response.data.categories;
   } catch (error) {
     console.error(error);
-    return [{
-      name: "light", subcategories: ["light1"]
-    }];
+    return [{ name: "light", subcategories: ["light1"] }];
   }
 };
 

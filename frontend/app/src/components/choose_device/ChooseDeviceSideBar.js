@@ -8,7 +8,7 @@ export default function ChooseDeviceSideBar({
   selectedCategory,
   setSelectedCategory,
 }) {
-  const { deviceCategory, setDeviceCategory } = useContext(AddDeviceContext);
+  const { setDeviceCategory } = useContext(AddDeviceContext);
 
   useEffect(() => {
     setDeviceCategory(selectedCategory.name);
@@ -19,7 +19,6 @@ export default function ChooseDeviceSideBar({
       {categories.map((category, index) => (
         <TouchableOpacity
           key={index}
-          disabled={category.name !== "light"} // TODO: only for vertical prototype, remove when we have more devices
           onPress={() => {
             setSelectedCategory(category);
             setDeviceCategory(category);

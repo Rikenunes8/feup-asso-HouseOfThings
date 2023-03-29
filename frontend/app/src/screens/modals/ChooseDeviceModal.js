@@ -4,7 +4,6 @@ import ModalsContext from "../../contexts/ModalsContext";
 import TitleModal from "../../components/modal/TitleModal";
 import ChooseDeviceScrollView from "../../components/choose_device/ChooseDeviceScrollView";
 import ChooseDeviceSideBar from "../../components/choose_device/ChooseDeviceSideBar";
-import AvailableDevicesPopup from "../../components/AvailableDevicesPopup";
 
 import api from "../../api/api";
 
@@ -44,7 +43,7 @@ export default function ChooseDeviceModal() {
               setSelectedCategory={setSelectedCategory}
             />
             <ChooseDeviceScrollView
-              deviceSubcategories={selectedCategory.subcategories}
+              subcategories={selectedCategory.subcategories}
             />
           </View>
         ) : null

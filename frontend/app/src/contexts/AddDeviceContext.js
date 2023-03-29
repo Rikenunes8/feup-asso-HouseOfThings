@@ -3,17 +3,17 @@ const AddDeviceContext = createContext({});
 
 export const AddDeviceProvider = ({ children }) => {
   const [deviceUUID, setDeviceUUID] = useState(null);
-  const [deviceName, setDeviceName] = useState("");
+  const [deviceName, setDeviceName] = useState(null);
   const [deviceDivision, setDeviceDivision] = useState(null);
-  const [deviceCategory, setDeviceCategory] = useState("");
+  const [deviceCategory, setDeviceCategory] = useState(null);
   const [deviceSubcategory, setDeviceSubcategory] = useState(null);
   const [availableDevices, setAvailableDevices] = useState([]);
 
   const resetAddDeviceContext = () => {
-    setDeviceUUID("");
-    setDeviceName("");
+    setDeviceUUID(null);
+    setDeviceName(null);
     setDeviceDivision(null);
-    setDeviceCategory("");
+    setDeviceCategory(null);
     setDeviceSubcategory(null);
     setAvailableDevices([]);
   };

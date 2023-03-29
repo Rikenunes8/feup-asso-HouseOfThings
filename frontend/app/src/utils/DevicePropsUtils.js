@@ -1,5 +1,5 @@
 import LightDetails from "../components/device_details/light/LightDetails.js";
-import LightDetailsContextMenu from "../components/device_details/light/LightDetailsContextMenu";
+import DeviceDetailsContextMenu from "../components/device_details/DeviceDetailsContextMenu";
 
 export function getDeviceImage(subcategory) {
     //TODO: List to be extended
@@ -22,23 +22,12 @@ export function getDeviceIcon(deviceCategory) {
 }
 
 export function getDeviceContextMenu(device, setDeviceDetailsModalVisible, isContextMenuVisible, setIsContextMenuVisible) {
-    //TODO: list to be expanded
-    switch (device.category) {
-      case 'light':
-        return <LightDetailsContextMenu
-          setIsDetailsModalVisible={setDeviceDetailsModalVisible}
-          isContextMenuVisible={isContextMenuVisible}
-          setIsContextMenuVisible={setIsContextMenuVisible}
-          deviceContextMenuUid={device.uid}
-        />
-      default:
-        return <LightDetailsContextMenu
+    return <DeviceDetailsContextMenu
         setIsDetailsModalVisible={setDeviceDetailsModalVisible}
         isContextMenuVisible={isContextMenuVisible}
         setIsContextMenuVisible={setIsContextMenuVisible}
         deviceContextMenuUid={device.uid}
-      />
-    }
+    />
 }
 
 export function getDeviceModalContent(device) {

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, Platform } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import colors from "../../../configs/colors";
@@ -16,8 +16,8 @@ export default function DynamicDropDown({
   const [open, setOpen] = React.useState(false);
 
   return (
-    <View style={styles().container}>
-      <Text style={styles().field}>{label}</Text>
+    <View style={styles.container}>
+      <Text style={styles.field}>{label}</Text>
 
       <DropDownPicker
         open={open}
@@ -27,8 +27,8 @@ export default function DynamicDropDown({
         setValue={setValue}
         setItems={setItems}
         placeholder=""
-        dropDownContainerStyle={styles().dropdown}
-        style={styles().selector}
+        dropDownContainerStyle={styles.dropdown}
+        style={styles.selector}
         disabled={disabled}
         showArrowIcon={showArrowIcon}
       />
@@ -36,8 +36,7 @@ export default function DynamicDropDown({
   );
 }
 
-const styles = (on = false) =>
-  StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
       margin: 15,
       zIndex: 10,

@@ -53,6 +53,7 @@ export default function AddDeviceModal() {
       name: deviceName,
       divisions: [deviceDivision],
       category: deviceCategory,
+      subcategory: deviceSubcategory,
     };
 
     console.log(`Adding ${deviceSubcategory}...`);
@@ -63,7 +64,7 @@ export default function AddDeviceModal() {
         addDevice({
             uid: deviceUUID,
             ...device,
-            enabled: false,
+            enabled: false, // TODO remove this and receive device from server
           })
         setAddDeviceFormModalVisible(false);
         resetAddDeviceContext();

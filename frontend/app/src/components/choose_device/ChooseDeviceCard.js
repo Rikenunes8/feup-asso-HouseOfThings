@@ -11,7 +11,7 @@ import api from "../../api/api";
 import { getDeviceImage } from "../../utils/DevicePropsUtils";
 
 export default function ChooseDeviceCard({ subcategory }) {
-  const { deviceCategory, setDeviceSubcategory, setAvailableDevices } =
+  const { setDeviceSubcategory, setAvailableDevices } =
     useContext(AddDeviceContext);
 
   const {
@@ -22,15 +22,15 @@ export default function ChooseDeviceCard({ subcategory }) {
 
   chooseDeviceTypeHandler = () => {
     setIsChooseDeviceModalLoading(true);
-    api.availableDevices({ category: deviceCategory }).then((devices) => {
-      devices = utils.removeDuplicates(devices);
+    api.availableDevices({ 'subcategory': subcategory }).then((devicesIds) => {
+      devicesIds = utils.removeDuplicates(devicesIds);
 
       setDeviceSubcategory(subcategory);
-      setAvailableDevices(devices);
+      setAvailableDevices(devicesIds);
       setIsChooseDeviceModalLoading(false);
-      if (0 === devices.length) {
+      if (0 === devicesIds.length) {
         utils.showErrorMessage(
-          `No ${deviceCategory} device found!`
+          `No ${subcategory} device found!`
         );
         return;
       }

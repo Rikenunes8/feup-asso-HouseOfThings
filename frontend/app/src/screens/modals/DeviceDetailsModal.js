@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 
 import ModalsContext from "../../contexts/ModalsContext";
 import IconModal from "../../components/modal/IconModal";
@@ -21,6 +21,7 @@ export default function DeviceDetailsModal({ device }) {
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
   const [deviceName, setDeviceName] = useState(device.name);
+  const refDeviceNameInput = useRef(null);
 
   const closeCallback = () => {
     setDeviceDetailsModalVisible(false);
@@ -43,6 +44,7 @@ export default function DeviceDetailsModal({ device }) {
       title={deviceName}
       titleIsTextInput={isMenuModalRenaming}
       titleOnChangeCallback={renameCallback}
+      titleInputRef={isMenuModalRenaming ? refDeviceNameInput : null}
       subtitle={device.divisions[0]}
       leftIcon="close"
       rightIcon="ellipsis1"
@@ -55,7 +57,8 @@ export default function DeviceDetailsModal({ device }) {
         setDeviceDetailsModalVisible,
         isContextMenuVisible,
         setIsContextMenuVisible,
-        resetDeviceName
+        resetDeviceName,
+        refDeviceNameInput
       )}
       modalContent={getDeviceModalContent(device)}
       isLoading={isDeviceDetailsModalLoading}

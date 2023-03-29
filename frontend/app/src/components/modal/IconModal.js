@@ -23,6 +23,7 @@ export default function IconModal({
   title,
   titleIsTextInput = false,
   titleOnChangeCallback,
+  titleInputRef,
   subtitle,
   leftIcon,
   rightIcon,
@@ -77,10 +78,12 @@ export default function IconModal({
                       <Text style={styles.detailsTitle}>{title}</Text>
                     ) : (
                       <TextInput
+                        ref={titleInputRef}
                         maxLength={40}
                         onChangeText={(title) => titleOnChangeCallback(title)}
                         value={title}
-                        style={styles.detailsTitle}
+                        style={styles.detailsTitleInput}
+                        contextMenuHidden={true}
                       />
                     )}
                     <Text style={styles.detailsSubtitle}>{subtitle}</Text>
@@ -131,6 +134,11 @@ const styles = StyleSheet.create({
   detailsSubtitle: {
     color: colors.white,
     fontSize: 20,
+  },
+  detailsTitleInput: {
+    color: colors.white,
+    fontSize: 27,
+    fontWeight: "bold",
   },
   detailsTitle: {
     color: colors.white,

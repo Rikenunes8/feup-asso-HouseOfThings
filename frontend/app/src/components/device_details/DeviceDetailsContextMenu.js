@@ -15,6 +15,7 @@ export default function DeviceDetailsContextMenu({
   deviceContextMenuUid,
   deviceContextMenuName,
   resetDeviceContextMenuName,
+  refDeviceContextMenuName,
 }) {
   const { removeDevice, renameDevice } = useContext(DevicesContext);
 
@@ -56,6 +57,7 @@ export default function DeviceDetailsContextMenu({
   const renameCallback = () => {
     setIsContextMenuVisible(false);
     setIsMenuModalRenaming(true);
+    refDeviceContextMenuName.current.focus();
   };
 
   const saveCallback = () => {

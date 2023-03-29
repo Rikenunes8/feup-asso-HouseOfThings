@@ -21,9 +21,9 @@ import colors from "../../../configs/colors";
 export default function IconModal({
   visible,
   title,
-  titleIsTextInput = false,
+  titleEditable = false,
   titleOnChangeCallback,
-  titleInputRef,
+  titleRef,
   subtitle,
   leftIcon,
   rightIcon,
@@ -74,18 +74,24 @@ export default function IconModal({
 
                 <View style={styles.detailsView}>
                   <View style={styles.detailsInfo}>
-                    {!titleIsTextInput ? (
-                      <Text style={styles.detailsTitle}>{title}</Text>
-                    ) : (
+                    <View style={styles.detailsTitleSection}>
+                      {!titleEditable ? null : (
+                        <Icon
+                          style={styles.detailsTitleEditIcon}
+                          name="edit"
+                          size={20}
+                          color={colors.white}
+                        />
+                      )}
                       <TextInput
-                        ref={titleInputRef}
+                        ref={titleRef}
+                        value={title}
+                        editable={titleEditable}
                         maxLength={40}
                         onChangeText={(title) => titleOnChangeCallback(title)}
-                        value={title}
-                        style={styles.detailsTitleInput}
-                        contextMenuHidden={true}
+                        style={styles.detailsTitle}
                       />
-                    )}
+                    </View>
                     <Text style={styles.detailsSubtitle}>{subtitle}</Text>
                   </View>
                   {inputOnFocus ? null : (
@@ -135,15 +141,17 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 20,
   },
-  detailsTitleInput: {
-    color: colors.white,
-    fontSize: 27,
-    fontWeight: "bold",
-  },
   detailsTitle: {
     color: colors.white,
     fontSize: 27,
     fontWeight: "bold",
+  },
+  detailsTitleEditIcon: {
+    marginRight: 10,
+  },
+  detailsTitleSection: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   detailsView: {
     flex: 0.55,

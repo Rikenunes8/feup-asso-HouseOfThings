@@ -27,8 +27,8 @@ export function getDeviceContextMenu(
   setDeviceDetailsModalVisible,
   isContextMenuVisible,
   setIsContextMenuVisible,
-  resetContextMenuName,
-  refDeviceNameInput
+  resetContextMenuName
+  // refDeviceDetailsName
 ) {
   // TODO: change if needed for know - all devices have the same context menu (rename and disconnect)
   return (
@@ -39,7 +39,7 @@ export function getDeviceContextMenu(
       deviceContextMenuUid={deviceUid}
       deviceContextMenuName={deviceName}
       resetDeviceContextMenuName={resetContextMenuName}
-      refDeviceContextMenuName={refDeviceNameInput}
+      // refDeviceContextMenuName={refDeviceDetailsName}
     />
   );
 }

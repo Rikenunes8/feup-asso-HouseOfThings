@@ -16,6 +16,7 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
     availableDevices,
   } = useContext(AddDeviceContext);
 
+  // TODO: Get divisions dinamically
   const [items, setItems] = useState([
     { label: "Living Room", value: "living room" },
     { label: "Kitchen", value: "kitchen" },
@@ -38,7 +39,7 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
       />
       <DynamicTextInput
         label={"NAME *"}
-        name={deviceName}
+        name={deviceName ?? ""}
         setName={setDeviceName}
         inputOnFocus={inputOnFocus}
         setInputOnFocus={setInputOnFocus}

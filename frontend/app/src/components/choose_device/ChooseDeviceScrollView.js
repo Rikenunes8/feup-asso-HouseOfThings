@@ -2,12 +2,12 @@ import React from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 import ChooseDeviceCard from "./ChooseDeviceCard";
 
-export default function ChooseDeviceScrollView({ deviceTypes }) {
+export default function ChooseDeviceScrollView({ subcategories }) {
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
       <View style={styles.gridView}>
-        {deviceTypes.map((type) => (
-          <ChooseDeviceCard key={type} type={type} />
+        {subcategories.map((subcategory) => (
+          <ChooseDeviceCard key={subcategory} subcategory={subcategory} />
         ))}
       </View>
     </ScrollView>

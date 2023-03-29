@@ -1,10 +1,10 @@
 from src.model.devices.Device import Device
 
 
-class ThermostatDevice(Device):
+class ThermometerDevice(Device):
     def __init__(self, id: int, temperature: float = 0) -> None:
         super().__init__(id)
-        self._group = "thermostat"
+        self._category = "sensor"
         super().add(self.state(temperature))
 
     def state(self, temperature: float) -> dict:

@@ -46,7 +46,7 @@ def add_sensors(db):
         'name': 'sensor',
         'subcategories': [
             'motion sensor',
-            'temperature sensor',
+            'thermometer',
             'humidity sensor'
         ]
     })

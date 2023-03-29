@@ -19,7 +19,7 @@ class HoT(metaclass=HoTMeta):
     def __init__(self):
         print("HoT init")
         self._manager = DeviceAdapterManager()
-        self._cid = "HoT"  # TODO: set this to something better
+        self._cid = "HoT"
         self._load_devices()
 
     def _load_devices(self):
@@ -40,7 +40,7 @@ class HoT(metaclass=HoTMeta):
     def connect(self, uid: str, config: dict) -> str:
         new_device = DeviceAdapterManager.factory(self._cid, uid, config)
         if new_device == None:
-            return "No device for group: " + config.get("group")
+            return "No device for subcategory: " + config.get("subcategory")
         success = new_device.connect()
         if not success:
             return "Failed to connect to device with uid: " + uid

@@ -8,7 +8,7 @@ class Device(ABC):
     def __init__(self, id: int) -> None:
         super().__init__()
         self._id = id
-        self._category = None
+        self._config : dict = None
 
     def rename(self, name: str) -> None:
         self.update({"name": name})
@@ -21,7 +21,9 @@ class Device(ABC):
 
     def add(self, state: dict) -> None:
         DB().add_device(self._id, {
-            "category": self._category,
+            "category": self._config.get("category"),
+            "subcategory": self._config.get("subcategory"),
+            "protocol": self._config.get("protocol"),
             "name": self.NO_NAME,
             "divisions": [],
             **state

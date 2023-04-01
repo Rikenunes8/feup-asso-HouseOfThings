@@ -54,18 +54,19 @@ export default function AddDeviceModal() {
       divisions: [deviceDivision],
       category: deviceCategory,
       subcategory: deviceSubcategory,
+      protocol: JSON.parse(deviceUUID).protocol,
     };
 
     console.log(`Adding ${deviceSubcategory}...`);
     setIsDeviceFormModalLoading(true);
-    api.addDevice(deviceUUID, device).then((success) => {
+    api.addDevice(JSON.parse(deviceUUID).uuid, device).then((success) => {
       setIsDeviceFormModalLoading(false);
       if (success) {
         addDevice({
-            uid: deviceUUID,
-            ...device,
-            enabled: false, // TODO remove this and receive device from server
-          })
+          uid: JSON.parse(deviceUUID).uuid,
+          ...device,
+          enabled: false, // TODO remove this and receive device from server
+        });
         setAddDeviceFormModalVisible(false);
         resetAddDeviceContext();
       } else {
@@ -78,7 +79,9 @@ export default function AddDeviceModal() {
   return (
     <IconModal
       visible={addDeviceFormModalVisible}
-      title={(deviceSubcategory && utils.capitalize(deviceSubcategory)) || "Title"}
+      title={
+        (deviceSubcategory && utils.capitalize(deviceSubcategory)) || "Title"
+      }
       leftIcon="close"
       rightIcon="check"
       leftIconCallback={() => {

@@ -5,6 +5,7 @@ class ThermometerDevice(Device):
     def __init__(self, id: int, temperature: float = 0) -> None:
         super().__init__(id)
         self._category = "sensor"
+        self._subcategory = "thermometer (raspPI)"
         super().add(self.state(temperature))
 
     def state(self, temperature: float) -> dict:

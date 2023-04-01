@@ -6,6 +6,7 @@ class DeviceAdapter(ABC):
     def __init__(self):
         super().__init__()
         self._model = None
+        self._protocol = None
 
     @abstractmethod
     def create_model(self) -> None:
@@ -13,6 +14,8 @@ class DeviceAdapter(ABC):
 
     def get_model(self) -> Device:
         return self._model
+    def get_protocol(self) -> str:
+        return self._protocol
 
     @abstractmethod
     def connect(self) -> bool:

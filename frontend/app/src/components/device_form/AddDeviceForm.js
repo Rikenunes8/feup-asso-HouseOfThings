@@ -24,7 +24,7 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
 
   const [uuidItems, setUUIDItems] = useState(
     availableDevices.map((item) => {
-      return { label: item, value: item };
+      return { label: item.uuid, value: JSON.stringify(item) };
     })
   );
 

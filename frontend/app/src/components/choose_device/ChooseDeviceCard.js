@@ -20,24 +20,34 @@ export default function ChooseDeviceCard({ subcategory }) {
     setIsChooseDeviceModalLoading,
   } = useContext(ModalsContext);
 
-  chooseDeviceTypeHandler = () => {
+  const parseAvailableDevices = (devices) => {
+    return Object.keys(devices)
+      .map((protocol) => {
+        return devices[protocol].map((deviceId) => {
+          return { uuid: deviceId, protocol };
+        });
+      })
+      .flat();
+  };
+
+  const chooseDeviceTypeHandler = () => {
     setIsChooseDeviceModalLoading(true);
-    api.availableDevices({ 'subcategory': subcategory }).then((devicesIds) => {
-      devicesIds = utils.removeDuplicates(devicesIds);
+    api
+      .availableDevices({ subcategory: subcategory })
+      .then((devicesIdsByProtocol) => {
+        const deviceIdsProtocols = parseAvailableDevices(devicesIdsByProtocol);
 
-      setDeviceSubcategory(subcategory);
-      setAvailableDevices(devicesIds);
-      setIsChooseDeviceModalLoading(false);
-      if (0 === devicesIds.length) {
-        utils.showErrorMessage(
-          `No ${subcategory} device found!`
-        );
-        return;
-      }
+        setDeviceSubcategory(subcategory);
+        setAvailableDevices(deviceIdsProtocols);
+        setIsChooseDeviceModalLoading(false);
+        if (0 === deviceIdsProtocols.length) {
+          utils.showErrorMessage(`No ${subcategory} device found!`);
+          return;
+        }
 
-      setChooseDeviceModalVisible(false);
-      setAddDeviceFormModalVisible(true);
-    });
+        setChooseDeviceModalVisible(false);
+        setAddDeviceFormModalVisible(true);
+      });
   };
 
   return (
@@ -46,10 +56,7 @@ export default function ChooseDeviceCard({ subcategory }) {
       style={styles.card}
       onPress={() => chooseDeviceTypeHandler(subcategory)}
     >
-      <Image
-        style={styles.cardImage}
-        source={getDeviceImage(subcategory)}
-      />
+      <Image style={styles.cardImage} source={getDeviceImage(subcategory)} />
       <Text style={styles.cardText}>{subcategory}</Text>
     </TouchableOpacity>
   );

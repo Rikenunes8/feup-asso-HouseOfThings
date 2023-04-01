@@ -26,17 +26,17 @@ def main():
 def build_categories(db):
     add_lights(db)
     add_sensors(db)
-    add_security(db)
-    add_sockets(db)
-    add_appliances(db)
-    add_others(db)
+    #add_security(db)
+    #add_sockets(db)
+    #add_appliances(db)
+    #add_others(db)
 
 
 def add_lights(db):
     db.insert_one({
         'name': 'light',
         'subcategories': [
-            'light bulb'
+            'light bulb (virtual)'
         ]
     })
 
@@ -45,9 +45,9 @@ def add_sensors(db):
     db.insert_one({
         'name': 'sensor',
         'subcategories': [
-            'motion sensor',
-            'thermometer',
-            'humidity sensor'
+            #'motion sensor',
+            'thermometer (raspPI)',
+            #'humidity sensor'
         ]
     })
 

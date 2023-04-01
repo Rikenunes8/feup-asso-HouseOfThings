@@ -8,13 +8,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import DevicesContext from "../contexts/DevicesContext";
-import ModalsContext from "../contexts/ModalsContext";
-import DeviceDetailsModal from "../screens/modals/DeviceDetailsModal";
-import { getDeviceIcon } from "../utils/DevicePropsUtils";
+import DevicesContext from "../../contexts/DevicesContext";
+import ModalsContext from "../../contexts/ModalsContext";
+import DeviceDetailsModal from "../../screens/modals/DeviceDetailsModal";
+import { getDeviceIcon } from "../../utils/DevicePropsUtils";
 
-import api from "../api/api";
-import colors from "../../configs/colors";
+import api from "../../api/api";
+import colors from "../../../configs/colors";
 
 export default function DeviceCard({ device }) {
   const { updateDevice } = useContext(DevicesContext);

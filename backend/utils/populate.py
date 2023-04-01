@@ -36,7 +36,7 @@ def add_lights(db):
     db.insert_one({
         'name': 'light',
         'subcategories': [
-            'light bulb (virtual)'
+            'light bulb'
         ]
     })
 
@@ -46,7 +46,7 @@ def add_sensors(db):
         'name': 'sensor',
         'subcategories': [
             #'motion sensor',
-            'thermometer (raspPI)',
+            'thermometer',
             #'humidity sensor'
         ]
     })

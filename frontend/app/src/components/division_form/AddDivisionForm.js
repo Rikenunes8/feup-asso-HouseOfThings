@@ -4,6 +4,7 @@ import { StyleSheet, View, Image } from "react-native";
 import DynamicTextInput from "../form/DynamicTextInput";
 import DynamicDropDown from "../form/DynamicDropDown";
 import AddDivisionContext from "../../contexts/AddDivisionContext";
+import DevicesDisplayInForm from "./DevicesDisplayInForm";
 
 export default function AddDivisionForm() {
   const {
@@ -30,12 +31,13 @@ export default function AddDivisionForm() {
         setInputOnFocus={setInputOnFocus}
       />
       <DynamicDropDown
-        label={"ICON"}
+        label={"ICON *"}
         items={iconItems}
         setItems={setIconItems}
         value={divisionIcon}
         setValue={setDivisionIcon}
       />
+      <DevicesDisplayInForm/>
     </View>
   );
 }
@@ -46,5 +48,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "flex-start",
     marginVertical: 5,
+    padding: 30
   },
 });

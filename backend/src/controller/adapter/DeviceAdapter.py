@@ -8,10 +8,10 @@ class DeviceAdapter(ABC):
         self._model = None
 
     @abstractmethod
-    def createModel(self) -> None:
+    def create_model(self) -> None:
         pass
 
-    def getModel(self) -> Device:
+    def get_model(self) -> Device:
         return self._model
 
     @abstractmethod
@@ -23,9 +23,9 @@ class DeviceAdapter(ABC):
         pass
 
     @abstractmethod
-    def startDiscovery(self):
+    def start_discovery(self):
         pass
 
     @abstractmethod
-    def finishDiscovery(self):
+    def finish_discovery(self):
         pass

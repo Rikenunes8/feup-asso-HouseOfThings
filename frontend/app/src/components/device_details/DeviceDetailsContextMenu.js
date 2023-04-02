@@ -78,6 +78,7 @@ export default function DeviceDetailsContextMenu({
 
         console.log("Failed to rename device");
         utils.showErrorMessage("Failed to rename device");
+        resetDeviceContextMenuName();
       });
   };
 

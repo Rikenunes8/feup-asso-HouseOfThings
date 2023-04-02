@@ -8,20 +8,20 @@ class Device(ABC):
     def __init__(self, id: int) -> None:
         super().__init__()
         self._id = id
-        self._group = None
+        self._category = None
 
     def rename(self, name: str) -> None:
         self.update({"name": name})
 
-    def setDivisions(self, divisions: list) -> None:
+    def set_divisions(self, divisions: list) -> None:
         self.update({"divisions": divisions})
 
     def getId(self) -> int:
         return self._id
 
     def add(self, state: dict) -> None:
-        DB().addDevice(self._id, {
-            "group": self._group,
+        DB().add_device(self._id, {
+            "category": self._category,
             "name": self.NO_NAME,
             "divisions": [],
             **state
@@ -29,14 +29,14 @@ class Device(ABC):
         )
 
     def update(self, state: dict) -> None:
-        DB().updateDevice(self._id, state)
+        DB().update_device(self._id, state)
 
     def remove(self) -> None:
-        DB().deleteDevice(self._id)
+        DB().delete_device(self._id)
 
     def find(self) -> dict:
-        return DB().findDevice(self._id)
+        return DB().find_device(self._id)
 
     @abstractmethod
-    def toJson(self) -> dict:
+    def to_json(self) -> dict:
         pass

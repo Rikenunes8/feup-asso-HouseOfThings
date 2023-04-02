@@ -1,11 +1,11 @@
 import time
 
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
-from src.model.devices.ThermostatDevice import ThermostatDevice
+from src.model.devices.ThermometerDevice import ThermometerDevice
 from src.controller.mqtt import connect_mqtt, disconnect_mqtt, publish, subscribe
 
 
-class ThermostatPIAdapter(DeviceAdapter):
+class ThermometerPiAdapter(DeviceAdapter):
 
     MAX_TIME_TO_CONNECT = 5
 
@@ -16,10 +16,10 @@ class ThermostatPIAdapter(DeviceAdapter):
         self._uid = uid
         self._available = []
 
-    def createModel(self) -> None:
-        self._model = ThermostatDevice(self._uid)
+    def create_model(self) -> None:
+        self._model = ThermometerDevice(self._uid)
 
-    def getModel(self) -> ThermostatDevice:
+    def get_model(self) -> ThermometerDevice:
         return self._model
 
     def on_connect(self, client, userdata, msg):
@@ -27,13 +27,13 @@ class ThermostatPIAdapter(DeviceAdapter):
             return
         print(f"Connected to device with id: {self._uid}")
         subscribe(client, f"{self._uid}-temperature", self.on_temperature)
-        self.createModel()
+        self.create_model()
 
     def on_available(self, client, userdata, msg):
         self._available.append(msg.payload.decode())
 
     def on_temperature(self, client, userdata, msg):
-        self._model.setTemperature(float(msg.payload.decode()))
+        self._model.set_temperature(float(msg.payload.decode()))
 
     def connect(self) -> bool:
         self._client = connect_mqtt()
@@ -59,15 +59,15 @@ class ThermostatPIAdapter(DeviceAdapter):
         disconnect_mqtt(self._client)
         self._client = None
 
-    def startDiscovery(self):
+    def start_discovery(self):
         self._client = connect_mqtt()
         self._client.loop_start()
 
         subscribe(self._client,
-                  f"{self._cid}-thermostat-available", self.on_available)
-        publish(self._client, "thermostat-available", self._cid)
+                  f"{self._cid}-thermometer-available", self.on_available)
+        publish(self._client, "thermometer-available", self._cid)
 
-    def finishDiscovery(self):
+    def finish_discovery(self):
         disconnect_mqtt(self._client)
         self._client = None
         aux = self._available

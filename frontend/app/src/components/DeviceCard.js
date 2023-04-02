@@ -38,7 +38,7 @@ export default function DeviceCard({ device }) {
 
       <Image
         style={styles.deviceIcon}
-        source={getDeviceIcon(device.group)}
+        source={getDeviceIcon(device.category)}
       />
 
       <View style={{ justifyContent: "center" }}>

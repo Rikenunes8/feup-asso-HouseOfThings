@@ -1,6 +1,6 @@
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
 from src.controller.adapter.LightMqttAdapter import LightMqttAdapter
-from src.controller.adapter.ThermostatPIAdapter import ThermostatPIAdapter
+from src.controller.adapter.ThermometerPiAdapter import ThermometerPiAdapter
 
 
 class DeviceAdapterManager:
@@ -14,19 +14,19 @@ class DeviceAdapterManager:
         if self._devices.get(id) != None:
             del self._devices[id]
 
-    def getDevice(self, id) -> DeviceAdapter:
+    def get_device(self, id) -> DeviceAdapter:
         return self._devices.get(id)
 
-    def getDeviceIds(self) -> list:
+    def get_device_ids(self) -> list:
         return list(self._devices.keys())
 
     @staticmethod
     def factory(cid: str, uid: str, config: dict) -> DeviceAdapter:
-        group = config.get("group")
-        if group == "light":
+        subcategory = config.get("subcategory")
+        if subcategory == "light bulb":
             return LightMqttAdapter(cid, uid)
-        elif group == "thermostat":
-            return ThermostatPIAdapter(cid, uid)
+        elif subcategory == "thermometer":
+            return ThermometerPiAdapter(cid, uid)
         else:
-            print("No device for group: " + group)
+            print("No device for subcategory: " + subcategory)
         return None

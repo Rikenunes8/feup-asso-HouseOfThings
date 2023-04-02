@@ -51,7 +51,7 @@ export default function DeviceDetailsModal({ device }) {
       rightIcon="ellipsis1"
       leftIconCallback={closeCallback}
       rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
-      icon={getDeviceIcon(device.group)}
+      icon={getDeviceIcon(device.category)}
       contextMenu={getDeviceContextMenu(
         device.uid,
         deviceName,

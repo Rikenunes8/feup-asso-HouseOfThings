@@ -5,23 +5,23 @@ class LightDevice(Device):
 
     def __init__(self, id: int, on: bool = False) -> None:
         super().__init__(id)
-        self._group = "light"
+        self._category = "light"
         super().add(self.state(on))
 
     def state(self, on: bool) -> dict:
         return {'on': on}
 
-    def turnOn(self) -> None:
+    def turn_on(self) -> None:
         super().update(self.state(True))
 
-    def turnOff(self) -> None:
+    def turn_off(self) -> None:
         super().update(self.state(False))
 
-    def isLightOn(self) -> bool:
+    def is_light_on(self) -> bool:
         return super().find()['on']
 
     def clear(self) -> None:
         super().remove()
 
-    def toJson(self) -> dict:
+    def to_json(self) -> dict:
         return super().find()

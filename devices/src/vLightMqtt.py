@@ -7,7 +7,7 @@ from Drawer import Drawer
 uid = "1"
 cid = None # id of the controller that is connected to the light
 
-def isConnected() -> bool: return cid != None
+def is_connected() -> bool: return cid != None
 state : bool = False
 drawer : Drawer = None
 
@@ -30,7 +30,7 @@ def on_disconnect(client, userdata, msg):
   state = False
 
 
-def on_turnOn(client, userdata, msg):
+def on_turn_on(client, userdata, msg):
   global state
   if (cid == None or cid != msg.payload.decode()):
     print(f"Light is not connected or is connected to other cid")
@@ -38,7 +38,7 @@ def on_turnOn(client, userdata, msg):
   state = True
   print(f"Light was turned on by `{cid}`")
 
-def on_turnOff(client, userdata, msg):
+def on_turn_off(client, userdata, msg):
   global state
   if (cid == None or cid != msg.payload.decode()):
     print(f"Light is not connected or is connected to other cid")
@@ -60,8 +60,8 @@ def start_mqtt():
 
   subscribe(client, f"{uid}-connect", on_connect)
   subscribe(client, f"{uid}-disconnect", on_disconnect)
-  subscribe(client, f"{uid}-turnOn", on_turnOn)
-  subscribe(client, f"{uid}-turnOff", on_turnOff)
+  subscribe(client, f"{uid}-turnOn", on_turn_on)
+  subscribe(client, f"{uid}-turnOff", on_turn_off)
   subscribe(client, "light-available", on_available)
 
   client.loop_start()
@@ -87,7 +87,7 @@ if __name__ == '__main__':
   start_mqtt()
   run = True
   while run:
-    drawer.drawLight(isConnected(), state)
+    drawer.drawLight(is_connected(), state)
     time.sleep(0.1)
     for event in pygame.event.get():
       if event.type == pygame.QUIT:

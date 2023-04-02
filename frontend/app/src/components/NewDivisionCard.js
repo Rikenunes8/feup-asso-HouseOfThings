@@ -15,7 +15,6 @@ export default function DivisionCard({ division }) {
   return (
     <TouchableOpacity
       style={styles.divisionCard}
-    //  onPress={() => navigation.navigate("Profile")}
        onPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
     >
       <TitleModal

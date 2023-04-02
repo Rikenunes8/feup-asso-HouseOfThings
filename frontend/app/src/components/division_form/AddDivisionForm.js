@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 
 import DynamicTextInput from "../form/DynamicTextInput";
 import DynamicDropDown from "../form/DynamicDropDown";
@@ -13,10 +13,9 @@ export default function AddDivisionForm() {
     setDivisionIcon,
   } = useContext(AddDivisionContext);
 
-  // TODO: Get icons dinamically
+  // TODO: List to be extended
   const [iconItems, setIconItems] = useState([
-    { label: "Living Room", value: "living room" },
-    { label: "Kitchen", value: "kitchen" },
+    { label: "Room Sofa", value: "room sofa",  icon: () => <Image source={require("../../../../assets/sofa.png")} />},
   ]);
 
   const [inputOnFocus, setInputOnFocus] = useState(false);

@@ -5,7 +5,7 @@ import DynamicTextInput from "../form/DynamicTextInput";
 import DynamicDropDown from "../form/DynamicDropDown";
 import AddDivisionContext from "../../contexts/AddDivisionContext";
 
-export default function AddDivisionForm({ inputOnFocus, setInputOnFocus }) {
+export default function AddDivisionForm() {
   const {
     divisionName,
     divisionIcon,
@@ -18,6 +18,8 @@ export default function AddDivisionForm({ inputOnFocus, setInputOnFocus }) {
     { label: "Living Room", value: "living room" },
     { label: "Kitchen", value: "kitchen" },
   ]);
+
+  const [inputOnFocus, setInputOnFocus] = useState(false);
 
   return (
     <View style={styles.container}>

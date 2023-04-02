@@ -27,10 +27,7 @@ export default function DivisionCard({ division }) {
         leftIconCallback={() => {setIsDetailsModalVisible(false)}}
         rightIconCallback={() => console.log("Create Division")}
         modalContent={
-          <AddDivisionForm
-          inputOnFocus={true}
-          setInputOnFocus={(()=> {})}
-        />
+          <AddDivisionForm />
         } 
       />      
       <Icon name={"plus"} size={35} color={colors.primaryText} />

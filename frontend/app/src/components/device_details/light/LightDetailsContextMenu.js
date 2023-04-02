@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 
-import ContextMenu from "../ContextMenu";
-import DevicesContext from "../../contexts/DevicesContext";
-import ModalsContext from "../../contexts/ModalsContext";
+import ContextMenu from "../../ContextMenu";
+import DevicesContext from "../../../contexts/DevicesContext";
+import ModalsContext from "../../../contexts/ModalsContext";
 
-import colors from "../../../configs/colors";
-import api from "../../api/api";
-import utils from "../../utils/utils";
+import colors from "../../../../configs/colors";
+import api from "../../../api/api";
+import utils from "../../../utils/utils";
 
-export default function DeviceDetailsContextMenu({
+export default function LightDetailsContextMenu({
   setIsDetailsModalVisible,
   isContextMenuVisible,
   setIsContextMenuVisible,

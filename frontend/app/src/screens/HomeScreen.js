@@ -43,7 +43,7 @@ export default function HomeScreen() {
   const showDevices = () => {
     let filteredDevices = devices;
     if (selectedDivision) {
-      filteredDevices = filteredDevices.filter((device) => device.division === selectedDivision);
+      filteredDevices = filteredDevices.filter((device) => device.divisions === selectedDivision);
     }
 
     if (filteredDevices.length > 0) {

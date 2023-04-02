@@ -28,5 +28,8 @@ class DeviceAdapterManager:
         elif subcategory == "thermometer":
             return ThermometerPiAdapter(cid, uid)
         else:
-            print("No device for subcategory: " + subcategory)
+            if type(subcategory) is str:
+                print("No device for subcategory: " + subcategory)
+            else:
+                print("No device for this subcategory")
         return None

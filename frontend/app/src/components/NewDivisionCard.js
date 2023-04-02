@@ -1,12 +1,13 @@
 import React, {useState} from "react";
 import {
   StyleSheet,
-  TouchableOpacity,
-  View
+  TouchableOpacity
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../../configs/colors";
 import TitleModal from "./modal/TitleModal";
+import AddDivisionForm from "../components/division_form/AddDivisionForm"
+
 
 export default function DivisionCard({ division }) {
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
@@ -18,7 +19,7 @@ export default function DivisionCard({ division }) {
        onPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
     >
       <TitleModal
-        title={"Titulo"}
+        title={"Add Division"}
         subtitle={"Subtitulo"}
         visible={isDetailsModalVisible}
         leftIcon="close"
@@ -26,8 +27,10 @@ export default function DivisionCard({ division }) {
         leftIconCallback={() => {setIsDetailsModalVisible(false)}}
         rightIconCallback={() => console.log("Create Division")}
         modalContent={
-          // TODO
-          <View></View>
+          <AddDivisionForm
+          inputOnFocus={true}
+          setInputOnFocus={(()=> {})}
+        />
         } 
       />      
       <Icon name={"plus"} size={35} color={colors.primaryText} />

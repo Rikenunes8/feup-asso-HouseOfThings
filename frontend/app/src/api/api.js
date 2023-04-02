@@ -33,7 +33,7 @@ const getCategories = async () => {
     return response.data.categories;
   } catch (error) {
     console.error(error);
-    return [];
+    return [{ name: "light", subcategories: ["light1"] }];
   }
 };
 
@@ -78,6 +78,18 @@ const actionDevice = async (id, action) => {
   }
 };
 
+const availableDevices = async (body) => {
+  try {
+    const response = await apiClient.get("/devices/available", {
+      params: { ...body },
+    });
+    return response.data.devices;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
 export default {
   getDevices,
   getCategories,
@@ -85,4 +97,5 @@ export default {
   disconnectDevice,
   actionDevice,
   getDivisions,
+  availableDevices
 };

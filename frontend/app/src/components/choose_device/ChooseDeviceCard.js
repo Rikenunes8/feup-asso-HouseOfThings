@@ -4,30 +4,53 @@ import { StyleSheet, TouchableOpacity, Text, Image } from "react-native";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 import ModalsContext from "../../contexts/ModalsContext";
 
+import utils from "../../utils/utils";
 import colors from "../../../configs/colors";
+import api from "../../api/api";
 
-export default function ChooseDeviceCard({ type }) {
-  const { setDeviceType } = useContext(AddDeviceContext);
-  const { setChooseDeviceModalVisible, setAddDeviceFormModalVisible } =
-    useContext(ModalsContext);
+import { getDeviceImage } from "../../utils/DevicePropsUtils";
+
+export default function ChooseDeviceCard({ subcategory }) {
+  const { setDeviceSubcategory, setAvailableDevices } =
+    useContext(AddDeviceContext);
+
+  const {
+    setChooseDeviceModalVisible,
+    setAddDeviceFormModalVisible,
+    setIsChooseDeviceModalLoading,
+  } = useContext(ModalsContext);
 
   chooseDeviceTypeHandler = () => {
-    setDeviceType(type);
-    setChooseDeviceModalVisible(false);
-    setAddDeviceFormModalVisible(true);
+    setIsChooseDeviceModalLoading(true);
+    api.availableDevices({ 'subcategory': subcategory }).then((devicesIds) => {
+      devicesIds = utils.removeDuplicates(devicesIds);
+
+      setDeviceSubcategory(subcategory);
+      setAvailableDevices(devicesIds);
+      setIsChooseDeviceModalLoading(false);
+      if (0 === devicesIds.length) {
+        utils.showErrorMessage(
+          `No ${subcategory} device found!`
+        );
+        return;
+      }
+
+      setChooseDeviceModalVisible(false);
+      setAddDeviceFormModalVisible(true);
+    });
   };
 
   return (
     <TouchableOpacity
-      key={type}
+      key={subcategory}
       style={styles.card}
-      onPress={() => chooseDeviceTypeHandler(type)}
+      onPress={() => chooseDeviceTypeHandler(subcategory)}
     >
       <Image
         style={styles.cardImage}
-        source={require("../../../../assets/lightbulb.png")} //TODO: Change this to a dynamic image
+        source={getDeviceImage(subcategory)}
       />
-      <Text style={styles.cardText}>{type}</Text>
+      <Text style={styles.cardText}>{subcategory}</Text>
     </TouchableOpacity>
   );
 }

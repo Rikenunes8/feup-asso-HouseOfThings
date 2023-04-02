@@ -8,8 +8,12 @@ import ChooseDeviceSideBar from "../../components/choose_device/ChooseDeviceSide
 import api from "../../api/api";
 
 export default function ChooseDeviceModal() {
-  const { chooseDeviceModalVisible, setChooseDeviceModalVisible } =
-    useContext(ModalsContext);
+  const {
+    chooseDeviceModalVisible,
+    setChooseDeviceModalVisible,
+    isChooseDeviceModalLoading
+  } = useContext(ModalsContext);
+
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -39,11 +43,12 @@ export default function ChooseDeviceModal() {
               setSelectedCategory={setSelectedCategory}
             />
             <ChooseDeviceScrollView
-              deviceTypes={selectedCategory.subcategories}
+              subcategories={selectedCategory.subcategories}
             />
           </View>
         ) : null
       }
+      isLoading={isChooseDeviceModalLoading}
     />
   );
 }

@@ -2,8 +2,8 @@ import React, { useState, useContext } from "react";
 
 import ModalsContext from "../../contexts/ModalsContext";
 import IconModal from "../../components/modal/IconModal";
-import LightDetails from "../../components/device_details/light/LightDetails.js";
-import LightDetailsContextMenu from "../../components/device_details/light/LightDetailsContextMenu";
+
+import { getDeviceIcon, getDeviceContextMenu, getDeviceModalContent} from "../../utils/DevicePropsUtils";
 
 export default function DeviceDetailsModal({ device }) {
   const {
@@ -25,20 +25,9 @@ export default function DeviceDetailsModal({ device }) {
         setIsContextMenuVisible(false);
       }}
       rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
-      icon={require("../../../../assets/lightbulb.png")} // TODO: Change this to a dynamic icon
-      contextMenu={
-        // TODO: Change this to a dynamic component (depending on device type)
-        <LightDetailsContextMenu
-          setIsDetailsModalVisible={setDeviceDetailsModalVisible}
-          isContextMenuVisible={isContextMenuVisible}
-          setIsContextMenuVisible={setIsContextMenuVisible}
-          deviceContextMenuUid={device.uid}
-        />
-      }
-      modalContent={
-        // TODO: Change this to a dynamic component (depending on device type)
-        <LightDetails on={device.on} handler={onOfHandler} />
-      }
+      icon={getDeviceIcon(device.category)}
+      contextMenu={getDeviceContextMenu(device, setDeviceDetailsModalVisible, isContextMenuVisible, setIsContextMenuVisible)}
+      modalContent={getDeviceModalContent(device)}
       isLoading={isDeviceDetailsModalLoading}
     />
   );

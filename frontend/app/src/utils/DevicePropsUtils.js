@@ -9,7 +9,6 @@ export function getDeviceImage(subcategory) {
       default:
         return require("../../../assets/lightbulb.png")
     }
-  }
 }
 
 export function getDeviceIcon(deviceCategory) {

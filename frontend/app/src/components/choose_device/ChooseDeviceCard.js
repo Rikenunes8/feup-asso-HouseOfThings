@@ -5,10 +5,8 @@ import AddDeviceContext from "../../contexts/AddDeviceContext";
 import ModalsContext from "../../contexts/ModalsContext";
 
 import utils from "../../utils/utils";
-import colors from "../../../configs/colors";
 import api from "../../api/api";
-
-import { getDeviceImage } from "../../utils/DevicePropsUtils";
+import colors from "../../../configs/colors";
 
 export default function ChooseDeviceCard({ subcategory }) {
   const { setDeviceSubcategory, setAvailableDevices } =
@@ -56,7 +54,10 @@ export default function ChooseDeviceCard({ subcategory }) {
       style={styles.card}
       onPress={() => chooseDeviceTypeHandler(subcategory)}
     >
-      <Image style={styles.cardImage} source={getDeviceImage(subcategory)} />
+      <Image
+        style={styles.cardImage}
+        source={utils.getDeviceIcon(subcategory)}
+      />
       <Text style={styles.cardText}>{subcategory}</Text>
     </TouchableOpacity>
   );

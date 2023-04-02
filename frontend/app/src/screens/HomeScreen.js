@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
@@ -12,7 +12,7 @@ import {
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 
 import UsernameContext from "../contexts/UsernameContext";
-import DeviceCard from "../components/device_cards/DeviceCard";
+import DeviceCardPicker from "../components/device_cards/DeviceCardPicker";
 import DevicesContext from "../contexts/DevicesContext";
 
 import colors from "../../configs/colors";
@@ -49,7 +49,9 @@ export default function HomeScreen() {
       <View style={styles.body}>
         <Text style={styles.sectionHeader}>Devices</Text>
         {devices.length ? (
-          devices.map((device, key) => <DeviceCard key={key} device={device} />)
+          devices.map((device, key) => (
+            <DeviceCardPicker key={key} device={device} />
+          ))
         ) : (
           <Text style={styles.sectionMessage}>No devices connected...</Text>
         )}

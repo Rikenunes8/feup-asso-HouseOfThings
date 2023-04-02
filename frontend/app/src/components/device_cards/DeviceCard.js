@@ -8,36 +8,24 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import DevicesContext from "../../contexts/DevicesContext";
 import ModalsContext from "../../contexts/ModalsContext";
-import DeviceDetailsModal from "../../screens/modals/DeviceDetailsModal";
-import { getDeviceIcon } from "../../utils/DevicePropsUtils";
+import utils from "../../utils/utils";
 
-import api from "../../api/api";
 import colors from "../../../configs/colors";
 
-export default function DeviceCard({ device }) {
-  const { updateDevice } = useContext(DevicesContext);
+export default function DeviceCard({ device, specificFeature, modal }) {
   const { setDeviceDetailsModalVisible } = useContext(ModalsContext);
-
-  onOfHandler = (isEnabled) => {
-    console.log(`Turning ${isEnabled ? "off" : "on"} device...`);
-
-    const action = isEnabled ? "turnOff" : "turnOn";
-    api.actionDevice(device.uid, { action: action });
-    updateDevice({ on: !device.on }, device.uid);
-  };
 
   return (
     <TouchableOpacity
       style={styles.deviceCard}
       onPress={() => setDeviceDetailsModalVisible(device.uid)}
     >
-      <DeviceDetailsModal device={device} />
+      {modal}
 
       <Image
         style={styles.deviceIcon}
-        source={getDeviceIcon(device.category)}
+        source={utils.getDeviceIcon(device.subcategory)}
       />
 
       <View style={{ justifyContent: "center" }}>
@@ -45,14 +33,7 @@ export default function DeviceCard({ device }) {
         <Text style={styles.divisionText}>{device.divisions[0]}</Text>
       </View>
 
-      <Switch
-        trackColor={{ false: colors.desactive, true: colors.active }}
-        thumbColor={device.on ? colors.white : colors.white}
-        onValueChange={() => {
-          onOfHandler(device.on);
-        }}
-        value={device.on}
-      />
+      {specificFeature}
     </TouchableOpacity>
   );
 }

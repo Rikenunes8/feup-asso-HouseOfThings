@@ -6,7 +6,6 @@ import DevicesContext from "../../contexts/DevicesContext";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 
 import utils from "../../utils/utils";
-import { getDeviceIcon } from "../../utils/DevicePropsUtils";
 import api from "../../api/api";
 
 export default function AddDeviceModal() {
@@ -93,7 +92,7 @@ export default function AddDeviceModal() {
       rightIconCallback={() => {
         connectCallback();
       }}
-      icon={getDeviceIcon(deviceCategory)}
+      icon={utils.getDeviceIcon(deviceSubcategory)}
       modalContent={
         <AddDeviceForm
           inputOnFocus={inputOnFocus}

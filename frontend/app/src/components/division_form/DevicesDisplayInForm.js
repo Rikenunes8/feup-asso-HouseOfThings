@@ -3,21 +3,25 @@ import {
   StyleSheet,
   Text,
   View,
-  Switch,
-  Image,
-  TouchableOpacity,
 } from "react-native";
 
 import api from "../../api/api";
 import colors from "../../../configs/colors";
+import DeviceDisplay from "./DeviceDisplay";
 
 export default function DevicesDisplayInForm() {
+
+  devices=[{name: "Philips", group: "Family Room"}]
 
   return (
     <View
       style={styles.deviceDisplayContainer}
     >
         <Text style={styles.title}>DEVICES</Text>
+
+        {devices.map((device) => (
+          <DeviceDisplay deviceName={device.name} deviceGroup={device.group} />
+        ))}
     </View>
   );
 }
@@ -33,6 +37,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     margin: 10,
     padding: 10,
-  },
-  
+  }
 });

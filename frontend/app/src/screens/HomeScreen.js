@@ -83,6 +83,7 @@ export default function HomeScreen() {
             <DivisionCard
               division={{ name: "All", icon: "all-icon", numDevices: devices.length }}
               onPress={() => setSelectedDivision(null)}
+              allowLongPress={false}
               highlighted={selectedDivision === null}
             />
             {divisions.map((division, key) =>
@@ -90,6 +91,7 @@ export default function HomeScreen() {
                 key={key}
                 division={division}
                 onPress={() => setSelectedDivision(division.name)}
+                allowLongPress={true}
                 highlighted={selectedDivision === division.name}
               />
             )}

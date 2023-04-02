@@ -11,7 +11,7 @@ import IconModal from "./modal/IconModal";
 import DivisionIcon from "./DivisionIcon";
 import colors from "../../configs/colors";
 
-export default function DivisionCard({ division, onPress, highlighted }) {
+export default function DivisionCard({ division, onPress, allowLongPress, highlighted }) {
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
@@ -19,7 +19,7 @@ export default function DivisionCard({ division, onPress, highlighted }) {
     <TouchableOpacity
       style={highlighted? [styles.divisionCard, styles.selectedDivisionCard] : styles.divisionCard}
       onPress={onPress}
-      onLongPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
+      onLongPress={() => allowLongPress && setIsDetailsModalVisible(!isDetailsModalVisible)}
     >
       <IconModal
         title={division.name}

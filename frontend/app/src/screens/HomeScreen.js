@@ -43,7 +43,7 @@ export default function HomeScreen() {
   const showDevices = () => {
     let filteredDevices = devices;
     if (selectedDivision) {
-      filteredDevices = filteredDevices.filter((device) => device.divisions === selectedDivision);
+      filteredDevices = filteredDevices.filter((device) => device.divisions.includes(selectedDivision));
     }
 
     if (filteredDevices.length > 0) {
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   body: {
     flex: 0.85,
     width: "85%",
-    alignItems: "center",
+    alignItems: "flex-start",
     paddingVertical: 20,
   },
   divisionsBarContainer: {
@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "bold",
     color: colors.primary,
-    alignSelf: "flex-start",
     paddingTop: 16,
   },
   sectionMessage: {

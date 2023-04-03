@@ -33,6 +33,7 @@ export default function DeviceCard({ device }) {
       setDisabled(false);
       if (success) {
         console.log(`Changed light status successfully`);
+ 
         updateDevice({ on: device.on }, device.uid);
         return;
       }

@@ -1,17 +1,14 @@
 import React from "react";
-import {
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
-import colors from "../../configs/colors";
+import colors from "../../../configs/colors";
 
 export default function DivisionCard({ division }) {
   return (
     <TouchableOpacity
       style={styles.divisionCard}
-    //   onPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
-    >          
+      //   onPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
+    >
       <Icon name={"plus"} size={35} color={colors.primaryText} />
     </TouchableOpacity>
   );

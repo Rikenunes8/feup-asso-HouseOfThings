@@ -50,8 +50,9 @@ def disconnect(id):
 def action(id):
     if (not is_content_json(request)):
         return not_json_error()
-    HoT().action(id, request.json)
-    return jsonify({})
+    error = HoT().action(id, request.json)
+    if error: return make_error(error)
+    else:     return jsonify({})
 
 
 @api.post("/devices/<id>/rename")

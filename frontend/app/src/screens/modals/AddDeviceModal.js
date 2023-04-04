@@ -10,15 +10,19 @@ import api from "../../api/api";
 
 export default function AddDeviceModal() {
   const { addDevice } = useContext(DevicesContext);
+
   const {
     addDeviceFormModalVisible,
     setAddDeviceFormModalVisible,
+    setChooseDeviceModalVisible,
     isDeviceFormModalLoading,
     setIsDeviceFormModalLoading,
   } = useContext(ModalsContext);
+
   const {
-    deviceType,
-    deviceGroup,
+    deviceUUID,
+    deviceSubcategory,
+    deviceCategory,
     deviceName,
     deviceDivision,
     resetAddDeviceContext,
@@ -26,54 +30,64 @@ export default function AddDeviceModal() {
 
   const [inputOnFocus, setInputOnFocus] = React.useState(false);
 
-  connectCallback = () => {
-    if (deviceName === "") {
-      utils.showErrorMessage("Device name is required.");
-      return;
+  const requiredFields = [
+    { field: deviceUUID, message: "Device UUID is required." },
+    { field: deviceName, message: "Device name is required." },
+  ];
+
+  const checkRequiredFields = () => {
+    for (let i = 0; i < requiredFields.length; i++) {
+      if (!requiredFields[i].field) {
+        utils.showErrorMessage(requiredFields[i].message);
+        return false;
+      }
     }
+    return true;
+  };
+
+  const connectCallback = () => {
+    if (!checkRequiredFields()) return;
+
     const device = {
       name: deviceName,
-      divisions: [deviceDivision],
-      group: deviceGroup,
+      divisions: deviceDivision != null ? [deviceDivision] : [],
+      category: deviceCategory,
+      subcategory: deviceSubcategory,
+      protocol: JSON.parse(deviceUUID).protocol,
     };
 
-    console.log(`Adding ${deviceType}...`);
+    console.log(`Adding ${deviceSubcategory}...`);
     setIsDeviceFormModalLoading(true);
-
-    // TODO: remove hardcoded
-    api.addDevice("1", device).then((success) => {
+    api.addDevice(JSON.parse(deviceUUID).uuid, device).then((newDevice) => {
       setIsDeviceFormModalLoading(false);
-      if (success) {
-        console.log("Device connected successfully");
+      if (newDevice != null) {
+        addDevice(newDevice);
         setAddDeviceFormModalVisible(false);
         resetAddDeviceContext();
-        addDevice({
-          uid: "1",
-          ...device,
-          enabled: false,
-        });
-        return;
+      } else {
+        utils.showErrorMessage("Failed to connect device");
       }
-
-      console.log("Failed to connect device");
-      utils.showErrorMessage("Failed to connect device");
     });
   };
 
   return (
     <IconModal
       visible={addDeviceFormModalVisible}
-      title={(deviceType && utils.capitalize(deviceType)) || "Title"}
+      title={
+        (deviceSubcategory && utils.capitalize(deviceSubcategory)) || "Title"
+      }
       leftIcon="close"
       rightIcon="check"
       leftIconCallback={() => {
+        setChooseDeviceModalVisible(true);
         setAddDeviceFormModalVisible(false);
         resetAddDeviceContext();
+        setInputOnFocus(false);
       }}
       rightIconCallback={() => {
         connectCallback();
       }}
-      icon={require("../../../../assets/lightbulb.png")} // TODO: Change this to a dynamic icon
+      icon={utils.getDeviceIcon(deviceSubcategory)}
       modalContent={
         <AddDeviceForm
           inputOnFocus={inputOnFocus}

@@ -167,7 +167,7 @@ components:
             properties:
               uid:
                 type: string
-              group:
+              category:
                 type: string
               name:
                 type: string
@@ -180,12 +180,12 @@ components:
       example:
         devices:
         - uid: "1"
-          group: light
+          category: light
           name: Bulb
           divisions: ["Room"]
           on: true
         - uid: "2"
-          group: thermostat
+          category: thermometer
           name: Termo
           divisions: ["Kitchen"]
           temperature: 23
@@ -248,11 +248,11 @@ components:
     connect_body:
       type: object
       properties:
-        group:
+        category:
           type: string
           enum:
           - light
-          - thermostat
+          - thermometer
         name: 
           type: string
         divisions:

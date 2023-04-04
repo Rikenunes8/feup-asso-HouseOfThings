@@ -2,29 +2,37 @@ import { createContext, useState } from "react";
 const AddDeviceContext = createContext({});
 
 export const AddDeviceProvider = ({ children }) => {
-  const [deviceName, setDeviceName] = useState("");
+  const [deviceUUID, setDeviceUUID] = useState(null);
+  const [deviceName, setDeviceName] = useState(null);
   const [deviceDivision, setDeviceDivision] = useState(null);
-  const [deviceGroup, setDeviceGroup] = useState("");
-  const [deviceType, setDeviceType] = useState(null);
+  const [deviceCategory, setDeviceCategory] = useState(null);
+  const [deviceSubcategory, setDeviceSubcategory] = useState(null);
+  const [availableDevices, setAvailableDevices] = useState([]);
 
   const resetAddDeviceContext = () => {
-    setDeviceName("");
+    setDeviceUUID(null);
+    setDeviceName(null);
     setDeviceDivision(null);
-    setDeviceGroup("");
-    setDeviceType(null);
+    setDeviceCategory(null);
+    setDeviceSubcategory(null);
+    setAvailableDevices([]);
   };
 
   return (
     <AddDeviceContext.Provider
       value={{
+        deviceUUID,
+        setDeviceUUID,
         deviceName,
         setDeviceName,
         deviceDivision,
         setDeviceDivision,
-        deviceGroup,
-        setDeviceGroup,
-        deviceType,
-        setDeviceType,
+        deviceCategory,
+        setDeviceCategory,
+        deviceSubcategory,
+        setDeviceSubcategory,
+        availableDevices,
+        setAvailableDevices,
         resetAddDeviceContext,
       }}
     >

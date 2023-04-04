@@ -10,12 +10,14 @@ export default function DynamicDropDown({
   setItems,
   value,
   setValue,
+  disabled = false,
+  showArrowIcon = true,
 }) {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <View style={styles().container}>
-      <Text style={styles().field}>{label}</Text>
+    <View style={styles.container}>
+      <Text style={styles.field}>{label}</Text>
 
       <DropDownPicker
         open={open}
@@ -25,17 +27,19 @@ export default function DynamicDropDown({
         setValue={setValue}
         setItems={setItems}
         placeholder=""
-        dropDownContainerStyle={styles().dropdown}
-        style={styles().selector}
+        dropDownContainerStyle={styles.dropdown}
+        style={styles.selector}
+        disabled={disabled}
+        showArrowIcon={showArrowIcon}
       />
     </View>
   );
 }
 
-const styles = (on = false) =>
-  StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
-      margin: 20,
+      margin: 15,
+      zIndex: 10,
     },
     dropdown: {
       backgroundColor: colors.background,

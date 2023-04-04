@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
-import colors from "../../../../configs/colors";
+import colors from "../../../configs/colors";
 
-export default function LightDetails({ on, handler }) {
+export default function LightBulbDetails({ on, handler }) {
   const stateText = on ? "On" : "Off";
   const [disabled, setDisabled] = React.useState(false);
 

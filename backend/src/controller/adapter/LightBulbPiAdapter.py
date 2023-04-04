@@ -5,14 +5,14 @@ from src.model.devices.LightDevice import LightDevice
 from src.controller.mqtt import connect_mqtt, disconnect_mqtt, publish, subscribe
 
 
-class LightMqttAdapter(DeviceAdapter):
+class LightBulbPiAdapter(DeviceAdapter):
 
     MAX_TIME_TO_CONNECT = 5
 
     def __init__(self, cid: str, uid: str, config: dict):
         super().__init__()
         self._client = None
-        self._protocol = 'virtual'
+        self._protocol = 'raspberry pi'
         self._cid = cid
         self._uid = uid
         self._config = {'protocol': self._protocol, **config}
@@ -70,8 +70,8 @@ class LightMqttAdapter(DeviceAdapter):
         self._client.loop_start()
 
         subscribe(self._client,
-                  f"{self._cid}-light-available-virtual", self.on_available)
-        publish(self._client, "light-available-virtual", self._cid)
+                  f"{self._cid}-light-available-pi", self.on_available)
+        publish(self._client, "light-available-pi", self._cid)
 
     def finish_discovery(self) -> list[str]:
         disconnect_mqtt(self._client)

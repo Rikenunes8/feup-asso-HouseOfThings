@@ -1,4 +1,6 @@
+import { REACT_APP_SERVER_IP, REACT_APP_SERVER_PORT } from "@env";
+
 export default {
-  ip: "192.168.1.9",
-  port: "5000",
+  ip: REACT_APP_SERVER_IP || "localhost",
+  port: REACT_APP_SERVER_PORT || 5000,
 };

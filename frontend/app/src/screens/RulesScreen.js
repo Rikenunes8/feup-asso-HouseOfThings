@@ -9,6 +9,8 @@ import {
 } from "react-native";
 
 import Header from "../components/header/Header";
+import RuleCard from "../components/rule_cards/RuleCard";
+import NewRuleCard from "../components/rule_cards/NewRuleCard";
 import RulesContext from "../contexts/RulesContext";
 
 import colors from "../../configs/colors";
@@ -32,7 +34,12 @@ export default function RulesScreen() {
 
       <View style={styles.body}>
         <Text style={styles.sectionHeader}>Rules</Text>
-        {/* TODO: list rules + add card picker */}
+
+        {rules.map((rule) => (
+          <RuleCard key={rule.uid} rule={rule} />
+        ))}
+
+        <NewRuleCard />
       </View>
     </SafeAreaView>
   );

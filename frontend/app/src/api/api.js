@@ -97,6 +97,7 @@ const getRules = async () => {
     console.error(error);
     return [
       {
+        uid: 1,
         name: "Family Room Lights Off",
         triggers: {
           type: "MANUAL", // manual, or, and, single ?
@@ -105,6 +106,7 @@ const getRules = async () => {
         actions: ["light off"],
       },
       {
+        uid: 2,
         name: "Lights Off at Night",
         triggers: {
           type: "AND", // manual, or, and, single ?

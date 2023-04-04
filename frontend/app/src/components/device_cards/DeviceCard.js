@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   deviceCard: {
     width: "100%",
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     backgroundColor: colors.white,
     borderRadius: 15,
     marginVertical: 10,

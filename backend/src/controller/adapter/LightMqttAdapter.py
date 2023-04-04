@@ -1,11 +1,11 @@
 import time
 
-from src.controller.adapter.DeviceAdapter import DeviceAdapter
+from src.controller.adapter.ActuatorDeviceAdapter import ActuatorDeviceAdapter
 from src.model.devices.LightDevice import LightDevice
 from src.controller.mqtt import connect_mqtt, disconnect_mqtt, publish, subscribe
 
 
-class LightMqttAdapter(DeviceAdapter):
+class LightMqttAdapter(ActuatorDeviceAdapter):
 
     MAX_TIME_TO_CONNECT = 5
 
@@ -57,14 +57,6 @@ class LightMqttAdapter(DeviceAdapter):
         disconnect_mqtt(self._client)
         self._client = None
 
-    def turn_on(self) -> None:
-        publish(self._client, f"{self._uid}-turnOn", self._cid)
-        self._model.turn_on()
-
-    def turn_off(self) -> None:
-        publish(self._client, f"{self._uid}-turnOff", self._cid)
-        self._model.turn_off()
-
     def start_discovery(self):
         self._client = connect_mqtt()
         self._client.loop_start()
@@ -79,3 +71,11 @@ class LightMqttAdapter(DeviceAdapter):
         aux = self._available
         self._available = []
         return aux
+    
+    def action(self, action: str):
+        if action == "turnOn":
+            publish(self._client, f"{self._uid}-turnOn", self._cid)
+            self._model.turn_on()
+        elif action == "turnOff":
+            publish(self._client, f"{self._uid}-turnOff", self._cid)
+            self._model.turn_off()

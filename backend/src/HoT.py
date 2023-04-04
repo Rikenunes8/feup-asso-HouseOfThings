@@ -1,5 +1,6 @@
 import time
 
+from src.controller.adapter.ActuatorDeviceAdapter import ActuatorDeviceAdapter
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
 from src.controller.DeviceAdapterManager import DeviceAdapterManager
 from src.database.DB import DB
@@ -60,13 +61,12 @@ class HoT(metaclass=HoTMeta):
         adapter.disconnect()
         self._manager.remove(uid)
 
-    def action(self, uid: str, rules: dict):
-        adapter: DeviceAdapter = self._manager.get_device(uid)
-        # TODO send rules to adapter to perform action instead of this
-        if rules["action"] == "turnOn":
-            adapter.turn_on()
-        elif rules["action"] == "turnOff":
-            adapter.turn_off()
+    def action(self, uid: str, action: dict):
+        action = action.get("action")
+        if action == None: 
+            return "No action provided"
+        adapter: ActuatorDeviceAdapter = self._manager.get_device(uid)
+        adapter.action(action)
 
     def rename(self, uid: str, config: dict):
         name = config.get("name")

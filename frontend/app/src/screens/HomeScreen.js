@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
@@ -25,7 +25,7 @@ import api from "../api/api";
 export default function HomeScreen() {
   const { devices, setDevices } = useContext(DevicesContext);
   const { divisions, setDivisions } = useContext(DivisionsContext);
-  const [selectedDivision, setSelectedDivision ] = useState(null);
+  const [selectedDivision, setSelectedDivision] = useState(null);
   const { username } = useContext(UsernameContext);
 
   const navigation = useNavigation();
@@ -43,19 +43,27 @@ export default function HomeScreen() {
   const showDevices = () => {
     let filteredDevices = devices;
     if (selectedDivision) {
-      filteredDevices = filteredDevices.filter((device) => device.divisions.includes(selectedDivision));
+      filteredDevices = filteredDevices.filter((device) =>
+        device.divisions.includes(selectedDivision)
+      );
     }
 
     if (filteredDevices.length > 0) {
-      return filteredDevices.map((device, key) => <DeviceCardPicker key={key} device={device} />);
+      return filteredDevices.map((device, key) => (
+        <DeviceCardPicker key={key} device={device} />
+      ));
     }
 
     if (selectedDivision) {
-      return <Text style={styles.sectionMessage}>No devices connected in {selectedDivision}...</Text>;
+      return (
+        <Text style={styles.sectionMessage}>
+          No devices connected in {selectedDivision}...
+        </Text>
+      );
     }
-  
+
     return <Text style={styles.sectionMessage}>No devices connected...</Text>;
-  }
+  };
 
   useEffect(() => {
     fetchDevices();
@@ -75,18 +83,21 @@ export default function HomeScreen() {
         <Text style={styles.welcomeMessage}>Hello, {username.trim()}!</Text>
       </View>
 
-      
       <View style={styles.body}>
         <Text style={styles.sectionHeader}>Divisions</Text>
         <View style={styles.divisionsBarContainer}>
           <ScrollView horizontal>
             <DivisionCard
-              division={{ name: "All", icon: "all-icon", numDevices: devices.length }}
+              division={{
+                name: "All",
+                icon: "all-icon",
+                numDevices: devices.length,
+              }}
               onPress={() => setSelectedDivision(null)}
               allowLongPress={false}
               highlighted={selectedDivision === null}
             />
-            {divisions.map((division, key) =>
+            {divisions.map((division, key) => (
               <DivisionCard
                 key={key}
                 division={division}
@@ -94,11 +105,11 @@ export default function HomeScreen() {
                 allowLongPress={true}
                 highlighted={selectedDivision === division.name}
               />
-            )}
+            ))}
             <NewDivisionCard />
           </ScrollView>
         </View>
-        
+
         <Text style={styles.sectionHeader}>Devices</Text>
         {showDevices()}
       </View>

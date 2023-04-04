@@ -9,15 +9,17 @@ class ThermometerPiAdapter(DeviceAdapter):
 
     MAX_TIME_TO_CONNECT = 5
 
-    def __init__(self, cid: str, uid: str):
+    def __init__(self, cid: str, uid: str, config: dict):
         super().__init__()
         self._client = None
+        self._protocol = 'raspberry pi'
         self._cid = cid
         self._uid = uid
+        self._config = {'protocol': self._protocol, **config}
         self._available = []
 
     def create_model(self) -> None:
-        self._model = ThermometerDevice(self._uid)
+        self._model = ThermometerDevice(self._uid, self._config)
 
     def get_model(self) -> ThermometerDevice:
         return self._model
@@ -64,10 +66,10 @@ class ThermometerPiAdapter(DeviceAdapter):
         self._client.loop_start()
 
         subscribe(self._client,
-                  f"{self._cid}-thermometer-available", self.on_available)
-        publish(self._client, "thermometer-available", self._cid)
+                  f"{self._cid}-thermometer-available-pi", self.on_available)
+        publish(self._client, "thermometer-available-pi", self._cid)
 
-    def finish_discovery(self):
+    def finish_discovery(self) -> list[str]:
         disconnect_mqtt(self._client)
         self._client = None
         aux = self._available

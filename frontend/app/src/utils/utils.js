@@ -32,9 +32,21 @@ const showErrorMessage = (message) => {
   return Alert.alert(message);
 };
 
+function getDeviceIcon(subcategory) {
+  switch (subcategory) {
+    case "light bulb":
+      return require("../../../assets/devices/light_bulb.png");
+    case "thermometer":
+      return require("../../../assets/devices/thermometer.png");
+    default:
+      return require("../../../assets/icon.png");
+  }
+}
+
 export default {
   capitalize,
   removeDuplicates,
   showConfirmDialog,
   showErrorMessage,
+  getDeviceIcon,
 };

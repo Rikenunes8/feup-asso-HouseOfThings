@@ -2,14 +2,9 @@ import React, { useState, useContext } from "react";
 
 import ModalsContext from "../../contexts/ModalsContext";
 import IconModal from "../../components/modal/IconModal";
+import DeviceDetailsContextMenu from "../../components/device_details/DeviceDetailsContextMenu";
 
-import {
-  getDeviceIcon,
-  getDeviceContextMenu,
-  getDeviceModalContent,
-} from "../../utils/DevicePropsUtils";
-
-export default function DeviceDetailsModal({ device }) {
+export default function DeviceDetailsModal({ device, icon, modalContent }) {
   const {
     deviceDetailsModalVisible,
     setDeviceDetailsModalVisible,
@@ -30,14 +25,16 @@ export default function DeviceDetailsModal({ device }) {
         setIsContextMenuVisible(false);
       }}
       rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
-      icon={getDeviceIcon(device.category)}
-      contextMenu={getDeviceContextMenu(
-        device,
-        setDeviceDetailsModalVisible,
-        isContextMenuVisible,
-        setIsContextMenuVisible
-      )}
-      modalContent={getDeviceModalContent(device)}
+      icon={icon}
+      contextMenu={
+        <DeviceDetailsContextMenu
+          setIsDetailsModalVisible={setDeviceDetailsModalVisible}
+          isContextMenuVisible={isContextMenuVisible}
+          setIsContextMenuVisible={setIsContextMenuVisible}
+          deviceContextMenuUid={device.uid}
+        />
+      }
+      modalContent={modalContent}
       isLoading={isDeviceDetailsModalLoading}
     />
   );

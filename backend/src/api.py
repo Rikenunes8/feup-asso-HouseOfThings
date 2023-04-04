@@ -30,11 +30,11 @@ def categories():
 def connect(id):
     if (not is_content_json(request)):
         return not_json_error()
-    error = HoT().connect(id, request.json)
-    if error:
-        return make_error(error, 404)
+    device = HoT().connect(id, request.json)
+    if type(device) == str:
+        return make_error(device, 404)
     else:
-        return jsonify({})
+        return jsonify({'device': device})
 
 
 @api.post("/devices/<id>/disconnect")

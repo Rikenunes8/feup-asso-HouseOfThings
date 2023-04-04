@@ -6,7 +6,6 @@ import DevicesContext from "../../contexts/DevicesContext";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 
 import utils from "../../utils/utils";
-import { getDeviceIcon } from "../../utils/DevicePropsUtils";
 import api from "../../api/api";
 
 export default function AddDeviceModal() {
@@ -51,25 +50,21 @@ export default function AddDeviceModal() {
 
     const device = {
       name: deviceName,
-      divisions: [deviceDivision],
+      divisions: deviceDivision != null ? [deviceDivision] : [],
       category: deviceCategory,
       subcategory: deviceSubcategory,
+      protocol: JSON.parse(deviceUUID).protocol,
     };
 
     console.log(`Adding ${deviceSubcategory}...`);
     setIsDeviceFormModalLoading(true);
-    api.addDevice(deviceUUID, device).then((success) => {
+    api.addDevice(JSON.parse(deviceUUID).uuid, device).then((newDevice) => {
       setIsDeviceFormModalLoading(false);
-      if (success) {
-        addDevice({
-            uid: deviceUUID,
-            ...device,
-            enabled: false, // TODO remove this and receive device from server
-          })
+      if (newDevice != null) {
+        addDevice(newDevice);
         setAddDeviceFormModalVisible(false);
         resetAddDeviceContext();
       } else {
-        console.log("Failed to connect device");
         utils.showErrorMessage("Failed to connect device");
       }
     });
@@ -78,7 +73,9 @@ export default function AddDeviceModal() {
   return (
     <IconModal
       visible={addDeviceFormModalVisible}
-      title={(deviceSubcategory && utils.capitalize(deviceSubcategory)) || "Title"}
+      title={
+        (deviceSubcategory && utils.capitalize(deviceSubcategory)) || "Title"
+      }
       leftIcon="close"
       rightIcon="check"
       leftIconCallback={() => {
@@ -90,7 +87,7 @@ export default function AddDeviceModal() {
       rightIconCallback={() => {
         connectCallback();
       }}
-      icon={getDeviceIcon(deviceCategory)}
+      icon={utils.getDeviceIcon(deviceSubcategory)}
       modalContent={
         <AddDeviceForm
           inputOnFocus={inputOnFocus}

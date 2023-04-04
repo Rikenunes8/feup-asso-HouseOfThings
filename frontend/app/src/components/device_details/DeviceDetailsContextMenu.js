@@ -33,7 +33,7 @@ export default function DeviceDetailsContextMenu({
 
           if (success) {
             console.log("Device disconnected successfully");
-            setIsDetailsModalVisible(false);
+            setIsDetailsModalVisible(null);
             removeDevice(deviceContextMenuUid);
             return;
           }

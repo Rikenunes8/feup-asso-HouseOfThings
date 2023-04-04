@@ -1,5 +1,19 @@
 import apiClient from "./client";
 
+const getDivisions = async () => {
+  try {
+    const response = await apiClient.get("/divisions");
+    return response.data.divisions;
+  } catch (error) {
+    console.error(error);
+    return [
+      { name: "Family Room", icon: "bedroom-icon", numDevices: 1 },
+      { name: "Tiago Room", icon: "bedroom-icon", numDevices: 1 },
+      { name: "Kitchen", icon: "kitchen-icon", numDevices: 0 },
+    ];
+  }
+};
+
 const getDevices = async () => {
   try {
     const response = await apiClient.get("/devices");
@@ -31,14 +45,12 @@ const getCategories = async () => {
 const addDevice = async (id, device) => {
   try {
     const response = await apiClient.post(`/devices/${id}/connect`, device);
-    if (response.data.error) {
-      console.error(response.data.error);
-      return false;
-    }
-    return true;
+    if (response.data.error) throw new Error(response.data.error);
+    if (response.data.device == null) throw new Error("No device returned");
+    return response.data.device;
   } catch (error) {
     console.error(error);
-    return false;
+    return null;
   }
 };
 
@@ -100,6 +112,7 @@ const availableDevices = async (body) => {
 export default {
   getDevices,
   getCategories,
+  getDivisions,
   addDevice,
   disconnectDevice,
   actionDevice,

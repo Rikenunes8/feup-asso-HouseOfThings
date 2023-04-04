@@ -25,7 +25,7 @@ class HoT(metaclass=HoTMeta):
     def _load_devices(self):
         devices = DB().find_all_devices()
         for device in devices:
-            new_device = DeviceAdapterManager.factory(
+            new_device = DeviceAdapterManager.fabricate(
                 self._cid, device['uid'], device)
             if new_device == None:
                 continue
@@ -38,7 +38,7 @@ class HoT(metaclass=HoTMeta):
         return [self._manager.get_device(id).get_model() for id in ids]
 
     def connect(self, uid: str, config: dict) -> str:
-        new_device = DeviceAdapterManager.factory(self._cid, uid, config)
+        new_device : DeviceAdapter = DeviceAdapterManager.fabricate(self._cid, uid, config)
         if new_device == None:
             return "No device for subcategory: " + config.get("subcategory")
         success = new_device.connect()
@@ -51,6 +51,7 @@ class HoT(metaclass=HoTMeta):
         if divisions != None:
             new_device.get_model().set_divisions(divisions)
         self._manager.add(uid, new_device)
+        return new_device.get_model().to_json()
 
     def disconnect(self, uid: str) -> str:
         adapter = self._manager.get_device(uid)
@@ -80,14 +81,19 @@ class HoT(metaclass=HoTMeta):
         return DB().find_all_categories()
 
     def available(self, config: dict):
-        adapter = DeviceAdapterManager.factory(self._cid, None, config)
-        if adapter == None:
+        adapters = DeviceAdapterManager.fabricate(self._cid, None, config)
+        if adapters == None:
             return
-
-        adapter.start_discovery()
+        
+        for adapter in adapters: 
+            adapter.start_discovery()
+        
         start = time.time()
         while time.time() - start < 4:
             pass
-        devices_found = adapter.finish_discovery()
+        
+        devices_found = {}
+        for adapter in adapters:
+            devices_found[adapter.get_protocol()] = adapter.finish_discovery()
 
         return devices_found

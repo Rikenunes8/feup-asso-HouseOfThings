@@ -3,7 +3,7 @@ import sys
 try:    from sense_hat import SenseHat
 except: from sense_emu import SenseHat
 
-from mqtt import connect_mqtt, subscribe, publish
+from utils.mqtt import connect_mqtt, subscribe, publish
 
 sense = SenseHat()
 
@@ -37,7 +37,7 @@ def on_available(client, userdata, msg):
     print(f"Thermometer is not available")
     return
   cidTemp = msg.payload.decode()
-  publish(client, f"{cidTemp}-thermometer-available", uid)
+  publish(client, f"{cidTemp}-thermometer-available-pi", uid)
 
   
 def start_mqtt():
@@ -45,7 +45,7 @@ def start_mqtt():
 
   subscribe(client, f"{uid}-connect", on_connect)
   subscribe(client, f"{uid}-disconnect", on_disconnect)
-  subscribe(client, "thermometer-available", on_available)
+  subscribe(client, "thermometer-available-pi", on_available)
 
   client.loop_start()
   return client

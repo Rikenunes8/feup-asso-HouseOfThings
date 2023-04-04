@@ -4,6 +4,8 @@ import { StyleSheet, View } from "react-native";
 import DynamicTextInput from "../form/DynamicTextInput";
 import DynamicDropDown from "../form/DynamicDropDown";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
+import DivisionsContext from "../../contexts/DivisionsContext";
+import utils from "../../utils/utils";
 
 export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
   const {
@@ -16,15 +18,17 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
     availableDevices,
   } = useContext(AddDeviceContext);
 
-  // TODO: Get divisions dinamically
-  const [items, setItems] = useState([
-    { label: "Living Room", value: "living room" },
-    { label: "Kitchen", value: "kitchen" },
-  ]);
+  const { divisions } = useContext(DivisionsContext);
+
+  const [items, setItems] = useState(
+    divisions.map((item) => {
+      return { label: utils.capitalize(item.name), value: item.name };
+    })
+  );
 
   const [uuidItems, setUUIDItems] = useState(
     availableDevices.map((item) => {
-      return { label: item, value: item };
+      return { label: item.uuid, value: JSON.stringify(item) };
     })
   );
 

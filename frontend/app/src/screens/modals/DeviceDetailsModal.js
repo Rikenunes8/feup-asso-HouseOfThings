@@ -2,14 +2,10 @@ import React, { useState, useContext, useRef } from "react";
 
 import ModalsContext from "../../contexts/ModalsContext";
 import IconModal from "../../components/modal/IconModal";
+import DeviceDetailsContextMenu from "../../components/device_details/DeviceDetailsContextMenu";
+import DeviceRenamingContextMenu from "../../components/device_details/DeviceRenamingContextMenu";
 
-import {
-  getDeviceIcon,
-  getDeviceContextMenu,
-  getDeviceModalContent,
-} from "../../utils/DevicePropsUtils";
-
-export default function DeviceDetailsModal({ device }) {
+export default function DeviceDetailsModal({ device, icon, modalContent }) {
   const {
     deviceDetailsModalVisible,
     setDeviceDetailsModalVisible,
@@ -25,7 +21,7 @@ export default function DeviceDetailsModal({ device }) {
   const refDeviceName = useRef(null);
 
   const closeCallback = () => {
-    setDeviceDetailsModalVisible(false);
+    setDeviceDetailsModalVisible(null);
     setIsContextMenuVisible(false);
     setIsMenuModalRenaming(false);
     resetDeviceName();
@@ -41,7 +37,7 @@ export default function DeviceDetailsModal({ device }) {
 
   return (
     <IconModal
-      visible={deviceDetailsModalVisible}
+      visible={deviceDetailsModalVisible == device.uid}
       title={deviceName}
       titleEditable={isMenuModalRenaming}
       titleOnChangeCallback={renameCallback}
@@ -51,17 +47,26 @@ export default function DeviceDetailsModal({ device }) {
       rightIcon="ellipsis1"
       leftIconCallback={closeCallback}
       rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
-      icon={getDeviceIcon(device.category)}
-      contextMenu={getDeviceContextMenu(
-        isMenuModalRenaming,
-        device.uid,
-        deviceName,
-        setDeviceDetailsModalVisible,
-        isContextMenuVisible,
-        setIsContextMenuVisible,
-        resetDeviceName
-      )}
-      modalContent={getDeviceModalContent(device)}
+      icon={icon}
+      contextMenu={
+        isMenuModalRenaming ? (
+          <DeviceRenamingContextMenu
+            isContextMenuVisible={isContextMenuVisible}
+            setIsContextMenuVisible={setIsContextMenuVisible}
+            deviceContextMenuUid={device.uid}
+            deviceContextMenuName={deviceName}
+            resetDeviceContextMenuName={resetDeviceName}
+          />
+        ) : (
+          <DeviceDetailsContextMenu
+            setIsDetailsModalVisible={setDeviceDetailsModalVisible}
+            isContextMenuVisible={isContextMenuVisible}
+            setIsContextMenuVisible={setIsContextMenuVisible}
+            deviceContextMenuUid={device.uid}
+          />
+        )
+      }
+      modalContent={modalContent}
       isLoading={isDeviceDetailsModalLoading}
     />
   );

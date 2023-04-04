@@ -38,7 +38,7 @@ class HoT(metaclass=HoTMeta):
         return [self._manager.get_device(id).get_model() for id in ids]
 
     def connect(self, uid: str, config: dict) -> str:
-        new_device = DeviceAdapterManager.fabricate(self._cid, uid, config)
+        new_device : DeviceAdapter = DeviceAdapterManager.fabricate(self._cid, uid, config)
         if new_device == None:
             return "No device for subcategory: " + config.get("subcategory")
         success = new_device.connect()
@@ -51,6 +51,7 @@ class HoT(metaclass=HoTMeta):
         if divisions != None:
             new_device.get_model().set_divisions(divisions)
         self._manager.add(uid, new_device)
+        return new_device.get_model().to_json()
 
     def disconnect(self, uid: str) -> str:
         adapter = self._manager.get_device(uid)
@@ -83,7 +84,7 @@ class HoT(metaclass=HoTMeta):
         adapters = DeviceAdapterManager.fabricate(self._cid, None, config)
         if adapters == None:
             return
-        print(adapters)
+        
         for adapter in adapters: 
             adapter.start_discovery()
         

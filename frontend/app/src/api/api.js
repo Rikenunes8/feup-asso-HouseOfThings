@@ -40,14 +40,12 @@ const getCategories = async () => {
 const addDevice = async (id, device) => {
   try {
     const response = await apiClient.post(`/devices/${id}/connect`, device);
-    if (response.data.error) {
-      console.error(response.data.error);
-      return false;
-    }
-    return true;
+    if (response.data.error) throw new Error(response.data.error);
+    if (response.data.device == null) throw new Error("No device returned");
+    return response.data.device;
   } catch (error) {
     console.error(error);
-    return false;
+    return null;
   }
 };
 

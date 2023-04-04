@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
@@ -13,9 +13,9 @@ import {
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 
 import UsernameContext from "../contexts/UsernameContext";
-import DeviceCard from "../components/DeviceCard";
 import DivisionCard from "../components/DivisionCard";
 import NewDivisionCard from "../components/NewDivisionCard";
+import DeviceCardPicker from "../components/device_cards/DeviceCardPicker";
 import DevicesContext from "../contexts/DevicesContext";
 import DivisionsContext from "../contexts/DivisionsContext";
 
@@ -47,7 +47,7 @@ export default function HomeScreen() {
     }
 
     if (filteredDevices.length > 0) {
-      return filteredDevices.map((device, key) => <DeviceCard key={key} device={device} />);
+      return filteredDevices.map((device, key) => <DeviceCardPicker key={key} device={device} />);
     }
 
     if (selectedDivision) {

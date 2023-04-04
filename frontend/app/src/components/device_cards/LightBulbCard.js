@@ -13,7 +13,7 @@ import colors from "../../../configs/colors";
 export default function LightBulbCard({ device }) {
   const { updateDevice } = useContext(DevicesContext);
 
-  onOfHandler = (isEnabled) => {
+  const onOffHandler = (isEnabled) => {
     console.log(`Turning ${isEnabled ? "off" : "on"} device...`);
 
     const action = isEnabled ? "turnOff" : "turnOn";
@@ -28,9 +28,7 @@ export default function LightBulbCard({ device }) {
         <Switch
           trackColor={{ false: colors.desactive, true: colors.active }}
           thumbColor={device.on ? colors.white : colors.white}
-          onValueChange={() => {
-            onOfHandler(device.on);
-          }}
+          onValueChange={() => onOffHandler(device.on)}
           value={device.on}
         />
       }
@@ -39,7 +37,7 @@ export default function LightBulbCard({ device }) {
           device={device}
           icon={utils.getDeviceIcon(device.subcategory)}
           modalContent={
-            <LightBulbDetails on={device.on} handler={onOfHandler} />
+            <LightBulbDetails on={device.on} handler={onOffHandler} />
           }
         />
       }

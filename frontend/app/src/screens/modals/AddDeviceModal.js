@@ -64,7 +64,7 @@ export default function AddDeviceModal() {
         addDevice({
           uid: JSON.parse(deviceUUID).uuid,
           ...device,
-          enabled: false, // TODO remove this and receive device from server
+          on: false, // TODO remove this and receive device from server
         });
         setAddDeviceFormModalVisible(false);
         resetAddDeviceContext();

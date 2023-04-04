@@ -1,5 +1,4 @@
 import React, { useEffect, useContext, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
   Text,
@@ -7,12 +6,10 @@ import {
   SafeAreaView,
   StatusBar,
   Platform,
-  TouchableOpacity,
   ScrollView,
 } from "react-native";
-import Icon from "react-native-vector-icons/SimpleLineIcons";
 
-import UsernameContext from "../contexts/UsernameContext";
+import Header from "../components/header/Header";
 import DivisionCard from "../components/division_cards/DivisionCard";
 import NewDivisionCard from "../components/division_cards/NewDivisionCard";
 import DeviceCardPicker from "../components/device_cards/DeviceCardPicker";
@@ -26,9 +23,6 @@ export default function HomeScreen() {
   const { devices, setDevices } = useContext(DevicesContext);
   const { divisions, setDivisions } = useContext(DivisionsContext);
   const [selectedDivision, setSelectedDivision] = useState(null);
-  const { username } = useContext(UsernameContext);
-
-  const navigation = useNavigation();
 
   const fetchDevices = async () => {
     const devs = await api.getDevices();
@@ -54,15 +48,12 @@ export default function HomeScreen() {
       ));
     }
 
-    if (selectedDivision) {
-      return (
-        <Text style={styles.sectionMessage}>
-          No devices connected in {selectedDivision}...
-        </Text>
-      );
-    }
-
-    return <Text style={styles.sectionMessage}>No devices connected...</Text>;
+    return (
+      <Text style={styles.sectionMessage}>
+        No devices connected
+        {selectedDivision ? " in " + selectedDivision : "..."}
+      </Text>
+    );
   };
 
   useEffect(() => {
@@ -72,16 +63,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          // on press should open the profile screen
-          onPress={() => navigation.navigate("Profile")}
-          style={styles.iconView}
-        >
-          <Icon name={"user"} size={20} color={colors.primaryText} />
-        </TouchableOpacity>
-        <Text style={styles.welcomeMessage}>Hello, {username.trim()}!</Text>
-      </View>
+      <Header />
 
       <View style={styles.body}>
         <Text style={styles.sectionHeader}>Divisions</Text>
@@ -133,21 +115,6 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     alignItems: "center",
   },
-  header: {
-    width: "100%",
-    flex: 0.15,
-    backgroundColor: colors.primary,
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-  },
-  iconView: {
-    padding: 12,
-    borderRadius: 24,
-    alignSelf: "flex-end",
-    backgroundColor: colors.white,
-  },
   sectionHeader: {
     fontSize: 17,
     fontWeight: "bold",
@@ -160,11 +127,5 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     marginVertical: 5,
     fontSize: 17,
-  },
-  welcomeMessage: {
-    color: colors.white,
-    fontSize: 30,
-    fontWeight: "bold",
-    marginStart: 15,
   },
 });

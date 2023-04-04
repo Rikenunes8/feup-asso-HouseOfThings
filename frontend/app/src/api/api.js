@@ -88,6 +88,34 @@ const availableDevices = async (body) => {
   }
 };
 
+const getRules = async () => {
+  // TODO(RULES): correct route and mock data format to match backend
+  try {
+    const response = await apiClient.get("/rules");
+    return response.data.rules;
+  } catch (error) {
+    console.error(error);
+    return [
+      {
+        name: "Family Room Lights Off",
+        triggers: {
+          type: "MANUAL", // manual, or, and, single ?
+          parts: [],
+        },
+        actions: ["light off"],
+      },
+      {
+        name: "Lights Off at Night",
+        triggers: {
+          type: "AND", // manual, or, and, single ?
+          parts: [],
+        },
+        actions: ["light tiago off", "light family off"],
+      },
+    ];
+  }
+};
+
 export default {
   getDevices,
   getCategories,
@@ -96,4 +124,5 @@ export default {
   actionDevice,
   getDivisions,
   availableDevices,
+  getRules,
 };

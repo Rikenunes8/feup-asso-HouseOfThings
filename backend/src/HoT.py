@@ -97,3 +97,18 @@ class HoT(metaclass=HoTMeta):
             devices_found[adapter.get_protocol()] = adapter.finish_discovery()
 
         return devices_found
+    
+    def rules(self):
+      pass
+    
+    def create_rule(self, rule : dict):
+      pass
+
+    def delete_rule(self, rule_id : str):
+      pass
+
+    def update_rule(self, rule_id : str, rule : dict):
+      pass
+
+    def execute_rule(self, rule_id : str):
+      pass

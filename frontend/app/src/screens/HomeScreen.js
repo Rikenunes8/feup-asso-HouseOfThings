@@ -94,10 +94,7 @@ export default function HomeScreen() {
 
         <Text style={styles.sectionHeader}>Devices</Text>
         <View style={styles.scrollBody}>
-          <ScrollView>
-            {showDevices()}
-            {showDevices()}
-          </ScrollView>
+          <ScrollView>{showDevices()}</ScrollView>
         </View>
       </View>
     </SafeAreaView>

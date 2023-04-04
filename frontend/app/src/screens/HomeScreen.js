@@ -13,8 +13,8 @@ import {
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 
 import UsernameContext from "../contexts/UsernameContext";
-import DivisionCard from "../components/DivisionCard";
-import NewDivisionCard from "../components/NewDivisionCard";
+import DivisionCard from "../components/division_cards/DivisionCard";
+import NewDivisionCard from "../components/division_cards/NewDivisionCard";
 import DeviceCardPicker from "../components/device_cards/DeviceCardPicker";
 import DevicesContext from "../contexts/DevicesContext";
 import DivisionsContext from "../contexts/DivisionsContext";

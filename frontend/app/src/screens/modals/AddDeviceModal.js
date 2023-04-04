@@ -58,18 +58,13 @@ export default function AddDeviceModal() {
 
     console.log(`Adding ${deviceSubcategory}...`);
     setIsDeviceFormModalLoading(true);
-    api.addDevice(JSON.parse(deviceUUID).uuid, device).then((success) => {
+    api.addDevice(JSON.parse(deviceUUID).uuid, device).then((newDevice) => {
       setIsDeviceFormModalLoading(false);
-      if (success) {
-        addDevice({
-          uid: JSON.parse(deviceUUID).uuid,
-          ...device,
-          on: false, // TODO remove this and receive device from server
-        });
+      if (newDevice != null) {
+        addDevice(newDevice);
         setAddDeviceFormModalVisible(false);
         resetAddDeviceContext();
       } else {
-        console.log("Failed to connect device");
         utils.showErrorMessage("Failed to connect device");
       }
     });

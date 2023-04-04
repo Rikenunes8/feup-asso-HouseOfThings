@@ -50,7 +50,7 @@ export default function AddDeviceModal() {
 
     const device = {
       name: deviceName,
-      divisions: [deviceDivision],
+      divisions: deviceDivision != null ? [deviceDivision] : [],
       category: deviceCategory,
       subcategory: deviceSubcategory,
       protocol: JSON.parse(deviceUUID).protocol,

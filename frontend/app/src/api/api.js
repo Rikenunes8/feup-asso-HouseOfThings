@@ -97,5 +97,5 @@ export default {
   disconnectDevice,
   actionDevice,
   getDivisions,
-  availableDevices
+  availableDevices,
 };

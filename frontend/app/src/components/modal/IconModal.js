@@ -74,7 +74,7 @@ export default function IconModal({
                     <Text style={styles.detailsSubtitle}>{subtitle}</Text>
                   </View>
                   {inputOnFocus ? null : (
-                    <Image style={styles.detailsIcon} source={icon} />
+                    <Image style={styles.detailsIcon} source={icon} /> // TODO accept entire Image component instead of just source
                   )}
                 </View>
                 {contextMenu}

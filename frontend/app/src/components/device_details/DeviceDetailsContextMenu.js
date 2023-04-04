@@ -47,25 +47,23 @@ export default function DeviceDetailsContextMenu({
   };
 
   return (
-    <>
-      <ContextMenu
-        isContextMenuVisible={isContextMenuVisible}
-        setIsContextMenuVisible={setIsContextMenuVisible}
-        options={[
-          {
-            name: "Rename",
-            icon: "edit-2",
-            color: colors.primaryText,
-            callback: () => console.log("TODO: Rename"),
-          },
-          {
-            name: "Disconnect",
-            icon: "wifi-off",
-            color: colors.red,
-            callback: disconnectCallback,
-          },
-        ]}
-      />
-    </>
+    <ContextMenu
+      isContextMenuVisible={isContextMenuVisible}
+      setIsContextMenuVisible={setIsContextMenuVisible}
+      options={[
+        {
+          name: "Rename",
+          icon: "edit-2",
+          color: colors.primaryText,
+          callback: () => console.log("TODO: Rename"),
+        },
+        {
+          name: "Disconnect",
+          icon: "wifi-off",
+          color: colors.red,
+          callback: disconnectCallback,
+        },
+      ]}
+    />
   );
 }

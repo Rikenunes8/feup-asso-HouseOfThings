@@ -1,5 +1,19 @@
 import apiClient from "./client";
 
+const getDivisions = async () => {
+  try {
+    const response = await apiClient.get("/divisions");
+    return response.data.divisions;
+  } catch (error) {
+    console.error(error);
+    return [
+      { name: "Family Room", icon: "bedroom-icon", numDevices: 1 },
+      { name: "Tiago Room", icon: "bedroom-icon", numDevices: 1 },
+      { name: "Kitchen", icon: "kitchen-icon", numDevices: 0 },
+    ];
+  }
+};
+
 const getDevices = async () => {
   try {
     const response = await apiClient.get("/devices");
@@ -82,5 +96,6 @@ export default {
   addDevice,
   disconnectDevice,
   actionDevice,
-  availableDevices,
+  getDivisions,
+  availableDevices
 };

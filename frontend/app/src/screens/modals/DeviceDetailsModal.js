@@ -53,13 +53,13 @@ export default function DeviceDetailsModal({ device }) {
       rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
       icon={getDeviceIcon(device.category)}
       contextMenu={getDeviceContextMenu(
+        isMenuModalRenaming,
         device.uid,
         deviceName,
         setDeviceDetailsModalVisible,
         isContextMenuVisible,
         setIsContextMenuVisible,
         resetDeviceName
-        // refDeviceName
       )}
       modalContent={getDeviceModalContent(device)}
       isLoading={isDeviceDetailsModalLoading}

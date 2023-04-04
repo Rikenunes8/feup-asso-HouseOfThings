@@ -13,17 +13,11 @@ export default function DeviceDetailsContextMenu({
   isContextMenuVisible,
   setIsContextMenuVisible,
   deviceContextMenuUid,
-  deviceContextMenuName,
-  resetDeviceContextMenuName,
-  // refDeviceContextMenuName,
 }) {
-  const { removeDevice, renameDevice } = useContext(DevicesContext);
+  const { removeDevice } = useContext(DevicesContext);
 
-  const {
-    setIsDeviceDetailsModalLoading,
-    isMenuModalRenaming,
-    setIsMenuModalRenaming,
-  } = useContext(ModalsContext);
+  const { setIsDeviceDetailsModalLoading, setIsMenuModalRenaming } =
+    useContext(ModalsContext);
 
   const disconnectCallback = () => {
     utils.showConfirmDialog(
@@ -59,72 +53,24 @@ export default function DeviceDetailsContextMenu({
     setIsMenuModalRenaming(true);
   };
 
-  const saveCallback = () => {
-    console.log("Renaming device...");
-    setIsDeviceDetailsModalLoading(true);
-
-    api
-      .renameDevice(deviceContextMenuUid, deviceContextMenuName)
-      .then((success) => {
-        setIsDeviceDetailsModalLoading(false);
-        setIsContextMenuVisible(false);
-        setIsMenuModalRenaming(false);
-
-        if (success) {
-          console.log("Device renamed successfully");
-          renameDevice(deviceContextMenuUid, deviceContextMenuName);
-          return;
-        }
-
-        console.log("Failed to rename device");
-        utils.showErrorMessage("Failed to rename device");
-        resetDeviceContextMenuName();
-      });
-  };
-
-  const cancelCallback = () => {
-    setIsContextMenuVisible(false);
-    setIsMenuModalRenaming(false);
-    resetDeviceContextMenuName();
-  };
-
-  const mainMenuOptions = [
-    {
-      name: "Rename",
-      icon: "edit-2",
-      color: colors.primaryText,
-      callback: renameCallback,
-    },
-    {
-      name: "Disconnect",
-      icon: "wifi-off",
-      color: colors.red,
-      callback: disconnectCallback,
-    },
-  ];
-
-  const renameMenuOptions = [
-    {
-      name: "Save",
-      icon: "save",
-      color: colors.active,
-      callback: saveCallback,
-    },
-    {
-      name: "Cancel",
-      icon: "slash",
-      color: colors.red,
-      callback: cancelCallback,
-    },
-  ];
-
   return (
-    <>
-      <ContextMenu
-        isContextMenuVisible={isContextMenuVisible}
-        setIsContextMenuVisible={setIsContextMenuVisible}
-        options={isMenuModalRenaming ? renameMenuOptions : mainMenuOptions}
-      />
-    </>
+    <ContextMenu
+      isContextMenuVisible={isContextMenuVisible}
+      setIsContextMenuVisible={setIsContextMenuVisible}
+      options={[
+        {
+          name: "Rename",
+          icon: "edit-2",
+          color: colors.primaryText,
+          callback: renameCallback,
+        },
+        {
+          name: "Disconnect",
+          icon: "wifi-off",
+          color: colors.red,
+          callback: disconnectCallback,
+        },
+      ]}
+    />
   );
 }

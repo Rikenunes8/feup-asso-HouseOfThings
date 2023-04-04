@@ -24,12 +24,21 @@ export const DevicesProvider = ({ children }) => {
     setDevices(devices.filter((device) => device.uid !== uid));
   };
 
+  const renameDevice = (uid, name) => {
+    setDevices(
+      devices.map((device) =>
+        device.uid === uid ? { ...device, name: name } : device
+      )
+    );
+  };
+
   const editDevice = (newEditDevice) => {
     setDeviceEdit({
       edit: true,
       device: { ...newEditDevice },
     });
   };
+
   return (
     <DevicesContext.Provider
       value={{
@@ -37,6 +46,7 @@ export const DevicesProvider = ({ children }) => {
         setDevices,
         addDevice,
         removeDevice,
+        renameDevice,
         editDevice,
         updateDevice,
         deviceEdit,

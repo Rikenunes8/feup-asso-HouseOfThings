@@ -15,7 +15,9 @@ export default function DeviceDetailsContextMenu({
   deviceContextMenuUid,
 }) {
   const { removeDevice } = useContext(DevicesContext);
-  const { setIsDeviceDetailsModalLoading } = useContext(ModalsContext);
+
+  const { setIsDeviceDetailsModalLoading, setIsMenuModalRenaming } =
+    useContext(ModalsContext);
 
   const disconnectCallback = () => {
     utils.showConfirmDialog(
@@ -46,6 +48,11 @@ export default function DeviceDetailsContextMenu({
     );
   };
 
+  const renameCallback = () => {
+    setIsContextMenuVisible(false);
+    setIsMenuModalRenaming(true);
+  };
+
   return (
     <ContextMenu
       isContextMenuVisible={isContextMenuVisible}
@@ -55,7 +62,7 @@ export default function DeviceDetailsContextMenu({
           name: "Rename",
           icon: "edit-2",
           color: colors.primaryText,
-          callback: () => console.log("TODO: Rename"),
+          callback: renameCallback,
         },
         {
           name: "Disconnect",

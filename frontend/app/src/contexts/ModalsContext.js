@@ -17,6 +17,8 @@ export const ModalsProvider = ({ children }) => {
   const [isDeviceDetailsModalLoading, setIsDeviceDetailsModalLoading] =
     useState(false);
 
+  const [isMenuModalRenaming, setIsMenuModalRenaming] = useState(false);
+
   return (
     <ModalsContext.Provider
       value={{
@@ -32,6 +34,8 @@ export const ModalsProvider = ({ children }) => {
         setIsDeviceDetailsModalLoading,
         isDeviceFormModalLoading,
         setIsDeviceFormModalLoading,
+        isMenuModalRenaming,
+        setIsMenuModalRenaming,
       }}
     >
       {children}

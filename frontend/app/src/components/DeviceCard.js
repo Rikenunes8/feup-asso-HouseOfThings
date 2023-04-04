@@ -24,10 +24,10 @@ export default function DeviceCard({ device }) {
 
   onOfHandler = (isEnabled, setDisabled) => {
     console.log(`Turning ${isEnabled ? "off" : "on"} device...`);
-    
+
     setDisabled(true);
     device.on = !device.on;
-
+  
     const action = isEnabled ? "turnOff" : "turnOn";
     api.actionDevice(device.uid, { action: action }).then((success) =>{
       setDisabled(false);
@@ -37,8 +37,10 @@ export default function DeviceCard({ device }) {
         return;
       }
 
+      updateDevice({ on: !device.on }, device.uid);
       console.log("Failed to change light status");
       utils.showErrorMessage("Failed to change light status");
+      
     })
     
   };

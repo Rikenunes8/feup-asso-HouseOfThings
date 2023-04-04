@@ -15,13 +15,12 @@ export default function RuleCard({ rule }) {
   };
 
   // TODO(RULES): correct call to rule params to match backend
-  // TODO(RULES): make content scrollable
   return (
     <TouchableOpacity
       style={styles.ruleCard}
-      // onPress= show modal with rule details
+      // TODO(RULES): onPress = show modal with rule details
     >
-      <View style={{ justifyContent: "center" }}>
+      <View>
         <Text style={styles.ruleName}>{rule.name}</Text>
         <Text style={styles.ruleText}>
           {getRuleNumActions(rule.actions)}{" "}
@@ -32,9 +31,8 @@ export default function RuleCard({ rule }) {
       </View>
 
       {rule.triggers.type === "MANUAL" && (
-        <TouchableOpacity>
-          {/* TODO(RULES): change icon */}
-          <Icon name={"plus"} size={35} color={colors.primaryText} />
+        <TouchableOpacity style={styles.ruleExecute}>
+          <Icon name={"play"} size={25} color={colors.active} />
         </TouchableOpacity>
       )}
     </TouchableOpacity>
@@ -43,13 +41,13 @@ export default function RuleCard({ rule }) {
 
 const styles = StyleSheet.create({
   ruleCard: {
-    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     backgroundColor: colors.white,
     borderRadius: 15,
     marginVertical: 10,
-    padding: 15,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
   },
   ruleName: {
     fontSize: 15,
@@ -63,5 +61,8 @@ const styles = StyleSheet.create({
     color: colors.secondaryText,
     textTransform: "uppercase",
     fontStyle: "italic",
+  },
+  ruleExecute: {
+    marginLeft: 10,
   },
 });

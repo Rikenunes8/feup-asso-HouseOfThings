@@ -93,7 +93,12 @@ export default function HomeScreen() {
         </View>
 
         <Text style={styles.sectionHeader}>Devices</Text>
-        {showDevices()}
+        <View style={styles.scrollBody}>
+          <ScrollView>
+            {showDevices()}
+            {showDevices()}
+          </ScrollView>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -120,6 +125,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: colors.primary,
     paddingTop: 16,
+    paddingBottom: 5,
   },
   sectionMessage: {
     color: colors.primaryText,
@@ -127,5 +133,9 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     marginVertical: 5,
     fontSize: 17,
+  },
+  scrollBody: {
+    marginBottom: 310,
+    width: "100%",
   },
 });

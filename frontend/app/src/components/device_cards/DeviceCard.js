@@ -28,12 +28,14 @@ export default function DeviceCard({ device, specificFeature, modal }) {
         source={utils.getDeviceIcon(device.subcategory)}
       />
 
-      <View style={{ justifyContent: "center" }}>
-        <Text style={styles.deviceName}>{device.name}</Text>
-        <Text style={styles.divisionText}>{device.divisions[0]}</Text>
-      </View>
+      <View style={{ justifyContent: "space-between" }}>
+        <View>
+          <Text style={styles.deviceName}>{device.name}</Text>
+          <Text style={styles.divisionText}>{device.divisions[0]}</Text>
+        </View>
 
-      {specificFeature}
+        {specificFeature}
+      </View>
     </TouchableOpacity>
   );
 }
@@ -42,7 +44,7 @@ const styles = StyleSheet.create({
   deviceCard: {
     width: "100%",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     backgroundColor: colors.white,
     borderRadius: 15,
     marginVertical: 10,
@@ -52,6 +54,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     objectFit: "contain",
+    marginRight: 15,
   },
   deviceName: {
     fontSize: 15,

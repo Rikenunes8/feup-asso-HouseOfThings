@@ -6,6 +6,7 @@ import {
   StatusBar,
   Platform,
   View,
+  ScrollView,
 } from "react-native";
 
 import Header from "../components/header/Header";
@@ -35,11 +36,13 @@ export default function RulesScreen() {
       <View style={styles.body}>
         <Text style={styles.sectionHeader}>Rules</Text>
 
-        {rules.map((rule) => (
-          <RuleCard key={rule.uid} rule={rule} />
-        ))}
+        <ScrollView style={styles.scrollBody}>
+          {rules.map((rule) => (
+            <RuleCard key={rule.uid} rule={rule} />
+          ))}
 
-        <NewRuleCard />
+          <NewRuleCard />
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -63,5 +66,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: colors.primary,
     paddingTop: 16,
+    paddingBottom: 5,
+  },
+  scrollBody: {
+    marginBottom: 110,
+    width: "100%",
   },
 });

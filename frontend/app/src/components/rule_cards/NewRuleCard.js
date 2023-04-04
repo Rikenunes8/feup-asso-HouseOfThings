@@ -8,7 +8,7 @@ export default function NewRuleCard() {
   return (
     <TouchableOpacity
       style={styles.card}
-      // onPress= show modal to create new rule
+      // TODO(RULES): onPress = show modal to create new rule
     >
       <Icon name={"plus"} size={25} color={colors.primaryText} />
     </TouchableOpacity>
@@ -26,6 +26,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginVertical: 10,
     padding: 20,
-    width: "100%",
   },
 });

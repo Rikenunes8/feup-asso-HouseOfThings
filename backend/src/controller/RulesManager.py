@@ -27,5 +27,10 @@ class RulesManager:
     self._rules[rule.get_id()] = rule
     return self._rules[rule.get_id()]
 
+  def remove(self, rule_id):
+    rule = self._rules.pop(rule_id, None)
+    if rule: rule.delete()
+    else: return "Rule not found"
+
   def get_all(self):
     return list(map(lambda rule : rule.to_json(), self._rules.values()))

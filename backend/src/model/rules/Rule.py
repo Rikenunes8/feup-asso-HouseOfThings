@@ -18,6 +18,9 @@ class Rule:
 
   def _create(self):
     return DB().add_rule(self.to_json())
+  
+  def delete(self):
+    DB().delete_rule(self._id)
 
   def to_json(self) -> dict:
     return {

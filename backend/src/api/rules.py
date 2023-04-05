@@ -25,10 +25,9 @@ def create():
 
 @rules.delete("/<id>/")
 def delete(id):
-  return make_error("Not implemented yet")
-  #error = HoT().delete_rule(id)
-  #if error: return make_error(error)
-  #else:     return jsonify({})
+  error = HoT().delete_rule(id)
+  if error: return make_error(error)
+  else:     return jsonify({})
 
 @rules.post("/<id>/")
 def update(id):

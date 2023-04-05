@@ -107,7 +107,7 @@ class HoT(metaclass=HoTMeta):
       return self._rules_manager.add(rule).to_json()
 
     def delete_rule(self, rule_id : str):
-      pass
+      return self._rules_manager.remove(rule_id)
 
     def update_rule(self, rule_id : str, rule : dict):
       pass

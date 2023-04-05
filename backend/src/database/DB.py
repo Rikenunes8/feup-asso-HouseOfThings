@@ -60,6 +60,9 @@ class DB(metaclass=DBMeta):
     
     def update_rule(self, id, props):
       self._rules.update_one({'_id': ObjectId(id)}, {'$set': props})
+    
+    def delete_rule(self, id):
+      self._rules.delete_one({'_id': ObjectId(id)})
 
     def find_rule(self, id) -> dict:
       return self._rules.find_one({'_id': ObjectId(id)}, {'_id': 0})

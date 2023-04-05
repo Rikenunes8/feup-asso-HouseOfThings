@@ -1,5 +1,6 @@
 import os
 import pymongo
+from bson.objectid import ObjectId
 from dotenv import load_dotenv
 
 
@@ -53,12 +54,15 @@ class DB(metaclass=DBMeta):
         return list(self._devices.find({}, {'_id': 0}))
 
 
-    def add_rule(self, id, props):
-      if not self.find_rule(id):
-        self._rules.insert_one({'id': id, **props})
+    def add_rule(self, props):
+      result = self._rules.insert_one({**props})
+      return str(result.inserted_id)
+    
+    def update_rule(self, id, props):
+      self._rules.update_one({'_id': ObjectId(id)}, {'$set': props})
 
     def find_rule(self, id) -> dict:
-      return self._rules.find_one({'id': id}, {'_id': 0})
+      return self._rules.find_one({'_id': ObjectId(id)}, {'_id': 0})
     
     def find_all_rules(self) -> list[dict]:
       return list(self._rules.find({}, {'_id': 0}))

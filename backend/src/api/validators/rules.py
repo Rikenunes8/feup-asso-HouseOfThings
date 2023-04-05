@@ -4,12 +4,10 @@ def validate_create_rule(rule: dict):
   return _validate_rule(rule)
 
 def _validate_rule(rule: dict):
-  id = rule.get("id")
   name = rule.get("name")
   operation = rule.get("operation")
   when = rule.get("when")
   then = rule.get("then")
-  if id == None: return "No id provided"
   if name == None: return "No name provided"
   if operation == None: return "No operation provided"
   if operation not in ["and", "or"]: return "Invalid operation provided"

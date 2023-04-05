@@ -169,8 +169,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/rule"
-              # TODO change to this $ref: "#/components/schemas/create_rule_body"
+              $ref: "#/components/schemas/create_rule_body"
       responses:
         "200":
           description: Successfully created rule

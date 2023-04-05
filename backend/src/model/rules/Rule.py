@@ -4,16 +4,20 @@ from src.model.rules.Action import Action
 from src.database.DB import DB
 
 class Rule:
-  def __init__(self, id : str, name : str, operation : str, conditions:list[Condition], actions:list[Action]) -> None:
-    self._id = id
+  def __init__(self, name : str, operation : str, conditions:list[Condition], actions:list[Action]) -> None:
+    self._id = None
     self._name = name
     self._operation = operation 
     self._conditions = conditions
     self._actions = actions
+    self._id = self._create()
+    DB().update_rule(self._id, {"id": self._id})
+  
+  def get_id(self) -> str:
+    return self._id
 
-
-  def save(self):
-    DB().add_rule(self._id, self.to_json())
+  def _create(self):
+    return DB().add_rule(self.to_json())
 
   def to_json(self) -> dict:
     return {

@@ -31,13 +31,13 @@ class RulesManager:
 
 
   
-  def add(self, rule) -> Rule:
-    conditions = self._build_conditions(rule['when'])
-    actions = self._build_actions(rule['then'])
+  def add(self, rule_json) -> Rule:
+    conditions = self._build_conditions(rule_json['when'])
+    actions = self._build_actions(rule_json['then'])
 
-    self._rules[rule['id']] = Rule(rule['id'], rule['name'], rule['operation'], conditions , actions)
-    self._rules[rule['id']].save()
-    return self._rules[rule['id']]
+    rule = Rule(rule_json['name'], rule_json['operation'], conditions , actions)
+    self._rules[rule.get_id()] = rule
+    return self._rules[rule.get_id()]
 
   def get_all(self):
     return list(map(lambda rule : rule.to_json(), self._rules.values()))

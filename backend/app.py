@@ -1,6 +1,6 @@
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask import Flask
-from src.api import api
+from src.api.api import api
 
 SWAGGER_URL = '/swagger'
 API_URL = '/static/swagger.yaml'

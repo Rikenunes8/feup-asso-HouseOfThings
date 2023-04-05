@@ -110,7 +110,9 @@ class HoT(metaclass=HoTMeta):
       return self._rules_manager.remove(rule_id)
 
     def update_rule(self, rule_id : str, rule : dict):
-      pass
+      rule_updated = self._rules_manager.update(rule_id, rule)
+      if isinstance(rule_updated, str): return rule_updated
+      return rule_updated.to_json()
 
     def execute_rule(self, rule_id : str):
       pass

@@ -6,7 +6,7 @@ from src.model.rules.Condition import Condition
 
 class RulesManager:
   def __init__(self):
-    self._rules = {}
+    self._rules : dict[str, Rule]= {}
   
   def _build_conditions(self, conditions) -> list[Condition]:
     scheduleConditions = list(filter(lambda condition: condition['kind'] == "schedule", conditions))
@@ -31,6 +31,11 @@ class RulesManager:
     rule = self._rules.pop(rule_id, None)
     if rule: rule.delete()
     else: return "Rule not found"
+
+  def update(self, rule_id, rule_json):
+    error = self.remove(rule_id)
+    if error: return error
+    return self.add(rule_json)
 
   def get_all(self):
     return list(map(lambda rule : rule.to_json(), self._rules.values()))

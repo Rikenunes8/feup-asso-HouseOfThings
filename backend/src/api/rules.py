@@ -20,7 +20,7 @@ def create():
 
   rule = HoT().create_rule(request.json)
   if isinstance(rule, str): return make_error(error)
-  else: return jsonify(rule)
+  else: return jsonify({'rule': rule})
 
 
 @rules.delete("/<id>/")
@@ -31,12 +31,13 @@ def delete(id):
 
 @rules.post("/<id>/")
 def update(id):
-  return make_error("Not implemented yet")
-  #if not is_content_json(request): return not_json_error()
+  if not is_content_json(request): return not_json_error()
+  error = validate_create_rule(request.json)
+  if error: return make_error(error)
 
-  #error = HoT().update_rule(id, request.json)
-  #if error: return make_error(error)
-  #else:     return jsonify({})
+  rule = HoT().update_rule(id, request.json)
+  if isinstance(rule, str): return make_error(error)
+  else: return jsonify({'rule': rule})
 
 @rules.post("/<id>/execute")
 def execute(id):

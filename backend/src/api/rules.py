@@ -9,7 +9,7 @@ rules = Blueprint('rules', __name__, url_prefix='/rules')
 @rules.get("/")
 def index():
   rules = HoT().rules()
-  return rules
+  return jsonify({"rules": rules})
 
 
 @rules.post("/")
@@ -18,9 +18,9 @@ def create():
   error = validate_create_rule(request.json)
   if error: return make_error(error)
 
-  error = HoT().create_rule(request.json)
-  if error: return make_error(error)
-  else:     return jsonify({})
+  rule = HoT().create_rule(request.json)
+  if isinstance(rule, str): return make_error(error)
+  else: return jsonify(rule)
 
 
 @rules.delete("/<id>/")

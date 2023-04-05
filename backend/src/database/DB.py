@@ -28,22 +28,37 @@ class DB(metaclass=DBMeta):
 
         self._client = pymongo.MongoClient(mongo_uri)
         self._db = self._client[database]
+        self._categories = self._db['categories']
+        self._devices = self._db['devices']
+        self._rules = self._db['rules']
+
+    def find_all_categories(self) -> list[dict]:
+        return list(self._categories.find({}, {'_id': 0}))
+
 
     def add_device(self, uid, props):
         if not self.find_device(uid):
-            self._db['devices'].insert_one({'uid': uid, **props})
+            self._devices.insert_one({'uid': uid, **props})
 
     def delete_device(self, uid):
-        self._db['devices'].delete_one({'uid': uid})
+        self._devices.delete_one({'uid': uid})
 
     def update_device(self, uid, props):
-        self._db['devices'].update_one({'uid': uid}, {'$set': props})
+        self._devices.update_one({'uid': uid}, {'$set': props})
 
     def find_device(self, uid) -> dict:
-        return self._db['devices'].find_one({'uid': uid}, {'_id': 0})
+        return self._devices.find_one({'uid': uid}, {'_id': 0})
 
     def find_all_devices(self) -> list[dict]:
-        return list(self._db['devices'].find({}, {'_id': 0}))
+        return list(self._devices.find({}, {'_id': 0}))
 
-    def find_all_categories(self) -> list[dict]:
-        return list(self._db['categories'].find({}, {'_id': 0}))
+
+    def add_rule(self, id, props):
+      if not self.find_rule(id):
+        self._rules.insert_one({'id': id, **props})
+
+    def find_rule(self, id) -> dict:
+      return self._rules.find_one({'id': id}, {'_id': 0})
+    
+    def find_all_rules(self) -> list[dict]:
+      return list(self._rules.find({}, {'_id': 0}))

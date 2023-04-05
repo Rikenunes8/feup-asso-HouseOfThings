@@ -16,7 +16,7 @@ class Device(ABC):
     def set_divisions(self, divisions: list) -> None:
         self.update({"divisions": divisions})
 
-    def getId(self) -> int:
+    def get_id(self) -> int:
         return self._id
 
     def add(self, state: dict) -> None:

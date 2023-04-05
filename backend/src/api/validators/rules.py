@@ -32,7 +32,10 @@ def _validate_condition(condition: dict):
   if kind not in ["device", "schedule"]: return "Invalid kind provided"
   if kind == "device":
     device_id = condition.get("device_id")
+    state = condition.get("state")
     if device_id == None: return "No device_id provided"
+    if state == None: return "No state provided"
+    if not isinstance(state, dict): return "State must be a dict"
   elif kind == "schedule":
     time = condition.get("hour")
     days = condition.get("days")

@@ -20,7 +20,7 @@ class HoT(metaclass=HoTMeta):
     def __init__(self):
         print("HoT init")
         self._manager = DeviceAdapterManager()
-        self._rules_manager = RulesManager(self._manager)
+        self._rules_manager = RulesManager()
         self._cid = "HoT"
         self._load_devices()
 

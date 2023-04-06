@@ -8,14 +8,14 @@ export const RulesProvider = ({ children }) => {
     setRules([newRule, ...rules]);
   };
 
-  const removeRule = (uid) => {
-    setRules(rules.filter((rule) => rule.uid !== uid));
+  const removeRule = (id) => {
+    setRules(rules.filter((rule) => rule.id !== id));
   };
 
-  const updateRule = (newUpdateRule, uid) => {
+  const updateRule = (newUpdateRule, id) => {
     setRules(
       rules.map((rule) =>
-        rule.uid === uid ? { ...rule, ...newUpdateRule } : rule
+        rule.id === id ? { ...rule, ...newUpdateRule } : rule
       )
     );
   };

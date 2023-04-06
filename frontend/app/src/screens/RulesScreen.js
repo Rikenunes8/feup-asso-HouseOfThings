@@ -38,7 +38,7 @@ export default function RulesScreen() {
 
         <ScrollView style={styles.scrollBody}>
           {rules.map((rule) => (
-            <RuleCard key={rule.uid} rule={rule} />
+            <RuleCard key={rule.id} rule={rule} />
           ))}
 
           <NewRuleCard />

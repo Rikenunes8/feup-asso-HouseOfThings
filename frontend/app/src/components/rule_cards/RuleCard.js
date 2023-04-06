@@ -5,36 +5,42 @@ import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../../../configs/colors";
 
 export default function RuleCard({ rule }) {
-  getRuleNumActions = (actions) => {
-    const num = actions.length;
-    return num + " action" + (num === 1 ? "" : "s");
+  getRuleName = () => {
+    return rule.name;
   };
 
-  getRuleType = (type) => {
-    return type === "MANUAL" ? "Manual" : "Automatic";
+  getRuleDescription = () => {
+    const nconditions = rule.when.length;
+    const nactions = rule.then.length;
+
+    const conds = nconditions + " condition" + (nconditions === 1 ? "" : "s");
+    const acts = nactions + " action" + (nactions === 1 ? "" : "s");
+    return conds + ", " + acts;
   };
 
-  // TODO(RULES): correct call to rule params to match backend
+  getRuleOperation = () => {
+    return rule.operation.uppercase();
+  };
+
   return (
     <TouchableOpacity
       style={styles.ruleCard}
       // TODO(RULES): onPress = show modal with rule details
     >
       <View>
-        <Text style={styles.ruleName}>{rule.name}</Text>
+        <Text style={styles.ruleName}>{getRuleName()}</Text>
         <Text style={styles.ruleText}>
-          {getRuleNumActions(rule.actions)}{" "}
           <Text style={styles.ruleParenthesis}>
-            ({getRuleType(rule.triggers.type)})
+            {"(" + getRuleOperation() + ") "}
           </Text>
+          {getRuleDescription()}
         </Text>
       </View>
 
-      {rule.triggers.type === "MANUAL" && (
-        <TouchableOpacity style={styles.ruleExecute}>
-          <Icon name={"play"} size={25} color={colors.active} />
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity style={styles.ruleExecute}>
+        {/* TODO(RULES): execute request */}
+        <Icon name={"play"} size={25} color={colors.active} />
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 }

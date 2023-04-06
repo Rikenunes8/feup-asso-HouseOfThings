@@ -89,7 +89,6 @@ const availableDevices = async (body) => {
 };
 
 const getRules = async () => {
-  // TODO(RULES): correct route and mock data format to match backend
   try {
     const response = await apiClient.get("/rules");
     return response.data.rules;
@@ -97,22 +96,38 @@ const getRules = async () => {
     console.error(error);
     return [
       {
-        uid: 1,
+        id: 1,
         name: "Family Room Lights Off",
-        triggers: {
-          type: "MANUAL", // manual, or, and, single ?
-          parts: [],
-        },
-        actions: ["light off"],
+        operation: "and",
+        when: [],
+        then: [
+          {
+            device_id: 1,
+            action: "turn_off",
+          },
+        ],
       },
       {
-        uid: 2,
+        id: 2,
         name: "Lights Off at Night",
-        triggers: {
-          type: "AND", // manual, or, and, single ?
-          parts: [],
-        },
-        actions: ["light tiago off", "light family off"],
+        operation: "or",
+        when: [
+          {
+            kind: "schedule",
+            time: "22:30",
+            days: [1, 2, 3, 4, 5, 6, 7],
+          },
+        ],
+        then: [
+          {
+            device_id: 1,
+            action: "turn_off",
+          },
+          {
+            device_id: 2,
+            action: "turn_off",
+          },
+        ],
       },
     ];
   }

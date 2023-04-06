@@ -36,7 +36,7 @@ def update(id):
   if error: return make_error(error)
 
   rule = HoT().update_rule(id, request.json)
-  if isinstance(rule, str): return make_error(error)
+  if isinstance(rule, str): return make_error(rule)
   else: return jsonify({'rule': rule})
 
 @rules.post("/<id>/execute")

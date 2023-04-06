@@ -29,13 +29,16 @@ class RulesManager:
 
   def remove(self, rule_id):
     rule = self._rules.pop(rule_id, None)
-    if rule: rule.delete()
-    else: return "Rule not found"
+    if rule == None: return "Rule not found"
+    else: rule.delete()
 
   def update(self, rule_id, rule_json):
-    error = self.remove(rule_id)
-    if error: return error
-    return self.add(rule_json)
+    rule = self._rules.get(rule_id)
+    if rule == None: return "Rule not found"
+    conditions = self._build_conditions(rule_json['when'])
+    actions = self._build_actions(rule_json['then'])
+    rule.update(rule_json['name'], rule_json['operation'], conditions, actions)
+    return rule
 
   def get_all(self):
     return list(map(lambda rule : rule.to_json(), self._rules.values()))

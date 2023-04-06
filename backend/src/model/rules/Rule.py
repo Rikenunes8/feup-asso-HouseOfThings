@@ -4,7 +4,7 @@ from src.model.rules.Action import Action
 from src.database.DB import DB
 
 class Rule:
-  def __init__(self, name : str, operation : str, conditions:list[Condition], actions:list[Action]) -> None:
+  def __init__(self, name: str, operation: str, conditions: list[Condition], actions: list[Action]) -> None:
     self._id = None
     self._name = name
     self._operation = operation 
@@ -18,6 +18,13 @@ class Rule:
 
   def _create(self):
     return DB().add_rule(self.to_json())
+  
+  def update(self, name: str, operation: str, conditions: list[Condition], actions:list[Action]):
+    self._name = name
+    self._operation = operation 
+    self._conditions = conditions
+    self._actions = actions
+    DB().update_rule(self._id, self.to_json())
   
   def delete(self):
     DB().delete_rule(self._id)

@@ -19,7 +19,7 @@ export default function RuleCard({ rule }) {
   };
 
   getRuleOperation = () => {
-    return rule.operation.uppercase();
+    return rule.operation;
   };
 
   return (

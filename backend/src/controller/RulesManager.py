@@ -11,7 +11,7 @@ class RulesManager:
   def _build_conditions(self, conditions) -> list[Condition]:
     scheduleConditions = list(filter(lambda condition: condition['kind'] == "schedule", conditions))
     deviceConditions = list(filter(lambda condition: condition['kind'] == "device", conditions))
-    scheduleConditions = list(map(lambda condition: ScheduleCondition(condition['hour'], condition['days']), scheduleConditions))
+    scheduleConditions = list(map(lambda condition: ScheduleCondition(condition['time'], condition['days']), scheduleConditions))
     deviceConditions = list(map(lambda condition: DeviceCondition(condition['device_id'], condition['state']), deviceConditions))
     return scheduleConditions + deviceConditions
 

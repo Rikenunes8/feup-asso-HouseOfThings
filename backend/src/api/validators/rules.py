@@ -35,7 +35,7 @@ def _validate_condition(condition: dict):
     if state == None: return "No state provided"
     if not isinstance(state, dict): return "State must be a dict"
   elif kind == "schedule":
-    time = condition.get("hour")
+    time = condition.get("time")
     days = condition.get("days")
     if time == None: return "No time provided"
     if days == None: return "No days provided"

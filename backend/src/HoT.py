@@ -115,4 +115,5 @@ class HoT(metaclass=HoTMeta):
       return rule_updated.to_json()
 
     def execute_rule(self, rule_id : str):
-      pass
+      error = self._rules_manager.execute(rule_id, self._manager)
+      if error != None: return error

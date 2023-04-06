@@ -40,5 +40,10 @@ class RulesManager:
     rule.update(rule_json['name'], rule_json['operation'], conditions, actions)
     return rule
 
+  def execute(self, rule_id, deviceManager):
+    rule = self._rules.get(rule_id)
+    if rule == None: return "Rule not found"
+    rule.execute(deviceManager)
+
   def get_all(self):
     return list(map(lambda rule : rule.to_json(), self._rules.values()))

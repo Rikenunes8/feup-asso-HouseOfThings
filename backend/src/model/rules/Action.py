@@ -8,6 +8,7 @@ class Action:
   
   def execute(self, deviceManager : DeviceAdapterManager):
     deviceAdapter : ActuatorDeviceAdapter = deviceManager.get_device(self._device_id)
+    if deviceAdapter == None: return "No device with id: " + self._device_id + " to execute action"
     deviceAdapter.action(self._action)
 
   def to_json(self) -> dict:

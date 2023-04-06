@@ -41,7 +41,6 @@ def update(id):
 
 @rules.post("/<id>/execute")
 def execute(id):
-  return make_error("Not implemented yet")
-  #error = HoT().execute_rule(id)
-  #if error: return make_error(error)
-  #else:     return jsonify({})
+  error = HoT().execute_rule(id)
+  if error: return make_error(error)
+  else:     return jsonify({})

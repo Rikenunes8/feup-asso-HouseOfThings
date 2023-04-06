@@ -1,5 +1,6 @@
 from src.model.rules.Condition import Condition
 from src.model.rules.Action import Action
+from src.controller.DeviceAdapterManager import DeviceAdapterManager
 
 from src.database.DB import DB
 
@@ -28,6 +29,11 @@ class Rule:
   
   def delete(self):
     DB().delete_rule(self._id)
+
+  def execute(self, deviceManager : DeviceAdapterManager):
+    for action in self._actions:
+      error = action.execute(deviceManager)
+      if error != None: print(error)
 
   def to_json(self) -> dict:
     return {

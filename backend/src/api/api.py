@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
-from src.api.devices import devices
 from src.api.categories import categories
+from src.api.devices import devices
+from src.api.rules import rules
 
 api = Blueprint('api', __name__)
 
@@ -12,3 +13,4 @@ def heartbeat():
 
 api.register_blueprint(categories)
 api.register_blueprint(devices)
+api.register_blueprint(rules)

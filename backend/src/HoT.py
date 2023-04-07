@@ -3,8 +3,8 @@ import time
 from src.controller.adapter.ActuatorDeviceAdapter import ActuatorDeviceAdapter
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
 from src.controller.DeviceAdapterManager import DeviceAdapterManager
+from src.controller.RulesManager import RulesManager
 from src.database.DB import DB
-
 
 class HoTMeta(type):
     _instances = {}
@@ -20,6 +20,7 @@ class HoT(metaclass=HoTMeta):
     def __init__(self):
         print("HoT init")
         self._manager = DeviceAdapterManager()
+        self._rules_manager = RulesManager()
         self._cid = "HoT"
         self._load_devices()
 
@@ -97,3 +98,21 @@ class HoT(metaclass=HoTMeta):
             devices_found[adapter.get_protocol()] = adapter.finish_discovery()
 
         return devices_found
+
+
+    def rules(self):
+      return self._rules_manager.get_all()
+    
+    def create_rule(self, rule : dict):
+      return self._rules_manager.add(rule).to_json()
+
+    def delete_rule(self, rule_id : str):
+      return self._rules_manager.remove(rule_id)
+
+    def update_rule(self, rule_id : str, rule : dict):
+      rule_updated = self._rules_manager.update(rule_id, rule)
+      if isinstance(rule_updated, str): return rule_updated
+      return rule_updated.to_json()
+
+    def execute_rule(self, rule_id : str):
+      pass

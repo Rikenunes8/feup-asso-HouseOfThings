@@ -43,10 +43,15 @@ function getDeviceIcon(subcategory) {
   }
 }
 
+function isTemperatureCold(temperature) {
+  return temperature < 25;
+}
+
 export default {
   capitalize,
   removeDuplicates,
   showConfirmDialog,
   showErrorMessage,
   getDeviceIcon,
+  isTemperatureCold,
 };

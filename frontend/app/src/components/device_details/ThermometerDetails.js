@@ -1,9 +1,10 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import colors from "../../../configs/colors";
+import utils from "../../utils/utils";
 
 export default function ThermometerDetails({ temperature }) {
-  const isCold = temperature < 20;
+  const isCold = utils.isTemperatureCold(temperature);
   const stateText = isCold ? "Cold" : "Hot";
 
   return (

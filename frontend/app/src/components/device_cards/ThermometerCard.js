@@ -14,10 +14,7 @@ export default function ThermometerCard({ device }) {
       device={device}
       specificFeature={
         <Text
-          style={[
-            styles.feature,
-            device.temperature >= 25 ? styles.redText : styles.blueText,
-          ]}
+          style={styles(utils.isTemperatureCold(device.temperature)).feature}
         >
           {device.temperature}ºC
         </Text>
@@ -33,16 +30,12 @@ export default function ThermometerCard({ device }) {
   );
 }
 
-const styles = StyleSheet.create({
-  feature: {
-    marginTop: 6,
-    marginRight: 8,
-    fontWeight: "900",
-  },
-  redText: {
-    color: colors.warm,
-  },
-  blueText: {
-    color: colors.cold,
-  },
-});
+const styles = (isCold = False) =>
+  StyleSheet.create({
+    feature: {
+      marginTop: 6,
+      marginRight: 8,
+      fontWeight: "900",
+      color: isCold ? colors.cold : colors.warm,
+    },
+  });

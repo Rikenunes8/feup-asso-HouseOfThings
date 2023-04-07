@@ -34,7 +34,7 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
 
   return (
     <View style={styles.container}>
-      {/* TODO(LAYOUT): correct ERROR dropdown picker inside scroll view */}
+      {/* TODO(LAYOUT): try to find another solution to scroll dropdownpicker inside of scroll view */}
       <ScrollView style={styles.scrollContent}>
         <DynamicDropDown
           label={"UUID *"}
@@ -42,6 +42,7 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
           setItems={setUUIDItems}
           value={deviceUUID}
           setValue={setDeviceUUID}
+          listMode={"MODAL"}
         />
         <DynamicTextInput
           label={"NAME *"}
@@ -56,6 +57,7 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
           setItems={setItems}
           value={deviceDivision}
           setValue={setDeviceDivision}
+          listMode={"MODAL"}
         />
       </ScrollView>
     </View>

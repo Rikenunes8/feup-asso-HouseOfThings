@@ -12,6 +12,7 @@ export default function DynamicDropDown({
   setValue,
   disabled = false,
   showArrowIcon = true,
+  listMode = "DEFAULT",
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -31,6 +32,16 @@ export default function DynamicDropDown({
         style={styles.selector}
         disabled={disabled}
         showArrowIcon={showArrowIcon}
+        listMode={listMode}
+        modalTitle={label}
+        modalTitleStyle={{ color: colors.primary, fontSize: 14 }}
+        modalContentContainerStyle={{
+          backgroundColor: colors.background,
+          width: "65%",
+          alignSelf: "center",
+          marginTop: 300,
+          marginBottom: 100,
+        }}
       />
     </View>
   );

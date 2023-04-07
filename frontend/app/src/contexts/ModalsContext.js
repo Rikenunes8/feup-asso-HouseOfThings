@@ -9,6 +9,9 @@ export const ModalsProvider = ({ children }) => {
   // Now corresponds to the device uid whose details are being shown
   const [deviceDetailsModalVisible, setDeviceDetailsModalVisible] =
     useState(null);
+  
+  const [createRuleModalVisible, setCreateRuleModalVisible] =
+    useState(false);
 
   const [isChooseDeviceModalLoading, setIsChooseDeviceModalLoading] =
     useState(false);
@@ -28,6 +31,8 @@ export const ModalsProvider = ({ children }) => {
         setDeviceDetailsModalVisible,
         addDeviceFormModalVisible,
         setAddDeviceFormModalVisible,
+        createRuleModalVisible,
+        setCreateRuleModalVisible,
         isChooseDeviceModalLoading,
         setIsChooseDeviceModalLoading,
         isDeviceDetailsModalLoading,

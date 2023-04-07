@@ -37,20 +37,20 @@ export default function DynamicDropDown({
 }
 
 const styles = StyleSheet.create({
-    container: {
-      margin: 15,
-      zIndex: 10,
-    },
-    dropdown: {
-      backgroundColor: colors.background,
-    },
-    selector: {
-      borderColor: colors.white,
-      borderBottomColor: colors.black,
-      borderRadius: 0,
-      backgroundColor: colors.transparent,
-    },
-    field: {
-      color: colors.primary,
-    },
-  });
+  container: {
+    margin: 15,
+    zIndex: 10,
+  },
+  dropdown: {
+    backgroundColor: colors.background,
+  },
+  selector: {
+    borderColor: colors.white,
+    borderBottomColor: colors.black,
+    borderRadius: 0,
+    backgroundColor: colors.transparent,
+  },
+  field: {
+    color: colors.primary,
+  },
+});

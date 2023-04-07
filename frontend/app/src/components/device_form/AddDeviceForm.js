@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
-import { ScrollView as GestureHandlerScrollView } from "react-native-gesture-handler";
 
 import DynamicTextInput from "../form/DynamicTextInput";
 import DynamicDropDown from "../form/DynamicDropDown";
@@ -35,6 +34,7 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
 
   return (
     <View style={styles.container}>
+      {/* TODO(LAYOUT): correct ERROR dropdown picker inside scroll view */}
       <ScrollView style={styles.scrollContent}>
         <DynamicDropDown
           label={"UUID *"}

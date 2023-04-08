@@ -1,21 +1,31 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
+
 import colors from "../../../configs/colors";
 
-export default function ThermometerDetails({ temperature }) {
-  const isCold = temperature < 20;
+export default function ThermometerDetails({ temperature, isCold }) {
   const stateText = isCold ? "Cold" : "Hot";
 
   return (
     <View style={styles().container}>
       <View style={styles().detailsView}>
         <Text style={styles().temperatureText}>Temperature: </Text>
-        <Text style={styles(isCold).stateText}>{stateText}</Text>
+        <Text style={styles(isCold).stateText}>
+          {stateText}{" "}
+          <Image
+            style={styles().temperatureIcon}
+            source={
+              isCold
+                ? require("../../../../assets/temperature/cold.png")
+                : require("../../../../assets/temperature/warm.png")
+            }
+          />
+        </Text>
       </View>
       <View style={styles().circleView}>
         <View style={styles().circle}>
           <View style={styles(isCold).circleOppacity}>
-            <Text>{temperature}°C</Text>
+            <Text style={styles().circleText}>{temperature}°C</Text>
           </View>
         </View>
       </View>
@@ -40,6 +50,16 @@ const styles = (isCold = false) =>
       fontSize: 18,
       color: colors.primaryText,
     },
+    stateText: {
+      fontWeight: "bold",
+      fontSize: 18,
+      color: isCold ? colors.cold : colors.warm,
+    },
+    temperatureIcon: {
+      width: 18,
+      height: 18,
+      objectFit: "contain",
+    },
     circle: {
       padding: 15,
       backgroundColor: colors.white,
@@ -52,7 +72,7 @@ const styles = (isCold = false) =>
     },
     circleOppacity: {
       padding: 20,
-      backgroundColor: isCold ? colors.active : colors.desactive,
+      backgroundColor: isCold ? colors.cold : colors.warm,
       borderRadius: 100,
     },
     circleView: {
@@ -61,9 +81,13 @@ const styles = (isCold = false) =>
       justifyContent: "center",
       alignItems: "center",
     },
-    stateText: {
-      fontWeight: "bold",
-      fontSize: 18,
-      color: isCold ? colors.active : colors.desactive,
+    circleText: {
+      height: 50,
+      width: 50,
+      fontSize: 22,
+      fontWeight: "900",
+      color: colors.white,
+      textAlign: "center",
+      textAlignVertical: "center",
     },
   });

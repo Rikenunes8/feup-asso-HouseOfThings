@@ -9,55 +9,31 @@ export default function DynamicTextInput({
   inputOnFocus,
   setInputOnFocus,
 }) {
-  const [expanded, expandInput] = React.useState(false);
-
-  function handleEndTyping() {
-    if (name=="") expandInput(false);
-    setInputOnFocus(false);
-  }
-
-  function handleTyping() {
-    setInputOnFocus(true);
-    expandInput(true);
-  }
-
   return (
-    <View style={expanded ? [styles.container, styles.container_expanded] : styles.container}>
-      <Text style={styles.fieldName}>{label}</Text>
+    <View style={styles.container}>
+      <Text style={styles.field}>{label}</Text>
       <TextInput
         maxLength={40}
         onChangeText={(name) => setName(name)}
-        onFocus={handleTyping}
-        onEndEditing={handleEndTyping}
+        onFocus={() => setInputOnFocus(true)}
+        onEndEditing={() => setInputOnFocus(false)}
         value={name}
-        style={expanded ? styles.inputExpanded : styles.input}
-      /> 
+        style={styles.input}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    width:"90%",
-    margin: 20,
-    borderBottomWidth:1,
+    margin: 15,
+    borderBottomWidth: 1,
   },
-  container_expanded: {
-    borderBottomWidth:1,
-    flexDirection: "column",
+  field: {
+    color: colors.primary,
   },
   input: {
-    position: "absolute",
-    width:"100%",
-    paddingBottom: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
   },
-  inputExpanded: {
-    paddingBottom: 15,
-    paddingHorizontal: 8,
-  },
-  fieldName: {
-    color: colors.primary,
-    paddingBottom: 15,
-  }
 });

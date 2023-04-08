@@ -5,6 +5,7 @@ import { UsernameProvider } from "./app/src/contexts/UsernameContext";
 import { DevicesProvider } from "./app/src/contexts/DevicesContext";
 import { DivisionsProvider } from "./app/src/contexts/DivisionsContext";
 import { ModalsProvider } from "./app/src/contexts/ModalsContext";
+import { RulesProvider } from "./app/src/contexts/RulesContext";
 
 import NavBar from "./app/src/components/navbar/NavBar";
 import ProfileScreen from "./app/src/screens/ProfileScreen";
@@ -17,16 +18,18 @@ export default function App() {
       <UsernameProvider>
         <DevicesProvider>
           <DivisionsProvider>
-            <NavigationContainer>
-              <Stack.Navigator>
-                <Stack.Screen
-                  options={{ headerShown: false }}
-                  name="NavBar"
-                  component={NavBar}
-                />
-                <Stack.Screen name="Profile" component={ProfileScreen} />
-              </Stack.Navigator>
-            </NavigationContainer>
+            <RulesProvider>
+              <NavigationContainer>
+                <Stack.Navigator>
+                  <Stack.Screen
+                    options={{ headerShown: false }}
+                    name="NavBar"
+                    component={NavBar}
+                  />
+                  <Stack.Screen name="Profile" component={ProfileScreen} />
+                </Stack.Navigator>
+              </NavigationContainer>
+            </RulesProvider>
           </DivisionsProvider>
         </DevicesProvider>
       </UsernameProvider>

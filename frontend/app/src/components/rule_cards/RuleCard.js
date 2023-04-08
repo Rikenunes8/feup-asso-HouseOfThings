@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
+import ModalsContext from "../../contexts/ModalsContext";
+
 import colors from "../../../configs/colors";
+import api from "../../api/api";
+import utils from "../../utils/utils";
 
 export default function RuleCard({ rule }) {
-  getRuleName = () => {
+  const { setIsRuleExecuteLoading } = useContext(ModalsContext);
+
+  getName = () => {
     return rule.name;
   };
 
-  getRuleDescription = () => {
+  getDescription = () => {
     const nconditions = rule.when.length;
     const nactions = rule.then.length;
 
@@ -18,8 +24,26 @@ export default function RuleCard({ rule }) {
     return conds + ", " + acts;
   };
 
-  getRuleOperation = () => {
+  getOperation = () => {
     return rule.operation;
+  };
+
+  const execute = () => {
+    console.log(`Executing rule... [${rule.id}] ${rule.name}`);
+    setIsRuleExecuteLoading(true);
+
+    api.executeRule(rule.id).then((success) => {
+      setIsRuleExecuteLoading(false);
+
+      if (success) {
+        console.log("Rule executed successfully");
+        // TODO(RULES): update the context of the changed devices
+        return;
+      }
+
+      console.log("Failed to execute rule");
+      utils.showErrorMessage("Failed to execute rule");
+    });
   };
 
   return (
@@ -28,17 +52,16 @@ export default function RuleCard({ rule }) {
       // TODO(RULES): onPress = show modal with rule details
     >
       <View>
-        <Text style={styles.ruleName}>{getRuleName()}</Text>
+        <Text style={styles.ruleName}>{getName()}</Text>
         <Text style={styles.ruleText}>
           <Text style={styles.ruleParenthesis}>
-            {"(" + getRuleOperation() + ") "}
+            {"(" + getOperation() + ") "}
           </Text>
-          {getRuleDescription()}
+          {getDescription()}
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.ruleExecute}>
-        {/* TODO(RULES): execute request */}
+      <TouchableOpacity style={styles.ruleExecute} onPress={execute}>
         <Icon name={"play"} size={25} color={colors.active} />
       </TouchableOpacity>
     </TouchableOpacity>

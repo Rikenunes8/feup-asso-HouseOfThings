@@ -3,9 +3,9 @@ from src.model.devices.Device import Device
 
 class LightDevice(Device):
 
-    def __init__(self, id: int, on: bool = False) -> None:
+    def __init__(self, id: int, config : dict = {}, on: bool = False) -> None:
         super().__init__(id)
-        self._category = "light"
+        self._config = config
         super().add(self.state(on))
 
     def state(self, on: bool) -> dict:

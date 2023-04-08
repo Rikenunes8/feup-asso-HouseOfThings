@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,15 +6,13 @@ import {
   SafeAreaView,
   StatusBar,
   Platform,
-  TouchableOpacity,
   ScrollView,
 } from "react-native";
-import Icon from "react-native-vector-icons/SimpleLineIcons";
 
-import UsernameContext from "../contexts/UsernameContext";
-import DeviceCard from "../components/DeviceCard";
-import DivisionCard from "../components/DivisionCard";
-import NewDivisionCard from "../components/NewDivisionCard";
+import Header from "../components/header/Header";
+import DivisionCard from "../components/division_cards/DivisionCard";
+import NewDivisionCard from "../components/division_cards/NewDivisionCard";
+import DeviceCardPicker from "../components/device_cards/DeviceCardPicker";
 import DevicesContext from "../contexts/DevicesContext";
 import DivisionsContext from "../contexts/DivisionsContext";
 
@@ -25,10 +22,7 @@ import api from "../api/api";
 export default function HomeScreen() {
   const { devices, setDevices } = useContext(DevicesContext);
   const { divisions, setDivisions } = useContext(DivisionsContext);
-  const [selectedDivision, setSelectedDivision ] = useState(null);
-  const { username } = useContext(UsernameContext);
-
-  const navigation = useNavigation();
+  const [selectedDivision, setSelectedDivision] = useState(null);
 
   const fetchDevices = async () => {
     const devs = await api.getDevices();
@@ -43,19 +37,24 @@ export default function HomeScreen() {
   const showDevices = () => {
     let filteredDevices = devices;
     if (selectedDivision) {
-      filteredDevices = filteredDevices.filter((device) => device.division === selectedDivision);
+      filteredDevices = filteredDevices.filter((device) =>
+        device.divisions.includes(selectedDivision)
+      );
     }
 
     if (filteredDevices.length > 0) {
-      return filteredDevices.map((device, key) => <DeviceCard key={key} device={device} />);
+      return filteredDevices.map((device, key) => (
+        <DeviceCardPicker key={key} device={device} />
+      ));
     }
 
-    if (selectedDivision) {
-      return <Text style={styles.sectionMessage}>No devices connected in {selectedDivision}...</Text>;
-    }
-  
-    return <Text style={styles.sectionMessage}>No devices connected...</Text>;
-  }
+    return (
+      <Text style={styles.sectionMessage}>
+        No devices connected
+        {selectedDivision ? " in " + selectedDivision : "..."}
+      </Text>
+    );
+  };
 
   useEffect(() => {
     fetchDevices();
@@ -64,41 +63,39 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          // on press should open the profile screen
-          onPress={() => navigation.navigate("Profile")}
-          style={styles.iconView}
-        >
-          <Icon name={"user"} size={20} color={colors.primaryText} />
-        </TouchableOpacity>
-        <Text style={styles.welcomeMessage}>Hello, {username.trim()}!</Text>
-      </View>
+      <Header />
 
-      
       <View style={styles.body}>
         <Text style={styles.sectionHeader}>Divisions</Text>
         <View style={styles.divisionsBarContainer}>
           <ScrollView horizontal>
             <DivisionCard
-              division={{ name: "All", icon: "all-icon", numDevices: devices.length }}
+              division={{
+                name: "All",
+                icon: "all-icon",
+                numDevices: devices.length,
+              }}
               onPress={() => setSelectedDivision(null)}
+              allowLongPress={false}
               highlighted={selectedDivision === null}
             />
-            {divisions.map((division, key) =>
+            {divisions.map((division, key) => (
               <DivisionCard
                 key={key}
                 division={division}
                 onPress={() => setSelectedDivision(division.name)}
+                allowLongPress={true}
                 highlighted={selectedDivision === division.name}
               />
-            )}
+            ))}
             <NewDivisionCard />
           </ScrollView>
         </View>
-        
+
         <Text style={styles.sectionHeader}>Devices</Text>
-        {showDevices()}
+        <View style={styles.scrollBody}>
+          <ScrollView>{showDevices()}</ScrollView>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -108,7 +105,7 @@ const styles = StyleSheet.create({
   body: {
     flex: 0.85,
     width: "85%",
-    alignItems: "center",
+    alignItems: "flex-start",
     paddingVertical: 20,
   },
   divisionsBarContainer: {
@@ -120,27 +117,12 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     alignItems: "center",
   },
-  header: {
-    width: "100%",
-    flex: 0.15,
-    backgroundColor: colors.primary,
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-  },
-  iconView: {
-    padding: 12,
-    borderRadius: 24,
-    alignSelf: "flex-end",
-    backgroundColor: colors.white,
-  },
   sectionHeader: {
     fontSize: 17,
     fontWeight: "bold",
     color: colors.primary,
-    alignSelf: "flex-start",
     paddingTop: 16,
+    paddingBottom: 5,
   },
   sectionMessage: {
     color: colors.primaryText,
@@ -149,10 +131,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     fontSize: 17,
   },
-  welcomeMessage: {
-    color: colors.white,
-    fontSize: 30,
-    fontWeight: "bold",
-    marginStart: 15,
+  scrollBody: {
+    marginBottom: 310,
+    width: "100%",
   },
 });

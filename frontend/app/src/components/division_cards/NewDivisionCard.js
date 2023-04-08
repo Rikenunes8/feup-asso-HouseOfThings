@@ -4,10 +4,9 @@ import {
   TouchableOpacity
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
-import colors from "../../configs/colors";
-import TitleModal from "./modal/TitleModal";
-import AddDivisionForm from "../components/division_form/AddDivisionForm"
-
+import colors from "../../../configs/colors";
+import TitleModal from "../modal/TitleModal";
+import AddDivisionForm from "../../components/division_form/AddDivisionForm"
 
 export default function DivisionCard({ division }) {
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);

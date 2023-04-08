@@ -1,25 +1,31 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-import DivisionDetailsContextMenu from "./division_details/DivisionDetailsContextMenu";
-import IconModal from "./modal/IconModal";
+import DivisionDetailsContextMenu from "../division_details/DivisionDetailsContextMenu";
+import IconModal from "../modal/IconModal";
 import DivisionIcon from "./DivisionIcon";
-import colors from "../../configs/colors";
+import colors from "../../../configs/colors";
 
-export default function DivisionCard({ division, onPress, highlighted }) {
+export default function DivisionCard({
+  division,
+  onPress,
+  allowLongPress,
+  highlighted,
+}) {
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
   return (
     <TouchableOpacity
-      style={highlighted? [styles.divisionCard, styles.selectedDivisionCard] : styles.divisionCard}
+      style={
+        highlighted
+          ? [styles.divisionCard, styles.selectedDivisionCard]
+          : styles.divisionCard
+      }
       onPress={onPress}
-      onLongPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
+      onLongPress={() =>
+        allowLongPress && setIsDetailsModalVisible(!isDetailsModalVisible)
+      }
     >
       <IconModal
         title={division.name}
@@ -27,7 +33,10 @@ export default function DivisionCard({ division, onPress, highlighted }) {
         visible={isDetailsModalVisible}
         leftIcon="close"
         rightIcon="ellipsis1"
-        leftIconCallback={() => {setIsDetailsModalVisible(false); setIsContextMenuVisible(false)}}
+        leftIconCallback={() => {
+          setIsDetailsModalVisible(false);
+          setIsContextMenuVisible(false);
+        }}
         rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
         contextMenu={
           <DivisionDetailsContextMenu
@@ -38,14 +47,14 @@ export default function DivisionCard({ division, onPress, highlighted }) {
         modalContent={
           // TODO
           <View></View>
-        } 
+        }
       />
 
       <DivisionIcon icon={division.icon} size={30} color={colors.primaryText} />
 
       <Text style={styles.divisionName}>{division.name}</Text>
       <Text style={styles.divisionText}>
-        {division.numDevices} {division.numDevices == 1? "device" : "devices"}
+        {division.numDevices} {division.numDevices == 1 ? "device" : "devices"}
       </Text>
     </TouchableOpacity>
   );

@@ -7,6 +7,405 @@
 	},
 	"item": [
 		{
+			"name": "Devices",
+			"item": [
+				{
+					"name": "Devices",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/devices",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Connect Light",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category\": \"light\",\n    \"subcategory\": \"light bulb\",\n    \"protocol\": \"virtual\",\n    \"name\": \"Lightezinha\",\n    \"divisions\": [\"Room\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/devices/1/connect",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"devices",
+								"1",
+								"connect"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Connect Thermostat",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category\": \"sensors\",\n    \"subcategory\": \"thermostat\",\n    \"protocol\": \"raspberry pi\",\n    \"name\": \"Termostato\",\n    \"divisions\": [\"Room\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/devices/2/connect",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"devices",
+								"2",
+								"connect"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Disconnect Light",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/devices/1/disconnect",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"devices",
+								"1",
+								"disconnect"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Disconnect Thermostat",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/devices/2/disconnect",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"devices",
+								"2",
+								"disconnect"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rename",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Light\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/devices/1/rename",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"devices",
+								"1",
+								"rename"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Action Turn On",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"action\": \"turnOn\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/devices/1/action",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"devices",
+								"1",
+								"action"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Action Turn Off",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"action\": \"turnOff\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/devices/3/action",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"devices",
+								"3",
+								"action"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Discovery",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/devices/available?category=light&subcategory=light bulb",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"devices",
+								"available"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "light"
+								},
+								{
+									"key": "subcategory",
+									"value": "light bulb"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Divisions",
+			"item": []
+		},
+		{
+			"name": "Rules",
+			"item": [
+				{
+					"name": "Rules",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/rules",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"rules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Rule",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"1\",\n    \"name\": \"Rule no 1\",\n    \"operation\": \"and\",\n    \"when\": [\n        { \n            \"kind\": \"device\",\n            \"device_id\": \"1\",\n            \"state\": {\n                \"on\": true\n            }\n        },\n        { \n            \"kind\": \"schedule\",\n            \"hour\": \"10:30\",\n            \"days\": [1, 3, 5]\n        }\n    ],\n    \"then\": [\n        {\n            \"device_id\": \"1\",\n            \"action\": \"turn_on\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/rules",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"rules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Rule",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/rules/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"rules",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Rule",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/rules/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"rules",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Execute Rule",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/rules/1/execute",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"rules",
+								"1",
+								"execute"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Heartbeat",
 			"request": {
 				"method": "GET",
@@ -20,280 +419,6 @@
 					"port": "5000",
 					"path": [
 						"heartbeat"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Devices",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:5000/devices",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"devices"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Connect Light",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"group\": \"light\",\n    \"name\": \"Lightezinha\",\n    \"divisions\": [\"Room\"]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:5000/devices/1/connect",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"devices",
-						"1",
-						"connect"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Connect Thermostat",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"group\": \"thermostat\",\n    \"name\": \"Termostato\",\n    \"divisions\": [\"Room\"]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:5000/devices/2/connect",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"devices",
-						"2",
-						"connect"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Disconnect Light",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:5000/devices/1/disconnect",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"devices",
-						"1",
-						"disconnect"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Disconnect Thermostat",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:5000/devices/2/disconnect",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"devices",
-						"2",
-						"disconnect"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Rename",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"Light\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:5000/devices/1/rename",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"devices",
-						"1",
-						"rename"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Action Turn On",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"action\": \"turnOn\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:5000/devices/1/action",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"devices",
-						"1",
-						"action"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Action Turn Off",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"action\": \"turnOff\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:5000/devices/1/action",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"devices",
-						"1",
-						"action"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Categories",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:5000/categories",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"categories"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Discovery",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"group\": \"light\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:5000/devices/available",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"devices",
-						"available"
 					]
 				}
 			},

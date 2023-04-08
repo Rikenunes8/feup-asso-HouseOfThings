@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  TextInput,
 } from "react-native";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Icon from "react-native-vector-icons/AntDesign";
@@ -20,6 +21,9 @@ import colors from "../../../configs/colors";
 export default function IconModal({
   visible,
   title,
+  titleEditable = false,
+  titleOnChangeCallback,
+  titleRef,
   subtitle,
   leftIcon,
   rightIcon,
@@ -70,7 +74,24 @@ export default function IconModal({
 
                 <View style={styles.detailsView}>
                   <View style={styles.detailsInfo}>
-                    <Text style={styles.detailsTitle}>{title}</Text>
+                    <View style={styles.detailsTitleSection}>
+                      {!titleEditable ? null : (
+                        <Icon
+                          style={styles.detailsTitleEditIcon}
+                          name="edit"
+                          size={20}
+                          color={colors.white}
+                        />
+                      )}
+                      <TextInput
+                        ref={titleRef}
+                        value={title}
+                        editable={titleEditable}
+                        maxLength={40}
+                        onChangeText={(title) => titleOnChangeCallback(title)}
+                        style={styles.detailsTitle}
+                      />
+                    </View>
                     <Text style={styles.detailsSubtitle}>{subtitle}</Text>
                   </View>
                   {inputOnFocus ? null : (
@@ -124,6 +145,13 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 27,
     fontWeight: "bold",
+  },
+  detailsTitleEditIcon: {
+    marginRight: 10,
+  },
+  detailsTitleSection: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   detailsView: {
     flex: 0.55,

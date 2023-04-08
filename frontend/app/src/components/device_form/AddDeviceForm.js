@@ -86,10 +86,8 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: colors.white,
-    width: "85%",
-    alignSelf: "center",
-    marginTop: 380,
-    marginBottom: 30,
-    borderRadius: 15,
+    marginHorizontal: 28,
+    marginBottom: 25,
+    marginTop: "92.5%",
   },
 });

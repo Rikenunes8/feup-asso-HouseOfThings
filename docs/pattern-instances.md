@@ -2,18 +2,24 @@
 
 # House of Things – Pattern Instances
 
+:: papeis, o que representa esses papeis nessa implementacao em python
+
 ## Database Connection: Singleton
 
 ### Context
 : the design problem to solve + why was this one selected
 <!-- Describe the design context that justifies the selection of the pattern. -->
+When accessing the database, we need to be able to keep a single connection that we access in the different endpoints of our application.
 
 #### Problem in Context
+We want to ensure that there is a single database connection opened in our application at any time, and that this same connection can be used in any part of the application. We desire that establishing this connection is abstracted away from its use.
 <!-- Describe the wider design context and the concrete problem to be solved. This must be as complete as possible, someone else other than the original designer should be able to read and understand why it was important (and not trivial) to solve this problem. -->
 
 #### The Pattern
 <!-- Identify the pattern that you applied, why it was selected and how it is a good fit considering the existing design context and the problem at hand. -->
-
+We have selected the Singleton pattern to solve this problem, since it provides the following advantages:
+- provides consistency, in the way that it ensures there is only one database connection that is reused accross the application, reducing overhead.
+- provides a global point of access to the database connection, which can be used in any endpoint.
 
 ### Mapping
 <!-- Explain how are mapped the pattern's roles, operations and associations to the concrete design classes. -->
@@ -27,6 +33,11 @@ Must include:
 
 
 ### Consequences
+
+This pattern has some downsides, as it violates the Single Responsibility Principle by solving two problems at the same time and making it difficult to unit test the code associated with the Singleton. However, since we limit the code of this class to establish the connection to the Mongo database, which we don't need to test thoroughly (as we would basically be testing Mongo itself), we think that this pattern's benefits outweight its liabilities.
+
+As an alternative to this pattern, we could encapsulate the connection to the database as a regular class and instanciate it. Although being able to instanciate this class would facilitate its unit testing, it would require that we passed an instance 
+
 <!-- Explain the benefits and the liabilities of instantiating the pattern, eventually in comparison with other alternatives. -->
 
 <!-- 
@@ -40,13 +51,15 @@ Benefits and liabilities (pros and cons) of the design after pattern instantiati
 ### Context
 : the design problem to solve + why was this one selected
 <!-- Describe the design context that justifies the selection of the pattern. -->
+Problem to solve: the creation, instaciation and management of different kind of devices ?
 
 #### Problem in Context
 <!-- Describe the wider design context and the concrete problem to be solved. This must be as complete as possible, someone else other than the original designer should be able to read and understand why it was important (and not trivial) to solve this problem. -->
+Devices can have different communication protocols, data formats, and capabilities. When a new device is added, the server needs to know how to communicate with it and how to interpret its data.
 
 #### The Pattern
 <!-- Identify the pattern that you applied, why it was selected and how it is a good fit considering the existing design context and the problem at hand. -->
-
+- provides a flexible and extensible way of managing devices, since in IoT
 
 ### Mapping
 <!-- Explain how are mapped the pattern's roles, operations and associations to the concrete design classes. -->
@@ -61,7 +74,7 @@ Benefits and liabilities (pros and cons) of the design after pattern instantiati
 <!-- Explain the benefits and the liabilities of instantiating the pattern, eventually in comparison with other alternatives. -->
 
 <!-- Benefits and liabilities (pros and cons) of the design after pattern instantiation, and comparison of these consequences with those of alternative solutions. This section should _not_ describe generic consequences of the pattern, but the specific ones of applying the pattern in your system. -->
-
+The application becomes dependent on the factory to create the devices, which can create a bottleneck if the factory becomes overloaded or fails to perform as expected.
 
 ---
 

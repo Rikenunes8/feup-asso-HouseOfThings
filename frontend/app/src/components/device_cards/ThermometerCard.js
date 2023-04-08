@@ -9,21 +9,24 @@ import colors from "../../../configs/colors";
 import utils from "../../utils/utils";
 
 export default function ThermometerCard({ device }) {
+  const isCold = device.temperature < 20;
+
   return (
     <DeviceCard
       device={device}
       specificFeature={
-        <Text
-          style={styles(utils.isTemperatureCold(device.temperature)).feature}
-        >
-          {device.temperature}ºC
-        </Text>
+        <Text style={styles(isCold).feature}>{device.temperature}ºC</Text>
       }
       modal={
         <DeviceDetailsModal
           device={device}
           icon={utils.getDeviceIcon(device.subcategory)}
-          modalContent={<ThermometerDetails temperature={device.temperature} />}
+          modalContent={
+            <ThermometerDetails
+              temperature={device.temperature}
+              isCold={isCold}
+            />
+          }
         />
       }
     />

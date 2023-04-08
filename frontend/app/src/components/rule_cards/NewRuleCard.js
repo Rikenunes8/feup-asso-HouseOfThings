@@ -7,7 +7,7 @@ import CreateRuleModal from "../../screens/modals/CreateRuleModal"
 import colors from "../../../configs/colors";
 
 
-export default function NewRuleCard() {
+export default function NewRuleCard({ }) {
   const { createRuleModalVisible, setCreateRuleModalVisible } =
     useContext(ModalsContext);
 
@@ -16,7 +16,6 @@ export default function NewRuleCard() {
       <CreateRuleModal></CreateRuleModal>
       <TouchableOpacity
         style={styles.card}
-        // TODO(RULES): onPress = show modal to create new rule
         onPress={() => setCreateRuleModalVisible(!createRuleModalVisible)}
       >
         <Icon name={"plus"} size={25} color={colors.primaryText} />

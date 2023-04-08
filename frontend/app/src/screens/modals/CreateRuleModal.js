@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import ModalsContext from "../../contexts/ModalsContext";
 import TitleModal from "../../components/modal/TitleModal";
+import CreateRuleForm from "../../components/rule_form/CreateRuleForm";
 import ChooseDeviceScrollView from "../../components/choose_device/ChooseDeviceScrollView";
 import ChooseDeviceSideBar from "../../components/choose_device/ChooseDeviceSideBar";
+import { CreateRuleProvider } from "../../contexts/CreateRuleContext";
 
 import api from "../../api/api";
 
@@ -25,38 +27,44 @@ export default function CreateRuleModal() {
 
   const fetchCategories = async () => {
     return await api.getCategories();
-  };*/
+  };
 
- /*useEffect(() => {
+  useEffect(() => {
     fetchCategories().then((categories) => {
       setCategories(categories);
       setSelectedCategory(categories.length ? categories[0] : null);
     });
   }, []);*/
 
+  const [inputOnFocus, setInputOnFocus] = React.useState(false);
+
   return (
+    
     <TitleModal
       visible={createRuleModalVisible}
       title={"Create Rule"}
       leftIcon={"close"}
+      rightIcon={"check"}
       leftIconCallback={() => setCreateRuleModalVisible(false)}
       modalContent={
-        /*categories && selectedCategory ? (
-          <View style={styles.modalContentView}>
-            <ChooseDeviceSideBar
+  
+        <CreateRuleForm
+          inputOnFocus={inputOnFocus}
+          setInputOnFocus={setInputOnFocus}
+        />
+   
+      }
+      //isLoading={isChooseDeviceModalLoading}
+      /*<ChooseDeviceSideBar
               categories={categories}
               selectedCategory={selectedCategory}
               setSelectedCategory={setSelectedCategory}
             />
             <ChooseDeviceScrollView
               subcategories={selectedCategory.subcategories}
-            />
-          </View>
-        ) : null*/
-        null
-      }
-      //isLoading={isChooseDeviceModalLoading}
+            />*/
     />
+    
   );
 }
 

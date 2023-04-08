@@ -5,6 +5,8 @@ import DynamicTextInput from "../form/DynamicTextInput";
 import DynamicDropDown from "../form/DynamicDropDown";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 import DivisionsContext from "../../contexts/DivisionsContext";
+
+import colors from "../../../configs/colors";
 import utils from "../../utils/utils";
 
 export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
@@ -32,9 +34,13 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
     })
   );
 
+  const modalProps = {
+    transparent: true,
+    presentationStyle: "overFullScreen",
+  };
+
   return (
     <View style={styles.container}>
-      {/* TODO(LAYOUT): try to find another solution to scroll dropdownpicker inside of scroll view */}
       <ScrollView style={styles.scrollContent}>
         <DynamicDropDown
           label={"UUID *"}
@@ -43,6 +49,8 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
           value={deviceUUID}
           setValue={setDeviceUUID}
           listMode={"MODAL"}
+          modalProps={modalProps}
+          modalContentContainerStyle={styles.modalContent}
         />
         <DynamicTextInput
           label={"NAME *"}
@@ -53,11 +61,19 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
         />
         <DynamicDropDown
           label={"DIVISION"}
-          items={items}
+          items={[
+            ...items,
+            { label: "Add new division", value: "ADD_NEW" },
+            { label: "No division", value: "NO_DIVISION" },
+            { label: "Remove division", value: "REMOVE_DIVISION" },
+            { label: "Remove all divisions", value: "REMOVE_ALL_DIVISIONS" },
+          ]}
           setItems={setItems}
           value={deviceDivision}
           setValue={setDeviceDivision}
           listMode={"MODAL"}
+          modalProps={modalProps}
+          modalContentContainerStyle={styles.modalContent}
         />
       </ScrollView>
     </View>
@@ -73,5 +89,13 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     width: "100%",
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    width: "85%",
+    alignSelf: "center",
+    marginTop: 380,
+    marginBottom: 30,
+    borderRadius: 15,
   },
 });

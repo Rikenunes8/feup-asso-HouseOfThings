@@ -13,6 +13,9 @@ export default function DynamicDropDown({
   disabled = false,
   showArrowIcon = true,
   listMode = "DEFAULT",
+  modalProps = {},
+  modalAnimationType = "fade",
+  modalContentContainerStyle = {},
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -34,14 +37,10 @@ export default function DynamicDropDown({
         showArrowIcon={showArrowIcon}
         listMode={listMode}
         modalTitle={label}
-        modalTitleStyle={{ color: colors.primary, fontSize: 14 }}
-        modalContentContainerStyle={{
-          backgroundColor: colors.background,
-          width: "65%",
-          alignSelf: "center",
-          marginTop: 300,
-          marginBottom: 100,
-        }}
+        modalTitleStyle={styles.modalTitle}
+        modalProps={modalProps}
+        modalAnimationType={modalAnimationType}
+        modalContentContainerStyle={modalContentContainerStyle}
       />
     </View>
   );
@@ -50,7 +49,6 @@ export default function DynamicDropDown({
 const styles = StyleSheet.create({
   container: {
     margin: 15,
-    zIndex: 10,
   },
   dropdown: {
     backgroundColor: colors.background,
@@ -63,5 +61,9 @@ const styles = StyleSheet.create({
   },
   field: {
     color: colors.primary,
+  },
+  modalTitle: {
+    color: colors.primary,
+    fontSize: 14,
   },
 });

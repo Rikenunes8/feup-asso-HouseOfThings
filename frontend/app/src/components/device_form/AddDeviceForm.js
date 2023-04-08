@@ -61,13 +61,7 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
         />
         <DynamicDropDown
           label={"DIVISION"}
-          items={[
-            ...items,
-            { label: "Add new division", value: "ADD_NEW" },
-            { label: "No division", value: "NO_DIVISION" },
-            { label: "Remove division", value: "REMOVE_DIVISION" },
-            { label: "Remove all divisions", value: "REMOVE_ALL_DIVISIONS" },
-          ]}
+          items={items}
           setItems={setItems}
           value={deviceDivision}
           setValue={setDeviceDivision}

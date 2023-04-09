@@ -27,7 +27,11 @@ export default function DevicesDisplayInForm() {
   }, []);
 */
   const showDevices = () => {
-    let devices = [{name: "Philips Bulb", divisions: ["Family Room"], subcategory: "light bulb", on: true}]
+    let devices = [
+      {name: "Philips Bulb", divisions: ["Family Room"], subcategory: "light bulb", on: true},
+      {name: "Philips Bulb", divisions: ["Tiago Room"], subcategory: "light bulb", on: false},
+      {name: "Philips Bulb", divisions: ["Tiago Room"], subcategory: "light bulb", on: false}
+    ]
     if (devices) {
       return devices.map((device) => (
         <DeviceDisplay device={device} />
@@ -44,7 +48,9 @@ export default function DevicesDisplayInForm() {
           <Image source={require("../../../../assets/search.png")} />
         </View>
 
-        {showDevices()}
+        <View style={styles.devices}>
+          {showDevices()}
+        </View>
     </View>
   );
 }
@@ -54,16 +60,24 @@ const styles = StyleSheet.create({
     color: colors.primary
   },
   deviceDisplayContainer: {
+    marginTop: 15,
     width: "100%",
     flexDirection: "column",
     justifyContent: "space-evenly",
-    backgroundColor: colors.white,
-    margin: 10,
-    padding: 10,
   },
   search: {
+    paddingHorizontal: 50,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between"
+  },
+  devices: {
+    marginTop: 20,
+    paddingHorizontal: 15,
+    justifyContent: "space-between",
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    flexWrap: "wrap"
   }
 });

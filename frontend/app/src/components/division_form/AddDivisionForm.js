@@ -22,32 +22,31 @@ export default function AddDivisionForm() {
   const [inputOnFocus, setInputOnFocus] = useState(false);
 
   return (
+    <>
     <View style={styles.container}>
-      <DynamicTextInput
-        label={"NAME *"}
-        name={divisionName ?? ""}
-        setName={setDivisionName}
-        inputOnFocus={inputOnFocus}
-        setInputOnFocus={setInputOnFocus}
-      />
-      <DynamicDropDown
-        label={"ICON *"}
-        items={iconItems}
-        setItems={setIconItems}
-        value={divisionIcon}
-        setValue={setDivisionIcon}
-      />
-      <DevicesDisplayInForm/>
+        <DynamicTextInput
+          label={"NAME *"}
+          name={divisionName ?? ""}
+          setName={setDivisionName}
+          inputOnFocus={inputOnFocus}
+          setInputOnFocus={setInputOnFocus}
+        />
+        <DynamicDropDown
+          label={"ICON *"}
+          items={iconItems}
+          setItems={setIconItems}
+          value={divisionIcon}
+          setValue={setDivisionIcon}
+        />
     </View>
+    <DevicesDisplayInForm/>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    marginVertical: 5,
-    padding: 30
-  },
+    marginTop: 35,
+    paddingHorizontal: 30
+  }
 });

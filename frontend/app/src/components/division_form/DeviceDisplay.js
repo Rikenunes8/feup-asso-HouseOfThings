@@ -1,4 +1,3 @@
-import React, { useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,8 +5,6 @@ import {
   Image
 } from "react-native";
 import utils from "../../utils/utils";
-
-import colors from "../../../configs/colors";
 
 export default function DeviceDisplay({device}) {
 
@@ -35,13 +32,14 @@ const styles = StyleSheet.create({
     borderColor: "lightgrey",
     borderWidth: 1,
     borderRadius: 5,
-    width: "50%",
+    width: "48%",
     paddingVertical: 5,
     paddingHorizontal: 8,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
+    marginBottom: 10
   },
   icon: {
     width: 20,

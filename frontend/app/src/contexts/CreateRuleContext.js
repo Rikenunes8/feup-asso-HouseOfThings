@@ -9,7 +9,7 @@ export const CreateRuleProvider = ({ children }) => {
   const [deviceSubcategory, setDeviceSubcategory] = useState(null);
   const [availableDevices, setAvailableDevices] = useState([]);*/
 
-  const resetAddDeviceContext = () => {
+  const resetCreateRuleContext = () => {
     setRuleName(null);
     //setDeviceUUID(null);
     //setDeviceName(null);
@@ -24,6 +24,7 @@ export const CreateRuleProvider = ({ children }) => {
       value={{
         ruleName, 
         setRuleName,
+        resetCreateRuleContext
         /*deviceUUID,
         setDeviceUUID,
         deviceName,

@@ -90,7 +90,7 @@ These two problems together can lead to a greater difficulty in development and 
 
 #### The Pattern
 
-We have selected the Facade pattern to solve this problem, since it offers the collowing advantages:
+We have selected the Facade pattern to solve this problem, since it offers the following advantages:
 
 - provides a single way to connect the database and avoid it to be called everytime it is need to make a database operation.
 - provides specific methods, only the ones required for the context of House Of Things, abstracting the entire application of the PyMongo library but a single a class.
@@ -152,31 +152,27 @@ Despite that, there is a solution that can be further explored to solve this pro
 
 ### Context
 
+There are different models that can be created according to a specific input. Each model has its specific state and behavior.
+
 #### Problem in Context
 
-Devices can have different communication protocols, data formats, and capabilities. When a new device is added, the server needs to know how to communicate with it and how to interpret its data.
+Devices can have different data formats, and capabilities. When a new device is added, the server needs to create the model of the device in order to save it in the database. This leads to a problem where each device model needs to be treated in a different way and with a different data structure.
 
 #### The Pattern
 
-<!-- Identify the pattern that you applied, why it was selected and how it is a good fit considering the existing design context and the problem at hand. -->
-
-- provides a flexible and extensible way of managing devices, since in IoT
+The pattern **Factory Method** is a creational pattern that provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created. The pattern is used to create objects without specifying the exact class to create, while this responsability is delegated to the Factory subclasses.
 
 ### Mapping
 
-<!-- Explain how are mapped the pattern's roles, operations and associations to the concrete design classes. -->
+The class [`DeviceAdapter`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/adapter/DeviceAdapter.py) is the Creator/Factory class that as an abstract method `create_model` that is implemented by the subclasses of `DeviceAdapter` ([`LightBulbPiAdapter`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/adapter/LightBulbPiAdapter.py), [`ThermometerPiAdapter`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/adapter/ThermometerPiAdapter.py), and others). In this context the factory method is the `create_model` method and it does not returns the model class as most known one, but instead it assigns it to the `model` attribute of the `DeviceAdapter` class to be used later in the flow.
 
-<!-- Must include:
-   * An enumeration and brief description of how the pattern _roles_, _operations_ and _associations_ were mapped to your concrete implementation.
-   * Links to the corresponding source code blocks on your implementation.
-   * Figure(s) illustrating your implementation of the pattern (e.g., class diagram, activity diagram). -->
+<div align="center">
+  <img src="./img/patterns/FactoryMethod.png" alt="FactoryMethodPattern">
+  <p style="margin-top:10px"><i>Figure 4: HoT Factory Method Pattern</i></p>
+</div>
 
 ### Consequences
 
-<!-- Explain the benefits and the liabilities of instantiating the pattern, eventually in comparison with other alternatives. -->
-
-<!-- Benefits and liabilities (pros and cons) of the design after pattern instantiation, and comparison of these consequences with those of alternative solutions. This section should _not_ describe generic consequences of the pattern, but the specific ones of applying the pattern in your system. -->
-
-The application becomes dependent on the factory to create the devices, which can create a bottleneck if the factory becomes overloaded or fails to perform as expected.
+This pattern has a big advantage, since it allows the creation of new device models without the need to change the `DeviceAdapter` class. However, it may lead to a lot of subclasses of `DeviceAdapter` that can be hard to maintain. As it is suppose to have more adapters to a single device model, it is not expected to have the parallel hierarchy problem.
 
 ---

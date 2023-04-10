@@ -115,19 +115,44 @@ This last problem, could be minimize by using Additional Facade classes to preve
 
 ---
 
+## Devices Adapters Creation: Simple Factory
+
+### Context
+
+The model and controller class to be used is determine by a json object sent by the client in the request. This leads to a problem where the those classes can't be instanciated à piori, so they need to be created dynamically, according to a certain input.
+
+#### Problem in Context
+
+Devices can have different communication protocols, data formats, and capabilities. When a new device is added, the server needs to know how to communicate with it and how to interpret its data. However, the server should determine the adapter to be used to communicate with the device and that is able to manage the device model in runtime according to the device's category and communication protocol sent by the client in a json object as strings.
+
+#### The Pattern
+
+The pattern corresponds to an existence of a factory class that has a single creational method and is able to create classes of a certain parent dynamically, according to the input.
+
+### Mapping
+
+The class [`DeviceAdapterManager`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/DeviceAdapterManager.py) is the factory class responsible to create the device adapters classes (entities that know how to communicate to a physical device and create a certain device model), according to the input received from the client. On the factory perspective, it has a single method `fabricate` that receives the configuration details of the adapter to be created and returns the device adapter class or any of its sub classes ([`DeviceAdapter`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/adapter/DeviceAdapter.py)).
+
+<div align="center">
+  <img src="./img/patterns/SimpleFactory.png" alt="SimpleFactoryPattern">
+  <p style="margin-top:10px"><i>Figure 3: HoT Simple Factory Pattern</i></p>
+</div>
+
+### Consequences
+
+This pattern has a big disadvantge, since it force the `fabricate` method of the class DeviceAdapterManager to be updated every time there is a new device adapter class responsible for deal with a new device. However, there was few solutions to solve this problem, since the device adapters classes are created dynamically and the factory class needs to know the classes to be created.
+
+The `Builder` pattern could be used to minimize the changes needed to be done since it would be possible to reuse the communication protocol or the device model. However, we would still not run from the bad switch case.
+
+Despite that, there is a solution that can be further explored to solve this problem consisting on metaprograming to determine what DeviceAdapter classes could be feasible to be created from the configuration details received from the client.
+
+---
+
 ## Devices Creation: Factory Method
 
 ### Context
 
-: the design problem to solve + why was this one selected
-
-<!-- Describe the design context that justifies the selection of the pattern. -->
-
-Problem to solve: the creation, instaciation and management of different kind of devices ?
-
 #### Problem in Context
-
-<!-- Describe the wider design context and the concrete problem to be solved. This must be as complete as possible, someone else other than the original designer should be able to read and understand why it was important (and not trivial) to solve this problem. -->
 
 Devices can have different communication protocols, data formats, and capabilities. When a new device is added, the server needs to know how to communicate with it and how to interpret its data.
 

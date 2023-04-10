@@ -22,27 +22,19 @@ Likewise, in this document each section should describe a different pattern inst
 
 # House of Things – Pattern Instances
 
-:: papeis, o que representa esses papeis nessa implementacao em python
-
 ## Database Connection: Singleton
 
 ### Context
-
-: the design problem to solve + why was this one selected
-
-<!-- Describe the design context that justifies the selection of the pattern. -->
 
 When accessing the database, we need to be able to keep a single connection that we access in the different endpoints of our application.
 
 #### Problem in Context
 
-We want to ensure that there is a single database connection opened in our application at any time, and that this same connection can be used in any part of the application. We desire that establishing this connection is abstracted away from its use.
+We want to ensure that there is a single database connection opened in our application at any time, and that this same connection can be used in any part of the application. This last requisite isn't so trivial to solve given that each endpoint to our REST API is a Flask view, so it doesn't receive parameters other than the URL parameters. This makes passing objects around more difficult.
 
-<!-- Describe the wider design context and the concrete problem to be solved. This must be as complete as possible, someone else other than the original designer should be able to read and understand why it was important (and not trivial) to solve this problem. -->
+Moreover, we desire that establishing the connection to the database is abstracted away from its use, since it should be established only once and the code that uses the database shouldn't have to worry about whether the connection has already been established or not.
 
 #### The Pattern
-
-<!-- Identify the pattern that you applied, why it was selected and how it is a good fit considering the existing design context and the problem at hand. -->
 
 We have selected the Singleton pattern to solve this problem, since it provides the following advantages:
 
@@ -51,26 +43,22 @@ We have selected the Singleton pattern to solve this problem, since it provides 
 
 ### Mapping
 
-<!-- Explain how are mapped the pattern's roles, operations and associations to the concrete design classes. -->
+Due to the specificities of Python, namely the fact that there is no way to declare a constructor private, the Singleton pattern acquires a slightly different form than usual. The method we adopted makes use of metaclasses.
 
-<!--
-Must include:
-   * An enumeration and brief description of how the pattern _roles_, _operations_ and _associations_ were mapped to your concrete implementation.
-   * Links to the corresponding source code blocks on your implementation.
-   * Figure(s) illustrating your implementation of the pattern (e.g., class diagram, activity diagram).
--->
+The class [`DB`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/database/DB.py) is the Singleton, of which only one instance may exist. Its metaclass, [`DBMeta`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/database/DB.py) overrides the `__call__` method, which takes the role of getting the instance to `DB`, creating one if needed (tradicionally, this role would have been fulfilled by a `getInstance()` method in the Singleton class). Overriding the `__call__` method of the metaclass also has the side effect of hiding the constructor of the Singleton class, which is a good thing, since it effectively has a similar effect to making the constructor private. The metaclass also holds the set of instances of Singleton classes that use it as a metaclass. In our current implementation, only `DB` uses it as its metaclass, so there may only be one instance.
+
+<div align="center">
+  <img src="./img/patterns/Singleton.png" alt="SingletonPattern">
+  <p style="margin-top:10px"><i>Figure 1: HoT Singleton Pattern</i></p>
+</div>
 
 ### Consequences
 
-This pattern has some downsides, as it violates the Single Responsibility Principle by solving two problems at the same time and making it difficult to unit test the code associated with the Singleton. However, since we limit the code of this class to establish the connection to the Mongo database, which we don't need to test thoroughly (as we would basically be testing Mongo itself), we think that this pattern's benefits outweight its liabilities.
+Although it provides the aforementioned advantages, this pattern has some downsides, as it promotes tight coupling between the components of the application and makes it difficult to unit test the code associated with the Singleton. However, if we limit the code of this class to establish and use the connection to the Mongo database, which we don't need to test thoroughly (as we would basically be testing Mongo itself), we think that this pattern's benefits outweight its liabilities.
 
-As an alternative to this pattern, we could encapsulate the connection to the database as a regular class and instanciate it. Although being able to instanciate this class would facilitate its unit testing, it would require that we passed an instance
+Since with this implementation of the pattern the Singleton's lifecycle is managed by the metaclass, contrary to the tradicional implementation, it does not violate the Single Responsibility Principle. In fact, the Singleton class itself is only responsible for establishing and using the connection to the database, and doesn't have to worry about whether it is a Singleton. It only needs to specify its metaclass.
 
-<!-- Explain the benefits and the liabilities of instantiating the pattern, eventually in comparison with other alternatives. -->
-
-<!--
-Benefits and liabilities (pros and cons) of the design after pattern instantiation, and comparison of these consequences with those of alternative solutions. This section should _not_ describe generic consequences of the pattern, but the specific ones of applying the pattern in your system.
--->
+As an alternative to this pattern, we could encapsulate the connection to the database as a regular class and instanciate it. Although being able to instanciate this class would facilitate its unit testing, it would be harder to pass this instance around the application, especially to the Flask views. There is also the possibility of using a global variable to store the database connection, but this would be even more difficult to unit test and also be more easy to misuse in a way that causes unintended side effects, such as rewriting the contents of the variable.
 
 ---
 

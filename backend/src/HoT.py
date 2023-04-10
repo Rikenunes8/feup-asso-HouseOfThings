@@ -4,6 +4,7 @@ from src.controller.adapter.ActuatorDeviceAdapter import ActuatorDeviceAdapter
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
 from src.controller.DeviceAdapterManager import DeviceAdapterManager
 from src.controller.RulesManager import RulesManager
+from src.controller.DivisionsManager import DivisionsManager
 from src.database.DB import DB
 
 class HoTMeta(type):
@@ -21,6 +22,7 @@ class HoT(metaclass=HoTMeta):
         print("HoT init")
         self._manager = DeviceAdapterManager()
         self._rules_manager = RulesManager()
+        self._divisions_manager = DivisionsManager()
         self._cid = "HoT"
         self._load_devices()
 
@@ -116,3 +118,19 @@ class HoT(metaclass=HoTMeta):
 
     def execute_rule(self, rule_id : str):
       pass
+
+
+
+    def divisions(self):
+      return self._divisions_manager.get_all()
+    
+    def create_division(self, division : dict):
+      return self._divisions_manager.add(division).to_json()
+
+    def delete_division(self, division_id : str):
+      return self._divisions_manager.remove(division_id)
+
+    def update_division(self, division_id : str, division : dict):
+      division_updated = self._divisions_manager.update(division_id, division)
+      if isinstance(division_updated, str): return division_updated
+      return division_updated.to_json()

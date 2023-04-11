@@ -6,16 +6,17 @@ An IoT server for the House of Things project. It provides a REST API for the Ho
 
 The server is a Flask application that uses the MQTT protocol to communicate with the devices. It uses the [paho-mqtt](https://pypi.org/project/paho-mqtt/) library to connect to the MQTT broker and to publish and subscribe to topics. The broker used is [EMQX](https://www.emqx.io/), a free and open source MQTT broker. To config the broker, you may change the variables in the `.env` file as described in [how to run](#how-to-run) section.
 
-The server is a REST API that provides the following endpoints:
+<!--The server is a REST API that provides the following endpoints:
 | Endpoint | Method | Description |
 |---------------------------|:------: |-------------|
 | /heartbeat | GET | Checks the connection with the server |
 | /devices | GET | Returns a list of all the connected devices |
 | /devices/{id}/connect | POST | Connects to a device using the {id} value |
 | /devices/{id}/disconnect | POST | Disconnects from a device using the {id} value |
-| /devices/{id}/action | POST | Action to apply in device {id} explicit in JSON body |
+| /devices/{id}/action | POST | Action to apply in device {id} explicit in JSON body |-->
 
-The swagger documentation for the API is available at `/swagger` endpoint when the server is running.
+The swagger documentation for the REST API of the server is available at `/swagger` endpoint when the server is running.
+
 **NOTE:** The documentation is not self generated, so it can be outdated sometimes.
 
 ## How to run

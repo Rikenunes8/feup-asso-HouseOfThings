@@ -10,8 +10,8 @@ Our product currently permits:
 
     - Configuring the system visually with an intuitive and aesthetically pleasing mobile application.
     - Checking the system state live by opening the respective device in the application. For virtual devices, it is also possible to check its state from its virtual control panel.
-    - Adding triggers and actions, so that based on a given condition the state of the devices is changed.
-    - Grouping devices in divisions, which may or may not correspond to physical divisions in your house.
+    - Adding triggers and actions, so that based on a given condition the state of the devices is changed (in progress).
+    - Grouping devices in divisions, which may or may not correspond to physical divisions in your house (in progress).
     - Using virtual devices. Moreover, our design is ready to extend to real devices and to new kinds of devices (with different state or protocol).
     - Discovering new devices that are available.
     - Integrating easily with other systems such as Discord or Whatsapp, provided that the integration program (i.e. Discord bot) communicates with our backend with the REST API we defined.
@@ -26,7 +26,7 @@ Our product currently permits:
 
 <!-- Very briefly explain how to build, run the tests and run the application itself in a development environment. -->
 
-In order to run the application, you need to run both the frontend and the backend. For the backend, you may use docker with the command `docker-compose up` in the `backend` folder. For more information, namely regarding environment variables, see the [backend README](backend/README.md). For the frontend you may run `npm expo start` in the `frontend` folder, and then scan the QR code in the console with your phone (provided you have installed [ExpoGo](https://expo.dev/client)).
+In order to run the application, you need to run both the frontend and the backend. For the backend, you may use docker with the command `docker-compose up` in the `backend` folder. For more information, namely regarding environment variables, see the [backend README](backend/README.md). For the frontend you may run `npm start` in the `frontend` folder, and then scan the QR code in the console with your phone (provided you have installed [ExpoGo](https://expo.dev/client)). You may need to change the server IP address to connect to in the `frontend/.env` file. For more information, see the [frontend README](frontend/README.md).
 
 You may want to connect virtual devices to test the application. For running virtual devices, refer to the [devices README](devices/README.md).
 

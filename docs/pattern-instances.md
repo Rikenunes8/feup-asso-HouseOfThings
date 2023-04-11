@@ -107,7 +107,7 @@ This last problem, could be minimized by using Additional Facade classes to prev
 
 ### Context
 
-The model and controller class to be used is determined by a JSON object sent by the client in the request. This leads to a problem where the those classes can't be instanciated _a priori_, so they need to be created dynamically, according to a certain input.
+The model and controller class to be instanciated when a device is added is determined by a JSON object sent by the client in the request. This leads to a problem where the those classes can't be instanciated _a priori_, so they need to be created dynamically, according to a certain input.
 
 #### Problem in Context
 

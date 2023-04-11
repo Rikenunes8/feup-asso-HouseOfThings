@@ -1,89 +1,118 @@
 import time
 
+from src.controller.adapter.ActuatorDeviceAdapter import ActuatorDeviceAdapter
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
-from src.controller.adapter.LightMqttAdapter import LightMqttAdapter
-from src.model.DeviceManager import DeviceManager
+from src.controller.DeviceAdapterManager import DeviceAdapterManager
+from src.controller.RulesManager import RulesManager
 from src.database.DB import DB
-from src.controller.mqtt import connect_mqtt, disconnect_mqtt, publish, subscribe
-
 
 class HoTMeta(type):
-  _instances = {}
-  def __call__(cls, *args, **kwargs):
-    if cls not in cls._instances:
-      instance = super().__call__(*args, **kwargs)
-      cls._instances[cls] = instance
-    return cls._instances[cls]
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[cls] = instance
+        return cls._instances[cls]
+
 
 class HoT(metaclass=HoTMeta):
-  def __init__(self):
-    print("HoT init")
-    self._devManager = DeviceManager()
-    self._cid = "HoT" # TODO: set this to something better
-    self._loadDevices()
+    def __init__(self):
+        print("HoT init")
+        self._manager = DeviceAdapterManager()
+        self._rules_manager = RulesManager()
+        self._cid = "HoT"
+        self._load_devices()
+
+    def _load_devices(self):
+        devices = DB().find_all_devices()
+        for device in devices:
+            new_device = DeviceAdapterManager.fabricate(
+                self._cid, device['uid'], device)
+            if new_device == None:
+                continue
+            new_device.create_model()
+            new_device.connect()
+            self._manager.add(device['uid'], new_device)
+
+    def devices(self) -> list:
+        ids = self._manager.get_device_ids()
+        return [self._manager.get_device(id).get_model() for id in ids]
+
+    def connect(self, uid: str, config: dict) -> str:
+        new_device : DeviceAdapter = DeviceAdapterManager.fabricate(self._cid, uid, config)
+        if new_device == None:
+            return "No device for subcategory: " + config.get("subcategory")
+        success = new_device.connect()
+        if not success:
+            return "Failed to connect to device with uid: " + uid
+        name = config.get("name")
+        divisions = config.get("divisions")
+        if name != None:
+            new_device.get_model().rename(name)
+        if divisions != None:
+            new_device.get_model().set_divisions(divisions)
+        self._manager.add(uid, new_device)
+        return new_device.get_model().to_json()
+
+    def disconnect(self, uid: str) -> str:
+        adapter = self._manager.get_device(uid)
+        if adapter == None:
+            return "No device with uid " + uid + " to disconnect"
+        adapter.disconnect()
+        self._manager.remove(uid)
+
+    def action(self, uid: str, action: dict):
+        action = action.get("action")
+        if action == None: 
+            return "No action provided"
+        adapter: ActuatorDeviceAdapter = self._manager.get_device(uid)
+        adapter.action(action)
+
+    def rename(self, uid: str, config: dict):
+        name = config.get("name")
+        if name == None:
+            return "No name provided"
+        adapter = self._manager.get_device(uid)
+        if adapter == None:
+            return "No device with that uid"
+        adapter.get_model().rename(name)
+
+    def categories(self):
+        return DB().find_all_categories()
+
+    def available(self, config: dict):
+        adapters = DeviceAdapterManager.fabricate(self._cid, None, config)
+        if adapters == None:
+            return
+        
+        for adapter in adapters: 
+            adapter.start_discovery()
+        
+        start = time.time()
+        while time.time() - start < 4:
+            pass
+        
+        devices_found = {}
+        for adapter in adapters:
+            devices_found[adapter.get_protocol()] = adapter.finish_discovery()
+
+        return devices_found
 
 
-  def _loadDevices(self):
-    devices = DB().findAllDevices()
-    for device in devices:
-      self.connect(device['uid'], device)
-      self._devManager.getDevice(device['uid']).createModel()
+    def rules(self):
+      return self._rules_manager.get_all()
+    
+    def create_rule(self, rule : dict):
+      return self._rules_manager.add(rule).to_json()
 
-  def _createAdapter(self, uid : str, config : dict) -> DeviceAdapter:
-    group = config.get("group")
-    if group == "light":
-      return LightMqttAdapter(self._cid, uid)
-    else:
-      print("No device for group: " + group)
-    return None
+    def delete_rule(self, rule_id : str):
+      return self._rules_manager.remove(rule_id)
 
+    def update_rule(self, rule_id : str, rule : dict):
+      rule_updated = self._rules_manager.update(rule_id, rule)
+      if isinstance(rule_updated, str): return rule_updated
+      return rule_updated.to_json()
 
-  def devices(self) -> list:
-    ids = self._devManager.getDeviceIds()
-    return [self._devManager.getDevice(id).getModel() for id in ids]
-
-  def connect(self, uid : str, config : dict) -> str:
-    newDevice = self._createAdapter(uid, config)
-    if newDevice == None: return "No device for group: " + config.get("group")
-    success = newDevice.connect()
-    if not success: return "Failed to connect to device with uid: " + uid
-    name = config.get("name")
-    divisions = config.get("divisions")
-    if name != None: newDevice.getModel().rename(name)
-    if divisions != None: newDevice.getModel().setDivisions(divisions)
-    self._devManager.add(uid, newDevice)
-
-
-  def disconnect(self, uid : str) -> str:
-    adapter = self._devManager.getDevice(uid)
-    if adapter == None: return "No device with uid " + uid + " to disconnect"
-    adapter.disconnect()
-    self._devManager.remove(uid)
-
-  def action(self, uid : str, rules : dict):
-    adapter : DeviceAdapter = self._devManager.getDevice(uid)
-    # TODO send rules to adapter to perform action instead of this
-    if rules["action"] == "turnOn": adapter.turnOn()
-    elif rules["action"] == "turnOff": adapter.turnOff()
-
-  def rename(self, uid : str, config : dict):
-    name = config.get("name")
-    if name == None: return "No name provided"
-    adapter = self._devManager.getDevice(uid)
-    if adapter == None: return "No device with that uid"
-    adapter.getModel().rename(name)
-
-  def categories(self):
-    return DB().findAllCategories()
-
-  def available(self, config : dict):
-    adapter = self._createAdapter(None, config)
-    if adapter == None: return
-
-    adapter.startDiscovery()
-    start = time.time()
-    while time.time() - start < 4:
+    def execute_rule(self, rule_id : str):
       pass
-    devicesFound = adapter.finishDiscovery()
-  
-    return devicesFound

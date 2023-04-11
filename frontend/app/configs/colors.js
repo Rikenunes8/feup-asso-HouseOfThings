@@ -11,4 +11,8 @@ export default {
   secondaryText: "#7D7D7D",
   transparentPrimary: "#A9876A28",
   transparentGray: "#464B4EBB",
+  transparentLightGray: "#464B4E33",
+  transparent: "#FFFFFF00",
+  cold: "#73C0E6",
+  warm: "#FF7044",
 };

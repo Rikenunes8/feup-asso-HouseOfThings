@@ -1,25 +1,42 @@
-import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import React, { useContext, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import colors from "../../../configs/colors";
+import AddDeviceContext from "../../contexts/AddDeviceContext";
 
 export default function ChooseDeviceSideBar({
   categories,
   selectedCategory,
   setSelectedCategory,
 }) {
+  const { setDeviceCategory } = useContext(AddDeviceContext);
+
+  useEffect(() => {
+    setDeviceCategory(selectedCategory?.name);
+  }, []);
+
   return (
     <View style={styles().modalSideBar}>
-      {categories.map((category, index) => (
-        <TouchableOpacity
-          key={index}
-          disabled={category.name !== "light"} // TODO: only for vertical prototype, remove when we have more devices
-          onPress={() => setSelectedCategory(category)}
-        >
-          <Text style={styles(category === selectedCategory).categoryTitle}>
-            {category.name}
-          </Text>
-        </TouchableOpacity>
-      ))}
+      <ScrollView>
+        {categories.map((category, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={() => {
+              setSelectedCategory(category);
+              setDeviceCategory(category);
+            }}
+          >
+            <Text style={styles(category === selectedCategory).categoryTitle}>
+              {category.name}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 }

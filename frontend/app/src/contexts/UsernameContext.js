@@ -2,18 +2,13 @@ import { createContext, useState } from "react";
 const UsernameContext = createContext({});
 
 export const UsernameProvider = ({ children }) => {
-  const [username, setUsername] = useState('Tiago');
-    
-  const changeUsername = (newUsername) => {
-    newUsername = newUsername;
-    setUsername(newUsername);
-  };
+  const [username, setUsername] = useState("Tiago");
 
   return (
     <UsernameContext.Provider
       value={{
         username,
-        changeUsername,
+        setUsername,
       }}
     >
       {children}

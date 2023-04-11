@@ -1,22 +1,17 @@
 import React, { useContext } from "react";
-import {
-  StyleSheet,
-  SafeAreaView,
-  StatusBar,
-  Platform,
-} from "react-native";
+import { StyleSheet, SafeAreaView, StatusBar, Platform } from "react-native";
 import colors from "../../configs/colors";
 import UsernameContext from "../contexts/UsernameContext";
 import HoTTextInput from "../components/form/TextInput";
 
 export default function ProfileScreen() {
-  const { username, changeUsername } = useContext(UsernameContext);
+  const { username, setUsername } = useContext(UsernameContext);
 
   return (
     <SafeAreaView style={styles.container}>
       <HoTTextInput
         label="name"
-        onChangeText={(text) => changeUsername(text)}
+        onChangeText={(text) => setUsername(text)}
         value={username}
       />
     </SafeAreaView>

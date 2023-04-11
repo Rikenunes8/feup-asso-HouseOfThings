@@ -8,7 +8,7 @@ paths:
   /heartbeat:
     get:
       tags:
-      - Health check
+        - Health check
       description: Checks the server connection
       operationId: heartbeat
       responses:
@@ -17,11 +17,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_ok'
+                $ref: "#/components/schemas/status_ok"
   /devices:
     get:
       tags:
-      - Devices
+        - Devices
       description: Returns all the connected devices
       operationId: getDevices
       responses:
@@ -30,79 +30,79 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/devices'
+                $ref: "#/components/schemas/devices"
   /devices/available:
     get:
       tags:
-      - Devices
+        - Devices
       operationId: discovery
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/connect_body'
+              $ref: "#/components/schemas/connect_body"
       responses:
         "200":
           description: Succesfully retrieved available devices
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/available'
+                $ref: "#/components/schemas/available"
   /devices/{uid}/connect:
     post:
       tags:
-      - Devices
+        - Devices
       operationId: connect
       parameters:
-      - name: uid
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: uid
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/connect_body'
+              $ref: "#/components/schemas/connect_body"
       responses:
         "200":
           description: Successfully connected device
   /devices/{uid}/disconnect:
     post:
       tags:
-      - Devices
+        - Devices
       operationId: disconnect
       parameters:
-      - name: uid
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: uid
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         "200":
           description: Successfully disconnected device
   /devices/{uid}/action:
     post:
       tags:
-      - Devices
+        - Devices
       operationId: action
       parameters:
-      - name: uid
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: uid
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/action_body'
+              $ref: "#/components/schemas/action_body"
             examples:
               Turn Light On:
                 value:
@@ -116,28 +116,28 @@ paths:
   /devices/{uid}/rename:
     post:
       tags:
-      - Devices
+        - Devices
       operationId: rename
       parameters:
-      - name: uid
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: uid
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/rename_body'
+              $ref: "#/components/schemas/rename_body"
       responses:
         "200":
           description: Successfully renamed device
   /categories:
     get:
       tags:
-      - Categories
+        - Categories
       description: Returns all the device categories available
       operationId: getCategories
       responses:
@@ -146,7 +146,43 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/categories'
+                $ref: "#/components/schemas/categories"
+  /rules:
+    get:
+      tags:
+        - Rules
+      description: Returns all the rules
+      operationId: getRules
+      responses:
+        "200":
+          description: All the rules
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/rules"
+    post:
+      tags:
+        - Rules
+      description: Creates a new rule
+      operationId: createRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/create_rule_body"
+      responses:
+        "200":
+          description: Successfully created rule
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/rule"
+        "400":
+          description: Invalid rule
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
 
 components:
   schemas:
@@ -167,7 +203,7 @@ components:
             properties:
               uid:
                 type: string
-              group:
+              category:
                 type: string
               name:
                 type: string
@@ -179,16 +215,16 @@ components:
               type: string
       example:
         devices:
-        - uid: "1"
-          group: light
-          name: Bulb
-          divisions: ["Room"]
-          on: true
-        - uid: "2"
-          group: thermostat
-          name: Termo
-          divisions: ["Kitchen"]
-          last_temp: 23
+          - uid: "1"
+            category: light
+            name: Bulb
+            divisions: ["Room"]
+            on: true
+          - uid: "2"
+            category: thermometer
+            name: Termo
+            divisions: ["Kitchen"]
+            temperature: 23
     categories:
       type: object
       properties:
@@ -205,35 +241,35 @@ components:
                   type: string
       example:
         categories:
-        - name: "light"
-          subcategories:
-            - light bulb
-        - name: "sensor"
-          subcategories:
-            - montion sensor
-            - temperature sensor
-            - humidity sensor
-        - name: security,
-          subcategories: 
-            - camera
-            - door lock
-        - name: socket,
-          subcategories: 
-            - extension socket
-            - power socket
-        - name: appliance,
-          subcategories: 
-            - fan
-            - tv
-            - ac
-            - heater
-            - oven
-            - washer
-            - dryer
-        - name: other,
-          subcategories: 
-            - door bell
-            - tv
+          - name: "light"
+            subcategories:
+              - light bulb
+          - name: "sensor"
+            subcategories:
+              - montion sensor
+              - temperature sensor
+              - humidity sensor
+          - name: security,
+            subcategories:
+              - camera
+              - door lock
+          - name: socket,
+            subcategories:
+              - extension socket
+              - power socket
+          - name: appliance,
+            subcategories:
+              - fan
+              - tv
+              - ac
+              - heater
+              - oven
+              - washer
+              - dryer
+          - name: other,
+            subcategories:
+              - door bell
+              - tv
     available:
       type: object
       properties:
@@ -243,20 +279,89 @@ components:
             type: string
       example:
         devices:
-        - "1"
-        - "2"
+          - "1"
+          - "2"
+    rules:
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            $ref: "#/components/schemas/rule"
+      example:
+        id: "1"
+        name: "Turn on light when at 20h"
+        operation: and
+        when:
+          - kind: device
+            device_id: "1"
+            state:
+              on: false
+          - kind: schedule
+            time: "20:00"
+            days: [1, 2, 3, 4, 5]
+        then:
+          - device_id: "1"
+            action: turnOn
+    rule:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        operation:
+          type: string
+          enum: [and, or]
+        when:
+          type: array
+          items:
+            $ref: "#/components/schemas/condition"
+        then:
+          type: array
+          items:
+            $ref: "#/components/schemas/action"
+    condition:
+      type: object
+      properties:
+        kind:
+          type: string
+          enum: [device, schedule]
+      additionalProperties:
+        type: any
+      example:
+        device:
+          kind: device
+          device_id: "1"
+          state:
+            on: true
+        schedule:
+          kind: schedule
+          time: "12:00"
+          days: [0, 1, 3, 6]
+    action:
+      type: object
+      properties:
+        device_id:
+          type: string
+        action:
+          type: string
+      example:
+        device_id: "1"
+        action: turnOn
     connect_body:
       type: object
       properties:
-        group:
+        category:
           type: string
           enum:
-          - light
-        name: 
+            - light
+            - thermometer
+        name:
           type: string
         divisions:
           type: array
-          items: 
+          items:
             type: string
     action_body:
       type: object
@@ -268,3 +373,26 @@ components:
       properties:
         name:
           type: string
+    create_rule_body:
+      type: object
+      properties:
+        name:
+          type: string
+        operation:
+          type: string
+          enum: [and, or]
+        when:
+          type: array
+          items:
+            $ref: "#/components/schemas/condition"
+        then:
+          type: array
+          items:
+            $ref: "#/components/schemas/action"
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      example:
+        error: "Device not found"

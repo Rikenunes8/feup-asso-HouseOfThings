@@ -74,7 +74,7 @@ We start using PyMongo to interact with the MongoDB database on the server side 
 However, the use of the library in the House of Things project is very restrict and focused on the basic operations of a database and having so many operations available can be messy.
 Beyond that, it is needed to ensure the connection between the aplication and the database before each operation executed on the database.
 
-These two problems together can lead to a greater difficulty in development and make the code become more confused and complex.
+These two problems together can lead to a greater difficulty in development and make the code become more confusing and complex.
 
 #### The Pattern
 
@@ -97,9 +97,9 @@ This class is associated with every class that needs to access the Database ([`D
 
 This pattern revealed to be very useful to reduce the quantity of code needed to interact with the database and keep them consistent. It allowed to have a single spot where the schema of the documents in the database are defined for each collection. It also allowed to have a dozen of simple and concise methods instead of having to choose between many more by choosing to interact directly with PyMongo.
 
-This pattern also have downsides like being a "god instance" wich every class the access the database must know. It also violates the Single Responsability Principle since it knows how to interact with device, categories, rules, divisions and all other future collections in the database.
+This pattern also have downsides like being a "god instance", in which every class that accesses the database must know. It also violates the Single Responsability Principle since it knows how to interact with device, categories, rules, divisions and all other future collections in the database.
 
-This last problem, could be minimize by using Additional Facade classes to prevent polluting a single facade with unrelated features.
+This last problem, could be minimized by using Additional Facade classes to prevent polluting a single facade with unrelated features.
 
 ---
 
@@ -107,15 +107,15 @@ This last problem, could be minimize by using Additional Facade classes to preve
 
 ### Context
 
-The model and controller class to be used is determine by a json object sent by the client in the request. This leads to a problem where the those classes can't be instanciated à piori, so they need to be created dynamically, according to a certain input.
+The model and controller class to be used is determined by a JSON object sent by the client in the request. This leads to a problem where the those classes can't be instanciated _a priori_, so they need to be created dynamically, according to a certain input.
 
 #### Problem in Context
 
-Devices can have different communication protocols, data formats, and capabilities. When a new device is added, the server needs to know how to communicate with it and how to interpret its data. However, the server should determine the adapter to be used to communicate with the device and that is able to manage the device model in runtime according to the device's category and communication protocol sent by the client in a json object as strings.
+Devices can have different communication protocols, data formats, and capabilities. When a new device is added, the server needs to know how to communicate with it and how to interpret its data. However, the server should determine the adapter to be used to communicate with the device and that is able to manage the device model in runtime according to the device's category and communication protocol sent by the client in a JSON object as strings.
 
 #### The Pattern
 
-The pattern corresponds to an existence of a factory class that has a single creational method and is able to create classes of a certain parent dynamically, according to the input.
+The pattern corresponds to the existence of a factory class that has a single creational method and is able to create classes of a certain parent dynamically, according to the input.
 
 ### Mapping
 
@@ -128,9 +128,9 @@ The class [`DeviceAdapterManager`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blo
 
 ### Consequences
 
-This pattern has a big disadvantge, since it force the `fabricate` method of the class DeviceAdapterManager to be updated every time there is a new device adapter class responsible for deal with a new device. However, there was few solutions to solve this problem, since the device adapters classes are created dynamically and the factory class needs to know the classes to be created.
+This pattern has a big disadvantage, since it forces the `fabricate` method of the class `DeviceAdapterManager` to be updated every time there is a new device adapter class responsible for deal with a new device. However, there aren't many alternatives to solve this problem, since the device adapter classes are created dynamically and the factory class needs to know the classes to be created.
 
-The `Builder` pattern could be used to minimize the changes needed to be done since it would be possible to reuse the communication protocol or the device model. However, we would still not run from the bad switch case.
+The `Builder` pattern could be used to minimize the changes needed to be done since it would be possible to reuse the communication protocol or the device model. However, we would still not avoid the bad switch case.
 
 Despite that, there is a solution that can be further explored to solve this problem consisting on metaprograming to determine what DeviceAdapter classes could be feasible to be created from the configuration details received from the client.
 
@@ -161,6 +161,6 @@ The class [`DeviceAdapter`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/devel
 
 ### Consequences
 
-This pattern has a big advantage, since it allows the creation of new device models without the need to change the `DeviceAdapter` class. However, it may lead to a lot of subclasses of `DeviceAdapter` that can be hard to maintain. As it is suppose to have more adapters to a single device model, it is not expected to have the parallel hierarchy problem.
+This pattern has a big advantage, since it allows the creation of new device models without the need to change the `DeviceAdapter` class. However, it may lead to a lot of subclasses of `DeviceAdapter` that can be hard to maintain. Since we expect to have multiple adapters for each single device model, we expect that we will not run into the parallel hierarchy problem.
 
 ---

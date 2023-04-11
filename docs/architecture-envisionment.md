@@ -1,6 +1,35 @@
 # Architecture Envisionment
 
-## Several subsystems and how they are connected
+Our system follows a client-server architecture, where a cross-platform frontend application communicates with a backend via REST API. 
+
+The frontend is implemented in React Native, since it is a cross-platform framework tailored for a mobile experience and we expect most of our users to interact with our system with their phone. The separation of the frontend from the backend also permits implementing other kinds of frontends in the future, such as a Discord bot that interacts with the server.
+
+The server is implemented in Python's Flask framework, since it is a lightweight framework that we can easily extend according to our needs. Namely, it allows us to more easily use a non-relational database, which would have been harder to do with other frameworks, such as Django. This server follows a model-view-controller architectural style, where the views are REST API endpoints, the models represent database entities and the controllers manage the logic of the application and interaction with the devices. We found this architectural style natural given that the server is web-based, allowing us to separate the logic of the application from the requests and responses, as well as the stored data.
+
+The server communicates with the devices via MQTT, which is a lightweight messaging protocol that is well-suited for IoT applications. The devices may be physical or virtual. In the case of virtual devices, they are simple programs implemented in Python with a UI in pygame, given that their main purpose is to test the application.
+
+For the database, we chose MongoDB, given that we anticipate that the data stored for different IoT devices and the rules users can create will be very heterogeneous.
+
+## Component Diagram
+
+The component diagram describing our architecture is illustrated below.
+
+<div align="center">
+  <img src="./img/HoT-component_diagram.png" alt="UML_Component_Diagram">
+  <p style="margin-top:10px"><i>Figure 1: House of Things Component Diagram</i></p>
+</div>
+
+### Components
+
+The HoT system contains the following components:
+
+- **Cross-Platform Application**: provides a user interface for users to interact with the system, allowing them to send requests and receive feedback.
+- **Server**: handles requests via REST API and sends and receives messages to and from the MQTT broker to interact with the devices, which can include retrieving data from sensors or sending commands to actuators. Also retrieves or updates data from the database as needed.
+- **MQTT Broker**: serves as the middleman between the server and the devices, facilitating communication between the two.
+- **Devices**: generate data that is transmitted to the server, e.g., sensors that detect changes in the physical environment, such as temperature or humidity or actuators that can trigger actions in response to commands from the server. May be physical or virtual.
+- **Database**: stores all the necessary data.
+
+<!-- ## Several subsystems and how they are connected
 
 We have two main subsystems, UI and Server that communicate through Rest API.
 
@@ -22,4 +51,4 @@ In the context of the project, devices will be mainly virtual (mocks) and will c
 
 1. Pipes and Filters Architecture: for processing the data received from the sensors, performing data filtering (e.g. remove data that is outside a certain range) and/or data transformation (e.g. transform data from different sources into a standardize format). 
 2. Rule-based Architecture: to define the behavior of the system based on the data collected from the IoT devices making it easier to maintain and modify as the rules can be updated or added without requiring changes to the underlying code.
-7. Microservices Architecture (Independent Components style): services/modules developed and deployed independently, making it easier to scale and maintain the system.
+7. Microservices Architecture (Independent Components style): services/modules developed and deployed independently, making it easier to scale and maintain the system. -->

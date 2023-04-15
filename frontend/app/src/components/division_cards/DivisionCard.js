@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from "react-native";
 
+import DynamicTextInput from "../form/DynamicTextInput";
 import DivisionDetailsContextMenu from "../division_details/DivisionDetailsContextMenu";
 import IconModal from "../modal/IconModal";
 import DivisionIcon from "./DivisionIcon";
@@ -14,6 +15,8 @@ export default function DivisionCard({
 }) {
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
+
+  const [searchDeviceName, setSearchDeviceName] = useState(null);
 
   return (
     <TouchableOpacity
@@ -45,8 +48,19 @@ export default function DivisionCard({
           />
         }
         modalContent={
-          // TODO
-          <View></View>
+          <View>
+              <View style={styles.topSearch}>
+                <Text style={styles.devicesText}>Devices</Text>
+                <View style={styles.search}>
+                  <TextInput 
+                    style={styles.writeSearch}
+                    value={searchDeviceName ?? ""}
+                    onChangeText={setSearchDeviceName}
+                  />
+                  <Image source={require("../../../../assets/search.png")} />
+                </View>
+              </View>
+          </View>
         }
       />
 
@@ -84,4 +98,27 @@ const styles = StyleSheet.create({
     color: colors.secondaryText,
     textAlign: "center",
   },
+  devicesText: {
+    color: colors.primary,
+    fontWeight: 700,
+    fontSize: 18
+  },
+  topSearch: {
+    paddingHorizontal: 5,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "center",
+    height: 30,
+  },
+  writeSearch: {
+    padding: 0,
+    borderBottomWidth: 1,
+    minWidth: 125
+  },
+  search: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center"
+  }
 });

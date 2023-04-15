@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from "react-native";
 
-import DynamicTextInput from "../form/DynamicTextInput";
+import DeviceDisplay from "../division_form/DeviceDisplay";
 import DivisionDetailsContextMenu from "../division_details/DivisionDetailsContextMenu";
 import IconModal from "../modal/IconModal";
 import DivisionIcon from "./DivisionIcon";
@@ -17,6 +17,20 @@ export default function DivisionCard({
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
   const [searchDeviceName, setSearchDeviceName] = useState(null);
+
+  const showDevices = () => {
+    //TODO: Remove hardcoded devices
+    let devices = [
+      {name: "Philips Bulb", divisions: ["Family Room"], subcategory: "light bulb", on: true},
+      {name: "Philips Bulb", divisions: ["Tiago Room"], subcategory: "light bulb", on: false},
+      {name: "Philips Bulb", divisions: ["Tiago Room"], subcategory: "light bulb", on: false}
+    ]
+    if (devices) {
+      return devices.map((device) => (
+        <DeviceDisplay device={device} />
+      ))
+    }
+  }
 
   return (
     <TouchableOpacity
@@ -60,6 +74,11 @@ export default function DivisionCard({
                   <Image source={require("../../../../assets/search.png")} />
                 </View>
               </View>
+
+              <View style={styles.devices}>
+                {showDevices()}
+              </View>
+
           </View>
         }
       />
@@ -120,5 +139,14 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center"
+  },
+  devices: {
+    marginTop: 20,
+    paddingHorizontal: 5,
+    justifyContent: "space-between",
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    flexWrap: "wrap"
   }
 });

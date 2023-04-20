@@ -8,7 +8,7 @@ divisions = Blueprint('divisions', __name__, url_prefix='/divisions')
 @divisions.get("/")
 def index():
   divisions = HoT().divisions()
-  return jsonify({'divisions': list(map(lambda division: division.to_json() if division != None else {}, divisions))})
+  return jsonify({'divisions': divisions})
 
 @divisions.post("/")
 def create():

@@ -38,6 +38,10 @@ function getDeviceIcon(subcategory) {
       return require("../../../assets/devices/light_bulb.png");
     case "thermometer":
       return require("../../../assets/devices/thermometer.png");
+    case "bedroom-icon":
+      return require("../../../assets/division_icons/bedroom-icon.png");
+    case "kitchen-icon":
+      return require("../../../assets/division_icons/kitchen-icon.png");
     default:
       return require("../../../assets/icon.png");
   }

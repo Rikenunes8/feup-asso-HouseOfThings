@@ -12,12 +12,20 @@ export default function DynamicDropDown({
   setValue,
   disabled = false,
   showArrowIcon = true,
+  isSearchable = false,
+  dividedByCategories = false,
+  margin = 15,
+  onSelectItem = () => {},
 }) {
   const [open, setOpen] = React.useState(false);
 
+  const customMargin = {
+    margin: margin,
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.field}>{label}</Text>
+    <View style={[customMargin, styles.container]}>
+      {label == "" ? null : <Text style={styles.field}>{label}</Text>}
 
       <DropDownPicker
         open={open}
@@ -31,26 +39,34 @@ export default function DynamicDropDown({
         style={styles.selector}
         disabled={disabled}
         showArrowIcon={showArrowIcon}
+        listParentLabelStyle={dividedByCategories ? styles.parent : null}
+        categorySelectable={!dividedByCategories}
+        searchable={isSearchable}
+        onSelectItem={onSelectItem}
+        closeAfterSelecting={true}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      margin: 15,
-      zIndex: 10,
-    },
-    dropdown: {
-      backgroundColor: colors.background,
-    },
-    selector: {
-      borderColor: colors.white,
-      borderBottomColor: colors.black,
-      borderRadius: 0,
-      backgroundColor: colors.transparent,
-    },
-    field: {
-      color: colors.primary,
-    },
-  });
+  container: {
+    //margin: 15
+    zIndex: 10,
+  },
+  dropdown: {
+    backgroundColor: colors.background,
+  },
+  selector: {
+    borderColor: colors.white,
+    borderBottomColor: colors.black,
+    borderRadius: 0,
+    backgroundColor: colors.transparent,
+  },
+  field: {
+    color: colors.primary,
+  },
+  parent: {
+    fontWeight: "bold",
+  },
+});

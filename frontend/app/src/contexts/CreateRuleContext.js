@@ -3,41 +3,40 @@ const CreateRuleContext = createContext({});
 
 export const CreateRuleProvider = ({ children }) => {
   const [ruleName, setRuleName] = useState(null);
-  /*const [deviceName, setDeviceName] = useState(null);
-  const [deviceDivision, setDeviceDivision] = useState(null);
-  const [deviceCategory, setDeviceCategory] = useState(null);
-  const [deviceSubcategory, setDeviceSubcategory] = useState(null);
-  const [availableDevices, setAvailableDevices] = useState([]);*/
+  const [ruleOperation, setRuleOperation] = useState("and");
+  const [ruleConditions, setRuleConditions] = useState([]);
+  const [ruleActions, setRuleActions] = useState([
+    {
+      device_id: 1,
+      action: "turn_off",
+    },
+  ]);
 
   const resetCreateRuleContext = () => {
     setRuleName(null);
-    //setDeviceUUID(null);
-    //setDeviceName(null);
-    //setDeviceDivision(null);
-    //setDeviceCategory(null);
-    //setDeviceSubcategory(null);
-    //setAvailableDevices([]);
+    setRuleOperation("and");
+    setRuleConditions([]);
+    setRuleActions([
+      {
+        device_id: null,
+        action: null,
+      },
+    ]);
   };
 
   return (
     <CreateRuleContext.Provider
       value={{
-        ruleName, 
+        ruleName,
         setRuleName,
-        resetCreateRuleContext
-        /*deviceUUID,
-        setDeviceUUID,
-        deviceName,
-        setDeviceName,
-        deviceDivision,
-        setDeviceDivision,
-        deviceCategory,
-        setDeviceCategory,
-        deviceSubcategory,
-        setDeviceSubcategory,
-        availableDevices,
-        setAvailableDevices,
-        resetAddDeviceContext,*/
+        ruleOperation,
+        setRuleOperation,
+        ruleConditions,
+        setRuleConditions,
+        ruleActions,
+        setRuleActions,
+        resetCreateRuleContext,
+        setRuleKind,
       }}
     >
       {children}

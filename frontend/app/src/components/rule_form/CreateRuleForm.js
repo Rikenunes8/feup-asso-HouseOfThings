@@ -1,36 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { StyleSheet, View } from "react-native";
 
 import DynamicTextInput from "../form/DynamicTextInput";
-import DynamicDropDown from "../form/DynamicDropDown";
-import DivisionsContext from "../../contexts/DivisionsContext";
-import utils from "../../utils/utils";
+import ConditionForm from "./condition/ConditionForm";
+import ActionForm from "./action/ActionForm";
+
 import CreateRuleContext from "../../contexts/CreateRuleContext";
-import AddDeviceContext from "../../contexts/AddDeviceContext";
 
 export default function CreateRuleForm({ inputOnFocus, setInputOnFocus }) {
-
-    const {
-        ruleName,
-        setRuleName
-    } = useContext(CreateRuleContext);
-
-
-  /*const { divisions } = useContext(DivisionsContext);
-
-  const [items, setItems] = useState(
-    divisions.map((item) => {
-      return { label: utils.capitalize(item.name), value: item.name };
-    })
-  );
-
-  const [uuidItems, setUUIDItems] = useState(
-    availableDevices.map((item) => {
-      return { label: item.uuid, value: JSON.stringify(item) };
-    })
-  );*/
-
-  console.log(ruleName)
+  const { ruleName, setRuleName } = useContext(CreateRuleContext);
 
   return (
     <View style={styles.container}>
@@ -41,6 +19,8 @@ export default function CreateRuleForm({ inputOnFocus, setInputOnFocus }) {
         inputOnFocus={inputOnFocus}
         setInputOnFocus={setInputOnFocus}
       />
+      <ConditionForm></ConditionForm>
+      <ActionForm></ActionForm>
     </View>
   );
 }
@@ -50,6 +30,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    marginVertical: 5,
+    margin: 5,
   },
 });

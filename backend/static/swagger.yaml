@@ -349,12 +349,12 @@ components:
           - uid: "1"
             category: light
             name: Bulb
-            divisions: ["Room"]
+            divisions: ["1"]
             on: true
           - uid: "2"
             category: thermometer
             name: Termo
-            divisions: ["Kitchen"]
+            divisions: ["2"]
             temperature: 23
     categories:
       type: object
@@ -428,6 +428,11 @@ components:
                 type: string
               numDevices:
                 type: integer
+              devices:
+                type: array
+                items:
+                  type: string
+                  description: Device UID
             additionalProperties:
               type: string
       example:

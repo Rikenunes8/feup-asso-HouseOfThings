@@ -26,12 +26,34 @@ def delete(id):
   if error: return make_error(error)
   else:     return jsonify({})
 
-@divisions.post("/<id>/update")
-def update(id):
+@divisions.post("/<id>/rename")
+def rename(id):
   if not is_content_json(request): return not_json_error()
-  error = validate_division(request.json)
-  if error: return make_error(error)
 
-  division = HoT().update_division(id, request.json)
-  if isinstance(division, str): return make_error(division)
-  else: return jsonify({'division': division})
+  error = HoT().rename_division(id, request.json)
+  if error: return make_error(error)
+  else:     return jsonify({})
+
+@divisions.post("/<id>/change-icon")
+def change_icon(id):
+  if not is_content_json(request): return not_json_error()
+
+  error = HoT().change_icon_division(id, request.json)
+  if error: return make_error(error)
+  else:     return jsonify({})
+
+@divisions.post("/<id>/add-device")
+def add_device(id):
+  if not is_content_json(request): return not_json_error()
+
+  error = HoT().add_device_division(id, request.json)
+  if error: return make_error(error)
+  else:     return jsonify({})
+
+@divisions.post("/<id>/remove-device")
+def remove_device(id):
+  if not is_content_json(request): return not_json_error()
+
+  error = HoT().remove_device_division(id, request.json)
+  if error: return make_error(error)
+  else:     return jsonify({})

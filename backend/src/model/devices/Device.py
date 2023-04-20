@@ -15,6 +15,16 @@ class Device(ABC):
 
     def set_divisions(self, divisions: list) -> None:
         self.update({"divisions": divisions})
+    
+    def add_division(self, division: str) -> None:
+        divisions = self.find()["divisions"]
+        divisions.append(division)
+        self.set_divisions(divisions)
+
+    def remove_division(self, division: str) -> None:
+        divisions = self.find()["divisions"]
+        divisions.remove(division)
+        self.set_divisions(divisions)
 
     def get_id(self) -> int:
         return self._id

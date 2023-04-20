@@ -5,7 +5,7 @@ class DivisionsManager:
     self._divisions: dict[str, Division]= {}
 
   def add(self, division_json) -> Division:
-    division = Division(division_json['name'], division_json['icon'], division_json['numDevices'])
+    division = Division(division_json['name'], division_json['icon'], division_json['devices'])
     self._divisions[division.get_id()] = division
     return self._divisions[division.get_id()]
 
@@ -14,11 +14,29 @@ class DivisionsManager:
     if division == None: return "Division not found"
     else: division.delete()
 
-  def update(self, division_id, division_json):
-    rule = self._divisions.get(division_id)
-    if rule == None: return "Division not found"
-    rule.update(division_json['name'], division_json['icon'], division_json['numDevices'])
-    return rule
+  def rename(self, division_id, name):
+    division = self._divisions.get(division_id)
+    if division == None: return "Division not found"
+    division.rename(name)
+    return division
+
+  def change_icon(self, division_id, icon):
+    division = self._divisions.get(division_id)
+    if division == None: return "Division not found"
+    division.change_icon(icon)
+    return division
+  
+  def add_device(self, division_id, device):
+    division = self._divisions.get(division_id)
+    if division == None: return "Division not found"
+    division.add_device(device)
+    return division
+  
+  def remove_device(self, division_id, device):
+    division = self._divisions.get(division_id)
+    if division == None: return "Division not found"
+    division.remove_device(device)
+    return division
 
   def get_all(self):
     return list(map(lambda division : division.to_json(), self._divisions.values()))

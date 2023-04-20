@@ -147,6 +147,137 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/categories"
+  /divisions:
+    get:
+      tags:
+        - Divisions
+      description: Returns all the divisions
+      operationId: getDivisions
+      responses:
+        "200":
+          description: All the divisions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/divisions"
+    post:
+      tags:
+        - Divisions
+      description: Creates a new division
+      operationId: createDivision
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/division"
+      responses:
+        "200":
+          description: Successfully created division
+  /divisions/{id}:
+    delete:
+      tags:
+        - Divisions
+      description: Deletes a division
+      operationId: deleteDivision
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfully deleted division
+  /divisions/{id}/rename:
+    post:
+      tags:
+        - Divisions
+      description: Renames a division
+      operationId: renameDivision
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/rename_body"
+      responses:
+        "200":
+          description: Successfully renamed division
+  /divisions/{id}/change-icon:
+    post:
+      tags:
+        - Divisions
+      description: Changes the icon of a division
+      operationId: changeDivisionIcon
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/change_icon_body"
+      responses:
+        "200":
+          description: Successfully changed division icon
+  /divisions/{id}/add-device:
+    post:
+      tags:
+        - Divisions
+      description: Adds a device to a division
+      operationId: addDeviceToDivision
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/device_uid_body"
+      responses:
+        "200":
+          description: Successfully added device to division
+  /divisions/{id}/remove-device:
+    post:
+      tags:
+        - Divisions
+      description: Removes a device from a division
+      operationId: removeDeviceFromDivision
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/device_uid_body"
+      responses:
+        "200":
+          description: Successfully removed device from division
   /rules:
     get:
       tags:
@@ -281,6 +412,46 @@ components:
         devices:
           - "1"
           - "2"
+    divisions:
+      type: object
+      properties:
+        divisions:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              icon:
+                type: string
+              numDevices:
+                type: integer
+            additionalProperties:
+              type: string
+      example:
+        divisions:
+          - id: "1"
+            name: "Family Room"
+            icon: "bedroom-icon"
+            numDevices: 2
+    division:
+      type: object
+      properties:
+        name:
+          type: string
+        icon:
+          type: string
+        devices:
+          type: array
+          items:
+            type: string
+            description: Device UID
+      example:
+        name: "Family Room"
+        icon: "bedroom-icon"
+        devices: ["1", "2"]
     rules:
       type: object
       properties:
@@ -372,6 +543,16 @@ components:
       type: object
       properties:
         name:
+          type: string
+    change_icon_body:
+      type: object
+      properties:
+        icon:
+          type: string
+    device_uid_body:
+      type: object
+      properties:
+        uid:
           type: string
     create_rule_body:
       type: object

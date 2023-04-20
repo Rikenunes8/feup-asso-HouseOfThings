@@ -120,7 +120,6 @@ class HoT(metaclass=HoTMeta):
       pass
 
 
-
     def divisions(self):
       return self._divisions_manager.get_all()
     

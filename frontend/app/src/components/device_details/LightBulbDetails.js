@@ -5,6 +5,7 @@ import colors from "../../../configs/colors";
 
 export default function LightBulbDetails({ on, handler }) {
   const stateText = on ? "On" : "Off";
+  const [disabled, setDisabled] = React.useState(false);
 
   return (
     <View style={styles().container}>
@@ -16,7 +17,8 @@ export default function LightBulbDetails({ on, handler }) {
         <View style={styles().powerButton}>
           <TouchableOpacity
             style={styles(on).powerButtonOppacity}
-            onPress={() => handler(on)}
+            onPress={() => handler(on, setDisabled)}
+            disabled={disabled}
           >
             <Icon name="power" size={50} color={colors.white} />
           </TouchableOpacity>

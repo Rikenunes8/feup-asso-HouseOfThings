@@ -6,6 +6,7 @@ from src.controller.DeviceAdapterManager import DeviceAdapterManager
 from src.controller.RulesManager import RulesManager
 from src.controller.DivisionsManager import DivisionsManager
 from src.database.DB import DB
+from src.database.CollectionTypes import Collection
 
 class HoTMeta(type):
     _instances = {}
@@ -27,7 +28,7 @@ class HoT(metaclass=HoTMeta):
         self._load_devices()
 
     def _load_devices(self):
-        devices = DB().find_all_devices()
+        devices = DB().get(Collection.DEVICES).find_all()
         for device in devices:
             new_device = DeviceAdapterManager.fabricate(
                 self._cid, device['uid'], device)
@@ -81,7 +82,7 @@ class HoT(metaclass=HoTMeta):
         adapter.get_model().rename(name)
 
     def categories(self):
-        return DB().find_all_categories()
+        return DB().get(Collection.CATEGORIES).find_all()
 
     def available(self, config: dict):
         adapters = DeviceAdapterManager.fabricate(self._cid, None, config)

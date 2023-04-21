@@ -2,6 +2,7 @@ from src.model.rules.Condition import Condition
 from src.model.rules.Action import Action
 
 from src.database.DB import DB
+from src.database.CollectionTypes import Collection
 
 
 class Rule:
@@ -12,23 +13,23 @@ class Rule:
     self._conditions = conditions
     self._actions = actions
     self._id = self._create()
-    DB().update_rule(self._id, {"id": self._id})
+    DB().get(Collection.RULES).update(self._id, {"id": self._id})
 
   def get_id(self) -> str:
     return self._id
 
   def _create(self):
-    return DB().add_rule(self.to_json())
+    return DB().get(Collection.RULES).add(self.to_json())
 
   def update(self, name: str, operation: str, conditions: list[Condition], actions:list[Action]):
     self._name = name
     self._operation = operation 
     self._conditions = conditions
     self._actions = actions
-    DB().update_rule(self._id, self.to_json())
+    DB().get(Collection.RULES).update(self._id, self.to_json())
 
   def delete(self):
-    DB().delete_rule(self._id)
+    DB().get(Collection.RULES).delete(self._id)
 
   def to_json(self) -> dict:
     return {

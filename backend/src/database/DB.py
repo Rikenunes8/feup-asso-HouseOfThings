@@ -24,13 +24,29 @@ class DB(metaclass=DBMeta):
         host = os.environ.get("MONGODB_HOSTNAME")
         port = os.environ.get("MONGODB_PORT")
         database = os.environ.get("MONGODB_DATABASE")
-        mongo_uri = f"mongodb://{user}:{password}@{host}:{port}"
-        if os.environ.get("NOT_CONTAINERIZED"):
-            mongo_uri = f"mongodb://localhost:27017"
-            database = "HoT"
+
+        mongo_uri = self._get_uri(user, password, host, port)
 
         self._client = pymongo.MongoClient(mongo_uri)
         self._db = self._client[database]
+    
+    def _get_uri(self, user: str or None, password: str or None, host: str, port: str or None) -> str:
+        if password:
+            credentials = f"{user}:{password}"
+        else:
+            credentials = user
+        
+        if port:
+            address = f"{host}:{port}"
+        else:
+            address = host
+
+        if credentials:
+            mongo_uri = f"mongodb://{credentials}@{address}"
+        else:
+            mongo_uri = f"mongodb://{address}"
+
+        return mongo_uri
 
     def _get_collection(self, collection: str, id: str or None) -> DBCollection:
         return DBCollection(self._db[collection], id)

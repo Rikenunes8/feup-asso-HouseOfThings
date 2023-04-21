@@ -40,17 +40,7 @@ Otherwise, if you are not a docker fan, you can create a .env file in the root, 
 An example of a .env:
 
 ```
-# The following variable must to be set with any value in order to run outside docker
-# If so the mongoDB uri will be "http://localhost:27017" and the database will be "HoT"
-# No MONGODB_* vars are needed
-NOT_CONTAINERIZED=true
-
-MONGODB_ROOT_USERNAME=user
-MONGODB_ROOT_PASSWORD=DEFAULT_PASSWORD_DO_NOT_USE
-
-MONGODB_USERNAME=user
-MONGODB_PASSWORD=DEFAULT_PASSWORD_DO_NOT_USE
-MONGODB_HOSTNAME=mongodb
+MONGODB_HOSTNAME=localhost
 MONGODB_PORT=27017
 MONGODB_DATABASE=HoT
 

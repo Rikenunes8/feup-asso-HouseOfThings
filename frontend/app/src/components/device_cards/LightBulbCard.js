@@ -14,7 +14,7 @@ export default function LightBulbCard({ device }) {
   const { updateDevice } = useContext(DevicesContext);
   const [disabled, setDisabled] = useState(false);
 
-  onOffHandler = (isEnabled, setDisabled) => {
+  const onOffHandler = (isEnabled, setDisabled) => {
     console.log(`Turning ${isEnabled ? "off" : "on"} device...`);
 
     setDisabled(true);

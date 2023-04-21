@@ -1,17 +1,16 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, SafeAreaView } from "react-native";
+import { StyleSheet, View, SafeAreaView } from "react-native";
 
 import Row from "../../grid/Row";
 import Col from "../../grid/Column";
-import DynamicDropDown from "../../form/DynamicDropDown";
-import CreateRuleContext from "../../../contexts/CreateRuleContext";
 
 import colors from "../../../../configs/colors";
 import FeatureForm from "./FeatureForm";
+import DynamicDropDown from "../../form/DynamicDropDown";
 
 export default function DeviceDetailsForm({ ruleCondition, setRuleCondition }) {
   //TODO - Não fazer isto hardcoded
-  const [features, setFeatures] = useState(() => {
+  const [features] = useState(() => {
     all_items = [
       { label: "Status", value: "status" },
       { label: "Brightness", value: "slider" },
@@ -27,14 +26,11 @@ export default function DeviceDetailsForm({ ruleCondition, setRuleCondition }) {
     <Row>
       <Col numRows={3}>
         <DynamicDropDown
-          label={""}
           items={features}
-          setItems={setFeatures}
           value={value_a}
           setValue={setValue_a}
-          isSearchable={false}
-          onSelectItem={(item) => setFeatSelected(item.value)}
-        />
+          onChange={(item) => setFeatSelected(item.value)}
+        ></DynamicDropDown>
       </Col>
 
       <Col numRows={1}>

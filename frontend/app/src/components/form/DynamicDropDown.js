@@ -1,72 +1,83 @@
-import React from "react";
-import { StyleSheet, View, Text } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
-
+import React, { useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import colors from "../../../configs/colors";
 
-export default function DynamicDropDown({
-  label,
+const DynamicDropDown = ({
+  label = "",
   items,
-  setItems,
   value,
   setValue,
-  disabled = false,
-  showArrowIcon = true,
-  isSearchable = false,
-  dividedByCategories = false,
-  margin = 15,
-  onSelectItem = () => {},
-}) {
-  const [open, setOpen] = React.useState(false);
+  onChange,
+  disable = false,
+}) => {
+  const [isFocus, setIsFocus] = useState(false);
 
-  const customMargin = {
-    margin: margin,
+  const renderLabel = () => {
+    return <Text style={styles.label}>{label}</Text>;
+  };
+
+  const onSelectItem = (item) => {
+    setValue(item.value);
+    setIsFocus(false);
   };
 
   return (
-    <View style={[customMargin, styles.container]}>
-      {label == "" ? null : <Text style={styles.field}>{label}</Text>}
-
-      <DropDownPicker
-        open={open}
+    <View style={styles.container}>
+      {renderLabel()}
+      <Dropdown
+        style={styles.dropdown}
+        placeholderStyle={styles.placeholderStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        iconStyle={styles.iconStyle}
+        data={items}
+        disable={disable}
+        search
+        maxHeight={300}
+        labelField="label"
+        valueField="value"
+        placeholder={""}
+        searchPlaceholder="Search..."
         value={value}
-        items={items}
-        setOpen={setOpen}
-        setValue={setValue}
-        setItems={setItems}
-        placeholder=""
-        dropDownContainerStyle={styles.dropdown}
-        style={styles.selector}
-        disabled={disabled}
-        showArrowIcon={showArrowIcon}
-        listParentLabelStyle={dividedByCategories ? styles.parent : null}
-        categorySelectable={!dividedByCategories}
-        searchable={isSearchable}
-        onSelectItem={onSelectItem}
-        closeAfterSelecting={true}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={onChange} /* TODO
+        renderLeftIcon={() => (
+          <AntDesign
+            style={styles.icon}
+            color={isFocus ? 'blue' : 'black'}
+            name="Safety"
+            size={20}
+          />
+        )}*/
       />
     </View>
   );
-}
+};
+
+export default DynamicDropDown;
 
 const styles = StyleSheet.create({
   container: {
-    //margin: 15
-    zIndex: 10,
+    width: "90%",
   },
   dropdown: {
-    backgroundColor: colors.background,
+    borderColor: colors.black,
+    borderBottomWidth: 1,
+    padding: 8,
   },
-  selector: {
-    borderColor: colors.white,
-    borderBottomColor: colors.black,
-    borderRadius: 0,
-    backgroundColor: colors.transparent,
+  icon: {
+    marginRight: 5,
   },
-  field: {
+  label: {
+    zIndex: 999,
+
+    fontSize: 14,
     color: colors.primary,
   },
-  parent: {
-    fontWeight: "bold",
+  iconStyle: {
+    width: 20,
+    height: 20,
   },
 });

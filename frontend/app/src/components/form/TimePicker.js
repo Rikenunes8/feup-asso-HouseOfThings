@@ -3,16 +3,8 @@ import { StyleSheet, Text } from "react-native";
 
 import Col from "../grid/Column";
 import DynamicDropDown from "./DynamicDropDown";
-import DropDownContext from "../../contexts/DropDownContext";
 
 export default function TimePicker({ time, setTime }) {
-  const {
-    minutesDropDownContextOpen,
-    isMinutesDropDownContextOpen,
-    hoursDropDownContextOpen,
-    isHoursDropDownContextOpen,
-  } = useContext(DropDownContext);
-
   const [hour, setHour] = useState(null);
   const [minute, setMinute] = useState(null);
 
@@ -64,14 +56,11 @@ export default function TimePicker({ time, setTime }) {
     <>
       <Col numRows={1}>
         <DynamicDropDown
-          label={""}
           items={hours}
-          setItems={setHours}
           value={hour}
           setValue={setHour}
-          margin={0}
-          onSelectItem={(item) => updateHour(item)}
-        />
+          onChange={(item) => updateHour(item)}
+        ></DynamicDropDown>
       </Col>
       <Col>
         <Text style={styles.text}>h</Text>
@@ -79,14 +68,11 @@ export default function TimePicker({ time, setTime }) {
       <Text style={styles.text}>:</Text>
       <Col numRows={1}>
         <DynamicDropDown
-          label={""}
           items={minutes}
-          setItems={setMinutes}
           value={minute}
           setValue={setMinute}
-          margin={0}
-          onSelectItem={(item) => updateMinutes(item)}
-        />
+          onChange={(item) => updateMinutes(item)}
+        ></DynamicDropDown>
       </Col>
       <Col>
         <Text style={styles.text}>m</Text>

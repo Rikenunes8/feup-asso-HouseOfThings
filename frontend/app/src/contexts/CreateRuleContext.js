@@ -18,8 +18,8 @@ export const CreateRuleProvider = ({ children }) => {
     setRuleConditions([]);
     setRuleActions([
       {
-        device_id: null,
-        action: null,
+        device_id: 1,
+        action: "turn_off",
       },
     ]);
   };
@@ -36,7 +36,6 @@ export const CreateRuleProvider = ({ children }) => {
         ruleActions,
         setRuleActions,
         resetCreateRuleContext,
-        setRuleKind,
       }}
     >
       {children}

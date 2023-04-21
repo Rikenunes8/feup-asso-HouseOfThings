@@ -32,15 +32,16 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
     })
   );
 
+  const [open, setOpen] = React.useState(false);
+
   return (
     <View style={styles.container}>
       <DynamicDropDown
         label={"UUID *"}
         items={uuidItems}
-        setItems={setUUIDItems}
         value={deviceUUID}
         setValue={setDeviceUUID}
-      />
+      ></DynamicDropDown>
       <DynamicTextInput
         label={"NAME *"}
         name={deviceName ?? ""}
@@ -51,10 +52,9 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
       <DynamicDropDown
         label={"DIVISION"}
         items={items}
-        setItems={setItems}
         value={deviceDivision}
         setValue={setDeviceDivision}
-      />
+      ></DynamicDropDown>
     </View>
   );
 }
@@ -63,7 +63,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
-    alignItems: "flex-start",
+    alignItems: "center",
     marginVertical: 5,
+    paddingTop: 5,
   },
 });

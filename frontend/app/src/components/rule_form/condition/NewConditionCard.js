@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, SafeAreaView } from "react-native";
+import { StyleSheet, SafeAreaView, View } from "react-native";
 
-import DynamicDropDown from "../../form/DynamicDropDown";
 import DevicesContext from "../../../contexts/DevicesContext";
 
 import utils from "../../../utils/utils";
@@ -10,6 +9,18 @@ import colors from "../../../../configs/colors";
 import Col from "../../grid/Column";
 import Row from "../../grid/Row";
 import SpecificDetails from "./SpecificDetails";
+import DynamicDropDown from "../../form/DynamicDropDown";
+
+const data = [
+  { label: "Item 1", value: "1" },
+  { label: "Item 2", value: "2" },
+  { label: "Item 3", value: "3" },
+  { label: "Item 4", value: "4" },
+  { label: "Item 5", value: "5" },
+  { label: "Item 6", value: "6" },
+  { label: "Item 7", value: "7" },
+  { label: "Item 8", value: "8" },
+];
 
 export default function NewConditionCard({ ruleCondition, setRuleCondition }) {
   const [kindValue, setKindValue] = useState({});
@@ -31,12 +42,8 @@ export default function NewConditionCard({ ruleCondition, setRuleCondition }) {
 
   const { devices } = useContext(DevicesContext);
 
-  const [items, setItems] = useState(() => {
-    all_items = [
-      { label: "Device", value: "device" },
-      { label: "Schedule", value: "schedule" },
-      { label: "Time", value: "time", parent: "schedule" },
-    ];
+  const [items] = useState(() => {
+    all_items = [{ label: "Time", value: "time", parent: "schedule" }];
 
     devices.map((item) => {
       all_items.push({
@@ -54,18 +61,14 @@ export default function NewConditionCard({ ruleCondition, setRuleCondition }) {
       <Row>
         <Col numRows={1}>
           <DynamicDropDown
-            label={""}
             items={items}
-            setItems={setItems}
             value={kindValue}
             setValue={setKindValue}
-            isSearchable={false}
-            dividedByCategories={true}
-            margin={5}
-            onSelectItem={(item) => updateKindValue(item)}
-          />
+            onChange={(e) => updateKindValue(e)}
+          ></DynamicDropDown>
         </Col>
       </Row>
+
       <SpecificDetails
         ruleCondition={ruleCondition}
         setRuleCondition={setRuleCondition}

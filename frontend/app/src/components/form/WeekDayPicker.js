@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 8,
     borderRadius: 5,
+    zIndex:0,
   },
   daySelected: {
     backgroundColor: colors.primary,

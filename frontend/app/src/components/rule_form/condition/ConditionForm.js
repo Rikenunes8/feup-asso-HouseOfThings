@@ -10,6 +10,7 @@ import DivisionsContext from "../../../contexts/DivisionsContext";
 import CreateRuleContext from "../../../contexts/CreateRuleContext";
 
 import colors from "../../../../configs/colors";
+import DynamicDropDown from "../../form/DynamicDropDown";
 
 export default function ConditionForm({}) {
   const { ruleConditions, setRuleConditions } = useContext(CreateRuleContext);
@@ -78,6 +79,7 @@ export default function ConditionForm({}) {
           {trigger.kind} {trigger.device}
         </Text>
       ))}
+
       <NewConditionCard
         ruleCondition={ruleCondition}
         setRuleCondition={setRuleCondition}
@@ -85,6 +87,9 @@ export default function ConditionForm({}) {
     </View>
   );
 }
+
+/*
+ */
 
 const styles = StyleSheet.create({
   container: {

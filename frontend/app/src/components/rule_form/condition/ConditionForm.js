@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   container: {
     margin: 20,
     width: "90%",
-    //backgroundColor:colors.active,
+    alignItems: "center",
   },
   header: {
     flexDirection: "row",

@@ -60,12 +60,12 @@ export default DynamicDropDown;
 
 const styles = StyleSheet.create({
   container: {
-    width: "90%",
+    width: "100%",
   },
   dropdown: {
     borderColor: colors.black,
     borderBottomWidth: 1,
-    padding: 8,
+    padding: 5,
   },
   icon: {
     marginRight: 5,

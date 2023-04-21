@@ -1,8 +1,13 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
+import colors from "../../../configs/colors";
 
-export default function Col({numRows, children}) {
-  return <View style={styles[`${numRows}col`]}>{children}</View>;
+export default function Col({ numRows, children }) {
+  return (
+    <View style={[styles[`${numRows}col`], { alignItems: "center" }]}>
+      {children}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

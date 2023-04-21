@@ -27,9 +27,9 @@ export default function CreateRuleForm({ inputOnFocus, setInputOnFocus }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: "flex-start",
-    alignItems: "flex-start",
-    margin: 5,
+    alignItems: "center",
+    marginVertical: 5,
+    padding: 25,
   },
 });

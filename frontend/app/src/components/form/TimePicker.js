@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text } from "react-native";
 
 import Col from "../grid/Column";
@@ -63,9 +63,9 @@ export default function TimePicker({ time, setTime }) {
         ></DynamicDropDown>
       </Col>
       <Col>
-        <Text style={styles.text}>h</Text>
+        <Text style={styles.text}>H</Text>
       </Col>
-      <Text style={styles.text}>:</Text>
+    
       <Col numRows={1}>
         <DynamicDropDown
           items={minutes}
@@ -75,7 +75,7 @@ export default function TimePicker({ time, setTime }) {
         ></DynamicDropDown>
       </Col>
       <Col>
-        <Text style={styles.text}>m</Text>
+        <Text style={styles.text}>M</Text>
       </Col>
     </>
   );
@@ -84,6 +84,7 @@ export default function TimePicker({ time, setTime }) {
 const styles = StyleSheet.create({
   text: {
     textAlign: "center",
-    margin: 2,
+    marginHorizontal: 10,
+    fontSize: 15, 
   },
 });

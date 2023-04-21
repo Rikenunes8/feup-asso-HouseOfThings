@@ -1,13 +1,5 @@
 version: "3.9"
 
-volumes:
-  vol-emqx-data:
-    name: foo-emqx-data
-  vol-emqx-etc:
-    name: foo-emqx-etc
-  vol-emqx-log:
-    name: foo-emqx-log
-
 services:
   flask:
     container_name: flask
@@ -31,29 +23,8 @@ services:
       - 5000:5000
     depends_on:
       - mongodb
-      - emqx
     networks:
       - backend
-  
-  emqx:
-      image: emqx:5.0.23
-      environment:
-        EMQX_NAME: ${MQTT_USERNAME:-emqx}
-        EMQX_HOST: ${MQTT_BROKER:-broker.emqx.io}
-      volumes:
-        - vol-emqx-data:/opt/emqx/data
-        - vol-emqx-etc:/opt/emqx/etc
-        - vol-emqx-log:/opt/emqx/log
-      ports: 
-        - ${MQTT_PORT:-1883}:1883
-        - 18083:18083
-        - 8083:8083
-        - 8084:8084
-        - 8883:8883
-      networks:
-        emqx-bridge:
-          aliases:
-          - ${MQTT_BROKER:-broker.emqx.io}
 
   mongodb:
     image: mongo:6.0.4
@@ -75,6 +46,4 @@ services:
 
 networks:
   backend:
-    driver: bridge
-  emqx-bridge:
     driver: bridge

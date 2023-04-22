@@ -8,7 +8,7 @@ rules = Blueprint('rules', __name__, url_prefix='/rules')
 
 @rules.get("/")
 def index():
-  rules = HoT().get_rules_manager().rules()
+  rules = HoT().get_rules_manager().get_all()
   return jsonify({"rules": rules})
 
 
@@ -18,14 +18,14 @@ def create():
   error = validate_create_rule(request.json)
   if error: return make_error(error)
 
-  rule = HoT().get_rules_manager().create_rule(request.json)
+  rule = HoT().get_rules_manager().add(request.json)
   if isinstance(rule, str): return make_error(error)
   else: return jsonify({'rule': rule})
 
 
 @rules.delete("/<id>/")
 def delete(id):
-  error = HoT().get_rules_manager().delete_rule(id)
+  error = HoT().get_rules_manager().remove(id)
   if error: return make_error(error)
   else:     return jsonify({})
 
@@ -35,7 +35,7 @@ def update(id):
   error = validate_create_rule(request.json)
   if error: return make_error(error)
 
-  rule = HoT().get_rules_manager().update_rule(id, request.json)
+  rule = HoT().get_rules_manager().update(id, request.json)
   if isinstance(rule, str): return make_error(rule)
   else: return jsonify({'rule': rule})
 

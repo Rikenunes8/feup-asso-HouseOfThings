@@ -23,8 +23,6 @@ class DeviceManager(Manager):
     def get_device(self, id) -> DeviceAdapter:
         return self._devices.get(id)
 
-    def get_device_ids(self) -> list:
-        return list(self._devices.keys())
 
     @staticmethod
     def fabricate(cid: str, uid: str, config: dict) -> list[DeviceAdapter] or DeviceAdapter or None:
@@ -50,10 +48,9 @@ class DeviceManager(Manager):
         return adapters if (protocol == None) else adapters[0]
 
     
-    
     def devices(self) -> list:
-        ids = self.get_device_ids()
-        return [self.get_device(id).get_model() for id in ids]
+        devices_ids = list(self._devices.keys())
+        return [self.get_device(id).get_model() for id in devices_ids]
 
     def connect(self, uid: str, config: dict) -> str:
         new_device : DeviceAdapter = DeviceManager.fabricate(self._cid, uid, config)

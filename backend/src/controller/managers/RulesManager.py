@@ -20,46 +20,29 @@ class RulesManager(Manager):
     def _build_actions(self, actions) -> list[Action]:
         return list(map(lambda action: Action(action['device_id'], action['action']), actions))
 
+    def get_all(self):
+        return list(map(lambda rule : rule.to_json(), self._rules.values()))
 
-    def add(self, rule_json) -> Rule:
+    def add(self, rule_json: dict) -> Rule:
         conditions = self._build_conditions(rule_json['when'])
         actions = self._build_actions(rule_json['then'])
 
         rule = Rule(rule_json['name'], rule_json['operation'], conditions , actions)
         self._rules[rule.get_id()] = rule
-        return self._rules[rule.get_id()]
+        return rule.to_json()
 
-    def remove(self, rule_id):
+    def remove(self, rule_id: str):
         rule = self._rules.pop(rule_id, None)
         if rule == None: return "Rule not found"
         else: rule.delete()
 
-    def update(self, rule_id, rule_json):
+    def update(self, rule_id: str, rule_json: dict):
         rule = self._rules.get(rule_id)
         if rule == None: return "Rule not found"
         conditions = self._build_conditions(rule_json['when'])
         actions = self._build_actions(rule_json['then'])
         rule.update(rule_json['name'], rule_json['operation'], conditions, actions)
-        return rule
-
-    def get_all(self):
-        return list(map(lambda rule : rule.to_json(), self._rules.values()))
-
-
-
-    def rules(self):
-      return self.get_all()
-    
-    def create_rule(self, rule : dict):
-      return self.add(rule).to_json()
-
-    def delete_rule(self, rule_id : str):
-      return self.remove(rule_id)
-
-    def update_rule(self, rule_id : str, rule : dict):
-      rule_updated = self.update(rule_id, rule)
-      if isinstance(rule_updated, str): return rule_updated
-      return rule_updated.to_json()
+        return rule.to_json()
 
     def execute_rule(self, rule_id : str):
       pass

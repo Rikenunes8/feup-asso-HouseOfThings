@@ -31,7 +31,8 @@ class Device(ABC):
         return self._id
 
     def add(self, state: dict) -> None:
-        DB().get(Collection.DEVICES).add(self._id, {
+        DB().get(Collection.DEVICES).add({
+            "uid": self._id,
             "category": self._config.get("category"),
             "subcategory": self._config.get("subcategory"),
             "protocol": self._config.get("protocol"),

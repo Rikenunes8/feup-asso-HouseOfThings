@@ -1,12 +1,12 @@
 from src.controller.adapter.ActuatorDeviceAdapter import ActuatorDeviceAdapter
-from src.controller.DeviceAdapterManager import DeviceAdapterManager
+from src.controller.managers.DeviceManager import DeviceManager
 
 class Action:
   def __init__(self, device_id : str, action : str ) -> None:
     self._device_id = device_id
     self._action = action
   
-  def execute(self, deviceManager : DeviceAdapterManager):
+  def execute(self, deviceManager : DeviceManager):
     deviceAdapter : ActuatorDeviceAdapter = deviceManager.get_device(self._device_id)
     deviceAdapter.action(self._action)
 

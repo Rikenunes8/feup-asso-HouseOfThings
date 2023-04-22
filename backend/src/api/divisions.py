@@ -7,7 +7,7 @@ divisions = Blueprint('divisions', __name__, url_prefix='/divisions')
 
 @divisions.get("/")
 def index():
-  divisions = HoT().divisions()
+  divisions = HoT().get_divisions_manager().divisions()
   return jsonify({'divisions': divisions})
 
 @divisions.post("/")
@@ -16,13 +16,13 @@ def create():
   error = validate_division(request.json)
   if error: return make_error(error)
 
-  division = HoT().create_division(request.json)
+  division = HoT().get_divisions_manager().create_division(request.json)
   if isinstance(division, str): return make_error(error)
   else: return jsonify({'division': division})
 
 @divisions.delete("/<id>/")
 def delete(id):
-  error = HoT().delete_division(id)
+  error = HoT().get_divisions_manager().delete_division(id)
   if error: return make_error(error)
   else:     return jsonify({})
 
@@ -30,7 +30,7 @@ def delete(id):
 def rename(id):
   if not is_content_json(request): return not_json_error()
 
-  error = HoT().rename_division(id, request.json)
+  error = HoT().get_divisions_manager().rename_division(id, request.json)
   if error: return make_error(error)
   else:     return jsonify({})
 
@@ -38,7 +38,7 @@ def rename(id):
 def change_icon(id):
   if not is_content_json(request): return not_json_error()
 
-  error = HoT().change_icon_division(id, request.json)
+  error = HoT().get_divisions_manager().change_icon_division(id, request.json)
   if error: return make_error(error)
   else:     return jsonify({})
 
@@ -46,7 +46,7 @@ def change_icon(id):
 def add_device(id):
   if not is_content_json(request): return not_json_error()
 
-  error = HoT().add_device_division(id, request.json)
+  error = HoT().get_divisions_manager().add_device_division(id, request.json)
   if error: return make_error(error)
   else:     return jsonify({})
 
@@ -54,6 +54,6 @@ def add_device(id):
 def remove_device(id):
   if not is_content_json(request): return not_json_error()
 
-  error = HoT().remove_device_division(id, request.json)
+  error = HoT().get_divisions_manager().remove_device_division(id, request.json)
   if error: return make_error(error)
   else:     return jsonify({})

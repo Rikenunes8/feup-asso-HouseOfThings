@@ -11,11 +11,11 @@ import utils from "../../utils/utils";
 export default function RuleCard({ rule }) {
   const { setIsRuleExecuteLoading } = useContext(ModalsContext);
 
-  getName = () => {
+  const getName = () => {
     return rule.name;
   };
 
-  getDescription = () => {
+  const getDescription = () => {
     const nconditions = rule.when.length;
     const nactions = rule.then.length;
 
@@ -24,7 +24,7 @@ export default function RuleCard({ rule }) {
     return conds + ", " + acts;
   };
 
-  getOperation = () => {
+  const getOperation = () => {
     return rule.operation;
   };
 

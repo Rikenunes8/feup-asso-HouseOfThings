@@ -4,6 +4,7 @@ from src.controller.adapter.ActuatorDeviceAdapter import ActuatorDeviceAdapter
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
 from src.controller.DeviceAdapterManager import DeviceAdapterManager
 from src.controller.RulesManager import RulesManager
+from src.controller.DivisionsManager import DivisionsManager
 from src.database.DB import DB
 
 class HoTMeta(type):
@@ -21,6 +22,7 @@ class HoT(metaclass=HoTMeta):
         print("HoT init")
         self._manager = DeviceAdapterManager()
         self._rules_manager = RulesManager()
+        self._divisions_manager = DivisionsManager()
         self._cid = "HoT"
         self._load_devices()
 
@@ -116,3 +118,55 @@ class HoT(metaclass=HoTMeta):
 
     def execute_rule(self, rule_id : str):
       pass
+
+
+    def divisions(self):
+        return self._divisions_manager.get_all()
+    
+    def create_division(self, division : dict):
+        return self._divisions_manager.add(division).to_json()
+
+    def delete_division(self, division_id : str):
+        return self._divisions_manager.remove(division_id)
+
+    def rename_division(self, division_id: str, config: dict):
+        name = config.get("name")
+        if name == None:
+            return "No name provided"
+        division_updated = self._divisions_manager.rename(division_id, name)
+        if isinstance(division_updated, str): return division_updated
+        return division_updated.to_json()
+        
+    def change_icon_division(self, division_id: str, config: dict):
+        icon = config.get("icon")
+        if icon == None:
+            return "No icon provided"
+        division_updated = self._divisions_manager.change_icon(division_id, icon)
+        if isinstance(division_updated, str): return division_updated
+        return division_updated.to_json()
+    
+    def add_device_division(self, division_id: str, config: dict):
+        uid = config.get("device")
+        if uid == None:
+            return "No device uid provided"
+        adapter = self._manager.get_device(uid)
+        if adapter == None:
+            return "No device with uid " + uid
+        device = adapter.get_model()
+        division_updated = self._divisions_manager.add_device(division_id, uid)
+        device.add_division(division_id)
+        if isinstance(division_updated, str): return division_updated
+        return division_updated.to_json()
+    
+    def remove_device_division(self, division_id: str, config: dict):
+        uid = config.get("device")
+        if uid == None:
+            return "No device uid provided"
+        adapter = self._manager.get_device(uid)
+        if adapter == None:
+            return "No device with uid " + uid
+        device = adapter.get_model()
+        division_updated = self._divisions_manager.remove_device(division_id, uid)
+        device.remove_division(division_id)
+        if isinstance(division_updated, str): return division_updated
+        return division_updated.to_json()

@@ -1,10 +1,12 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 
 import DynamicTextInput from "../form/DynamicTextInput";
 import DynamicDropDown from "../form/DynamicDropDown";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 import DivisionsContext from "../../contexts/DivisionsContext";
+
+import colors from "../../../configs/colors";
 import utils from "../../utils/utils";
 
 export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
@@ -32,29 +34,42 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
     })
   );
 
+  const modalProps = {
+    transparent: true,
+    presentationStyle: "overFullScreen",
+  };
+
   return (
     <View style={styles.container}>
-      <DynamicDropDown
-        label={"UUID *"}
-        items={uuidItems}
-        setItems={setUUIDItems}
-        value={deviceUUID}
-        setValue={setDeviceUUID}
-      />
-      <DynamicTextInput
-        label={"NAME *"}
-        name={deviceName ?? ""}
-        setName={setDeviceName}
-        inputOnFocus={inputOnFocus}
-        setInputOnFocus={setInputOnFocus}
-      />
-      <DynamicDropDown
-        label={"DIVISION"}
-        items={items}
-        setItems={setItems}
-        value={deviceDivision}
-        setValue={setDeviceDivision}
-      />
+      <ScrollView style={styles.scrollContent}>
+        <DynamicDropDown
+          label={"UUID *"}
+          items={uuidItems}
+          setItems={setUUIDItems}
+          value={deviceUUID}
+          setValue={setDeviceUUID}
+          listMode={"MODAL"}
+          modalProps={modalProps}
+          modalContentContainerStyle={styles.modalContent}
+        />
+        <DynamicTextInput
+          label={"NAME *"}
+          name={deviceName ?? ""}
+          setName={setDeviceName}
+          inputOnFocus={inputOnFocus}
+          setInputOnFocus={setInputOnFocus}
+        />
+        <DynamicDropDown
+          label={"DIVISION"}
+          items={items}
+          setItems={setItems}
+          value={deviceDivision}
+          setValue={setDeviceDivision}
+          listMode={"MODAL"}
+          modalProps={modalProps}
+          modalContentContainerStyle={styles.modalContent}
+        />
+      </ScrollView>
     </View>
   );
 }
@@ -65,5 +80,14 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "flex-start",
     marginVertical: 5,
+  },
+  scrollContent: {
+    width: "100%",
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    marginHorizontal: 28,
+    marginBottom: 25,
+    marginTop: "92.5%",
   },
 });

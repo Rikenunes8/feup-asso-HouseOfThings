@@ -32,6 +32,7 @@ class DB(metaclass=DBMeta):
         self._categories = self._db['categories']
         self._devices = self._db['devices']
         self._rules = self._db['rules']
+        self._divisions = self._db['divisions']
 
     def find_all_categories(self) -> list[dict]:
         return list(self._categories.find({}, {'_id': 0}))
@@ -69,3 +70,20 @@ class DB(metaclass=DBMeta):
     
     def find_all_rules(self) -> list[dict]:
       return list(self._rules.find({}, {'_id': 0}))
+
+
+    def add_division(self, props):
+      result = self._divisions.insert_one({**props})
+      return str(result.inserted_id)
+    
+    def update_division(self, id, props):
+      self._divisions.update_one({'_id': ObjectId(id)}, {'$set': props})
+    
+    def delete_division(self, id):
+      self._divisions.delete_one({'_id': ObjectId(id)})
+
+    def find_division(self, id) -> dict:
+      return self._divisions.find_one({'_id': ObjectId(id)}, {'_id': 0})
+    
+    def find_all_divisions(self) -> list[dict]:
+      return list(self._divisions.find({}, {'_id': 0}))

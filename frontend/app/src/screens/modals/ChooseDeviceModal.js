@@ -11,7 +11,7 @@ export default function ChooseDeviceModal() {
   const {
     chooseDeviceModalVisible,
     setChooseDeviceModalVisible,
-    isChooseDeviceModalLoading
+    isChooseDeviceModalLoading,
   } = useContext(ModalsContext);
 
   const [categories, setCategories] = useState([]);

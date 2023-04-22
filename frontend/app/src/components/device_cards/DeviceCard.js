@@ -28,8 +28,8 @@ export default function DeviceCard({ device, specificFeature, modal }) {
         source={utils.getDeviceIcon(device.subcategory)}
       />
 
-      <View style={{ justifyContent: "space-between" }}>
-        <View>
+      <View style={styles.deviceContent}>
+        <View style={{ justifyContent: "center" }}>
           <Text style={styles.deviceName}>{device.name}</Text>
           <Text style={styles.divisionText}>{device.divisions[0]}</Text>
         </View>
@@ -55,6 +55,11 @@ const styles = StyleSheet.create({
     height: 50,
     objectFit: "contain",
     marginRight: 15,
+  },
+  deviceContent: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   deviceName: {
     fontSize: 15,

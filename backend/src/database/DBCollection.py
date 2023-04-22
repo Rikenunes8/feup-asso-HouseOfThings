@@ -2,8 +2,8 @@ from bson.objectid import ObjectId
 
 
 class DBCollection:
-    def __init__(self, table: str, id: str or None):
-        self._table = table
+    def __init__(self, collection: str, id: str or None):
+        self._collection = collection
         self._id = id
 
     def _get_query(self, id):
@@ -13,20 +13,20 @@ class DBCollection:
             return {self._id: id}
 
     def find_all(self) -> list[dict]:
-        return list(self._table.find({}, {"_id": 0}))
+        return list(self._collection.find({}, {"_id": 0}))
 
     def find(self, id) -> dict:
-        return self._table.find_one(self._get_query(id), {"_id": 0})
+        return self._collection.find_one(self._get_query(id), {"_id": 0})
 
     def add(self, props):
         if self._id is not None:
             if self.find(props[self._id]):
                 return None  # Already exists
-        result = self._table.insert_one({**props})
+        result = self._collection.insert_one({**props})
         return str(result.inserted_id)
 
     def update(self, id, props):
-        self._table.update_one(self._get_query(id), {"$set": props})
+        self._collection.update_one(self._get_query(id), {"$set": props})
 
     def delete(self, id):
-        self._table.delete_one(self._get_query(id))
+        self._collection.delete_one(self._get_query(id))

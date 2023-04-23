@@ -1,72 +1,37 @@
+from abc import ABC, abstractmethod
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
-from src.model.devices.IDevice import IDevice
-from src.controller.device_connectors.DeviceConnector import DeviceConnector
-from src.controller.device_connectors.ActuatorDeviceConnector import ActuatorDeviceConnector
+
+class Device(ABC):
+    def __init__(self, id: str) -> None:
+        self._id: str = id
+
+    def get_id(self) -> str:
+        return self._id
+        
+
+    def update(self, state: dict) -> None:
+        DB().get(Collection.DEVICES).update(self._id, state)
+
+    def remove(self) -> None:
+        DB().get(Collection.DEVICES).delete(self._id)
+
+    def find(self) -> dict:
+        return DB().get(Collection.DEVICES).find(self._id)
 
 
-class Device(IDevice):
-    NO_NAME = "Unamed"
+    @abstractmethod
+    def get(self):
+        pass
 
-    def get(self): return self
+    @abstractmethod
+    def action(self, action: str, data: dict = None, updated_state = None) -> bool:
+        pass
 
-    def __init__(self, id: str, config: dict[str, object], connector: DeviceConnector) -> None:
-        super().__init__(id)
-        self._config: dict[str, object] = config
-        self._connector: DeviceConnector = connector
-        self._connected = False
-        self.add()
-
-    def rename(self, name: str) -> None:
-        self.update({"name": name})
-
-    def set_divisions(self, divisions: list) -> None:
-        self.update({"divisions": divisions})
-    
-    def add_division(self, division: str) -> None:
-        divisions = self.find()["divisions"]
-        divisions.append(division)
-        self.set_divisions(divisions)
-
-    def remove_division(self, division: str) -> None:
-        divisions = self.find()["divisions"]
-        divisions.remove(division)
-        self.set_divisions(divisions)
-
-    def add(self) -> None:
-        DB().get(Collection.DEVICES).add({
-            "uid": self._id,
-            "category": self._config.get("category"),
-            "subcategory": self._config.get("subcategory"),
-            "protocol": self._config.get("protocol"),
-            "name": self.NO_NAME,
-            "divisions": [],
-        })
-
-    def action(self, action: str, data: dict = None, updated_state: dict = None) -> bool:
-        if not isinstance(self._connector, ActuatorDeviceConnector):
-            return True
-        if self._connector.action(action, data):
-            if updated_state != None:
-                self.update(updated_state)
-            return True
-        return False
-
-    def connect(self) -> bool:
-        self._connector.connect()
-        self._connected = True
-        return True
-    
-    def disconnect(self) -> bool:
-        self._connector.disconnect()
-        self._connected = False
-        self.remove()
-        return True
-
-    def is_connected(self) -> bool:
-        return self._connected
-
+    @abstractmethod
     def to_json(self) -> dict:
-        return self.find()
-
-
+        pass
+    
+    @abstractmethod
+    def add(self, state: dict) -> None:
+        pass

@@ -1,15 +1,17 @@
 import time
 
-from src.controller.managers.Manager import Manager
 from src.model.devices.Device import Device
-from src.model.devices.IDevice import IDevice
+from src.model.devices.ConcreteDevice import ConcreteDevice
+from src.controller.managers.Manager import Manager
 from src.controller.device_connectors.DeviceConnector import DeviceConnector
 from src.controller.device_connectors.BasicLightMqttConnector import BasicLightMqttConnector
 from src.controller.device_connectors.BasicLightPiConnector import BasicLightPiConnector
 from src.controller.device_connectors.ThermometerPiConnector import ThermometerPiConnector
 from src.controller.observer.Subscriber import Subscriber
-from src.model.devices.PowerCap import PowerCap
-from src.model.devices.TemperatureCap import TemperatureCap
+
+# DO NOT REMOVE THESE IMPORTS, THEY ARE NEEDED FOR THE EVAL TO WORK
+from src.model.devices.capabilities.PowerCap import PowerCap
+from src.model.devices.capabilities.TemperatureCap import TemperatureCap
 
 
 class DeviceManager(Manager):
@@ -17,18 +19,18 @@ class DeviceManager(Manager):
         super().__init__(cid)
         self._devices: dict[str, Device] = {}
 
-    def add(self, id: str, device: IDevice) -> None:
+    def add(self, id: str, device: Device) -> None:
         self._devices[id] = device
     def remove(self, id) -> None:
         if self._devices.get(id) != None:
             del self._devices[id]
-    def get_device(self, id) -> IDevice:
+    def get_device(self, id) -> Device:
         return self._devices.get(id)
 
 
 
-    def devices(self) -> list[IDevice]:
-        def valid(dev: IDevice) -> bool:
+    def devices(self) -> list[Device]:
+        def valid(dev: Device) -> bool:
             return dev != None and dev.get().is_connected()
         return list(filter(valid, self._devices.values()))
     
@@ -36,7 +38,7 @@ class DeviceManager(Manager):
         data = payload.get("data")
         action = payload.get("action")
         if action == None: return "No action provided"
-        device: IDevice = self.get_device(uid)
+        device: Device = self.get_device(uid)
         if device == None: return "No device with that uid"
         device.action(action, data)
 
@@ -44,7 +46,7 @@ class DeviceManager(Manager):
         if name == None: return "No name provided"
         device = self.get_device(uid)
         if device == None: return "No device with that uid"
-        concrete_device: Device = device.get()
+        concrete_device: ConcreteDevice = device.get()
         concrete_device.rename(name)
 
     def disconnect(self, uid: str) -> str:
@@ -52,16 +54,16 @@ class DeviceManager(Manager):
         if device == None: 
             return f"No device with uid {uid} to disconnect"
         
-        concrete_device: Device = device.get()
+        concrete_device: ConcreteDevice = device.get()
         if concrete_device.disconnect():
             self.remove(uid)
 
     def connect(self, uid: str, config: dict) -> str or dict:
-        device: IDevice = self._fabricate(self._cid, uid, config)
+        device: Device = self._fabricate(self._cid, uid, config)
         if device == None:
             return "No device for subcategory: " + config.get("subcategory")
 
-        concrete_device: Device = device.get()
+        concrete_device: ConcreteDevice = device.get()
         if (not concrete_device.connect()):
             return "Failed to connect to device with uid: " + uid
         
@@ -90,13 +92,13 @@ class DeviceManager(Manager):
         return devices_found
 
 
-    def _fabricate(self, cid: str, uid: str, config: dict) -> IDevice or None:
+    def _fabricate(self, cid: str, uid: str, config: dict) -> Device or None:
         connectors = DeviceManager.fabricate_connectors(cid, uid, config)
         if connectors == None or len(connectors) > 1: return None
         connector = connectors[0]
         capabilities: list[str] = connector.get_capabilities()
 
-        device = Device(uid, config, connector)
+        device = ConcreteDevice(uid, config, connector)
         for capability in capabilities:
             # eval to get the respective decorator capabililty class instead of making an inifinite if-else
             device = eval(f"{capability.title()}Cap")(device)

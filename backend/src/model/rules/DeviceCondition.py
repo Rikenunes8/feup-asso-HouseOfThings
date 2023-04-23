@@ -1,5 +1,5 @@
 from src.model.rules.Condition import Condition
-from src.model.devices.Device import Device
+from src.model.devices.ConcreteDevice import ConcreteDevice
 
 class DeviceCondition(Condition):
   def __init__(self, device_id : str, state : dict) -> None:

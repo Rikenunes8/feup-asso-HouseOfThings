@@ -1,14 +1,14 @@
-from src.model.devices.IDevice import IDevice
 from src.model.devices.Device import Device
+from src.model.devices.ConcreteDevice import ConcreteDevice
 from abc import ABC
 
-class BaseCapability(IDevice, ABC):
+class BaseCapability(Device, ABC):
 
-    def __init__(self, device: IDevice):
-        self._device: IDevice = device
+    def __init__(self, device: Device):
+        self._device: Device = device
         self._id: str = device.get_id()
     
-    def get(self) -> Device:
+    def get(self) -> ConcreteDevice:
         return self._device.get()
 
     def action(self, action: str, data: dict = None, updated_state = None) -> bool:

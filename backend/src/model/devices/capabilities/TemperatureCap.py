@@ -1,10 +1,10 @@
 from src.model.devices.BaseCapability import BaseCapability
-from src.model.devices.IDevice import IDevice
+from src.model.devices.Device import Device
 from src.controller.observer.Subscriber import Subscriber
 
 
 class TemperatureCap(BaseCapability, Subscriber):
-    def __init__(self, device: IDevice, state: dict = {}):
+    def __init__(self, device: Device, state: dict = {}):
         super().__init__(device)
         temperature = state.get('temperature', 0)
         self._set_state({'temperature': temperature})

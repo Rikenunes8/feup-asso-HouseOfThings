@@ -1,10 +1,10 @@
 from src.model.devices.BaseCapability import BaseCapability
-from src.model.devices.IDevice import IDevice
+from src.model.devices.Device import Device
 
 
 class PowerCap(BaseCapability):
 
-    def __init__(self, device: IDevice, state: dict = {}):
+    def __init__(self, device: Device, state: dict = {}):
         super().__init__(device)
         power = state.get('power', False)
         self._set_state({'power': power})

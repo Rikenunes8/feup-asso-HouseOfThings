@@ -1,4 +1,4 @@
-from src.controller.adapter.ActuatorDeviceAdapter import ActuatorDeviceAdapter
+from src.controller.device_connectors.ActuatorDeviceConnector import ActuatorDeviceConnector
 from src.controller.managers.DeviceManager import DeviceManager
 
 class Action:
@@ -7,7 +7,7 @@ class Action:
     self._action = action
   
   def execute(self, deviceManager : DeviceManager):
-    deviceAdapter : ActuatorDeviceAdapter = deviceManager.get_device(self._device_id)
+    deviceAdapter : ActuatorDeviceConnector = deviceManager.get_device(self._device_id)
     deviceAdapter.action(self._action)
 
   def to_json(self) -> dict:

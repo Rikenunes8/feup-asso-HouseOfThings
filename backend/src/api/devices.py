@@ -8,7 +8,7 @@ devices = Blueprint('devices', __name__, url_prefix='/devices')
 @devices.get("/")
 def index():
   devices = HoT().get_device_manager().devices()
-  return jsonify({'devices': list(map(lambda device: device.to_json() if device != None else {}, devices))})
+  return jsonify({'devices': list(map(lambda device: device.to_json(), devices))})
 
 
 @devices.get("/available")

@@ -1,21 +1,21 @@
 from abc import ABC, abstractmethod
-from src.model.devices.Device import Device
 
-
-class DeviceAdapter(ABC):
+class DeviceConnector(ABC):
     def __init__(self):
         super().__init__()
-        self._model = None
+        self._connected = False
         self._protocol = None
+        self._capabililties = []
 
-    @abstractmethod
-    def create_model(self) -> None:
-        pass
-
-    def get_model(self) -> Device:
-        return self._model
+    def set_protocol(self, protocol: str) -> None:
+        self._protocol = protocol
     def get_protocol(self) -> str:
         return self._protocol
+    
+    def set_capabilities(self, capabilities: list[str]) -> None:
+        self._capabililties = capabilities
+    def get_capabilities(self) -> list[str]:
+        return self._capabililties
 
     @abstractmethod
     def connect(self) -> bool:

@@ -32,7 +32,7 @@ class DeviceManager(Manager):
     def load(self):
         devices = DB().get(Collection.DEVICES).find_all()
         for device in devices:
-            new_device: Device = self._fabricate(self._cid, device['uid'], device, device)
+            new_device: Device = self._make_device(self._cid, device['uid'], device, device)
             if new_device == None: continue
 
             new_device_concrete: ConcreteDevice = new_device.get()
@@ -72,7 +72,7 @@ class DeviceManager(Manager):
             self.remove(uid)
 
     def connect(self, uid: str, config: dict) -> str or dict:
-        device: Device = self._fabricate(self._cid, uid, config)
+        device: Device = self._make_device(self._cid, uid, config)
         if device == None:
             return "No device for subcategory: " + config.get("subcategory")
 
@@ -89,7 +89,7 @@ class DeviceManager(Manager):
         return device.to_json()
 
     def available(self, config: dict):
-        connectors = DeviceManager.fabricate_connectors(self._cid, None, config)
+        connectors = self._make_connectors(self._cid, None, config)
         if connectors == None: return
         
         for connector in connectors: 
@@ -105,8 +105,8 @@ class DeviceManager(Manager):
         return devices_found
 
 
-    def _fabricate(self, cid: str, uid: str, config: dict, data: dict = {}) -> Device or None:
-        connectors = DeviceManager.fabricate_connectors(cid, uid, config)
+    def _make_device(self, cid: str, uid: str, config: dict, data: dict = {}) -> Device or None:
+        connectors = self._make_connectors(cid, uid, config)
         if connectors == None or len(connectors) > 1: return None
         connector = connectors[0]
         capabilities: list[str] = connector.get_capabilities()
@@ -120,8 +120,7 @@ class DeviceManager(Manager):
 
         return device
 
-    @staticmethod
-    def fabricate_connectors(cid: str, uid: str, config: dict) -> list[DeviceConnector] or None:
+    def _make_connectors(self, cid: str, uid: str, config: dict) -> list[DeviceConnector] or None:
         category = config.get("category")
         subcategory = config.get("subcategory")
         protocol = config.get("protocol")

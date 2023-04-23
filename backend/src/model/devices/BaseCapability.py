@@ -16,7 +16,3 @@ class BaseCapability(Device, ABC):
     
     def to_json(self) -> dict:
         return self._device.to_json()
-    
-    def add(self, state: dict) -> None:
-        self._device.add(state)
-    

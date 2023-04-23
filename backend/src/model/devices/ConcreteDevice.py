@@ -17,6 +17,16 @@ class ConcreteDevice(Device):
         self._connected = False
         self.add()
 
+    def add(self) -> None:
+        DB().get(Collection.DEVICES).add({
+            "uid": self._id,
+            "category": self._config.get("category"),
+            "subcategory": self._config.get("subcategory"),
+            "protocol": self._config.get("protocol"),
+            "name": self.NO_NAME,
+            "divisions": [],
+        })
+
     def rename(self, name: str) -> None:
         self.update({"name": name})
 
@@ -33,25 +43,6 @@ class ConcreteDevice(Device):
         divisions.remove(division)
         self.set_divisions(divisions)
 
-    def add(self) -> None:
-        DB().get(Collection.DEVICES).add({
-            "uid": self._id,
-            "category": self._config.get("category"),
-            "subcategory": self._config.get("subcategory"),
-            "protocol": self._config.get("protocol"),
-            "name": self.NO_NAME,
-            "divisions": [],
-        })
-
-    def action(self, action: str, data: dict = None, updated_state: dict = None) -> bool:
-        if not isinstance(self._connector, ActuatorDeviceConnector):
-            return True
-        if self._connector.action(action, data):
-            if updated_state != None:
-                self.update(updated_state)
-            return True
-        return False
-
     def connect(self, connected: bool = False) -> bool:
         self._connector.set_connected(connected)
         self._connector.connect()
@@ -66,6 +57,15 @@ class ConcreteDevice(Device):
 
     def is_connected(self) -> bool:
         return self._connected
+
+    def action(self, action: str, data: dict = None, updated_state: dict = None) -> bool:
+        if not isinstance(self._connector, ActuatorDeviceConnector):
+            return True
+        if self._connector.action(action, data):
+            if updated_state != None:
+                self.update(updated_state)
+            return True
+        return False
 
     def to_json(self) -> dict:
         return self.find()

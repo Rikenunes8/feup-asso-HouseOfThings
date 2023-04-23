@@ -31,7 +31,3 @@ class Device(ABC):
     @abstractmethod
     def to_json(self) -> dict:
         pass
-    
-    @abstractmethod
-    def add(self, state: dict) -> None:
-        pass

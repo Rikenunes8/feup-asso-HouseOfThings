@@ -23,7 +23,6 @@ class ThermometerPiConnector(DeviceConnector):
         if self._uid != msg.payload.decode():
             return
         print(f"Connected to device with id: {self._uid}")
-        subscribe(client, f"{self._uid}-temperature", self.on_temperature)
         self._connected = True
 
     def connect(self) -> bool:
@@ -40,6 +39,7 @@ class ThermometerPiConnector(DeviceConnector):
             print("Device not connected")
             self.disconnect()
             return False
+        subscribe(self._client, f"{self._uid}-temperature", self.on_temperature)
         print("Device connected")
         return True
 

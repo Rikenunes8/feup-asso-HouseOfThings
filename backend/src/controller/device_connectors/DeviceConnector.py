@@ -8,6 +8,11 @@ class DeviceConnector(Publisher, ABC):
         self._protocol = None
         self._capabililties = []
 
+    def set_connected(self, connected: bool) -> None:
+        self._connected = connected
+    def is_connected(self) -> bool:
+        return self._connected
+
     def set_protocol(self, protocol: str) -> None:
         self._protocol = protocol
     def get_protocol(self) -> str:

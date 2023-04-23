@@ -8,6 +8,8 @@ from src.controller.device_connectors.BasicLightMqttConnector import BasicLightM
 from src.controller.device_connectors.BasicLightPiConnector import BasicLightPiConnector
 from src.controller.device_connectors.ThermometerPiConnector import ThermometerPiConnector
 from src.controller.observer.Subscriber import Subscriber
+from src.database.DB import DB
+from src.database.CollectionTypes import Collection
 
 # DO NOT REMOVE THESE IMPORTS, THEY ARE NEEDED FOR THE EVAL TO WORK
 from src.model.devices.capabilities.PowerCap import PowerCap
@@ -26,6 +28,17 @@ class DeviceManager(Manager):
             del self._devices[id]
     def get_device(self, id) -> Device:
         return self._devices.get(id)
+
+    def load(self):
+        devices = DB().get(Collection.DEVICES).find_all()
+        for device in devices:
+            new_device: Device = self._fabricate(self._cid, device['uid'], device, device)
+            if new_device == None: continue
+
+            new_device_concrete: ConcreteDevice = new_device.get()
+            new_device_concrete.connect(True)
+
+            self.add(device['uid'], new_device)
 
 
 
@@ -92,7 +105,7 @@ class DeviceManager(Manager):
         return devices_found
 
 
-    def _fabricate(self, cid: str, uid: str, config: dict) -> Device or None:
+    def _fabricate(self, cid: str, uid: str, config: dict, data: dict = {}) -> Device or None:
         connectors = DeviceManager.fabricate_connectors(cid, uid, config)
         if connectors == None or len(connectors) > 1: return None
         connector = connectors[0]
@@ -101,7 +114,7 @@ class DeviceManager(Manager):
         device = ConcreteDevice(uid, config, connector)
         for capability in capabilities:
             # eval to get the respective decorator capabililty class instead of making an inifinite if-else
-            device = eval(f"{capability.title()}Cap")(device)
+            device = eval(f"{capability.title()}Cap")(device, data)
             if isinstance(device, Subscriber):
                 connector.subscribe(device)
 

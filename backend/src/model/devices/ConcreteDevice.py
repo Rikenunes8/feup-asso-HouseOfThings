@@ -52,7 +52,8 @@ class ConcreteDevice(Device):
             return True
         return False
 
-    def connect(self) -> bool:
+    def connect(self, connected: bool = False) -> bool:
+        self._connector.set_connected(connected)
         self._connector.connect()
         self._connected = True
         return True

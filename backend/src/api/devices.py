@@ -1,51 +1,51 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, request
 from src.HoT import HoT
-from src.api.utils import make_error, not_json_error, is_content_json
+from src.controller.managers.DevicesManager import DevicesManager
+from src.api.CrudApi import CrudApi
 
 
-devices = Blueprint('devices', __name__, url_prefix='/devices')
+class DevicesApi(CrudApi):
+    def __init__(self):
+        super().__init__()
+        self._bp = Blueprint('devices', __name__, url_prefix='/devices')
 
-@devices.get("/")
-def index():
-  devices = HoT().get_device_manager().devices()
-  return jsonify({'devices': list(map(lambda device: device.to_json() if device != None else {}, devices))})
+        self._bp.add_url_rule("/", methods=('GET',), view_func=self.all)
+        self._bp.add_url_rule("/available", methods=('GET',), view_func=self.available)
+        self._bp.add_url_rule("/<id>/connect", methods=('POST',), view_func=self.connect)
+        self._bp.add_url_rule("/<id>/disconnect", methods=('POST',), view_func=self.disconnect)
+        self._bp.add_url_rule("/<id>/action", methods=('POST',), view_func=self.action)
+        self._bp.add_url_rule("/<id>/rename", methods=('POST',), view_func=lambda id: self.partial_update(id, ["name"]))
 
+    def get_blueprint(self) -> Blueprint:
+        return self._bp
 
-@devices.get("/available")
-def available():
-  devices = HoT().get_device_manager().available(request.args.to_dict())
-  return jsonify({'devices': devices})
+    def get_element_name(self) -> str:
+        return "device"
 
+    def get_manager(self) -> DevicesManager:
+        return HoT().get_device_manager()
 
-@devices.post("/<id>/connect")
-def connect(id):
-  if (not is_content_json(request)): return not_json_error()
-  
-  device = HoT().get_device_manager().connect(id, request.json)
-  if type(device) == str: return make_error(device, 404)
-  else: return jsonify({'device': device})
+    def validate(self, _) -> str or None:
+        pass # Not implemented since we don't need to create devices
 
+    def available(self):
+        def inner():
+            return {'devices': self.get_manager().available(request.args.to_dict())}
+        return self.handle_request(inner)
 
-@devices.post("/<id>/disconnect")
-def disconnect(id):
-  error = HoT().get_device_manager().disconnect(id)
-  if error: return make_error(error, 404)
-  else:     return jsonify({})
+    def connect(self, id):
+        def inner(data):
+            return {'device': self.get_manager().connect(id, data)}
+        return self.handle_request_with_data(inner)
+    
+    def disconnect(self, id):
+        def inner(data):
+            self.get_manager().disconnect(id, data)
+            return {}
+        return self.handle_request_with_data(inner)
 
-
-@devices.post("/<id>/action")
-def action(id):
-  if (not is_content_json(request)): return not_json_error()
-
-  error = HoT().get_device_manager().action(id, request.json)
-  if error: return make_error(error)
-  else:     return jsonify({})
-
-
-@devices.post("/<id>/rename")
-def rename(id):
-  if (not is_content_json(request)): return not_json_error()
-
-  error = HoT().get_device_manager().rename(id, request.json)
-  if error: return make_error(error)
-  else:     return jsonify({})
+    def action(self, id):
+        def inner(data):
+            self.get_manager().action(id, data)
+            return {}
+        return self.handle_request_with_data(inner)

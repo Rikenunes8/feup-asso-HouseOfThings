@@ -1,5 +1,6 @@
 import time
 
+from src.api.ApiException import ApiException
 from src.controller.managers.Manager import Manager
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
 from src.controller.adapter.ActuatorDeviceAdapter import ActuatorDeviceAdapter
@@ -12,17 +13,26 @@ class DeviceManager(Manager):
     def __init__(self, cid) -> None:
         super().__init__(cid)
         self._devices = {}
-
-    def add(self, id: str, adapter: DeviceAdapter) -> None:
-        self._devices[id] = adapter
-
-    def remove(self, id) -> None:
-        if self._devices.get(id) != None:
-            del self._devices[id]
-
-    def get_device(self, id) -> DeviceAdapter:
+    
+    def all(self) -> list:
+        devices_ids = list(self._devices.keys())
+        return [self.get(id).get_model() for id in devices_ids]
+    
+    def get(self, id) -> DeviceAdapter:
         return self._devices.get(id)
 
+    def create(self, id: str, adapter: DeviceAdapter) -> None:
+        self._devices[id] = adapter
+    
+    def update(self, uid: str, config: dict):
+        adapter = self.get(uid)
+        if adapter is None:
+            raise ApiException("No device with that uid")
+        adapter.get_model().update(config)
+
+    def delete(self, id) -> None:
+        if self._devices.get(id) != None:
+            del self._devices[id]
 
     @staticmethod
     def fabricate(cid: str, uid: str, config: dict) -> list[DeviceAdapter] or DeviceAdapter or None:
@@ -47,11 +57,6 @@ class DeviceManager(Manager):
         
         return adapters if (protocol == None) else adapters[0]
 
-    
-    def devices(self) -> list:
-        devices_ids = list(self._devices.keys())
-        return [self.get_device(id).get_model() for id in devices_ids]
-
     def connect(self, uid: str, config: dict) -> str:
         new_device : DeviceAdapter = DeviceManager.fabricate(self._cid, uid, config)
         if new_device == None:
@@ -65,31 +70,22 @@ class DeviceManager(Manager):
             new_device.get_model().rename(name)
         if divisions != None:
             new_device.get_model().set_divisions(divisions)
-        self.add(uid, new_device)
+        self.create(uid, new_device)
         return new_device.get_model().to_json()
 
     def disconnect(self, uid: str) -> str:
-        adapter = self.get_device(uid)
+        adapter = self.get(uid)
         if adapter == None:
             return "No device with uid " + uid + " to disconnect"
         adapter.disconnect()
-        self.remove(uid)
+        self.delete(uid)
 
     def action(self, uid: str, action: dict):
         action = action.get("action")
         if action == None: 
             return "No action provided"
-        adapter: ActuatorDeviceAdapter = self.get_device(uid)
+        adapter: ActuatorDeviceAdapter = self.get(uid)
         adapter.action(action)
-
-    def rename(self, uid: str, config: dict):
-        name = config.get("name")
-        if name == None:
-            return "No name provided"
-        adapter = self.get_device(uid)
-        if adapter == None:
-            return "No device with that uid"
-        adapter.get_model().rename(name)
 
     def available(self, config: dict):
         adapters = DeviceManager.fabricate(self._cid, None, config)

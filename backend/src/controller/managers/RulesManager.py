@@ -20,10 +20,10 @@ class RulesManager(Manager):
     def _build_actions(self, actions) -> list[Action]:
         return list(map(lambda action: Action(action['device_id'], action['action']), actions))
 
-    def get_all(self):
+    def all(self):
         return list(map(lambda rule : rule.to_json(), self._rules.values()))
 
-    def add(self, rule_json: dict) -> Rule:
+    def create(self, rule_json: dict) -> Rule:
         conditions = self._build_conditions(rule_json['when'])
         actions = self._build_actions(rule_json['then'])
 
@@ -31,7 +31,7 @@ class RulesManager(Manager):
         self._rules[rule.get_id()] = rule
         return rule.to_json()
 
-    def remove(self, rule_id: str):
+    def delete(self, rule_id: str):
         rule = self._rules.pop(rule_id, None)
         if rule == None: return "Rule not found"
         else: rule.delete()
@@ -44,5 +44,5 @@ class RulesManager(Manager):
         rule.update(rule_json['name'], rule_json['operation'], conditions, actions)
         return rule.to_json()
 
-    def execute_rule(self, rule_id : str):
+    def execute(self, rule_id : str):
       pass

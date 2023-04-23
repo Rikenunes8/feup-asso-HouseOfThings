@@ -1,52 +1,52 @@
+from src.api.ApiException import ApiException
 from src.model.Division import Division
-from src.controller.managers.Manager import Manager
+from src.controller.managers.CrudManager import CrudManager
 from src.controller.managers.DeviceManager import DeviceManager
 
-class DivisionsManager(Manager):
+
+class DivisionsManager(CrudManager):
     def __init__(self, cid: str, device_manager: DeviceManager):
         super().__init__(cid)
         self._divisions: dict[str, Division] = {}
         self._device_manager = device_manager
 
-    def get_all(self):
-        return list(map(lambda division : division.to_json(), self._divisions.values()))
+    def all(self):
+        return self._divisions.values()
 
-    def add(self, division_json: dict) -> Division:
-        division: Division = Division(division_json['name'], division_json['icon'], division_json['devices'])
+    def get(self, division_id: str):
+        division = self._divisions.get(division_id)
+        if division == None:
+            raise ApiException("Division not found")
+        return division
+
+    def create(self, division_json: dict) -> Division:
+        division = Division(
+            division_json["name"], division_json["icon"], division_json["devices"]
+        )
         self._divisions[division.get_id()] = division
-        return division.to_json()
+        return division
 
-    def remove(self, division_id: str):
+    def delete(self, division_id: str):
         division = self._divisions.pop(division_id, None)
-        if division == None: return "Division not found"
-        else: division.delete()
+        if division == None:
+            raise ApiException("Division not found")
+        division.delete()
 
-    def rename(self, division_id: str, config: dict[str, str]):
-        name = config.get("name")
-        if name == None: return "No name provided"
-        division = self._divisions.get(division_id)
-        if division == None: return "Division not found"
-        division.rename(name)
-        return division.to_json()
-
-    def change_icon(self, division_id: str, config: dict[str, str]):
-        icon = config.get("icon")
-        if icon == None: return "No icon provided"
-        division = self._divisions.get(division_id)
-        if division == None: return "Division not found"
-        division.change_icon(icon)
-        return division.to_json()
-
+    def update(self, division_id: str, config: dict):
+        division = self.get(division_id)
+        division.update(config)
+        return division
 
     def add_device(self, division_id: str, config: dict):
         uid = config.get("device")
-        if uid == None: return "No device uid provided"
+        if uid == None:
+            raise ApiException("No device uid provided")
 
-        adapter = self._device_manager.get_device(uid)
-        if adapter == None: return "No device with uid " + uid
+        adapter = self._device_manager.get(uid)
+        if adapter == None:
+            raise ApiException("No device with uid " + uid)
 
-        division = self._divisions.get(division_id)
-        if division == None: return "Division not found"
+        division = self.get(division_id)
         division.add_device(uid)
 
         device = adapter.get_model()
@@ -54,20 +54,19 @@ class DivisionsManager(Manager):
 
         return division.to_json()
 
-
     def remove_device(self, division_id: str, config: dict):
         uid = config.get("device")
-        if uid == None: return "No device uid provided"
+        if uid == None:
+            raise ApiException("No device uid provided")
 
-        adapter = self._device_manager.get_device(uid)
-        if adapter == None: return "No device with uid " + uid
+        adapter = self._device_manager.get(uid)
+        if adapter == None:
+            raise ApiException("No device with uid " + uid)
 
-        division = self._divisions.get(division_id)
-        if division == None: return "Division not found"
+        division = self.get(division_id)
         division.remove_device(uid)
 
         device = adapter.get_model()
         device.remove_division(division_id)
-        
-        return division.to_json()
 
+        return division.to_json()

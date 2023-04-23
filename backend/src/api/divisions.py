@@ -1,59 +1,49 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint
 from src.HoT import HoT
-from src.api.utils import make_error, not_json_error, is_content_json
-from src.api.validators.divisions import validate_division
+from src.controller.managers.DivisionsManager import DivisionsManager
+from src.api.CrudApi import CrudApi
 
-divisions = Blueprint('divisions', __name__, url_prefix='/divisions')
 
-@divisions.get("/")
-def index():
-  divisions = HoT().get_divisions_manager().get_all()
-  return jsonify({'divisions': divisions})
+class DivisionsApi(CrudApi):
+    def __init__(self):
+        super().__init__()
+        self._bp = Blueprint('divisions', __name__, url_prefix='/divisions')
 
-@divisions.post("/")
-def add():
-  if not is_content_json(request): return not_json_error()
-  error = validate_division(request.json)
-  if error: return make_error(error)
+        self._bp.add_url_rule("/", methods=('GET',), view_func=self.all)
+        self._bp.add_url_rule("/", methods=('POST',), view_func=self.create)
+        self._bp.add_url_rule("/<id>/", methods=('DELETE',), view_func=self.delete)
+        self._bp.add_url_rule("/<id>/rename", methods=('POST',), view_func=lambda id: self.partial_update(id, ["name"]))
+        self._bp.add_url_rule("/<id>/change-icon", methods=('POST',), view_func=lambda id: self.partial_update(id, ["icon"]))
+        self._bp.add_url_rule("/<id>/add-device", methods=('POST',), view_func=self.add_device)
+        self._bp.add_url_rule("/<id>/remove-device", methods=('POST',), view_func=self.remove_device)
 
-  division = HoT().get_divisions_manager().add(request.json)
-  if isinstance(division, str): return make_error(error)
-  else: return jsonify({'division': division})
+    def get_blueprint(self) -> Blueprint:
+        return self._bp
 
-@divisions.delete("/<id>/")
-def delete(id):
-  error = HoT().get_divisions_manager().remove(id)
-  if error: return make_error(error)
-  else:     return jsonify({})
+    def get_element_name(self) -> str:
+        return "division"
 
-@divisions.post("/<id>/rename")
-def rename(id):
-  if not is_content_json(request): return not_json_error()
+    def get_manager(self) -> DivisionsManager:
+        return HoT().get_divisions_manager()
 
-  error = HoT().get_divisions_manager().rename(id, request.json)
-  if error: return make_error(error)
-  else:     return jsonify({})
+    def validate(self, division) -> str or None:
+        name = division.get("name")
+        icon = division.get("icon")
+        devices = division.get("devices")
 
-@divisions.post("/<id>/change-icon")
-def change_icon(id):
-  if not is_content_json(request): return not_json_error()
-
-  error = HoT().get_divisions_manager().change_icon(id, request.json)
-  if error: return make_error(error)
-  else:     return jsonify({})
-
-@divisions.post("/<id>/add-device")
-def add_device(id):
-  if not is_content_json(request): return not_json_error()
-
-  error = HoT().get_divisions_manager().add_device(id, request.json)
-  if error: return make_error(error)
-  else:     return jsonify({})
-
-@divisions.post("/<id>/remove-device")
-def remove_device(id):
-  if not is_content_json(request): return not_json_error()
-
-  error = HoT().get_divisions_manager().remove_device(id, request.json)
-  if error: return make_error(error)
-  else:     return jsonify({})
+        if name == None: return "No name provided"
+        if icon == None: return "No icon provided"
+        if devices == None: division["devices"] = []
+        if not isinstance(devices, list): return "devices must be a list of device UIDs"
+    
+    def add_device(self, id):
+        def inner(data):
+            self.get_manager().add_device(id, data)
+            return {}
+        return self.handle_request_with_data(inner)
+    
+    def remove_device(self, id):
+        def inner(data):
+            self.get_manager().remove_device(id, data)
+            return {}
+        return self.handle_request_with_data(inner)

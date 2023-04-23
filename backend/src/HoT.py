@@ -5,6 +5,7 @@ from src.controller.managers.DivisionsManager import DivisionsManager
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 
+
 class HoTMeta(type):
     _instances = {}
 
@@ -28,21 +29,19 @@ class HoT(metaclass=HoTMeta):
         devices = DB().get(Collection.DEVICES).find_all()
         for device in devices:
             new_device: DeviceAdapter = DeviceManager.fabricate(
-                self._cid, device['uid'], device)
+                self._cid, device["uid"], device
+            )
             if new_device == None:
                 continue
             new_device.create_model()
             new_device.connect()
-            self._device_manager.add(device['uid'], new_device)
+            self._device_manager.create(device["uid"], new_device)
 
     def get_device_manager(self):
         return self._device_manager
-    
+
     def get_rules_manager(self):
         return self._rules_manager
-    
+
     def get_divisions_manager(self):
         return self._divisions_manager
-
-    def categories(self):
-        return DB().get(Collection.CATEGORIES).find_all()

@@ -6,15 +6,21 @@ class PowerCap(BaseCapability):
 
     def __init__(self, device: IDevice, state: dict = {}):
         super().__init__(device)
-        state = self.build_state(state.get('power', False))
-        self.update(state)
+        power = state.get('power', False)
+        self._set_state({'power': power})
 
-    def build_state(self, power: bool) -> dict:
+    def _build_state(self, power: bool) -> dict:
         return {'power': power}
+    def _set_state(self, state = {}):
+        power = state.get('power')
+        if power == None: return
+        state = self._build_state(power)
+        self.update(state)
     def turn_on(self) -> None:
-        return self.build_state(True)
+        return self._build_state(True)
     def turn_off(self) -> None:
-        return self.build_state(False)
+        return self._build_state(False)
+    
 
 
     def action(self, action: str, data: dict = None, updated_state = None) -> bool:

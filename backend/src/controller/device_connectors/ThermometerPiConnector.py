@@ -10,8 +10,8 @@ class ThermometerPiConnector(DeviceConnector):
 
     def __init__(self, cid: str, uid: str, config: dict):
         super().__init__()
-        self._protocol = 'raspberry pi'
-        self._capabilities = ['temperature']
+        self.set_protocol('raspberry pi')
+        self.set_capabilities(['temperature'])
         self._client = None
         self._cid = cid
         self._uid = uid
@@ -24,9 +24,7 @@ class ThermometerPiConnector(DeviceConnector):
             return
         print(f"Connected to device with id: {self._uid}")
         subscribe(client, f"{self._uid}-temperature", self.on_temperature)
-
-    def on_temperature(self, client, userdata, msg):
-        self._model.set_temperature(float(msg.payload.decode())) # TODO
+        self._connected = True
 
     def connect(self) -> bool:
         self._client = connect_mqtt()
@@ -51,6 +49,11 @@ class ThermometerPiConnector(DeviceConnector):
         disconnect_mqtt(self._client)
         self._client = None
         self._connected = False
+
+
+    def on_temperature(self, client, userdata, msg):
+        temperature = float(msg.payload.decode())
+        self.notify({"temperature": temperature})
 
 
     def on_available(self, client, userdata, msg):

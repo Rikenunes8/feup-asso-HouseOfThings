@@ -17,7 +17,6 @@ class IDevice(ABC):
         DB().get(Collection.DEVICES).delete(self._id)
 
     def find(self) -> dict:
-        print("Finding with id: " + self._id)
         return DB().get(Collection.DEVICES).find(self._id)
 
 

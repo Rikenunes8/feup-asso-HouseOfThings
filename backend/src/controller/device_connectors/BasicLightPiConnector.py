@@ -10,8 +10,8 @@ class BasicLightPiConnector(ActuatorDeviceConnector):
 
     def __init__(self, cid: str, uid: str, config: dict):
         super().__init__()
-        self._protocol = 'raspberry pi'
-        self._capabilities = ['power']
+        self.set_protocol('raspberry pi')
+        self.set_capabilities(['power'])
         self._client = None
         self._cid = cid
         self._uid = uid

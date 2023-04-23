@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
+from src.controller.observer.Publisher import Publisher
 
-class DeviceConnector(ABC):
+class DeviceConnector(Publisher, ABC):
     def __init__(self):
         super().__init__()
         self._connected = False

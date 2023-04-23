@@ -67,7 +67,6 @@ class Device(IDevice):
         return self._connected
 
     def to_json(self) -> dict:
-        print("to joson in device")
         return self.find()
 
 

@@ -7,6 +7,7 @@ from src.controller.device_connectors.DeviceConnector import DeviceConnector
 from src.controller.device_connectors.BasicLightMqttConnector import BasicLightMqttConnector
 from src.controller.device_connectors.BasicLightPiConnector import BasicLightPiConnector
 from src.controller.device_connectors.ThermometerPiConnector import ThermometerPiConnector
+from src.controller.observer.Subscriber import Subscriber
 from src.model.devices.PowerCap import PowerCap
 from src.model.devices.TemperatureCap import TemperatureCap
 
@@ -56,7 +57,7 @@ class DeviceManager(Manager):
             self.remove(uid)
 
     def connect(self, uid: str, config: dict) -> str or dict:
-        device: IDevice = DeviceManager.fabricate(self._cid, uid, config)
+        device: IDevice = self._fabricate(self._cid, uid, config)
         if device == None:
             return "No device for subcategory: " + config.get("subcategory")
 
@@ -89,6 +90,20 @@ class DeviceManager(Manager):
         return devices_found
 
 
+    def _fabricate(self, cid: str, uid: str, config: dict) -> IDevice or None:
+        connectors = DeviceManager.fabricate_connectors(cid, uid, config)
+        if connectors == None or len(connectors) > 1: return None
+        connector = connectors[0]
+        capabilities: list[str] = connector.get_capabilities()
+
+        device = Device(uid, config, connector)
+        for capability in capabilities:
+            # eval to get the respective decorator capabililty class instead of making an inifinite if-else
+            device = eval(f"{capability.title()}Cap")(device)
+            if isinstance(device, Subscriber):
+                connector.subscribe(device)
+
+        return device
 
     @staticmethod
     def fabricate_connectors(cid: str, uid: str, config: dict) -> list[DeviceConnector] or None:
@@ -112,21 +127,3 @@ class DeviceManager(Manager):
             return None
         
         return connectors
-
-    @staticmethod
-    def fabricate(cid: str, uid: str, config: dict) -> IDevice or None:
-        connectors = DeviceManager.fabricate_connectors(cid, uid, config)
-        if connectors == None or len(connectors) > 1: return None
-        connector = connectors[0]
-        capabilities: list[str] = connector.get_capabilities()
-        print(capabilities)
-
-        device = Device(uid, config, connector)
-        for capability in capabilities:
-            print(f"Adding capability: {capability}")
-            # eval to get the respective decorator capabililty class instead of making an inifinite if-else
-            device = eval(f"{capability.title()}Cap")(device)
-            print(device) # TODO: remove this
-            print()
-
-        return device

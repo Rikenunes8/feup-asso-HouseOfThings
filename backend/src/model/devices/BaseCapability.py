@@ -15,8 +15,6 @@ class BaseCapability(IDevice, ABC):
         return self._device.action(action, data, updated_state)
     
     def to_json(self) -> dict:
-        print("requesting to device")
-        print(self._device)
         return self._device.to_json()
     
     def add(self, state: dict) -> None:

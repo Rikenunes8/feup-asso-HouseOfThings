@@ -20,7 +20,7 @@ export default function LightBulbCard({ device }) {
     setDisabled(true);
     device.on = !device.on;
 
-    const action = isEnabled ? "turnOff" : "turnOn";
+    const action = isEnabled ? "turn_off" : "turn_on";
     api.actionDevice(device.uid, { action: action }).then((success) => {
       setDisabled(false);
       if (success) {

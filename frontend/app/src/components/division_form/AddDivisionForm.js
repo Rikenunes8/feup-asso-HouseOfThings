@@ -7,17 +7,18 @@ import AddDivisionContext from "../../contexts/AddDivisionContext";
 import DevicesDisplayInForm from "./DevicesDisplayInForm";
 
 import colors from "../../../configs/colors";
+import IconModal from "../division_cards/DivisionIcon";
 
 export default function AddDivisionForm() {
   const { divisionName, divisionIcon, setDivisionName, setDivisionIcon } =
     useContext(AddDivisionContext);
 
-  // TODO: List to be extended
+  // TODO: Make this right
   const [iconItems, setIconItems] = useState([
     {
       label: "Room Sofa",
-      value: "room sofa",
-      icon: () => <Image source={require("../../../../assets/sofa.png")} />,
+      value: "bedroom-icon",
+      icon: () => <IconModal icon={"bedroom-icon"} size={20} color={"black"} />,
     },
   ]);
 

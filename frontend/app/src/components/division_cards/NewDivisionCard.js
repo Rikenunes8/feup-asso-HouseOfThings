@@ -1,35 +1,23 @@
-import React, {useState} from "react";
-import {
-  StyleSheet,
-  TouchableOpacity
-} from "react-native";
+import React, { useContext } from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../../../configs/colors";
-import TitleModal from "../modal/TitleModal";
-import AddDivisionForm from "../../components/division_form/AddDivisionForm"
+import AddDivisionModal from "../../screens/modals/AddDivisionModal";
+import ModalsContext from "../../contexts/ModalsContext";
 
-export default function DivisionCard({ division }) {
-  const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
+export default function NewDivisionCard() {
+  const { setAddDivisionFormModalVisible } = useContext(ModalsContext);
 
   return (
-    <TouchableOpacity
-      style={styles.divisionCard}
-       onPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
-    >
-      <TitleModal
-        title={"Add Division"}
-        subtitle={"Subtitulo"}
-        visible={isDetailsModalVisible}
-        leftIcon="close"
-        rightIcon="check"
-        leftIconCallback={() => {setIsDetailsModalVisible(false)}}
-        rightIconCallback={() => console.log("Create Division")}
-        modalContent={
-          <AddDivisionForm />
-        } 
-      />      
-      <Icon name={"plus"} size={35} color={colors.primaryText} />
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity
+        style={styles.divisionCard}
+        onPress={() => setAddDivisionFormModalVisible(true)}
+      >
+        <Icon name={"plus"} size={35} color={colors.primaryText} />
+      </TouchableOpacity>
+      <AddDivisionModal />
+    </>
   );
 }
 

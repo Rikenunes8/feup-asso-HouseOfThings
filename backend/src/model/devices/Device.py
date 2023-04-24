@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from src.database.DB import DB
+from src.database.CollectionTypes import Collection
 
 
 class Device(ABC):
@@ -15,12 +16,23 @@ class Device(ABC):
 
     def set_divisions(self, divisions: list) -> None:
         self.update({"divisions": divisions})
+    
+    def add_division(self, division: str) -> None:
+        divisions = self.find()["divisions"]
+        divisions.append(division)
+        self.set_divisions(divisions)
+
+    def remove_division(self, division: str) -> None:
+        divisions = self.find()["divisions"]
+        divisions.remove(division)
+        self.set_divisions(divisions)
 
     def get_id(self) -> int:
         return self._id
 
     def add(self, state: dict) -> None:
-        DB().add_device(self._id, {
+        DB().get(Collection.DEVICES).add({
+            "uid": self._id,
             "category": self._config.get("category"),
             "subcategory": self._config.get("subcategory"),
             "protocol": self._config.get("protocol"),
@@ -31,13 +43,13 @@ class Device(ABC):
         )
 
     def update(self, state: dict) -> None:
-        DB().update_device(self._id, state)
+        DB().get(Collection.DEVICES).update(self._id, state)
 
     def remove(self) -> None:
-        DB().delete_device(self._id)
+        DB().get(Collection.DEVICES).delete(self._id)
 
     def find(self) -> dict:
-        return DB().find_device(self._id)
+        return DB().get(Collection.DEVICES).find(self._id)
 
     @abstractmethod
     def to_json(self) -> dict:

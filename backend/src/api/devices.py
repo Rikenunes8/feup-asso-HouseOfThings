@@ -7,13 +7,13 @@ devices = Blueprint('devices', __name__, url_prefix='/devices')
 
 @devices.get("/")
 def index():
-  devices = HoT().devices()
+  devices = HoT().get_device_manager().devices()
   return jsonify({'devices': list(map(lambda device: device.to_json() if device != None else {}, devices))})
 
 
 @devices.get("/available")
 def available():
-  devices = HoT().available(request.args.to_dict())
+  devices = HoT().get_device_manager().available(request.args.to_dict())
   return jsonify({'devices': devices})
 
 
@@ -21,14 +21,14 @@ def available():
 def connect(id):
   if (not is_content_json(request)): return not_json_error()
   
-  device = HoT().connect(id, request.json)
+  device = HoT().get_device_manager().connect(id, request.json)
   if type(device) == str: return make_error(device, 404)
   else: return jsonify({'device': device})
 
 
 @devices.post("/<id>/disconnect")
 def disconnect(id):
-  error = HoT().disconnect(id)
+  error = HoT().get_device_manager().disconnect(id)
   if error: return make_error(error, 404)
   else:     return jsonify({})
 
@@ -37,7 +37,7 @@ def disconnect(id):
 def action(id):
   if (not is_content_json(request)): return not_json_error()
 
-  error = HoT().action(id, request.json)
+  error = HoT().get_device_manager().action(id, request.json)
   if error: return make_error(error)
   else:     return jsonify({})
 
@@ -46,6 +46,6 @@ def action(id):
 def rename(id):
   if (not is_content_json(request)): return not_json_error()
 
-  error = HoT().rename(id, request.json)
+  error = HoT().get_device_manager().rename(id, request.json)
   if error: return make_error(error)
   else:     return jsonify({})

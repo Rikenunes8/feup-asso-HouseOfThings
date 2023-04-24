@@ -13,4 +13,6 @@ export default {
   transparentGray: "#464B4EBB",
   transparentLightGray: "#464B4E33",
   transparent: "#FFFFFF00",
+  cold: "#73C0E6",
+  warm: "#FF7044",
 };

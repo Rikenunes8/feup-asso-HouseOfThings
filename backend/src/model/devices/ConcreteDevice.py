@@ -45,7 +45,8 @@ class ConcreteDevice(Device):
 
     def connect(self, connected: bool = False) -> bool:
         self._connector.set_connected(connected)
-        self._connector.connect()
+        if not self._connector.connect():
+            return False
         self._connected = True
         return True
     

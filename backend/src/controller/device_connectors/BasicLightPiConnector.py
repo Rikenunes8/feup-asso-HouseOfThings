@@ -42,8 +42,7 @@ class BasicLightPiConnector(ActuatorDeviceConnector):
         return True
 
     def disconnect(self) -> None:
-        if self._connected:
-            publish(self._client, f"{self._uid}-disconnect", self._cid)
+        publish(self._client, f"{self._uid}-disconnect", self._cid)
         disconnect_mqtt(self._client)
         self._client = None
         self._connected = False

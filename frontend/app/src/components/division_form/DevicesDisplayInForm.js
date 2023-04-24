@@ -10,6 +10,7 @@ import api from "../../api/api";
 import colors from "../../../configs/colors";
 import DeviceDisplay from "./DeviceDisplay";
 import DevicesContext from "../../contexts/DivisionsContext"
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 export default function DevicesDisplayInForm() {
 /*
@@ -45,7 +46,8 @@ export default function DevicesDisplayInForm() {
     >
         <View style={styles.search}>
           <Text style={styles.title}>DEVICES</Text>
-          <Image source={require("../../../../assets/search.png")} />
+          {/* TODO: action of search */}
+          <FontAwesome5Icon name="search" size={16} color={colors.primary} solid /> 
         </View>
 
         <View style={styles.devices}>

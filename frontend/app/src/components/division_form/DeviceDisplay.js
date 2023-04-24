@@ -5,8 +5,19 @@ import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import colors from "../../../configs/colors";
 
 export default function DeviceDisplay({ device }) {
+  const displaySelectButton = (included) => {
+    return (
+      <FontAwesome5Icon
+        name="check-circle"
+        size={16}
+        color={included ? colors.active : colors.desactive}
+        solid
+      />
+    );
+  }
+  
   return (
-    <View style={styles.card} key={device.name + device.divisions[0]}>
+    <View style={styles.card} key={device.uid}>
       <Image
         style={styles.icon}
         source={utils.getDeviceIcon(device.subcategory)}
@@ -17,17 +28,6 @@ export default function DeviceDisplay({ device }) {
       </View>
       {displaySelectButton(device.on)}
     </View>
-  );
-}
-
-function displaySelectButton(included) {
-  return (
-    <FontAwesome5Icon
-      name="check-circle"
-      size={16}
-      color={included ? colors.active : colors.desactive}
-      solid
-    />
   );
 }
 

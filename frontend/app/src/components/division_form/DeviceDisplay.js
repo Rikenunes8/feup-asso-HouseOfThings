@@ -1,30 +1,34 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image
-} from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import utils from "../../utils/utils";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
-export default function DeviceDisplay({device}) {
+import colors from "../../../configs/colors";
 
+export default function DeviceDisplay({ device }) {
   return (
     <View style={styles.card} key={device.name + device.divisions[0]}>
-      <Image style={styles.icon} source={utils.getDeviceIcon(device.subcategory)} />
+      <Image
+        style={styles.icon}
+        source={utils.getDeviceIcon(device.subcategory)}
+      />
       <View>
         <Text style={styles.name}>{device.name}</Text>
         <Text style={styles.divisions}>{device.divisions[0]}</Text>
       </View>
-      {displayOnOff(device.on)}
+      {displaySelectButton(device.on)}
     </View>
   );
 }
 
-function displayOnOff(power) {
-  if (power)
-    return <Image source={require("../../../../assets/green-check.png")} />
-  else
-  return <Image source={require("../../../../assets/red-check.png")} />
+function displaySelectButton(included) {
+  return (
+    <FontAwesome5Icon
+      name="check-circle"
+      size={16}
+      color={included ? colors.active : colors.desactive}
+      solid
+    />
+  );
 }
 
 const styles = StyleSheet.create({
@@ -39,7 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 10
+    marginBottom: 10,
   },
   icon: {
     width: 20,
@@ -50,6 +54,6 @@ const styles = StyleSheet.create({
   },
   divisions: {
     color: "grey",
-    fontSize: 10
-  }
+    fontSize: 10,
+  },
 });

@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 const AddDivisionContext = createContext({});
 
-export const AddDeviceProvider = ({ children }) => {
+export const AddDivisionProvider = ({ children }) => {
   const [divisionName, setDivisionName] = useState(null);
   const [divisionIcon, setDivisionIcon] = useState(null);
 

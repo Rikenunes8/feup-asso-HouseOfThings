@@ -33,8 +33,8 @@ export default function DevicesDisplayInForm() {
       {name: "Philips Bulb", divisions: ["Tiago Room"], subcategory: "light bulb", on: false}
     ]
     if (devices) {
-      return devices.map((device) => (
-        <DeviceDisplay device={device} />
+      return devices.map((device, index) => (
+        <DeviceDisplay key={index} device={device} />
       ))
     }
   }

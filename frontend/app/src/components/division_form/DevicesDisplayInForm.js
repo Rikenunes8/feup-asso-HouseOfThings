@@ -1,65 +1,39 @@
-import React, { useContext, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-} from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
 
-import api from "../../api/api";
 import colors from "../../../configs/colors";
 import DeviceDisplay from "./DeviceDisplay";
-import DevicesContext from "../../contexts/DivisionsContext"
+import DevicesContext from "../../contexts/DevicesContext";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 export default function DevicesDisplayInForm() {
-/*
-  const { devices, setDevices } = useContext(DevicesContext);
-  const fetchDevices = async () => {
-    
-    const devs = await api.getDevices();
-    setDevices(devs);
-    
-    setDevices([{name: "Philips", group: "light"}])
-  };
-
-  useEffect(() => {
-    fetchDevices();
-  }, []);
-*/
-  const showDevices = () => {
-    let devices = [
-      {name: "Philips Bulb", divisions: ["Family Room"], subcategory: "light bulb", on: true},
-      {name: "Philips Bulb", divisions: ["Tiago Room"], subcategory: "light bulb", on: false},
-      {name: "Philips Bulb", divisions: ["Tiago Room"], subcategory: "light bulb", on: false}
-    ]
-    if (devices) {
-      return devices.map((device, index) => (
-        <DeviceDisplay key={index} device={device} />
-      ))
-    }
-  }
+  const { devices } = useContext(DevicesContext);
 
   return (
-    <View
-      style={styles.deviceDisplayContainer}
-    >
-        <View style={styles.search}>
-          <Text style={styles.title}>DEVICES</Text>
-          {/* TODO: action of search */}
-          <FontAwesome5Icon name="search" size={16} color={colors.primary} solid /> 
-        </View>
+    <View style={styles.deviceDisplayContainer}>
+      <View style={styles.search}>
+        <Text style={styles.title}>DEVICES</Text>
+        {/* TODO: action of search */}
+        <FontAwesome5Icon
+          name="search"
+          size={16}
+          color={colors.primary}
+          solid
+        />
+      </View>
 
-        <View style={styles.devices}>
-          {showDevices()}
-        </View>
+      <View style={styles.devices}>
+        {devices.map((device, index) => (
+          <DeviceDisplay key={index} device={device} />
+        ))}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   title: {
-    color: colors.primary
+    color: colors.primary,
   },
   deviceDisplayContainer: {
     marginTop: 15,
@@ -71,7 +45,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 50,
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   devices: {
     marginTop: 20,
@@ -80,6 +54,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width: "100%",
-    flexWrap: "wrap"
-  }
+    flexWrap: "wrap",
+  },
 });

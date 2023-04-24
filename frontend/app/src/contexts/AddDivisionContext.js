@@ -4,10 +4,12 @@ const AddDivisionContext = createContext({});
 export const AddDivisionProvider = ({ children }) => {
   const [divisionName, setDivisionName] = useState(null);
   const [divisionIcon, setDivisionIcon] = useState(null);
+  const [selectedDevices, setSelectedDevices] = useState([]);
 
   const resetAddDivisionContext = () => {
     setDivisionName(null);
     setDivisionIcon(null);
+    setSelectedDevices([]);
   };
 
   return (
@@ -17,6 +19,8 @@ export const AddDivisionProvider = ({ children }) => {
         setDivisionName,
         divisionIcon,
         setDivisionIcon,
+        selectedDevices,
+        setSelectedDevices,
         resetAddDivisionContext,
       }}
     >

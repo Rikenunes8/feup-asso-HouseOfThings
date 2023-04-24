@@ -1,10 +1,17 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { useContext } from "react";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import utils from "../../utils/utils";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import colors from "../../../configs/colors";
+import AddDivisionContext from "../../contexts/AddDivisionContext";
 
 export default function DeviceDisplay({ device }) {
+  const { selectedDevices, setSelectedDevices } =
+    useContext(AddDivisionContext);
+
+  const included = selectedDevices.includes(device.uid);
+
   const displaySelectButton = (included) => {
     return (
       <FontAwesome5Icon
@@ -14,10 +21,22 @@ export default function DeviceDisplay({ device }) {
         solid
       />
     );
-  }
-  
+  };
+
+  const addRemoveSelectedDevice = (included, uid) => {
+    if (included) {
+      setSelectedDevices(selectedDevices.filter((id) => id != uid));
+    } else {
+      setSelectedDevices([...selectedDevices, uid]);
+    }
+  };
+
   return (
-    <View style={styles.card} key={device.uid}>
+    <TouchableOpacity
+      key={device.uid}
+      style={styles.card}
+      onPress={() => addRemoveSelectedDevice(included, device.uid)}
+    >
       <Image
         style={styles.icon}
         source={utils.getDeviceIcon(device.subcategory)}
@@ -26,8 +45,8 @@ export default function DeviceDisplay({ device }) {
         <Text style={styles.name}>{device.name}</Text>
         <Text style={styles.divisions}>{device.divisions[0]}</Text>
       </View>
-      {displaySelectButton(device.on)}
-    </View>
+      {displaySelectButton(included)}
+    </TouchableOpacity>
   );
 }
 

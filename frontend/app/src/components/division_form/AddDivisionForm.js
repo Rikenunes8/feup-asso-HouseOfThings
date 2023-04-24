@@ -7,23 +7,23 @@ import AddDivisionContext from "../../contexts/AddDivisionContext";
 import DevicesDisplayInForm from "./DevicesDisplayInForm";
 
 export default function AddDivisionForm() {
-  const {
-    divisionName,
-    divisionIcon,
-    setDivisionName,
-    setDivisionIcon,
-  } = useContext(AddDivisionContext);
+  const { divisionName, divisionIcon, setDivisionName, setDivisionIcon } =
+    useContext(AddDivisionContext);
 
   // TODO: List to be extended
   const [iconItems, setIconItems] = useState([
-    { label: "Room Sofa", value: "room sofa",  icon: () => <Image source={require("../../../../assets/sofa.png")} />},
+    {
+      label: "Room Sofa",
+      value: "room sofa",
+      icon: () => <Image source={require("../../../../assets/sofa.png")} />,
+    },
   ]);
 
   const [inputOnFocus, setInputOnFocus] = useState(false);
 
   return (
     <>
-    <View style={styles.container}>
+      <View style={styles.container}>
         <DynamicTextInput
           label={"NAME *"}
           name={divisionName ?? ""}
@@ -38,8 +38,8 @@ export default function AddDivisionForm() {
           value={divisionIcon}
           setValue={setDivisionIcon}
         />
-    </View>
-    <DevicesDisplayInForm/>
+      </View>
+      <DevicesDisplayInForm />
     </>
   );
 }
@@ -47,6 +47,6 @@ export default function AddDivisionForm() {
 const styles = StyleSheet.create({
   container: {
     marginTop: 35,
-    paddingHorizontal: 30
-  }
+    paddingHorizontal: 30,
+  },
 });

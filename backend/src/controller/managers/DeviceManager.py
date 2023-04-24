@@ -32,6 +32,9 @@ class DeviceManager(Manager):
     def load(self):
         devices = DB().get(Collection.DEVICES).find_all()
         for device in devices:
+            if not device.get('connected'):
+                DB().get(Collection.DEVICES).remove(device.get('uid'))
+                continue
             new_device: Device = self._make_device(self._cid, device['uid'], device, device)
             if new_device == None: continue
 

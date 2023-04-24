@@ -17,6 +17,10 @@ class ConcreteDevice(Device):
         self._connected = False
         self.add()
 
+    def set_connected(self, connected: bool) -> None:
+        self._connected = connected
+        self.update({"connected": connected})
+
     def add(self) -> None:
         DB().get(Collection.DEVICES).add({
             "uid": self._id,
@@ -25,6 +29,7 @@ class ConcreteDevice(Device):
             "protocol": self._config.get("protocol"),
             "name": self.NO_NAME,
             "divisions": [],
+            "connected": self._connected
         })
 
     def rename(self, name: str) -> None:
@@ -47,12 +52,12 @@ class ConcreteDevice(Device):
         self._connector.set_connected(connected)
         if not self._connector.connect():
             return False
-        self._connected = True
+        self.set_connected(True)
         return True
     
     def disconnect(self) -> bool:
         self._connector.disconnect()
-        self._connected = False
+        self.set_connected(False)
         self.remove()
         return True
 

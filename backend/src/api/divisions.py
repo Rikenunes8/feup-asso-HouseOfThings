@@ -2,6 +2,7 @@ from flask import Blueprint
 from src.HoT import HoT
 from src.controller.managers.DivisionsManager import DivisionsManager
 from src.api.CrudApi import CrudApi
+from src.api.ApiException import ApiException
 
 
 class DivisionsApi(CrudApi):
@@ -38,12 +39,18 @@ class DivisionsApi(CrudApi):
     
     def add_device(self, id):
         def inner(data):
-            self.get_manager().add_device(id, data)
+            uid = data.get("device")
+            if uid == None:
+                raise ApiException("No device uid provided")
+            self.get_manager().add_device(id, uid)
             return {}
         return self.handle_request_with_data(inner)
     
     def remove_device(self, id):
         def inner(data):
-            self.get_manager().remove_device(id, data)
+            uid = data.get("device")
+            if uid == None:
+                raise ApiException("No device uid provided")
+            self.get_manager().remove_device(id, uid)
             return {}
         return self.handle_request_with_data(inner)

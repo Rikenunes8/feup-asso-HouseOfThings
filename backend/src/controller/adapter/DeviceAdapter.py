@@ -16,6 +16,8 @@ class DeviceAdapter(ABC):
         return self._model
     def get_protocol(self) -> str:
         return self._protocol
+    def to_json(self) -> dict:
+        return self.get_model().to_json()
 
     @abstractmethod
     def connect(self) -> bool:

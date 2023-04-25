@@ -13,60 +13,44 @@ class DivisionsManager(CrudManager):
     def all(self):
         return self._divisions.values()
 
-    def get(self, division_id: str):
-        division = self._divisions.get(division_id)
+    def get(self, id: str):
+        division = self._divisions.get(id)
         if division == None:
             raise ApiException("Division not found")
         return division
 
-    def create(self, division_json: dict) -> Division:
+    def create(self, data: dict) -> Division:
         division = Division(
-            division_json["name"], division_json["icon"], division_json["devices"]
+            data["name"], data["icon"], data["devices"]
         )
         self._divisions[division.get_id()] = division
         return division
 
-    def delete(self, division_id: str):
-        division = self._divisions.pop(division_id, None)
+    def delete(self, id: str):
+        division = self._divisions.pop(id, None)
         if division == None:
             raise ApiException("Division not found")
         division.delete()
 
-    def update(self, division_id: str, config: dict):
-        division = self.get(division_id)
+    def update(self, id: str, config: dict):
+        division = self.get(id)
         division.update(config)
         return division
 
-    def add_device(self, division_id: str, config: dict):
-        uid = config.get("device")
-        if uid == None:
-            raise ApiException("No device uid provided")
-
-        adapter = self._device_manager.get(uid)
-        if adapter == None:
-            raise ApiException("No device with uid " + uid)
-
+    def add_device(self, division_id: str, device_uid: str):
+        device = self._device_manager.get(device_uid).get_model()
         division = self.get(division_id)
-        division.add_device(uid)
 
-        device = adapter.get_model()
+        division.add_device(device_uid)
         device.add_division(division_id)
 
-        return division.to_json()
+        return division
 
-    def remove_device(self, division_id: str, config: dict):
-        uid = config.get("device")
-        if uid == None:
-            raise ApiException("No device uid provided")
-
-        adapter = self._device_manager.get(uid)
-        if adapter == None:
-            raise ApiException("No device with uid " + uid)
-
+    def remove_device(self, division_id: str, device_uid: str):
+        device = self._device_manager.get(device_uid).get_model()
         division = self.get(division_id)
-        division.remove_device(uid)
-
-        device = adapter.get_model()
+        
+        division.remove_device(device_uid)
         device.remove_division(division_id)
 
-        return division.to_json()
+        return division

@@ -35,12 +35,15 @@ class CrudApi(BaseApi):
             return {self.get_element_name(): element.to_json()}
         return self.handle_request(inner)
 
-    def create(self):
+    def create(self, id=None):
         def inner(data):
             error = self.validate(data)
             if error:
                 raise ApiException(error)
-            element = self.get_manager().create(data)
+            if id is None:
+                element = self.get_manager().create(data)
+            else:
+                element = self.get_manager().create(id, data)
             return {self.get_element_name(): element.to_json()}
         return self.handle_request_with_data(inner)
 
@@ -59,7 +62,7 @@ class CrudApi(BaseApi):
             for f in fields:
                 values[f] = data.get(f)
                 if values[f] is None:
-                    return f"Missing field {f}"
+                    raise ApiException(f"Missing field {f}")
 
             element = self.get_manager().update(id, values)
             return {self.get_element_name(): element.to_json()}

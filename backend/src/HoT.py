@@ -35,7 +35,7 @@ class HoT(metaclass=HoTMeta):
                 continue
             new_device.create_model()
             new_device.connect()
-            self._device_manager.create(device["uid"], new_device)
+            self._device_manager.add(device["uid"], new_device)
 
     def get_device_manager(self):
         return self._device_manager

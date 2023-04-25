@@ -1,5 +1,6 @@
 from src.model.rules.Condition import Condition
 from src.model.rules.Action import Action
+from src.model.devices.Device import Device
 from src.controller.managers.DeviceManager import DeviceManager
 
 from src.database.DB import DB
@@ -32,10 +33,13 @@ class Rule:
   def delete(self):
     DB().get(Collection.RULES).delete(self._id)
 
-  def execute(self, deviceManager: DeviceManager):
+  def execute(self, device_manager: DeviceManager) -> list[Device] or str:
+    devices_updated = []
     for action in self._actions:
-      error = action.execute(deviceManager)
-      if error != None: print(error)
+      result = action.execute(device_manager)
+      if type(result) == str: print(result)
+      else: devices_updated.append(result)
+    return devices_updated
 
   def to_json(self) -> dict:
     return {

@@ -49,4 +49,6 @@ class RulesManager(Manager):
     def execute(self, rule_id : str):
         rule = self._rules.get(rule_id)
         if rule == None: return "Rule not found"
-        rule.execute(self._device_manager)
+        result = rule.execute(self._device_manager)
+        if type(result) == str: return result
+        else: return list(map(lambda device: device.to_json(), result))

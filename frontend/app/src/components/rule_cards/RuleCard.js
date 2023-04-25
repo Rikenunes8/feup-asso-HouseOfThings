@@ -1,15 +1,19 @@
-import React, { useContext } from "react";
-import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
-
-import ModalsContext from "../../contexts/ModalsContext";
 
 import colors from "../../../configs/colors";
 import api from "../../api/api";
 import utils from "../../utils/utils";
 
 export default function RuleCard({ rule }) {
-  const { setIsRuleExecuteLoading } = useContext(ModalsContext);
+  const [isRuleExecuting, setIsRuleExecuting] = useState(false);
 
   const getName = () => {
     return rule.name;
@@ -30,10 +34,10 @@ export default function RuleCard({ rule }) {
 
   const execute = () => {
     console.log(`Executing rule... [${rule.id}] ${rule.name}`);
-    setIsRuleExecuteLoading(true);
+    setIsRuleExecuting(true);
 
     api.executeRule(rule.id).then((success) => {
-      setIsRuleExecuteLoading(false);
+      setIsRuleExecuting(false);
 
       if (success) {
         console.log("Rule executed successfully");
@@ -61,9 +65,13 @@ export default function RuleCard({ rule }) {
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.ruleExecute} onPress={execute}>
-        <Icon name={"play"} size={25} color={colors.active} />
-      </TouchableOpacity>
+      {isRuleExecuting ? (
+        <ActivityIndicator style={styles.ruleExecute} color={colors.gray} />
+      ) : (
+        <TouchableOpacity style={styles.ruleExecute} onPress={execute}>
+          <Icon name={"play"} size={25} color={colors.active} />
+        </TouchableOpacity>
+      )}
     </TouchableOpacity>
   );
 }

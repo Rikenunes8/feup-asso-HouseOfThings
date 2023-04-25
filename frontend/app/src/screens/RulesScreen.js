@@ -13,9 +13,7 @@ import {
 import Header from "../components/header/Header";
 import RuleCard from "../components/rule_cards/RuleCard";
 import NewRuleCard from "../components/rule_cards/NewRuleCard";
-import LoadingSpinner from "../components/LoadingSpinner";
 import RulesContext from "../contexts/RulesContext";
-import ModalsContext from "../contexts/ModalsContext";
 
 import colors from "../../configs/colors";
 import api from "../api/api";
@@ -23,7 +21,6 @@ import api from "../api/api";
 export default function RulesScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const { rules, setRules } = useContext(RulesContext);
-  const { isRuleExecuteLoading } = useContext(ModalsContext);
 
   const fetchRules = async () => {
     setIsLoading(true);
@@ -38,8 +35,6 @@ export default function RulesScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <LoadingSpinner isLoading={isRuleExecuteLoading} />
-
       <Header />
 
       <View style={styles.body}>

@@ -9,40 +9,50 @@ import CreateRuleContext from "../../../contexts/CreateRuleContext";
 
 import colors from "../../../../configs/colors";
 import NewActionCard from "../action/NewActionCard";
+import RuleOperationMenu from "./RuleOperationMenu";
 
 export default function ConditionForm({}) {
-  const { ruleOperation, setRuleOperation , ruleConditions} = useContext(CreateRuleContext);
+  const { ruleOperation, setRuleOperation, ruleConditions } =
+    useContext(CreateRuleContext);
 
   const [numConditionCards, setNumConditionCards] = useState(1);
+  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
-  const operations = [
-    { label: "AND", value: 0 },
-    { label: "OR", value: 1 },
-    { label: "MANUAL", value: 2 },
-  ];
-  
-  const changeOperation = () =>
-  {
-    console.log("PRESSED the setting button")
-  }
+  //TODO: Include the manual
+  const operations = ["AND", "OR"];
+
+  const changeOperation = (item) => {
+    setRuleOperation(item.toLowerCase())
+    setIsContextMenuVisible(false);
+  };
 
   const addConditionCard = () => {
     setNumConditionCards(numConditionCards + 1);
   };
 
+  useEffect(() => {
+    console.log("RULE OP:", ruleOperation)
+  }, [ruleOperation]);
+
+  // TODO: Make the selected other color
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>WHEN</Text>
-        <TouchableOpacity>
+
+        <RuleOperationMenu
+          isContextMenuVisible={isContextMenuVisible}
+          options={operations}
+          callback={changeOperation}
+        />
         <SimpleLineIcons
           name={"settings"}
           size={20}
           color={colors.primary}
           style={styles.plus_icon}
-          onPress={() => changeOperation()}
+          onPress={() => setIsContextMenuVisible(!isContextMenuVisible)}
         />
-        </TouchableOpacity>
+
         <TouchableOpacity>
           <AntDesignIcon
             name={"plus"}
@@ -53,7 +63,7 @@ export default function ConditionForm({}) {
           />
         </TouchableOpacity>
       </View>
-     
+
       {[...Array(numConditionCards)].map((_, index) => (
         <NewConditionCard index={index} key={index} />
       ))}
@@ -72,6 +82,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: "row",
+    zIndex: 1,
   },
   title: {
     flexGrow: 1,

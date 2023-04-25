@@ -3,21 +3,21 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import colors from "../../../configs/colors";
 
-export default function LightBulbDetails({ on, handler }) {
-  const stateText = on ? "On" : "Off";
+export default function LightBulbDetails({ power, handler }) {
+  const stateText = power ? "On" : "Off";
   const [disabled, setDisabled] = React.useState(false);
 
   return (
     <View style={styles().container}>
       <View style={styles().detailsView}>
         <Text style={styles().lightText}>Light: </Text>
-        <Text style={styles(on).stateText}>{stateText}</Text>
+        <Text style={styles(power).stateText}>{stateText}</Text>
       </View>
       <View style={styles().powerButtonView}>
         <View style={styles().powerButton}>
           <TouchableOpacity
-            style={styles(on).powerButtonOppacity}
-            onPress={() => handler(on, setDisabled)}
+            style={styles(power).powerButtonOppacity}
+            onPress={() => handler(power, setDisabled)}
             disabled={disabled}
           >
             <Icon name="power" size={50} color={colors.white} />
@@ -28,7 +28,7 @@ export default function LightBulbDetails({ on, handler }) {
   );
 }
 
-const styles = (on = false) =>
+const styles = (power = false) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -57,7 +57,7 @@ const styles = (on = false) =>
     },
     powerButtonOppacity: {
       padding: 20,
-      backgroundColor: on ? colors.active : colors.desactive,
+      backgroundColor: power ? colors.active : colors.desactive,
       borderRadius: 100,
     },
     powerButtonView: {
@@ -69,6 +69,6 @@ const styles = (on = false) =>
     stateText: {
       fontWeight: "bold",
       fontSize: 18,
-      color: on ? colors.active : colors.desactive,
+      color: power ? colors.active : colors.desactive,
     },
   });

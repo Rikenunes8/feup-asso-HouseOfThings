@@ -1,5 +1,7 @@
 from src.model.rules.Condition import Condition
 from src.model.rules.Action import Action
+from src.model.devices.Device import Device
+from src.controller.managers.DeviceManager import DeviceManager
 
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
@@ -21,7 +23,7 @@ class Rule:
   def _create(self):
     return DB().get(Collection.RULES).add(self.to_json())
 
-  def update(self, name: str, operation: str, conditions: list[Condition], actions:list[Action]):
+  def update(self, name: str, operation: str, conditions: list[Condition], actions: list[Action]):
     self._name = name
     self._operation = operation 
     self._conditions = conditions
@@ -30,6 +32,14 @@ class Rule:
 
   def delete(self):
     DB().get(Collection.RULES).delete(self._id)
+
+  def execute(self, device_manager: DeviceManager) -> list[Device] or str:
+    devices_updated = []
+    for action in self._actions:
+      result = action.execute(device_manager)
+      if type(result) == str: print(result)
+      else: devices_updated.append(result)
+    return devices_updated
 
   def to_json(self) -> dict:
     return {

@@ -6,9 +6,11 @@ class Action:
     self._device_id = device_id
     self._action = action
   
-  def execute(self, deviceManager : DeviceManager):
-    device: Device = deviceManager.get_device(self._device_id)
+  def execute(self, device_manager : DeviceManager) -> Device or str:
+    device: Device = device_manager.get_device(self._device_id)
+    if device == None: return f"No device with id: {self._device_id} to execute action"
     device.action(self._action)
+    return device
 
   def to_json(self) -> dict:
     return {

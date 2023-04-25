@@ -18,20 +18,19 @@ export default function LightBulbCard({ device }) {
     console.log(`Turning ${isEnabled ? "off" : "on"} device...`);
 
     setDisabled(true);
-    device.power = !device.power;
+    device.power = !device.power; // Optimistic update (may be reverted if the request fails)
 
     const action = isEnabled ? "turn_off" : "turn_on";
-    api.actionDevice(device.uid, { action: action }).then((success) => {
+    api.actionDevice(device.uid, { action: action }).then((deviceUpdated) => {
       setDisabled(false);
-      if (success) {
+      if (deviceUpdated != null) {
         console.log(`Changed light status successfully`);
-        updateDevice({ power: device.power }, device.uid);
+        updateDevice(deviceUpdated, device.uid);
         return;
       }
 
       updateDevice({ power: !device.power }, device.uid);
       console.log("Failed to change light status");
-      utils.showErrorMessage("Failed to change light status");
     });
   };
 

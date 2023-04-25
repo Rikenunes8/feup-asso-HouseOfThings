@@ -57,6 +57,7 @@ class DeviceManager(Manager):
         device: Device = self.get_device(uid)
         if device == None: return "No device with that uid"
         device.action(action, data)
+        return device.to_json()
 
     def rename(self, uid: str, name: str):
         if name == None: return "No name provided"

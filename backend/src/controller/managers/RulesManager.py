@@ -4,11 +4,13 @@ from src.model.rules.Action import Action
 from src.model.rules.Rule import Rule
 from src.model.rules.Condition import Condition
 from src.controller.managers.Manager import Manager
+from src.controller.managers.DeviceManager import DeviceManager
 
 class RulesManager(Manager):
-    def __init__(self, cid):
+    def __init__(self, cid: str, device_manager: DeviceManager):
         super().__init__(cid)
         self._rules : dict[str, Rule]= {}
+        self._device_manager = device_manager
     
     def _build_conditions(self, conditions) -> list[Condition]:
         scheduleConditions = list(filter(lambda condition: condition['kind'] == "schedule", conditions))
@@ -44,5 +46,9 @@ class RulesManager(Manager):
         rule.update(rule_json['name'], rule_json['operation'], conditions, actions)
         return rule.to_json()
 
-    def execute_rule(self, rule_id : str):
-      pass
+    def execute(self, rule_id : str):
+        rule = self._rules.get(rule_id)
+        if rule == None: return "Rule not found"
+        result = rule.execute(self._device_manager)
+        if type(result) == str: return result
+        else: return list(map(lambda device: device.to_json(), result))

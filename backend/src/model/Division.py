@@ -18,7 +18,10 @@ class Division:
   
   def update(self, config: dict) -> None:
     for key, value in config.items():
-        setattr(self, key, value)
+        print(f"test ${key} ${value}")
+        if key in ["name", "icon", "devices"]:
+          setattr(self, "_" + key, value)
+        print(f"test ${self._name}")
     DB().get(Collection.DIVISIONS).update(self._id, config)
   
   def add_device(self, device: str) -> None:

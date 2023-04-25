@@ -37,9 +37,9 @@ def disconnect(id):
 def action(id):
   if (not is_content_json(request)): return not_json_error()
 
-  error = HoT().get_device_manager().action(id, request.json)
-  if error: return make_error(error)
-  else:     return jsonify({})
+  device = HoT().get_device_manager().action(id, request.json)
+  if type(device) == str: return make_error(device)
+  else: return jsonify({'device': device})
 
 
 @devices.post("/<id>/rename")

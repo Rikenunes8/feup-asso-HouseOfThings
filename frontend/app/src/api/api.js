@@ -91,7 +91,6 @@ const actionDevice = async (id, action) => {
     console.error(error);
     return false;
   }
-  
 };
 
 const renameDevice = async (id, name) => {
@@ -170,14 +169,10 @@ const getRules = async () => {
 const executeRule = async (id) => {
   try {
     const response = await apiClient.post(`/rules/${id}/execute`);
-    if (response.data.error) {
-      console.error(response.data.error);
-      return false;
-    }
-    return true;
+    if (response.data.error) throw Error(response.data.error);
+    return response.data.devices;
   } catch (error) {
     console.error(error);
-    return false;
   }
 };
 

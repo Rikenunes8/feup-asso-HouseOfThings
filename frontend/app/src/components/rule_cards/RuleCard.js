@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -8,11 +8,15 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
+import DevicesContext from "../../contexts/DevicesContext";
+
 import colors from "../../../configs/colors";
 import api from "../../api/api";
 import utils from "../../utils/utils";
 
 export default function RuleCard({ rule }) {
+  const { updateDevice } = useContext(DevicesContext);
+
   const [isRuleExecuting, setIsRuleExecuting] = useState(false);
 
   const getName = () => {
@@ -36,12 +40,14 @@ export default function RuleCard({ rule }) {
     console.log(`Executing rule... [${rule.id}] ${rule.name}`);
     setIsRuleExecuting(true);
 
-    api.executeRule(rule.id).then((success) => {
+    api.executeRule(rule.id).then((devices) => {
       setIsRuleExecuting(false);
 
-      if (success) {
+      if (devices != null) {
         console.log("Rule executed successfully");
-        // TODO(RULES): update the context of the changed devices
+        devices.forEach((device) => {
+          updateDevice(device, device.uid);
+        });
         return;
       }
 

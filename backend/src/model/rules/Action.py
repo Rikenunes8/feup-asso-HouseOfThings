@@ -1,5 +1,5 @@
-from src.controller.adapter.ActuatorDeviceAdapter import ActuatorDeviceAdapter
 from src.controller.managers.DeviceManager import DeviceManager
+from src.model.devices.Device import Device
 
 class Action:
   def __init__(self, device_id : str, action : str ) -> None:
@@ -7,9 +7,9 @@ class Action:
     self._action = action
   
   def execute(self, device_manager : DeviceManager):
-    device_adapter: ActuatorDeviceAdapter = device_manager.get_device(self._device_id)
-    if device_adapter == None: return "No device with id: " + str(self._device_id) + " to execute action"
-    device_adapter.action(self._action)
+    device: Device = device_manager.get_device(self._device_id)
+    if device == None: return f"No device with id: {self._device_id} to execute action"
+    device.action(self._action)
 
   def to_json(self) -> dict:
     return {

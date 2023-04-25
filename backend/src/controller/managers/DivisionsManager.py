@@ -1,4 +1,5 @@
 from src.model.Division import Division
+from src.model.devices.ConcreteDevice import ConcreteDevice
 from src.controller.managers.Manager import Manager
 from src.controller.managers.DeviceManager import DeviceManager
 
@@ -42,15 +43,15 @@ class DivisionsManager(Manager):
         uid = config.get("device")
         if uid == None: return "No device uid provided"
 
-        adapter = self._device_manager.get_device(uid)
-        if adapter == None: return "No device with uid " + uid
+        device = self._device_manager.get_device(uid)
+        if device == None: return "No device with uid " + uid
 
         division = self._divisions.get(division_id)
         if division == None: return "Division not found"
         division.add_device(uid)
 
-        device = adapter.get_model()
-        device.add_division(division_id)
+        concrete_device: ConcreteDevice = device.get()
+        concrete_device.add_division(division_id)
 
         return division.to_json()
 
@@ -59,15 +60,14 @@ class DivisionsManager(Manager):
         uid = config.get("device")
         if uid == None: return "No device uid provided"
 
-        adapter = self._device_manager.get_device(uid)
-        if adapter == None: return "No device with uid " + uid
+        device = self._device_manager.get_device(uid)
+        if device == None: return "No device with uid " + uid
 
         division = self._divisions.get(division_id)
         if division == None: return "Division not found"
         division.remove_device(uid)
 
-        device = adapter.get_model()
-        device.remove_division(division_id)
+        concrete_device: ConcreteDevice = device.get()
+        concrete_device.remove_division(division_id)
         
         return division.to_json()
-

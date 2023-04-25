@@ -18,18 +18,18 @@ export default function LightBulbCard({ device }) {
     console.log(`Turning ${isEnabled ? "off" : "on"} device...`);
 
     setDisabled(true);
-    device.on = !device.on;
+    device.power = !device.power;
 
-    const action = isEnabled ? "turnOff" : "turnOn";
+    const action = isEnabled ? "turn_off" : "turn_on";
     api.actionDevice(device.uid, { action: action }).then((success) => {
       setDisabled(false);
       if (success) {
         console.log(`Changed light status successfully`);
-        updateDevice({ on: device.on }, device.uid);
+        updateDevice({ power: device.power }, device.uid);
         return;
       }
 
-      updateDevice({ on: !device.on }, device.uid);
+      updateDevice({ power: !device.power }, device.uid);
       console.log("Failed to change light status");
       utils.showErrorMessage("Failed to change light status");
     });
@@ -41,9 +41,9 @@ export default function LightBulbCard({ device }) {
       specificFeature={
         <Switch
           trackColor={{ false: colors.desactive, true: colors.active }}
-          thumbColor={device.on ? colors.white : colors.white}
-          onValueChange={() => onOffHandler(device.on, setDisabled)}
-          value={device.on}
+          thumbColor={device.power ? colors.white : colors.white}
+          onValueChange={() => onOffHandler(device.power, setDisabled)}
+          value={device.power}
           disabled={disabled}
         />
       }
@@ -52,7 +52,7 @@ export default function LightBulbCard({ device }) {
           device={device}
           icon={utils.getDeviceIcon(device.subcategory)}
           modalContent={
-            <LightBulbDetails on={device.on} handler={onOffHandler} />
+            <LightBulbDetails power={device.power} handler={onOffHandler} />
           }
         />
       }

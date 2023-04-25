@@ -8,7 +8,7 @@ devices = Blueprint('devices', __name__, url_prefix='/devices')
 @devices.get("/")
 def index():
   devices = HoT().get_device_manager().devices()
-  return jsonify({'devices': list(map(lambda device: device.to_json() if device != None else {}, devices))})
+  return jsonify({'devices': list(map(lambda device: device.to_json(), devices))})
 
 
 @devices.get("/available")
@@ -46,6 +46,6 @@ def action(id):
 def rename(id):
   if (not is_content_json(request)): return not_json_error()
 
-  error = HoT().get_device_manager().rename(id, request.json)
+  error = HoT().get_device_manager().rename(id, request.json.get("name"))
   if error: return make_error(error)
   else:     return jsonify({})

@@ -7,20 +7,22 @@ import AddDivisionContext from "../../contexts/AddDivisionContext";
 import DevicesDisplayInForm from "./DevicesDisplayInForm";
 
 import colors from "../../../configs/colors";
-import IconModal from "../division_cards/DivisionIcon";
+import utils from "../../utils/utils";
+import IconModal, { icons } from "../division_cards/DivisionIcon";
 
 export default function AddDivisionForm() {
   const { divisionName, divisionIcon, setDivisionName, setDivisionIcon } =
     useContext(AddDivisionContext);
 
-  // TODO: Make this right
-  const [iconItems, setIconItems] = useState([
-    {
-      label: "Room Sofa",
-      value: "bedroom-icon",
-      icon: () => <IconModal icon={"bedroom-icon"} size={20} color={"black"} />,
-    },
-  ]);
+  const [iconItems, setIconItems] = useState(
+    Object.keys(icons).map((icon) => {
+      return {
+        label: utils.capitalize(icon.replace("-icon", "")),
+        value: icon,
+        icon: () => <IconModal icon={icon} size={20} color={colors.black} />,
+      };
+    })
+  );
 
   const [inputOnFocus, setInputOnFocus] = useState(false);
 

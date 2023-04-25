@@ -3,33 +3,23 @@ const DivisionsContext = createContext();
 
 export const DivisionsProvider = ({ children }) => {
   const [divisions, setDivisions] = useState([]);
-  const [divisionEdit, setDivisionEdit] = useState({
-    edit: false,
-    division: {},
-  });
 
   const addDivision = (newDivision) => {
     setDivisions([newDivision, ...divisions]);
   };
 
-  const updateDivision = (newUpdateDivision, uid) => {
+  const removeDivision = (id) => {
+    setDivisions(divisions.filter((division) => division.id !== id));
+  };
+
+  const updateDivision = (newUpdateDivision, id) => {
     setDivisions(
       divisions.map((division) =>
-        division.uid === uid ? { ...division, ...newUpdateDivision } : division
+        division.id === id ? { ...division, ...newUpdateDivision } : division
       )
     );
   };
 
-  const removeDivision = (uid) => {
-    setDivisions(divisions.filter((division) => division.uid !== uid));
-  };
-
-  const editDivision = (newEditDivision) => {
-    setDivisionEdit({
-      edit: true,
-      division: { ...newEditDivision },
-    });
-  };
   return (
     <DivisionsContext.Provider
       value={{
@@ -37,10 +27,7 @@ export const DivisionsProvider = ({ children }) => {
         setDivisions,
         addDivision,
         removeDivision,
-        editDivision,
         updateDivision,
-        divisionEdit,
-        setDivisionEdit,
       }}
     >
       {children}

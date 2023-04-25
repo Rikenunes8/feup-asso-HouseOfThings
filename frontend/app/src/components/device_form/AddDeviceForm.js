@@ -24,7 +24,7 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
 
   const [items, setItems] = useState(
     divisions.map((item) => {
-      return { label: utils.capitalize(item.name), value: item.name };
+      return { label: utils.capitalize(item.name), value: item.id };
     })
   );
 

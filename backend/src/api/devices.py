@@ -42,6 +42,7 @@ class DevicesApi(CrudApi):
             action = data.get("action")
             if action == None: 
                 raise ApiException("No action provided")
-            self.get_manager().action(id, action)
+            payload = data.get("data")
+            self.get_manager().action(id, action, payload)
             return {}
         return self.handle_request_with_data(inner)

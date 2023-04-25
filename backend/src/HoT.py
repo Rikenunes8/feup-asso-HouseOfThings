@@ -1,9 +1,6 @@
 from src.controller.managers.DevicesManager import DevicesManager
-from src.controller.adapter.DeviceAdapter import DeviceAdapter
 from src.controller.managers.RulesManager import RulesManager
 from src.controller.managers.DivisionsManager import DivisionsManager
-from src.database.DB import DB
-from src.database.CollectionTypes import Collection
 
 
 class HoTMeta(type):
@@ -23,19 +20,7 @@ class HoT(metaclass=HoTMeta):
         self._device_manager = DevicesManager(self._cid)
         self._rules_manager = RulesManager(self._cid)
         self._divisions_manager = DivisionsManager(self._cid, self._device_manager)
-        self._load_devices()
-
-    def _load_devices(self):
-        devices = DB().get(Collection.DEVICES).find_all()
-        for device in devices:
-            new_device: DeviceAdapter = DevicesManager.fabricate(
-                self._cid, device["uid"], device
-            )
-            if new_device == None:
-                continue
-            new_device.create_model()
-            new_device.connect()
-            self._device_manager.add(device["uid"], new_device)
+        self._device_manager.load()
 
     def get_device_manager(self):
         return self._device_manager

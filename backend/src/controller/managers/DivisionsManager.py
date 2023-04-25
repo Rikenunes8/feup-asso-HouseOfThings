@@ -1,7 +1,9 @@
 from src.api.ApiException import ApiException
 from src.model.Division import Division
+
 from src.controller.managers.CrudManager import CrudManager
 from src.controller.managers.DevicesManager import DevicesManager
+from src.model.devices.ConcreteDevice import ConcreteDevice
 
 
 class DivisionsManager(CrudManager):
@@ -38,7 +40,7 @@ class DivisionsManager(CrudManager):
         return division
 
     def add_device(self, division_id: str, device_uid: str):
-        device = self._device_manager.get(device_uid).get_model()
+        device = self._device_manager.get(device_uid).get()
         division = self.get(division_id)
 
         division.add_device(device_uid)
@@ -47,7 +49,7 @@ class DivisionsManager(CrudManager):
         return division
 
     def remove_device(self, division_id: str, device_uid: str):
-        device = self._device_manager.get(device_uid).get_model()
+        device = self._device_manager.get(device_uid).get()
         division = self.get(division_id)
         
         division.remove_device(device_uid)

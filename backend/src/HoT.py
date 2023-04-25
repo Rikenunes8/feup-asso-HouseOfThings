@@ -1,4 +1,4 @@
-from src.controller.managers.DeviceManager import DeviceManager
+from src.controller.managers.DevicesManager import DevicesManager
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
 from src.controller.managers.RulesManager import RulesManager
 from src.controller.managers.DivisionsManager import DivisionsManager
@@ -20,7 +20,7 @@ class HoT(metaclass=HoTMeta):
     def __init__(self):
         print("HoT init")
         self._cid = "HoT"
-        self._device_manager = DeviceManager(self._cid)
+        self._device_manager = DevicesManager(self._cid)
         self._rules_manager = RulesManager(self._cid)
         self._divisions_manager = DivisionsManager(self._cid, self._device_manager)
         self._load_devices()
@@ -28,7 +28,7 @@ class HoT(metaclass=HoTMeta):
     def _load_devices(self):
         devices = DB().get(Collection.DEVICES).find_all()
         for device in devices:
-            new_device: DeviceAdapter = DeviceManager.fabricate(
+            new_device: DeviceAdapter = DevicesManager.fabricate(
                 self._cid, device["uid"], device
             )
             if new_device == None:

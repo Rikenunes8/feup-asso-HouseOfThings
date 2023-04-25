@@ -1,11 +1,11 @@
 from src.api.ApiException import ApiException
 from src.model.Division import Division
 from src.controller.managers.CrudManager import CrudManager
-from src.controller.managers.DeviceManager import DeviceManager
+from src.controller.managers.DevicesManager import DevicesManager
 
 
 class DivisionsManager(CrudManager):
-    def __init__(self, cid: str, device_manager: DeviceManager):
+    def __init__(self, cid: str, device_manager: DevicesManager):
         super().__init__(cid)
         self._divisions: dict[str, Division] = {}
         self._device_manager = device_manager

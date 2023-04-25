@@ -3,13 +3,12 @@ import time
 from src.api.ApiException import ApiException
 from src.controller.managers.Manager import Manager
 from src.controller.adapter.DeviceAdapter import DeviceAdapter
-from src.controller.adapter.ActuatorDeviceAdapter import ActuatorDeviceAdapter
 from src.controller.adapter.LightMqttAdapter import LightMqttAdapter
 from src.controller.adapter.LightBulbPiAdapter import LightBulbPiAdapter
 from src.controller.adapter.ThermometerPiAdapter import ThermometerPiAdapter
 
 
-class DeviceManager(Manager):
+class DevicesManager(Manager):
     def __init__(self, cid) -> None:
         super().__init__(cid)
         self._devices = {}
@@ -24,7 +23,7 @@ class DeviceManager(Manager):
         return adapter
 
     def create(self, uid: str, config: dict) -> str:
-        new_device = DeviceManager.fabricate(self._cid, uid, config)
+        new_device = DevicesManager.fabricate(self._cid, uid, config)
         if new_device == None:
             raise ApiException("No device for subcategory: " + config.get("subcategory"))
         if not new_device.connect():
@@ -80,7 +79,7 @@ class DeviceManager(Manager):
         self.get(uid).action(action)
 
     def available(self, config: dict):
-        adapters = DeviceManager.fabricate(self._cid, None, config)
+        adapters = DevicesManager.fabricate(self._cid, None, config)
         if adapters == None:
             return
         

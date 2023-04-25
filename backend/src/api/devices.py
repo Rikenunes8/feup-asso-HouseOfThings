@@ -15,7 +15,7 @@ class DevicesApi(CrudApi):
         self._bp.add_url_rule("/<id>/connect", methods=('POST',), view_func=self.create)
         self._bp.add_url_rule("/<id>/disconnect", methods=('POST',), view_func=self.delete)
         self._bp.add_url_rule("/<id>/action", methods=('POST',), view_func=self.action)
-        self._bp.add_url_rule("/<id>/rename", methods=('POST',), view_func=lambda id: self.partial_update(id, ["name"]))
+        self._bp.add_url_rule("/<id>/rename", methods=('POST',), view_func=self.rename)
 
     def get_blueprint(self) -> Blueprint:
         return self._bp
@@ -28,6 +28,9 @@ class DevicesApi(CrudApi):
 
     def validate(self, _) -> str or None:
         pass
+
+    def rename(self, id):
+        return self.partial_update(id, ["name"])
 
     def available(self):
         def inner():

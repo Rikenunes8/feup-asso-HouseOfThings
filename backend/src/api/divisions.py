@@ -13,8 +13,8 @@ class DivisionsApi(CrudApi):
         self._bp.add_url_rule("/", methods=('GET',), view_func=self.all)
         self._bp.add_url_rule("/", methods=('POST',), view_func=self.create)
         self._bp.add_url_rule("/<id>/", methods=('DELETE',), view_func=self.delete)
-        self._bp.add_url_rule("/<id>/rename", methods=('POST',), view_func=lambda id: self.partial_update(id, ["name"]))
-        self._bp.add_url_rule("/<id>/change-icon", methods=('POST',), view_func=lambda id: self.partial_update(id, ["icon"]))
+        self._bp.add_url_rule("/<id>/rename", methods=('POST',), view_func=self.rename)
+        self._bp.add_url_rule("/<id>/change-icon", methods=('POST',), view_func=self.change_icon)
         self._bp.add_url_rule("/<id>/add-device", methods=('POST',), view_func=self.add_device)
         self._bp.add_url_rule("/<id>/remove-device", methods=('POST',), view_func=self.remove_device)
 
@@ -36,6 +36,12 @@ class DivisionsApi(CrudApi):
         if icon == None: return "No icon provided"
         if devices == None: division["devices"] = []
         if not isinstance(devices, list): return "devices must be a list of device UIDs"
+
+    def rename(self, id):
+        return self.partial_update(id, ["name"])
+
+    def change_icon(self, id):
+        return self.partial_update(id, ["icon"])
     
     def add_device(self, id):
         def inner(data):

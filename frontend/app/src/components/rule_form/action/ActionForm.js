@@ -9,6 +9,11 @@ import CreateRuleContext from "../../../contexts/CreateRuleContext";
 
 export default function ActionForm() {
   const { ruleActions, setRuleActions } = useContext(CreateRuleContext);
+  const [numActionsCards, setNumActionsCards] = useState(1); 
+
+  const addActionCard = () => {
+    setNumActionsCards(numActionsCards + 1);
+  };
 
   useEffect(() => {
     console.log("RULE ACTION:", ruleActions)
@@ -23,9 +28,12 @@ export default function ActionForm() {
           size={20}
           color={colors.primary}
           style={styles.setting_icon}
+          onPress={addActionCard}
         />
       </View>
-      <NewActionCard index={0}></NewActionCard>
+      {[...Array(numActionsCards)].map((_, index) => (
+        <NewActionCard index={index} key={index} />
+      ))}
     </View>
   );
 }

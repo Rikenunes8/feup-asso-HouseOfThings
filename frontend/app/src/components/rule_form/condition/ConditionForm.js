@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 import NewConditionCard from "./NewConditionCard";
 
@@ -11,31 +11,52 @@ import colors from "../../../../configs/colors";
 import NewActionCard from "../action/NewActionCard";
 
 export default function ConditionForm({}) {
-  const { ruleConditions } = useContext(CreateRuleContext);
+  const { ruleOperation, setRuleOperation , ruleConditions} = useContext(CreateRuleContext);
+
+  const [numConditionCards, setNumConditionCards] = useState(1);
+
+  const operations = [
+    { label: "AND", value: 0 },
+    { label: "OR", value: 1 },
+    { label: "MANUAL", value: 2 },
+  ];
+  
+  const changeOperation = () =>
+  {
+    console.log("PRESSED the setting button")
+  }
+
+  const addConditionCard = () => {
+    setNumConditionCards(numConditionCards + 1);
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>WHEN</Text>
+        <TouchableOpacity>
         <SimpleLineIcons
           name={"settings"}
           size={20}
           color={colors.primary}
           style={styles.plus_icon}
+          onPress={() => changeOperation()}
         />
-        <AntDesignIcon
-          name={"plus"}
-          size={20}
-          color={colors.primary}
-          style={styles.setting_icon}
-        />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <AntDesignIcon
+            name={"plus"}
+            size={20}
+            color={colors.primary}
+            style={styles.setting_icon}
+            onPress={() => addConditionCard()}
+          />
+        </TouchableOpacity>
       </View>
-      {/*ruleConditions.map((index) => (
-        <div key={index}>
-          <NewConditionCard index={index}/>
-        </div>
-      ))*/}
-      <NewConditionCard index={0}></NewConditionCard>
+     
+      {[...Array(numConditionCards)].map((_, index) => (
+        <NewConditionCard index={index} key={index} />
+      ))}
     </View>
   );
 }

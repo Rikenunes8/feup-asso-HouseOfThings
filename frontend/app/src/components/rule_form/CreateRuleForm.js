@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 import DynamicTextInput from "../form/DynamicTextInput";
 import ConditionForm from "./condition/ConditionForm";
@@ -11,7 +11,7 @@ export default function CreateRuleForm({ inputOnFocus, setInputOnFocus }) {
   const { ruleName, setRuleName } = useContext(CreateRuleContext);
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <DynamicTextInput
         label={"NAME *"}
         name={ruleName ?? ""}
@@ -21,7 +21,7 @@ export default function CreateRuleForm({ inputOnFocus, setInputOnFocus }) {
       />
       <ConditionForm></ConditionForm>
       <ActionForm></ActionForm>
-    </View>
+    </ScrollView>
   );
 }
 

@@ -9,7 +9,7 @@ const DynamicDropDown = ({
   items,
   value,
   setValue,
-  onChange = () => {},
+  onChange = (item) => {setValue(item)},
   disable = false,
 }) => {
   const [isFocus, setIsFocus] = useState(false);

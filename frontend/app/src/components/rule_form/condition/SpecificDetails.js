@@ -2,20 +2,18 @@ import React from "react";
 import ScheduleForm from "../../form/ScheduleForm";
 import DeviceDetailsForm from "./DeviceDetailsForm";
 
-export default function SpecificDetails({ ruleCondition, setRuleCondition }) {
-  switch (ruleCondition.kind) {
+export default function SpecificDetails(props) {
+  switch (props.condition) {
     case "device":
       return (
         <DeviceDetailsForm
-          ruleCondition={ruleCondition}
-          setRuleCondition={setRuleCondition}
+          index={props.index}
         ></DeviceDetailsForm>
       );
     case "schedule":
       return (
         <ScheduleForm
-          ruleCondition={ruleCondition}
-          setRuleCondition={setRuleCondition}
+          index={props.index}
         ></ScheduleForm>
       );
     default:

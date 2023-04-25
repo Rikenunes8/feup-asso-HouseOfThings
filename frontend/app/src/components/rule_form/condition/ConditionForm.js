@@ -5,57 +5,13 @@ import NewConditionCard from "./NewConditionCard";
 
 import AntDesignIcon from "react-native-vector-icons/AntDesign";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
-
-import DivisionsContext from "../../../contexts/DivisionsContext";
 import CreateRuleContext from "../../../contexts/CreateRuleContext";
 
 import colors from "../../../../configs/colors";
-import DynamicDropDown from "../../form/DynamicDropDown";
+import NewActionCard from "../action/NewActionCard";
 
 export default function ConditionForm({}) {
-  const { ruleConditions, setRuleConditions } = useContext(CreateRuleContext);
-  const [ruleCondition, setRuleCondition] = useState({
-    id: ruleConditions.length,
-    kind: null,
-  });
-  const { divisions } = useContext(DivisionsContext);
-
-  const isJsonInArray = (json, array) => {
-    const jsonStr = JSON.stringify(json);
-    return array.map((item) => JSON.stringify(item)).includes(jsonStr);
-  };
-
-  const addRuleCondition = (newItem) => {
-    if (!isJsonInArray(newItem, ruleConditions)) {
-      console.log("not in array");
-      // Create a copy of the original array
-      const newItems = [...ruleConditions];
-
-      // Add the new item to the end of the array
-      newItems.push(newItem);
-
-      // Set the state to the updated array
-      setRuleConditions(newItems);
-    }
-  };
-
-  useEffect(() => {
-    found = false;
-    const newItems = ruleConditions.map((json) => {
-      if (json.id === ruleCondition.id) {
-        json = ruleCondition;
-        found = true;
-      }
-      return json;
-    });
-
-    if (!found) {
-      newItems.push(ruleCondition);
-    }
-
-    setRuleConditions(newItems);
-    console.log(ruleConditions);
-  }, [ruleCondition]);
+  const { ruleConditions } = useContext(CreateRuleContext);
 
   return (
     <View style={styles.container}>
@@ -74,16 +30,12 @@ export default function ConditionForm({}) {
           style={styles.setting_icon}
         />
       </View>
-      {ruleConditions.map((trigger) => (
-        <Text>
-          {trigger.kind} {trigger.device}
-        </Text>
-      ))}
-
-      <NewConditionCard
-        ruleCondition={ruleCondition}
-        setRuleCondition={setRuleCondition}
-      ></NewConditionCard>
+      {/*ruleConditions.map((index) => (
+        <div key={index}>
+          <NewConditionCard index={index}/>
+        </div>
+      ))*/}
+      <NewConditionCard index={0}></NewConditionCard>
     </View>
   );
 }

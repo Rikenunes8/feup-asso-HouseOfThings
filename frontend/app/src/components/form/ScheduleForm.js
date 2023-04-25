@@ -1,27 +1,24 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 
 import Row from "../grid/Row";
 
 import WeekDayPicker from "./WeekDayPicker";
 import TimePicker from "./TimePicker";
+import CreateRuleContext from "../../contexts/CreateRuleContext";
 
-export default function ScheduleForm({ ruleCondition, setRuleCondition }) {
+export default function ScheduleForm(props) {
+  const { updateCondition } = useContext(CreateRuleContext);
+  
   const [time, setTime] = useState(null);
 
   const updateTime = (item) => {
     setTime(item);
-    setRuleCondition((prevJson) => ({
-      ...prevJson,
-      time: item,
-    }));
+    updateCondition(props.index, "time", item);
   };
 
   const updateWeekDays = (item) => {
-    setRuleCondition((prevJson) => ({
-      ...prevJson,
-      days: item,
-    }));
+    updateCondition(props.index, "days", item);
   };
 
   return (

@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import AntDesignIcon from "react-native-vector-icons/AntDesign";
 
 import colors from "../../../../configs/colors";
+import NewActionCard from "./NewActionCard";
+import CreateRuleContext from "../../../contexts/CreateRuleContext";
 
 export default function ActionForm() {
+  const { ruleActions, setRuleActions } = useContext(CreateRuleContext);
+
+  useEffect(() => {
+    console.log("RULE ACTION:", ruleActions)
+  }, [ruleActions]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -17,6 +25,7 @@ export default function ActionForm() {
           style={styles.setting_icon}
         />
       </View>
+      <NewActionCard index={0}></NewActionCard>
     </View>
   );
 }

@@ -3,41 +3,34 @@ import { StyleSheet, SafeAreaView, View } from "react-native";
 
 import DevicesContext from "../../../contexts/DevicesContext";
 import CreateRuleContext from "../../../contexts/CreateRuleContext";
+import DeviceAction from "./DeviceAction";
 
 import utils from "../../../utils/utils";
 import colors from "../../../../configs/colors";
 
-import Col from "../../grid/Column";
 import Row from "../../grid/Row";
-import SpecificDetails from "./SpecificDetails";
 import DynamicDropDown from "../../form/DynamicDropDown";
 
-export default function NewConditionCard(props) {
+export default function NewActionCard(props) {
+  const { addAction } = useContext(CreateRuleContext);
   const [ kindValue, setKindValue ] = useState({});
-  const [ condition, setCondition ] = useState("");
+  const [ category, setCategory] = useState(null);
   const { devices } = useContext(DevicesContext);
-  const { addCondition } = useContext(CreateRuleContext);
 
-  const updateKindValue = (item) => {
-    setCondition(item.parent);
-    x = (item.parent == "device" ? {"kind" : item.parent, "device_id" : item.value}: {"kind" : item.parent})
-    addCondition(props.index, x)
-      
-  }
-
-  const [items] = useState(() => {
-    all_items = [{ label: "Time", value: "time", parent: "schedule" }];
-
+  const [items] = useState(
     devices.map((item) => {
-      all_items.push({
+      return ({
         label: utils.capitalize(item.name),
         value: item.uid,
-        parent: "device",
+        category: item.category
       });
-    });
+    })
+  );
 
-    return all_items;
-  });
+  const updateDeviceValue = (item) => {
+    setCategory(item.category);
+    addAction(props.index, {"device_id" : item.value})
+  };
 
   return (
     <View style={styles.container}>
@@ -46,11 +39,12 @@ export default function NewConditionCard(props) {
           items={items}
           value={kindValue}
           setValue={setKindValue}
-          onChange={(e) => updateKindValue(e)}
+          onChange={(e) => updateDeviceValue(e)}
         ></DynamicDropDown>
       </Row>
-
-      <SpecificDetails condition={condition} index={props.index}></SpecificDetails>
+      <Row>
+        <DeviceAction index={props.index} category={category}/>
+      </Row>
     </View>
   );
 }

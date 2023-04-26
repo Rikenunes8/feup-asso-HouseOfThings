@@ -5,40 +5,41 @@ import Row from "../grid/Row";
 import Col from "../grid/Column";
 import colors from "../../../configs/colors";
 
+const weekdayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
 export default function WeekDayPicker({ updateWeekdays }) {
   const [weekdays, setWeekdays] = useState({
-    Mon: false,
-    Tue: false,
-    Wed: false,
-    Thu: false,
-    Fri: false,
-    Sat: false,
-    Sun: false,
+    Mon: true,
+    Tue: true,
+    Wed: true,
+    Thu: true,
+    Fri: true,
+    Sat: true,
+    Sun: true,
   });
 
   const handleWeekDaySelected = (weekday) => {
     setWeekdays((prevState) => ({
       ...prevState,
-      [weekday]: !weekdays[weekday],
+      [weekday]: !prevState[weekday],
     }));
-    const weekdaysSelected = Object.keys(weekdays).filter(
-      (key) => weekdays[key]
-    );
-    updateWeekdays(weekdaysSelected);
+    const weekdaysSelected = weekdayLabels.filter((key) => (weekdays[key]));
+    const indexes = weekdaysSelected.map((day) => weekdayLabels.indexOf(day));
+    updateWeekdays(indexes);
   };
 
   return (
     <Row>
-      {Object.keys(weekdays).map((weekday) => (
-        <Col>
+      {weekdayLabels.map((weekday) => (
+        <Col key={weekday}>
           <Pressable
             activeOpacity={0.6}
             onPress={() => handleWeekDaySelected(weekday)}
             style={({ pressed }) => [
               {
                 backgroundColor: pressed
-                  ? colors.transparentPrimary
-                  : colors.transparent,
+                  ? colors.transparent
+                  : colors.transparentPrimary,
               },
             ]}
           >
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 8,
     borderRadius: 5,
-    zIndex:0,
+    zIndex: 0,
   },
   daySelected: {
     backgroundColor: colors.primary,

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import TitleModal from "../../components/modal/TitleModal";
 import CreateRuleForm from "../../components/rule_form/CreateRuleForm";
@@ -12,6 +12,7 @@ import api from "../../api/api";
 
 export default function CreateRuleModal() {
   const { addRule } = useContext(RulesContext);
+  const [inputOnFocus, setInputOnFocus] = React.useState(false);
 
   const {
     createRuleModalVisible,
@@ -28,8 +29,11 @@ export default function CreateRuleModal() {
     resetCreateRuleContext,
   } = useContext(CreateRuleContext);
 
-  // TODO: Função que valida a questão da operation
+  useEffect(() => {
+    console.log(ruleConditions);
+  }, [ruleConditions]);
 
+  // TODO: Função que valida a questão da operation
   const connectCallback = () => {
     const rule = {
       name: ruleName,
@@ -38,9 +42,7 @@ export default function CreateRuleModal() {
       then: ruleActions,
     };
 
-    console.log("RULE", rule);
-    console.log(`Adding ${ruleName}...`);
-
+    console.log("Adding RULE", rule);
     setIsCreateRuleModalLoading(true);
 
     api.addRule(rule).then((newRule) => {
@@ -54,8 +56,6 @@ export default function CreateRuleModal() {
       }
     });
   };
-
-  const [inputOnFocus, setInputOnFocus] = React.useState(false);
 
   return (
     <TitleModal

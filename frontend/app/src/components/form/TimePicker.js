@@ -4,52 +4,30 @@ import { StyleSheet, Text } from "react-native";
 import Col from "../grid/Column";
 import DynamicDropDown from "./DynamicDropDown";
 
-export default function TimePicker({ time, setTime }) {
-  const [hour, setHour] = useState(null);
-  const [minute, setMinute] = useState(null);
+export default function TimePicker({ time = "00:00", setTime }) {
+  const [hour, setHour] = useState(time.split(":")[0]);
+  const [minute, setMinute] = useState(time.split(":")[1]);
 
-  const [hours, setHours] = useState(
-    Array.from({ length: 24 }, (_, i) => `${i + 1}`.padStart(2, "0")).map(
-      (item) => {
-        return { label: item, value: item };
-      }
-    )
-  );
+  const hours = Array.from({ length: 24 }, (_, i) => ({
+    label: `${i + 1}`.padStart(2, "0"),
+    value: `${i + 1}`.padStart(2, "0"),
+  }));
 
-  const [minutes, setMinutes] = useState(
-    Array.from({ length: 60 }, (_, i) => `${i + 1}`.padStart(2, "0")).map(
-      (item) => {
-        return { label: item, value: item };
-      }
-    )
-  );
+  const minutes = Array.from({ length: 60 }, (_, i) => ({
+    label: `${i + 1}`.padStart(2, "0"),
+    value: `${i + 1}`.padStart(2, "0"),
+  }));
 
   const updateHour = (item) => {
-    if (time != null) {
-      str_splitted = time.split(":");
-      current_hour = str_splitted[0];
-      current_minutes = str_splitted[1];
-
-      updated_hour = item.value + ":" + current_minutes;
-      setTime(updated_hour);
-    } else {
-      updated_hour = item.value + ":00";
-      setTime(updated_hour);
-    }
+    const updated_hour = `${item.value}:${minute.value}`;
+    setTime(updated_hour);
+    setHour(item);
   };
 
   const updateMinutes = (item) => {
-    if (time != null) {
-      str_splitted = time.split(":");
-      current_hour = str_splitted[0];
-      current_minutes = str_splitted[1];
-
-      updated_minutes = current_hour + ":" + item.value;
-      setTime(updated_minutes);
-    } else {
-      updated_hour = "00:" + item.value;
-      setTime(updated_hour);
-    }
+    const updated_minutes = `${hour.value}:${item.value}`;
+    setTime(updated_minutes);
+    setMinute(item);
   };
 
   return (
@@ -59,20 +37,22 @@ export default function TimePicker({ time, setTime }) {
           items={hours}
           value={hour}
           setValue={setHour}
-          onChange={(item) => updateHour(item)}
-        ></DynamicDropDown>
+          onChange={updateHour}
+          key="hour-dropdown"
+        />
       </Col>
       <Col>
         <Text style={styles.text}>H</Text>
       </Col>
-    
+
       <Col numRows={1}>
         <DynamicDropDown
           items={minutes}
           value={minute}
           setValue={setMinute}
-          onChange={(item) => updateMinutes(item)}
-        ></DynamicDropDown>
+          onChange={updateMinutes}
+          key="minute-dropdown"
+        />
       </Col>
       <Col>
         <Text style={styles.text}>M</Text>
@@ -85,6 +65,6 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     marginHorizontal: 10,
-    fontSize: 15, 
+    fontSize: 15,
   },
 });

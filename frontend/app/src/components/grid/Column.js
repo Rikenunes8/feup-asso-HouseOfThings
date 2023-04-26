@@ -1,6 +1,5 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import colors from "../../../configs/colors";
 
 export default function Col({ numRows, children }) {
   return (

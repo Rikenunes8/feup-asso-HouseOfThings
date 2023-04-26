@@ -125,7 +125,6 @@ const availableDevices = async (body) => {
 const getRules = async () => {
   try {
     const response = await apiClient.get("/rules");
-    console.log(response.data.rules);
     return response.data.rules;
   } catch (error) {
     console.error(error);

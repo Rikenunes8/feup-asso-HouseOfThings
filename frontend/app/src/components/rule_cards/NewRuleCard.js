@@ -1,13 +1,12 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import ModalsContext from "../../contexts/ModalsContext";
-import CreateRuleModal from "../../screens/modals/CreateRuleModal"
+import CreateRuleModal from "../../screens/modals/CreateRuleModal";
 
 import colors from "../../../configs/colors";
 
-
-export default function NewRuleCard({ }) {
+export default function NewRuleCard({}) {
   const { createRuleModalVisible, setCreateRuleModalVisible } =
     useContext(ModalsContext);
 

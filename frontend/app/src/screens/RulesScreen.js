@@ -42,7 +42,7 @@ export default function RulesScreen() {
             <RuleCard key={rule.id} rule={rule} />
           ))}
           <CreateRuleProvider>
-            <NewRuleCard/>
+            <NewRuleCard />
           </CreateRuleProvider>
         </ScrollView>
       </View>

@@ -1,23 +1,17 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
+import NewActionCard from "./NewActionCard";
 import AntDesignIcon from "react-native-vector-icons/AntDesign";
 
 import colors from "../../../../configs/colors";
-import NewActionCard from "./NewActionCard";
-import CreateRuleContext from "../../../contexts/CreateRuleContext";
 
 export default function ActionForm() {
-  const { ruleActions, setRuleActions } = useContext(CreateRuleContext);
-  const [numActionsCards, setNumActionsCards] = useState(1); 
+  const [numActionsCards, setNumActionsCards] = useState(1);
 
   const addActionCard = () => {
     setNumActionsCards(numActionsCards + 1);
   };
-
-  useEffect(() => {
-    console.log("RULE ACTION:", ruleActions)
-  }, [ruleActions]);
 
   return (
     <View style={styles.container}>
@@ -27,7 +21,7 @@ export default function ActionForm() {
           name={"plus"}
           size={20}
           color={colors.primary}
-          style={styles.setting_icon}
+          style={styles.plus_icon}
           onPress={addActionCard}
         />
       </View>
@@ -54,6 +48,5 @@ const styles = StyleSheet.create({
   plus_icon: {
     flexGrow: 0,
     marginRight: 5,
-    //backgroundColor: colors.black,
   },
 });

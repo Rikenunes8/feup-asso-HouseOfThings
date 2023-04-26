@@ -1,35 +1,34 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, SafeAreaView, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import DevicesContext from "../../../contexts/DevicesContext";
 import CreateRuleContext from "../../../contexts/CreateRuleContext";
-import DeviceAction from "./DeviceAction";
+
+import Row from "../../grid/Row";
+import DynamicDropDown from "../../form/DynamicDropDown";
+import DeviceForm from "../DeviceForm";
 
 import utils from "../../../utils/utils";
 import colors from "../../../../configs/colors";
 
-import Row from "../../grid/Row";
-import DynamicDropDown from "../../form/DynamicDropDown";
-
 export default function NewActionCard(props) {
-  const { addAction } = useContext(CreateRuleContext);
-  const [ kindValue, setKindValue ] = useState({});
-  const [ category, setCategory] = useState(null);
+  const { addARulection } = useContext(CreateRuleContext);
   const { devices } = useContext(DevicesContext);
+  const [device, setDevice] = useState({});
 
   const [items] = useState(
     devices.map((item) => {
-      return ({
+      return {
         label: utils.capitalize(item.name),
         value: item.uid,
-        category: item.category
-      });
+        category: item.category,
+      };
     })
   );
 
-  const updateDeviceValue = (item) => {
-    setCategory(item.category);
-    addAction(props.index, {"device_id" : item.value})
+  const handleDeviceChange = (item) => {
+    setDevice(item);
+    addRuleAction(props.index, { device_id: item.value });
   };
 
   return (
@@ -37,13 +36,13 @@ export default function NewActionCard(props) {
       <Row>
         <DynamicDropDown
           items={items}
-          value={kindValue}
-          setValue={setKindValue}
-          onChange={(e) => updateDeviceValue(e)}
+          value={device}
+          setValue={setDevice}
+          onChange={(e) => handleDeviceChange(e)}
         ></DynamicDropDown>
       </Row>
       <Row>
-        <DeviceAction index={props.index} category={category}/>
+        <DeviceForm index={props.index} category={device.category} isRuleCondition={false}/>
       </Row>
     </View>
   );
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     padding: 15,
-    marginVertical:10, 
-    paddingHorizontal: 20
+    marginVertical: 10,
+    paddingHorizontal: 20,
   },
 });

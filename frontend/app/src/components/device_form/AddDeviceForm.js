@@ -20,19 +20,17 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
 
   const { divisions } = useContext(DivisionsContext);
 
-  const [items, setItems] = useState(
+  const [items] = useState(
     divisions.map((item) => {
       return { label: utils.capitalize(item.name), value: item.name };
     })
   );
 
-  const [uuidItems, setUUIDItems] = useState(
+  const [uuidItems] = useState(
     availableDevices.map((item) => {
       return { label: item.uuid, value: JSON.stringify(item) };
     })
   );
-
-  const [open, setOpen] = React.useState(false);
 
   return (
     <View style={styles.container}>

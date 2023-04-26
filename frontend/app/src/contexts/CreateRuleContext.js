@@ -8,10 +8,9 @@ export const CreateRuleProvider = ({ children }) => {
   const [ruleActions, setRuleActions] = useState([
   ]);
 
-  const addCondition = (index, condition) => {
+  const addRuleCondition = (index, condition) => {
     let newConditions = [...ruleConditions];
 
-    // Se ainda não adicionou
     if (newConditions.length == index) {
       setRuleConditions([...ruleConditions, condition]);
     }
@@ -21,7 +20,7 @@ export const CreateRuleProvider = ({ children }) => {
     }
   };
 
-  const updateCondition = (index, field, value) => {
+  const updateRuleCondition = (index, field, value) => {
     let newConditions = [...ruleConditions];
 
     if (newConditions[index]) {
@@ -31,7 +30,7 @@ export const CreateRuleProvider = ({ children }) => {
     
   };
 
-  const addConditionState = (index, value) => {
+  const addRuleConditionState = (index, value) => {
     let newConditions = [...ruleConditions];
 
     if (newConditions[index]) {
@@ -40,16 +39,16 @@ export const CreateRuleProvider = ({ children }) => {
     }
   } 
 
-  const removeCondition = (index) => {
+  //TODO
+  /*const removeCondition = (index) => {
     let newConditions = [...ruleConditions];
     newConditions.splice(index, 1);
     setRuleConditions(newConditions);
-  };
+  };*/
 
-  const addAction = (index, action) => {
+  const addRuleAction = (index, action) => {
     let newActions = [...ruleActions];
 
-    // Se ainda não adicionou
     if (newActions.length == index) {
       setRuleActions([...newActions, action]);
     }
@@ -59,21 +58,21 @@ export const CreateRuleProvider = ({ children }) => {
     }
   };
 
-  const updateAction = (index, value) => {
+  const updateRuleAction = (index, value) => {
     let newActions = [...ruleActions];
 
     if (newActions[index]) {
       newActions[index]["action"] = value;
       setRuleActions(newActions);
     }
-    
   };
 
-  const removeAction = (index) => {
+  // TODO
+  /*const removeAction = (index) => {
     let newActions = [...ruleActions];
     newActions.splice(index, 1);
     setRuleActions(newActions);
-  };
+  };*/
 
   const resetCreateRuleContext = () => {
     setRuleName(null);
@@ -94,13 +93,13 @@ export const CreateRuleProvider = ({ children }) => {
         ruleActions,
         setRuleActions,
         resetCreateRuleContext,
-        addCondition,
-        updateCondition,
-        removeCondition,
-        addConditionState,
-        addAction, 
-        updateAction, 
-        removeAction,
+        addRuleCondition,
+        updateRuleCondition,
+        //removeCondition,
+        addRuleConditionState,
+        addRuleAction, 
+        updateRuleAction, 
+        //removeAction,
       }}
     >
       {children}

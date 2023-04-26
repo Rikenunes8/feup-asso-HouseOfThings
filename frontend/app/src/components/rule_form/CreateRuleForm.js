@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 
 import DynamicTextInput from "../form/DynamicTextInput";
 import ConditionForm from "./condition/ConditionForm";

@@ -1,21 +1,13 @@
 import React from "react";
-import ScheduleForm from "../../form/ScheduleForm";
-import DeviceDetailsForm from "./DeviceDetailsForm";
+import ScheduleForm from "../ScheduleForm";
+import DeviceForm from "../DeviceForm";
 
 export default function SpecificDetails(props) {
-  switch (props.condition) {
+  switch (props.type) {
     case "device":
-      return (
-        <DeviceDetailsForm
-          index={props.index}
-        ></DeviceDetailsForm>
-      );
+      return <DeviceForm index={props.index} category={props.category} isRuleCondition={true} ></DeviceForm>;
     case "schedule":
-      return (
-        <ScheduleForm
-          index={props.index}
-        ></ScheduleForm>
-      );
+      return <ScheduleForm index={props.index}></ScheduleForm>;
     default:
       return null;
   }

@@ -119,7 +119,7 @@ The pattern corresponds to the existence of a factory class that has a single cr
 
 ### Mapping
 
-The class [`DeviceManager`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/DeviceManager.py) is the factory class responsible to create the device adapters classes (entities that know how to communicate to a physical device and create a certain device model), according to the input received from the client. On the factory perspective, it has a single method `fabricate` that receives the configuration details of the adapter to be created and returns the device adapter class or any of its sub classes ([`DeviceAdapter`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/adapter/DeviceAdapter.py)).
+The class [`DevicesManager`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/DevicesManager.py) is the factory class responsible to create the device adapters classes (entities that know how to communicate to a physical device and create a certain device model), according to the input received from the client. On the factory perspective, it has a single method `fabricate` that receives the configuration details of the adapter to be created and returns the device adapter class or any of its sub classes ([`DeviceAdapter`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/adapter/DeviceAdapter.py)).
 
 <div align="center">
   <img src="./img/patterns/SimpleFactory.png" alt="SimpleFactoryPattern">
@@ -128,7 +128,7 @@ The class [`DeviceManager`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/devel
 
 ### Consequences
 
-This pattern has a big disadvantage, since it forces the `fabricate` method of the class `DeviceManager` to be updated every time there is a new device adapter class responsible for deal with a new device. However, there aren't many alternatives to solve this problem, since the device adapter classes are created dynamically and the factory class needs to know the classes to be created.
+This pattern has a big disadvantage, since it forces the `fabricate` method of the class `DevicesManager` to be updated every time there is a new device adapter class responsible for deal with a new device. However, there aren't many alternatives to solve this problem, since the device adapter classes are created dynamically and the factory class needs to know the classes to be created.
 
 The `Builder` pattern could be used to minimize the changes needed to be done since it would be possible to reuse the communication protocol or the device model. However, we would still not avoid the bad switch case.
 

@@ -16,13 +16,11 @@ class Division:
   def _create(self):
     return DB().get(Collection.DIVISIONS).add(self.to_json())
   
-  def rename(self, name: str) -> None:
-    self._name = name
-    DB().get(Collection.DIVISIONS).update(self._id, {"name": name})
-  
-  def change_icon(self, icon: str) -> None:
-    self._icon = icon
-    DB().get(Collection.DIVISIONS).update(self._id, {"icon": icon})
+  def update(self, config: dict) -> None:
+    for key, value in config.items():
+        if key in ["name", "icon", "devices"]:
+          setattr(self, "_" + key, value)
+    DB().get(Collection.DIVISIONS).update(self._id, config)
   
   def add_device(self, device: str) -> None:
     self._devices.append(device)

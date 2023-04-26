@@ -22,7 +22,7 @@ class DevicesManager(Manager):
         super().__init__(cid)
         self._devices: dict[str, Device] = {}
     
-    def all(self) -> list:
+    def all(self) -> list[Device]:
         def valid(dev: Device) -> bool:
             return dev != None and dev.get().is_connected()
         return list(filter(valid, self._devices.values()))
@@ -30,13 +30,11 @@ class DevicesManager(Manager):
     def get(self, uid: str) -> Device:
         device = self._devices.get(uid)
         if device == None:
-            raise ApiException("Device not found")
+            raise ApiException(f"Device {uid} not found")
         return device
 
     def create(self, config: dict, uid: str) -> Device:
         new_device = self._make_device(self._cid, uid, config)
-        if new_device == None:
-            raise ApiException("No device for subcategory: " + config.get("subcategory"))
         concrete_device: ConcreteDevice = new_device.get()
         if not concrete_device.connect():
             raise ApiException("Failed to connect to device with uid: " + uid)
@@ -49,7 +47,7 @@ class DevicesManager(Manager):
         self.add(uid, new_device)
         return new_device
     
-    def update(self, uid: str, data: dict):
+    def update(self, uid: str, data: dict) -> Device:
         device = self.get(uid)
         device.update(data)
         return device
@@ -60,12 +58,15 @@ class DevicesManager(Manager):
             raise ApiException("No device with uid " + uid + " to disconnect")
         device.get().disconnect()
 
-    def add(self, uid: str, device: Device) -> None:
+    def add(self, uid: str, device: Device) -> Device:
         self._devices[uid] = device
         return device
 
-    def action(self, uid: str, action, data):
-        self.get(uid).action(action, data)
+    def action(self, uid: str, action: str, data: dict) -> Device:
+        device = self.get(uid)
+        device.action(action, data)
+        return device
+
 
     def load(self):
         devices = DB().get(Collection.DEVICES).find_all()
@@ -73,20 +74,17 @@ class DevicesManager(Manager):
             if not device.get('connected'):
                 DB().get(Collection.DEVICES).remove(device.get('uid'))
                 continue
-            new_device: Device = self._make_device(self._cid, device['uid'], device, device)
-            if new_device is None:
-                continue
+            try:
+                new_device: Device = self._make_device(self._cid, device['uid'], device, device)
 
-            new_device_concrete: ConcreteDevice = new_device.get()
-            new_device_concrete.connect(True)
+                new_device_concrete: ConcreteDevice = new_device.get()
+                new_device_concrete.connect(True)
 
-            self.add(device['uid'], new_device)
+                self.add(device['uid'], new_device)
+            except ApiException as e: continue
 
     def available(self, config: dict):
         connectors = self._make_connectors(self._cid, None, config)
-        if connectors == None: 
-            return
-        
         for connector in connectors: 
             connector.start_discovery()
         
@@ -100,22 +98,24 @@ class DevicesManager(Manager):
         return devices_found
 
 
-    def _make_device(self, cid: str, uid: str, config: dict, data: dict = {}) -> Device or None:
+    def _make_device(self, cid: str, uid: str, config: dict, data: dict = {}) -> Device:
         connectors = self._make_connectors(cid, uid, config)
-        if connectors == None or len(connectors) > 1: return None
+        if len(connectors) > 1:
+            raise ApiException(f"Ambiguous connector attribution for device {uid}")
         connector = connectors[0]
         capabilities: list[str] = connector.get_capabilities()
 
         device = ConcreteDevice(uid, config, connector)
         for capability in capabilities:
             # eval to get the respective decorator capabililty class instead of making an inifinite if-else
+            # TODO check if getattr is better
             device = eval(f"{capability.title()}Cap")(device, data)
             if isinstance(device, Subscriber):
                 connector.subscribe(device)
 
         return device
 
-    def _make_connectors(self, cid: str, uid: str, config: dict) -> list[DeviceConnector] or None:
+    def _make_connectors(self, cid: str, uid: str, config: dict) -> list[DeviceConnector]:
         category = config.get("category")
         subcategory = config.get("subcategory")
         protocol = config.get("protocol")
@@ -132,7 +132,6 @@ class DevicesManager(Manager):
                 connectors.append(ThermometerPiConnector(cid, uid, config))
 
         if len(connectors) == 0:
-            print(f"No device implementation for subcategory: {subcategory} and protocol: {protocol}")
-            return None
+            raise ApiException(f"No device implementation for subcategory {subcategory} and protocol {protocol}")
         
         return connectors

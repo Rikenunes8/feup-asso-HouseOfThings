@@ -18,7 +18,7 @@ class HoT(metaclass=HoTMeta):
         print("HoT init")
         self._cid = "HoT"
         self._device_manager = DevicesManager(self._cid)
-        self._rules_manager = RulesManager(self._cid)
+        self._rules_manager = RulesManager(self._cid, self._device_manager)
         self._divisions_manager = DivisionsManager(self._cid, self._device_manager)
         self._device_manager.load()
 

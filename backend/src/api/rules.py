@@ -28,8 +28,8 @@ class RulesApi(CrudApi):
     
     def execute(self, id):
         def inner():
-            raise ApiException("Not implemented yet")
-            # TODO: implement
+            devices = HoT().get_rules_manager().execute(id)
+            return {'devices': list(map(lambda d: d.to_json(), devices))}
         return self.handle_request(inner)
 
     def validate(self, rule) -> str or None:

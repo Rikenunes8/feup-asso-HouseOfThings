@@ -5,11 +5,14 @@ from src.model.rules.Action import Action
 from src.model.rules.Rule import Rule
 from src.model.rules.Condition import Condition
 from src.controller.managers.Manager import Manager
+from src.controller.managers.DevicesManager import DevicesManager
+from src.model.devices.Device import Device
 
 class RulesManager(Manager):
-    def __init__(self, cid):
+    def __init__(self, cid: str, device_manager: DevicesManager):
         super().__init__(cid)
-        self._rules : dict[str, Rule]= {}
+        self._rules: dict[str, Rule] = {}
+        self._device_manager = device_manager
     
     @staticmethod
     def _build_conditions(conditions) -> list[Condition]:
@@ -23,10 +26,10 @@ class RulesManager(Manager):
     def _build_actions(actions) -> list[Action]:
         return list(map(lambda action: Action(action['device_id'], action['action']), actions))
 
-    def all(self):
+    def all(self) -> list[Rule]:
         return self._rules.values()
     
-    def get(self, id: str):
+    def get(self, id: str) -> Rule:
         rule = self._rules.get(id)
         if rule == None:
             raise ApiException("Rule not found")
@@ -45,12 +48,14 @@ class RulesManager(Manager):
             raise ApiException("Rule not found")
         rule.delete()
 
-    def update(self, id: str, data: dict):
+    def update(self, id: str, data: dict) -> Rule:
         rule = self.get(id)
         conditions = self._build_conditions(data['when'])
         actions = self._build_actions(data['then'])
         rule.update(data['name'], data['operation'], conditions, actions)
         return rule
 
-    def execute(self, id : str):
-        pass
+    def execute(self, rule_id: str) -> list[Device]:
+        rule = self._rules.get(rule_id)
+        if rule == None: return "Rule not found"
+        return rule.execute(self._device_manager)

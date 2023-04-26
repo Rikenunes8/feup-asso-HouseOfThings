@@ -33,25 +33,26 @@ class DevicesManager(Manager):
             raise ApiException("Device not found")
         return device
 
-    def create(self, uid: str, config: dict) -> Device:
+    def create(self, config: dict, uid: str) -> Device:
         new_device = self._make_device(self._cid, uid, config)
         if new_device == None:
             raise ApiException("No device for subcategory: " + config.get("subcategory"))
-        if not new_device.get().connect():
+        concrete_device: ConcreteDevice = new_device.get()
+        if not concrete_device.connect():
             raise ApiException("Failed to connect to device with uid: " + uid)
         name = config.get("name")
         divisions = config.get("divisions")
         if name != None:
-            new_device.get().rename(name)
+            concrete_device.rename(name)
         if divisions != None: # TODO should this also change divisions
-            new_device.get().set_divisions(divisions)
+            concrete_device.set_divisions(divisions)
         self.add(uid, new_device)
         return new_device
     
     def update(self, uid: str, data: dict):
-        adapter = self.get(uid)
-        adapter.get().update(data)
-        return adapter
+        device = self.get(uid)
+        device.update(data)
+        return device
 
     def delete(self, uid) -> None:
         device = self._devices.pop(uid, None)

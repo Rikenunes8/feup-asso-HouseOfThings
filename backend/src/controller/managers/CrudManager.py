@@ -14,7 +14,7 @@ class CrudManager(Manager):
         pass
 
     @abstractmethod
-    def create(self, data):
+    def create(self, data, id: str = None):
         pass
 
     @abstractmethod

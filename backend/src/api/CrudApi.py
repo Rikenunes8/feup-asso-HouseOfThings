@@ -43,7 +43,7 @@ class CrudApi(BaseApi):
             if id is None:
                 element = self.get_manager().create(data)
             else:
-                element = self.get_manager().create(id, data)
+                element = self.get_manager().create(data, id)
             return {self.get_element_name(): element.to_json()}
         return self.handle_request_with_data(inner)
 

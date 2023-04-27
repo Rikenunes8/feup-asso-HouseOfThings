@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, Platform, Dimensions } from "react-native";
 
 import DynamicTextInput from "../form/DynamicTextInput";
 import DynamicDropDown from "../form/DynamicDropDown";
@@ -66,6 +66,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     marginHorizontal: 28,
     marginBottom: 25,
-    marginTop: "92.5%",
+    // marginTop: Platform.OS === "android" ? "15%" : "30%",
+    marginTop:
+      105 +
+      Dimensions.get("window").height *
+        (Platform.OS === "android" ? 0.15 : 0.3),
   },
 });

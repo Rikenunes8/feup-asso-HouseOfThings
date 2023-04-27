@@ -33,6 +33,8 @@ export default function DynamicDropDown({
         placeholder=""
         dropDownContainerStyle={styles.dropdown}
         style={styles.selector}
+        closeIconStyle={styles.closeIcon}
+        iconContainerStyle={styles.iconContainer}
         disabled={disabled}
         showArrowIcon={showArrowIcon}
         listMode={listMode}
@@ -58,6 +60,14 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.black,
     borderRadius: 0,
     backgroundColor: colors.transparent,
+  },
+  closeIcon: {
+    height: 20,
+    width: 20,
+  },
+  iconContainer: {
+    width: 25,
+    alignItems: "center",
   },
   field: {
     color: colors.primary,

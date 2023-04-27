@@ -84,8 +84,13 @@ export default function DivisionCard({
         }
       />
 
-      <DivisionIcon icon={division.icon} size={30} color={colors.primaryText} />
-
+      <View style={styles.divisionIcon}>
+        <DivisionIcon
+          icon={division.icon}
+          size={25}
+          color={colors.primaryText}
+        />
+      </View>
       <Text style={styles.divisionName}>{division.name}</Text>
       <Text style={styles.divisionText}>
         {division.numDevices} {division.numDevices == 1 ? "device" : "devices"}
@@ -149,5 +154,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     flexWrap: "wrap"
-  }
+  },
+  divisionIcon: {
+    marginVertical: 5,
+  },
 });

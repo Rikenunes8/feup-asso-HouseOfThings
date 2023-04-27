@@ -42,6 +42,18 @@ const getCategories = async () => {
   }
 };
 
+const addDivision = async (division) => {
+  try {
+    const response = await apiClient.post(`/divisions`, division);
+    if (response.data.error) throw new Error(response.data.error);
+    if (response.data.division == null) throw new Error("No division returned");
+    return response.data.division;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
 const addDevice = async (id, device) => {
   try {
     const response = await apiClient.post(`/devices/${id}/connect`, device);
@@ -73,9 +85,9 @@ const actionDevice = async (id, action) => {
     const response = await apiClient.post(`/devices/${id}/action`, {
       ...action,
     });
-    if (response.data.error) {
-      console.error(response.data.error);
-    }
+
+    if (response.data.error) throw Error(response.data.error);
+    return response.data.device;
   } catch (error) {
     console.error(error);
   }
@@ -154,14 +166,26 @@ const getRules = async () => {
   }
 };
 
+const executeRule = async (id) => {
+  try {
+    const response = await apiClient.post(`/rules/${id}/execute`);
+    if (response.data.error) throw Error(response.data.error);
+    return response.data.devices;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export default {
   getDevices,
   getCategories,
   getDivisions,
+  addDivision,
   addDevice,
   disconnectDevice,
   actionDevice,
   renameDevice,
   availableDevices,
   getRules,
+  executeRule,
 };

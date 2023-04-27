@@ -1,5 +1,11 @@
 import React, { useContext, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import colors from "../../../configs/colors";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 
@@ -11,24 +17,26 @@ export default function ChooseDeviceSideBar({
   const { setDeviceCategory } = useContext(AddDeviceContext);
 
   useEffect(() => {
-    setDeviceCategory(selectedCategory.name);
+    setDeviceCategory(selectedCategory?.name);
   }, []);
 
   return (
     <View style={styles().modalSideBar}>
-      {categories.map((category, index) => (
-        <TouchableOpacity
-          key={index}
-          onPress={() => {
-            setSelectedCategory(category);
-            setDeviceCategory(category);
-          }}
-        >
-          <Text style={styles(category === selectedCategory).categoryTitle}>
-            {category.name}
-          </Text>
-        </TouchableOpacity>
-      ))}
+      <ScrollView>
+        {categories.map((category, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={() => {
+              setSelectedCategory(category);
+              setDeviceCategory(category);
+            }}
+          >
+            <Text style={styles(category === selectedCategory).categoryTitle}>
+              {category.name}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 }

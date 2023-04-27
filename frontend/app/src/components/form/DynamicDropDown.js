@@ -12,6 +12,10 @@ export default function DynamicDropDown({
   setValue,
   disabled = false,
   showArrowIcon = true,
+  listMode = "DEFAULT",
+  modalProps = {},
+  modalAnimationType = "fade",
+  modalContentContainerStyle = {},
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -29,28 +33,47 @@ export default function DynamicDropDown({
         placeholder=""
         dropDownContainerStyle={styles.dropdown}
         style={styles.selector}
+        closeIconStyle={styles.closeIcon}
+        iconContainerStyle={styles.iconContainer}
         disabled={disabled}
         showArrowIcon={showArrowIcon}
+        listMode={listMode}
+        modalTitle={label}
+        modalTitleStyle={styles.modalTitle}
+        modalProps={modalProps}
+        modalAnimationType={modalAnimationType}
+        modalContentContainerStyle={modalContentContainerStyle}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      margin: 15,
-      zIndex: 10,
-    },
-    dropdown: {
-      backgroundColor: colors.background,
-    },
-    selector: {
-      borderColor: colors.white,
-      borderBottomColor: colors.black,
-      borderRadius: 0,
-      backgroundColor: colors.transparent,
-    },
-    field: {
-      color: colors.primary,
-    },
-  });
+  container: {
+    margin: 15,
+  },
+  dropdown: {
+    backgroundColor: colors.background,
+  },
+  selector: {
+    borderColor: colors.white,
+    borderBottomColor: colors.black,
+    borderRadius: 0,
+    backgroundColor: colors.transparent,
+  },
+  closeIcon: {
+    height: 20,
+    width: 20,
+  },
+  iconContainer: {
+    width: 25,
+    alignItems: "center",
+  },
+  field: {
+    color: colors.primary,
+  },
+  modalTitle: {
+    color: colors.primary,
+    fontSize: 14,
+  },
+});

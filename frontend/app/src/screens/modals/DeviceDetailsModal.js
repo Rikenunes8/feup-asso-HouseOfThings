@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef } from "react";
 
 import ModalsContext from "../../contexts/ModalsContext";
+import DivisionsContext from "../../contexts/DivisionsContext";
 import IconModal from "../../components/modal/IconModal";
 import DeviceDetailsContextMenu from "../../components/device_details/DeviceDetailsContextMenu";
 import DeviceRenamingContextMenu from "../../components/device_details/DeviceRenamingContextMenu";
@@ -13,6 +14,8 @@ export default function DeviceDetailsModal({ device, icon, modalContent }) {
     isMenuModalRenaming,
     setIsMenuModalRenaming,
   } = useContext(ModalsContext);
+
+  const { divisions } = useContext(DivisionsContext);
 
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
@@ -35,6 +38,14 @@ export default function DeviceDetailsModal({ device, icon, modalContent }) {
     setDeviceName(device.name);
   };
 
+  const deviceDivisions = device.divisions
+    .map((divisionId) => {
+      const division = divisions.find((division) => division.id === divisionId);
+      if (division) return division.name;
+    })
+    .filter((division) => division != null)
+    .join(", ");
+
   return (
     <IconModal
       visible={deviceDetailsModalVisible == device.uid}
@@ -42,7 +53,7 @@ export default function DeviceDetailsModal({ device, icon, modalContent }) {
       titleEditable={isMenuModalRenaming}
       titleOnChangeCallback={renameCallback}
       titleRef={refDeviceName}
-      subtitle={device.divisions[0]}
+      subtitle={deviceDivisions}
       leftIcon="close"
       rightIcon="ellipsis1"
       leftIconCallback={closeCallback}

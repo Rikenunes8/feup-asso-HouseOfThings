@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 
 import DeviceDisplay from "../division_form/DeviceDisplay";
 import DivisionDetailsContextMenu from "../division_details/DivisionDetailsContextMenu";
 import IconModal from "../modal/IconModal";
 import DivisionIcon from "./DivisionIcon";
 import colors from "../../../configs/colors";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
+
 
 export default function DivisionCard({
   division,
@@ -44,11 +46,12 @@ export default function DivisionCard({
         allowLongPress && setIsDetailsModalVisible(!isDetailsModalVisible)
       }
     >
+      {/* TODO icon=division.icon*/}
       <IconModal
         title={division.name}
         subtitle={division.numDevices + " devices"}
         visible={isDetailsModalVisible}
-        icon={division.icon}
+        icon={require("../../../../assets/icon.png")} 
         leftIcon="close"
         rightIcon="ellipsis1"
         leftIconCallback={() => {
@@ -72,7 +75,7 @@ export default function DivisionCard({
                     value={searchDeviceName ?? ""}
                     onChangeText={setSearchDeviceName}
                   />
-                  <Image source={require("../../../../assets/search.png")} />
+                  <FontAwesome5Icon name="search" size={15} color={colors.primary} />
                 </View>
               </View>
 

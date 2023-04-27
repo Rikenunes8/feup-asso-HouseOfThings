@@ -15,7 +15,6 @@ import {
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../../../configs/colors";
-import utils from "../../utils/utils"
 
 //INFO detailsIcon names: close, check and ellipsis1
 
@@ -96,7 +95,7 @@ export default function IconModal({
                     <Text style={styles.detailsSubtitle}>{subtitle}</Text>
                   </View>
                   {inputOnFocus ? null : (
-                    <Image style={styles.detailsIcon} source={utils.getDeviceIcon(icon)} /> // TODO accept entire Image component instead of just source
+                    <Image style={styles.detailsIcon} source={icon} /> // TODO accept entire Image component instead of just source
                   )}
                 </View>
                 {contextMenu}

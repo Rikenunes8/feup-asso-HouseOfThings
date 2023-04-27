@@ -32,28 +32,26 @@ export default function AddDivisionForm() {
   };
 
   return (
-    <>
-      <View style={styles.container}>
-        <DynamicTextInput
-          label={"NAME *"}
-          name={divisionName ?? ""}
-          setName={setDivisionName}
-          inputOnFocus={inputOnFocus}
-          setInputOnFocus={setInputOnFocus}
-        />
-        <DynamicDropDown
-          label={"ICON *"}
-          items={iconItems}
-          setItems={setIconItems}
-          value={divisionIcon}
-          setValue={setDivisionIcon}
-          listMode={"MODAL"}
-          modalProps={modalProps}
-          modalContentContainerStyle={styles.modalContent}
-        />
-      </View>
+    <View style={styles.container}>
+      <DynamicTextInput
+        label={"NAME *"}
+        name={divisionName ?? ""}
+        setName={setDivisionName}
+        inputOnFocus={inputOnFocus}
+        setInputOnFocus={setInputOnFocus}
+      />
+      <DynamicDropDown
+        label={"ICON *"}
+        items={iconItems}
+        setItems={setIconItems}
+        value={divisionIcon}
+        setValue={setDivisionIcon}
+        listMode={"MODAL"}
+        modalProps={modalProps}
+        modalContentContainerStyle={styles.modalContent}
+      />
       <DevicesDisplayInForm />
-    </>
+    </View>
   );
 }
 
@@ -66,7 +64,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     marginHorizontal: 28,
     marginBottom: 25,
-    // marginTop: Platform.OS === "android" ? "15%" : "30%",
     marginTop:
       105 +
       Dimensions.get("window").height *

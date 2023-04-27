@@ -10,19 +10,14 @@ export default function DevicesDisplayInForm() {
   const { devices } = useContext(DevicesContext);
 
   return (
-    <View style={styles.deviceDisplayContainer}>
-      <View style={styles.search}>
-        <Text style={styles.title}>DEVICES</Text>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.field}>DEVICES</Text>
         {/* TODO: action of search */}
-        <FontAwesome5Icon
-          name="search"
-          size={16}
-          color={colors.primary}
-          solid
-        />
+        <FontAwesome5Icon name="search" size={15} color={colors.primary} />
       </View>
 
-      <View style={styles.devices}>
+      <View style={styles.list}>
         {devices.map((device, index) => (
           <DeviceDisplay key={index} device={device} />
         ))}
@@ -32,28 +27,22 @@ export default function DevicesDisplayInForm() {
 }
 
 const styles = StyleSheet.create({
-  title: {
+  container: {
+    margin: 15,
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  field: {
     color: colors.primary,
   },
-  deviceDisplayContainer: {
-    marginTop: 15,
-    width: "100%",
-    flexDirection: "column",
-    justifyContent: "space-evenly",
-  },
-  search: {
-    paddingHorizontal: 50,
+  list: {
+    paddingVertical: 15,
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  devices: {
-    marginTop: 20,
-    paddingHorizontal: 15,
-    justifyContent: "space-between",
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
     flexWrap: "wrap",
+    justifyContent: "space-between",
   },
 });

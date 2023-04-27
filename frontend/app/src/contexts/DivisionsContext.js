@@ -4,6 +4,10 @@ const DivisionsContext = createContext();
 export const DivisionsProvider = ({ children }) => {
   const [divisions, setDivisions] = useState([]);
 
+  const getDivision = (id) => {
+    return divisions.find((division) => division.id === id);
+  };
+
   const addDivision = (newDivision) => {
     setDivisions([newDivision, ...divisions]);
   };
@@ -25,6 +29,7 @@ export const DivisionsProvider = ({ children }) => {
       value={{
         divisions,
         setDivisions,
+        getDivision,
         addDivision,
         removeDivision,
         updateDivision,

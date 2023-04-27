@@ -38,7 +38,7 @@ export default function HomeScreen() {
     let filteredDevices = devices;
     if (selectedDivision) {
       filteredDevices = filteredDevices.filter((device) =>
-        device.divisions.includes(selectedDivision)
+        device.divisions.includes(selectedDivision.id)
       );
     }
 
@@ -51,7 +51,7 @@ export default function HomeScreen() {
     return (
       <Text style={styles.sectionMessage}>
         No devices connected
-        {selectedDivision ? " in " + selectedDivision : "..."}
+        {selectedDivision ? " in " + selectedDivision.name : "..."}
       </Text>
     );
   };
@@ -83,9 +83,11 @@ export default function HomeScreen() {
               <DivisionCard
                 key={key}
                 division={division}
-                onPress={() => setSelectedDivision(division.name)}
+                onPress={() => setSelectedDivision(division)}
                 allowLongPress={true}
-                highlighted={selectedDivision === division.name}
+                highlighted={
+                  selectedDivision && selectedDivision.id === division.id
+                }
               />
             ))}
             <NewDivisionCard />

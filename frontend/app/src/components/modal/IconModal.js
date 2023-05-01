@@ -12,6 +12,7 @@ import {
   Keyboard,
   TextInput,
 } from "react-native";
+import DivisionIcon from "../division_cards/DivisionIcon";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../../../configs/colors";
@@ -95,7 +96,11 @@ export default function IconModal({
                     <Text style={styles.detailsSubtitle}>{subtitle}</Text>
                   </View>
                   {inputOnFocus ? null : (
-                    <Image style={styles.detailsIcon} source={icon} /> // TODO accept entire Image component instead of just source
+                    <DivisionIcon
+                    icon={icon}
+                    size={135}
+                    color={colors.white}
+                  />
                   )}
                 </View>
                 {contextMenu}

@@ -51,7 +51,7 @@ export default function DivisionCard({
         title={division.name}
         subtitle={division.numDevices + " devices"}
         visible={isDetailsModalVisible}
-        icon={require("../../../../assets/icon.png")} 
+        icon={division.icon} 
         leftIcon="close"
         rightIcon="ellipsis1"
         leftIconCallback={() => {

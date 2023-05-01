@@ -12,10 +12,10 @@ import {
   Keyboard,
   TextInput,
 } from "react-native";
-import DivisionIcon from "../division_cards/DivisionIcon";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../../../configs/colors";
+import utils from "../../utils/utils";
 
 //INFO detailsIcon names: close, check and ellipsis1
 
@@ -31,12 +31,27 @@ export default function IconModal({
   leftIconCallback,
   rightIconCallback,
   icon,
+  type,
   contextMenu,
   modalContent,
   inputOnFocus,
   isLoading = false,
 }) {
-  return (
+
+  function displayIcon() {
+    if(inputOnFocus) return null;
+
+    switch(type) {
+      case "device":
+        return utils.getDeviceImg(icon);
+      case "division":
+        return utils.getDivisionImg(icon);
+      default:
+        return utils.getDeviceImg(icon);
+    }
+  }
+
+  return ( 
     <Modal animationType="slide" transparent={true} visible={visible}>
       {/*TODO: remove the transparent view when we get the bottom page to be darker*/}
       <KeyboardAvoidingView
@@ -95,13 +110,7 @@ export default function IconModal({
                     </View>
                     <Text style={styles.detailsSubtitle}>{subtitle}</Text>
                   </View>
-                  {inputOnFocus ? null : (
-                    <DivisionIcon
-                    icon={icon}
-                    size={135}
-                    color={colors.white}
-                  />
-                  )}
+                  {displayIcon()}
                 </View>
                 {contextMenu}
               </View>

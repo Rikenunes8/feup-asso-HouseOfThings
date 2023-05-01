@@ -8,7 +8,6 @@ import DivisionIcon from "./DivisionIcon";
 import colors from "../../../configs/colors";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
-
 export default function DivisionCard({
   division,
   onPress,
@@ -51,7 +50,8 @@ export default function DivisionCard({
         title={division.name}
         subtitle={division.numDevices + " devices"}
         visible={isDetailsModalVisible}
-        icon={division.icon} 
+        icon={division.icon}
+        type="division" 
         leftIcon="close"
         rightIcon="ellipsis1"
         leftIconCallback={() => {

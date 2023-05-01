@@ -28,9 +28,9 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
       return {
         label: utils.capitalize(item.name),
         value: item.id,
-        icon: () => (
-          <IconModal icon={item.icon} size={20} color={colors.black} />
-        ),
+        icon: () => {
+          return <IconModal type="device" icon={item.icon} size={20} color={colors.black} />
+        },
       };
     })
   );

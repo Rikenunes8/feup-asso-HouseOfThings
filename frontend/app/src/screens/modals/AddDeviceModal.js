@@ -88,6 +88,7 @@ export default function AddDeviceModal() {
         connectCallback();
       }}
       icon={utils.getDeviceIcon(deviceSubcategory)}
+      type="device"
       modalContent={
         <AddDeviceForm
           inputOnFocus={inputOnFocus}

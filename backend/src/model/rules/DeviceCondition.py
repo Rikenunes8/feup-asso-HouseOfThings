@@ -1,5 +1,4 @@
 from src.model.rules.Condition import Condition
-from src.model.devices.Device import Device
 
 class DeviceCondition(Condition):
   def __init__(self, device_id : str, state : dict) -> None:

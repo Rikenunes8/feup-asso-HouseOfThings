@@ -1,51 +1,48 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, request
 from src.HoT import HoT
-from src.api.utils import make_error, not_json_error, is_content_json
+from src.controller.managers.DevicesManager import DevicesManager
+from src.api.CrudApi import CrudApi
+from src.api.ApiException import ApiException
 
 
-devices = Blueprint('devices', __name__, url_prefix='/devices')
+class DevicesApi(CrudApi):
+    def __init__(self):
+        super().__init__()
+        self._bp = Blueprint('devices', __name__, url_prefix='/devices')
 
-@devices.get("/")
-def index():
-  devices = HoT().devices()
-  return jsonify({'devices': list(map(lambda device: device.to_json() if device != None else {}, devices))})
+        self._bp.add_url_rule("/", methods=('GET',), view_func=self.all)
+        self._bp.add_url_rule("/available", methods=('GET',), view_func=self.available)
+        self._bp.add_url_rule("/<id>/connect", methods=('POST',), view_func=self.create)
+        self._bp.add_url_rule("/<id>/disconnect", methods=('POST',), view_func=self.delete)
+        self._bp.add_url_rule("/<id>/action", methods=('POST',), view_func=self.action)
+        self._bp.add_url_rule("/<id>/rename", methods=('POST',), view_func=self.rename)
 
+    def get_blueprint(self) -> Blueprint:
+        return self._bp
 
-@devices.get("/available")
-def available():
-  devices = HoT().available(request.args.to_dict())
-  return jsonify({'devices': devices})
+    def get_element_name(self) -> str:
+        return "device"
 
+    def get_manager(self) -> DevicesManager:
+        return HoT().get_device_manager()
 
-@devices.post("/<id>/connect")
-def connect(id):
-  if (not is_content_json(request)): return not_json_error()
-  
-  device = HoT().connect(id, request.json)
-  if type(device) == str: return make_error(device, 404)
-  else: return jsonify({'device': device})
+    def validate(self, _) -> str or None:
+        pass
 
+    def rename(self, id):
+        return self.partial_update(id, ["name"])
 
-@devices.post("/<id>/disconnect")
-def disconnect(id):
-  error = HoT().disconnect(id)
-  if error: return make_error(error, 404)
-  else:     return jsonify({})
+    def available(self):
+        def inner():
+            return {'devices': self.get_manager().available(request.args.to_dict())}
+        return self.handle_request(inner)
 
-
-@devices.post("/<id>/action")
-def action(id):
-  if (not is_content_json(request)): return not_json_error()
-
-  error = HoT().action(id, request.json)
-  if error: return make_error(error)
-  else:     return jsonify({})
-
-
-@devices.post("/<id>/rename")
-def rename(id):
-  if (not is_content_json(request)): return not_json_error()
-
-  error = HoT().rename(id, request.json)
-  if error: return make_error(error)
-  else:     return jsonify({})
+    def action(self, id):
+        def inner(data):
+            action = data.get("action")
+            if action == None: 
+                raise ApiException("No action provided")
+            payload = data.get("data")
+            device = self.get_manager().action(id, action, payload)
+            return {'device': device.to_json()}
+        return self.handle_request_with_data(inner)

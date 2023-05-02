@@ -12,11 +12,12 @@ import utils from "../../../utils/utils";
 import colors from "../../../../configs/colors";
 
 export default function NewActionCard(props) {
-  const { addARulection } = useContext(CreateRuleContext);
+  const { addRuleAction } = useContext(CreateRuleContext);
   const { devices } = useContext(DevicesContext);
-  const [device, setDevice] = useState({});
+  const [device, setDevice] = useState(null);
+  const [category, setCategory] = useState(null);
 
-  const [items] = useState(
+  const [items, setItems] = useState(
     devices.map((item) => {
       return {
         label: utils.capitalize(item.name),
@@ -27,8 +28,13 @@ export default function NewActionCard(props) {
   );
 
   const handleDeviceChange = (item) => {
-    setDevice(item);
+    setCategory(item.category);
     addRuleAction(props.index, { device_id: item.value });
+  };
+
+  const modalProps = {
+    transparent: true,
+    presentationStyle: "overFullScreen",
   };
 
   return (
@@ -36,13 +42,17 @@ export default function NewActionCard(props) {
       <Row>
         <DynamicDropDown
           items={items}
+          setItems={setItems}
           value={device}
           setValue={setDevice}
-          onChange={(e) => handleDeviceChange(e)}
+          listMode={"MODAL"}
+          modalProps={modalProps}
+          modalContentContainerStyle={styles.modalContent}
+          onSelectItem={(e) => handleDeviceChange(e)}
         ></DynamicDropDown>
       </Row>
       <Row>
-        <DeviceForm index={props.index} category={device.category} isRuleCondition={false}/>
+        <DeviceForm index={props.index} category={category} isRuleCondition={false}/>
       </Row>
     </View>
   );
@@ -61,5 +71,11 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 10,
     paddingHorizontal: 20,
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    marginHorizontal: 28,
+    marginBottom: 25,
+    marginTop: "92.5%",
   },
 });

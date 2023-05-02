@@ -1,58 +1,82 @@
-import React, { useState } from "react";
-
-import { StyleSheet, Text, View } from "react-native";
-import { Dropdown } from "react-native-element-dropdown";
+import React from "react";
+import { StyleSheet, View, Text } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
 
 import colors from "../../../configs/colors";
 
-const DynamicDropDown = ({
-  label = "",
+export default function DynamicDropDown({
+  label,
   items,
+  setItems,
   value,
   setValue,
-  onChange = (item) => {setValue(item.value)},
-  disable = false,
-}) => {
-
-  const renderLabel = () => {
-    return <Text style={styles.label}>{label}</Text>;
-  };
+  disabled = false,
+  showArrowIcon = true,
+  listMode = "DEFAULT",
+  modalProps = {},
+  modalAnimationType = "fade",
+  modalContentContainerStyle = {},
+  onSelectItem = () => {},
+}) {
+  const [open, setOpen] = React.useState(false);
 
   return (
     <View style={styles.container}>
-      {renderLabel()}
-      <Dropdown
-        style={styles.dropdown}
-        placeholderStyle={styles.placeholderStyle}
-        inputSearchStyle={styles.inputSearchStyle}
-        data={items}
-        disable={disable}
-        search
-        maxHeight={300}
-        labelField="label"
-        valueField="value"
-        placeholder={""}
-        searchPlaceholder="Search..."
+      <Text style={styles.field}>{label}</Text>
+
+      <DropDownPicker
+        open={open}
         value={value}
-        onChange={onChange}
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+        placeholder=""
+        dropDownContainerStyle={styles.dropdown}
+        style={styles.selector}
+        closeIconStyle={styles.closeIcon}
+        iconContainerStyle={styles.iconContainer}
+        disabled={disabled}
+        showArrowIcon={showArrowIcon}
+        listMode={listMode}
+        modalTitle={label}
+        modalTitleStyle={styles.modalTitle}
+        modalProps={modalProps}
+        modalAnimationType={modalAnimationType}
+        modalContentContainerStyle={modalContentContainerStyle}
+        onSelectItem={onSelectItem}
       />
     </View>
   );
-};
-
-export default DynamicDropDown;
+}
 
 const styles = StyleSheet.create({
   container: {
-    width: "90%",
+    margin: 15,
+    width: "100%",
   },
   dropdown: {
-    borderColor: colors.black,
-    borderBottomWidth: 1,
-    padding: 3,
+    backgroundColor: colors.background,
   },
-  label: {
-    fontSize: 14,
+  selector: {
+    borderColor: colors.white,
+    borderBottomColor: colors.black,
+    borderRadius: 0,
+    backgroundColor: colors.transparent,
+  },
+  closeIcon: {
+    height: 20,
+    width: 20,
+  },
+  iconContainer: {
+    width: 25,
+    alignItems: "center",
+  },
+  field: {
     color: colors.primary,
+  },
+  modalTitle: {
+    color: colors.primary,
+    fontSize: 14,
   },
 });

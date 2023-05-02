@@ -1,10 +1,13 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 
 import DynamicTextInput from "../form/DynamicTextInput";
 import DynamicDropDown from "../form/DynamicDropDown";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 import DivisionsContext from "../../contexts/DivisionsContext";
+
+import IconModal from "../division_cards/DivisionIcon";
+import colors from "../../../configs/colors";
 import utils from "../../utils/utils";
 
 export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
@@ -20,39 +23,60 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
 
   const { divisions } = useContext(DivisionsContext);
 
-  const [items] = useState(
+  const [items, setItems] = useState(
     divisions.map((item) => {
-      return { label: utils.capitalize(item.name), value: item.name };
+      return {
+        label: utils.capitalize(item.name),
+        value: item.id,
+        icon: () => (
+          <IconModal icon={item.icon} size={20} color={colors.black} />
+        ),
+      };
     })
   );
 
-  const [uuidItems] = useState(
+  const [uuidItems, setUUIDItems] = useState(
     availableDevices.map((item) => {
       return { label: item.uuid, value: JSON.stringify(item) };
     })
   );
 
+  const modalProps = {
+    transparent: true,
+    presentationStyle: "overFullScreen",
+  };
+
   return (
     <View style={styles.container}>
-      <DynamicDropDown
-        label={"UUID *"}
-        items={uuidItems}
-        value={deviceUUID}
-        setValue={setDeviceUUID}
-      ></DynamicDropDown>
-      <DynamicTextInput
-        label={"NAME *"}
-        name={deviceName ?? ""}
-        setName={setDeviceName}
-        inputOnFocus={inputOnFocus}
-        setInputOnFocus={setInputOnFocus}
-      />
-      <DynamicDropDown
-        label={"DIVISION"}
-        items={items}
-        value={deviceDivision}
-        setValue={setDeviceDivision}
-      ></DynamicDropDown>
+      <ScrollView style={styles.scrollContent}>
+        <DynamicDropDown
+          label={"UUID *"}
+          items={uuidItems}
+          setItems={setUUIDItems}
+          value={deviceUUID}
+          setValue={setDeviceUUID}
+          listMode={"MODAL"}
+          modalProps={modalProps}
+          modalContentContainerStyle={styles.modalContent}
+        />
+        <DynamicTextInput
+          label={"NAME *"}
+          name={deviceName ?? ""}
+          setName={setDeviceName}
+          inputOnFocus={inputOnFocus}
+          setInputOnFocus={setInputOnFocus}
+        />
+        <DynamicDropDown
+          label={"DIVISION"}
+          items={items}
+          setItems={setItems}
+          value={deviceDivision}
+          setValue={setDeviceDivision}
+          listMode={"MODAL"}
+          modalProps={modalProps}
+          modalContentContainerStyle={styles.modalContent}
+        />
+      </ScrollView>
     </View>
   );
 }
@@ -61,8 +85,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
-    alignItems: "center",
+    alignItems: "flex-start",
     marginVertical: 5,
-    paddingTop: 5,
+  },
+  scrollContent: {
+    width: "100%",
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    marginHorizontal: 28,
+    marginBottom: 25,
+    marginTop: "92.5%",
   },
 });

@@ -12,19 +12,27 @@ import SpecificDetails from "./SpecificDetails";
 import DynamicDropDown from "../../form/DynamicDropDown";
 
 export default function NewConditionCard(props) {
-  const [ type, setType ] = useState({});
+  const [ type, setType] = useState(null);
+  const [ info, setInfo] = useState({});
   const { devices } = useContext(DevicesContext);
   const { addRuleCondition } = useContext(CreateRuleContext);
 
   const handleTypeChange = (item) => {
-    setType(item);
-    x = (item.parent == "device" ? {"kind" : item.parent, "device_id" : item.value}: {"kind" : item.parent})
-    addRuleCondition(props.index, x)
-  }
+    
+    setInfo(item);
+    x =
+      item.parent == "device"
+        ? { kind: item.parent, device_id: item.value }
+        : { kind: item.parent };
+    addRuleCondition(props.index, x);
+  };
 
-  const [items] = useState(() => {
-    all_items = [{ label: "Time", value: "time", parent: "schedule" }];
-
+  const [items, setItems] = useState(() => {
+    all_items = [
+      { label: "Time", value: "time", parent: "schedule" },
+      { label: "Schedule", value: "schedule" },
+      { label: "Devices", value: "device" },
+    ];
     devices.map((item) => {
       all_items.push({
         label: utils.capitalize(item.name),
@@ -33,22 +41,37 @@ export default function NewConditionCard(props) {
         category: item.category,
       });
     });
-
     return all_items;
   });
+
+  const modalProps = {
+    transparent: true,
+    presentationStyle: "overFullScreen",
+  };
 
   return (
     <View style={styles.container}>
       <Row>
         <DynamicDropDown
           items={items}
+          setItems={setItems}
           value={type}
           setValue={setType}
-          onChange={(e) => handleTypeChange(e)}
+          listMode={"MODAL"}
+          modalProps={modalProps}
+          modalContentContainerStyle={styles.modalContent}
+          onSelectItem={(e) => handleTypeChange(e)}
         ></DynamicDropDown>
       </Row>
 
-      <SpecificDetails type={type.parent} index={props.index} category={type.category}></SpecificDetails>
+      {type != {} ? (
+ 
+        <SpecificDetails
+          type={info.parent}
+          index={props.index}
+          category={info.category}
+        ></SpecificDetails>
+      ) : null}
     </View>
   );
 }
@@ -64,8 +87,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     padding: 15,
-    marginVertical:10, 
+    marginVertical: 10,
     paddingHorizontal: 20,
-    zIndex: 0
+    zIndex: 0,
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    marginHorizontal: 28,
+    marginBottom: 25,
+    marginTop: "92.5%",
   },
 });

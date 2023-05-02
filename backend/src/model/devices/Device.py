@@ -1,43 +1,32 @@
 from abc import ABC, abstractmethod
 from src.database.DB import DB
-
+from src.database.CollectionTypes import Collection
 
 class Device(ABC):
-    NO_NAME = "Unamed"
+    def __init__(self, id: str) -> None:
+        self._id: str = id
 
-    def __init__(self, id: int) -> None:
-        super().__init__()
-        self._id = id
-        self._config : dict = None
-
-    def rename(self, name: str) -> None:
-        self.update({"name": name})
-
-    def set_divisions(self, divisions: list) -> None:
-        self.update({"divisions": divisions})
-
-    def get_id(self) -> int:
+    def get_id(self) -> str:
         return self._id
-
-    def add(self, state: dict) -> None:
-        DB().add_device(self._id, {
-            "category": self._config.get("category"),
-            "subcategory": self._config.get("subcategory"),
-            "protocol": self._config.get("protocol"),
-            "name": self.NO_NAME,
-            "divisions": [],
-            **state
-        }
-        )
+        
 
     def update(self, state: dict) -> None:
-        DB().update_device(self._id, state)
+        DB().get(Collection.DEVICES).update(self._id, state)
 
     def remove(self) -> None:
-        DB().delete_device(self._id)
+        DB().get(Collection.DEVICES).delete(self._id)
 
     def find(self) -> dict:
-        return DB().find_device(self._id)
+        return DB().get(Collection.DEVICES).find(self._id)
+
+
+    @abstractmethod
+    def get(self):
+        pass
+
+    @abstractmethod
+    def action(self, action: str, data: dict = None, updated_state = None) -> bool:
+        pass
 
     @abstractmethod
     def to_json(self) -> dict:

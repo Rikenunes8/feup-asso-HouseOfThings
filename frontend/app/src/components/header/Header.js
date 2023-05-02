@@ -1,27 +1,12 @@
-import React, { useContext } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import Icon from "react-native-vector-icons/SimpleLineIcons";
-
-import UsernameContext from "../../contexts/UsernameContext";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 import colors from "../../../configs/colors";
 
 export default function Header() {
-  const navigation = useNavigation();
-
-  const { username } = useContext(UsernameContext);
-
   return (
     <View style={styles.header}>
-      <TouchableOpacity
-        // on press should open the profile screen
-        onPress={() => navigation.navigate("Profile")}
-        style={styles.icon}
-      >
-        <Icon name={"user"} size={20} color={colors.primaryText} />
-      </TouchableOpacity>
-      <Text style={styles.message}>Hello, {username.trim()}!</Text>
+      <Text style={styles.message}>Hello!</Text>
     </View>
   );
 }

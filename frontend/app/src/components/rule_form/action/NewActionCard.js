@@ -15,20 +15,36 @@ export default function NewActionCard(props) {
   const { addRuleAction } = useContext(CreateRuleContext);
   const { devices } = useContext(DevicesContext);
   const [device, setDevice] = useState(null);
-  const [category, setCategory] = useState(null);
+  const [info, setInfo] = useState({});
 
-  const [items, setItems] = useState(
+  const [items, setItems] = useState(() => {
+    fixed_fields = [
+      "category",
+      "connected",
+      "divisions",
+      "name",
+      "protocol",
+      "subcategory",
+      "uid",
+    ];
+    all_items = [];
     devices.map((item) => {
-      return {
+      capabilities = Object.keys(item).filter(
+        (key) => !fixed_fields.includes(key)
+      );
+      all_items.push({
         label: utils.capitalize(item.name),
         value: item.uid,
         category: item.category,
-      };
-    })
-  );
+        capabilities: capabilities,
+      });
+    });
+    console.log("All Items:", all_items);
+    return all_items;
+  });
 
   const handleDeviceChange = (item) => {
-    setCategory(item.category);
+    setInfo(item);
     addRuleAction(props.index, { device_id: item.value });
   };
 
@@ -37,6 +53,7 @@ export default function NewActionCard(props) {
     presentationStyle: "overFullScreen",
   };
 
+  console.log(info);
   return (
     <View style={styles.container}>
       <Row>
@@ -52,7 +69,12 @@ export default function NewActionCard(props) {
         ></DynamicDropDown>
       </Row>
       <Row>
-        <DeviceForm index={props.index} category={category} isRuleCondition={false}/>
+        <DeviceForm
+          index={props.index}
+          category={info.category}
+          isRuleCondition={false}
+          capabilities={info.capabilities}
+        />
       </Row>
     </View>
   );

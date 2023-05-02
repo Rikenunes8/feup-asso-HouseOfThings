@@ -12,13 +12,12 @@ import SpecificDetails from "./SpecificDetails";
 import DynamicDropDown from "../../form/DynamicDropDown";
 
 export default function NewConditionCard(props) {
-  const [ type, setType] = useState(null);
-  const [ info, setInfo] = useState({});
+  const [type, setType] = useState(null);
+  const [info, setInfo] = useState({});
   const { devices } = useContext(DevicesContext);
   const { addRuleCondition } = useContext(CreateRuleContext);
 
   const handleTypeChange = (item) => {
-    
     setInfo(item);
     x =
       item.parent == "device"
@@ -28,17 +27,30 @@ export default function NewConditionCard(props) {
   };
 
   const [items, setItems] = useState(() => {
+    fixed_fields = [
+      "category",
+      "connected",
+      "divisions",
+      "name",
+      "protocol",
+      "subcategory",
+      "uid",
+    ];
     all_items = [
       { label: "Time", value: "time", parent: "schedule" },
       { label: "Schedule", value: "schedule" },
       { label: "Devices", value: "device" },
     ];
     devices.map((item) => {
+      capabilities = Object.keys(item).filter(
+        (key) => !fixed_fields.includes(key)
+      );
       all_items.push({
         label: utils.capitalize(item.name),
         value: item.uid,
         parent: "device",
         category: item.category,
+        capabilities: capabilities,
       });
     });
     return all_items;
@@ -65,10 +77,10 @@ export default function NewConditionCard(props) {
       </Row>
 
       {type != {} ? (
- 
         <SpecificDetails
           type={info.parent}
           index={props.index}
+          capabilities={info.capabilities}
           category={info.category}
         ></SpecificDetails>
       ) : null}

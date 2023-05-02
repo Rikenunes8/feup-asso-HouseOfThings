@@ -9,15 +9,38 @@ import ConfigurationsForm from "./condition/ConfigurationsForm";
 
 import colors from "../../../configs/colors";
 
-export default function LightSpecs({ index, isRuleCondition }) {
+export default function LightSpecs({ index, isRuleCondition, capabilities }) {
+  console.log("LightSpecs: capabilities: ", capabilities);
 
-  //TODO - Não fazer isto hardcoded
-  const [possibleConfigurations, setPossibleConfigurations] = useState([
-    { label: "Status", value: "status" },
-    { label: "Brightness", value: isRuleCondition ? "slider" : "dropdown" },
-  ]);
+  const capabilitiesMap = {
+    power: {
+      name: "Status",
+      component: "switch",
+    },
+    brightness: {
+      name: "Brightness",
+      component: isRuleCondition ? "slider" : "dropdown",
+    },
+    temperature: {
+      name: "Temperature",
+      component: isRuleCondition ? "slider" : "dropdown",
+    },
+  };
 
-  const [currentConfiguration, setCurrentConfiguration] = useState(possibleConfigurations[0].value);
+  const [possibleConfigurations, setPossibleConfigurations] = useState(
+    capabilities.map((capability) => {
+      return {
+        label: capabilitiesMap[capability].name,
+        value: capabilitiesMap[capability].component,
+      };
+    })
+  );
+
+  console.log("LightSpecs: possibleConfigurations: ", possibleConfigurations);
+
+  const [currentConfiguration, setCurrentConfiguration] = useState(
+    possibleConfigurations[0].value
+  );
 
   const modalProps = {
     transparent: true,

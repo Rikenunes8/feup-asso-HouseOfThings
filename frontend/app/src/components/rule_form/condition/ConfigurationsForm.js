@@ -33,7 +33,7 @@ export default function ConfigurationsForm(props) {
 
   const handleStatusChange = (item) => {
     setState(!state);
-    action = item ? "turnon" : "turnoff";
+    action = item ? "turn_on" : "turn_off";
     if (props.isCondition)
       addRuleConditionState(props.index, { ["status"]: action });
     else {
@@ -66,7 +66,7 @@ export default function ConfigurationsForm(props) {
   };
 
   switch (props.feat) {
-    case "status":
+    case "switch":
       return (
         <View style={styles.center}>
           <Switch
@@ -122,18 +122,17 @@ export default function ConfigurationsForm(props) {
 }
 
 const styles = StyleSheet.create({
-  switch: { marginRight: 15},
+  switch: { marginRight: 15 },
   modalContent: {
     backgroundColor: colors.white,
     marginHorizontal: 28,
     marginBottom: 25,
     marginTop: "92.5%",
   },
-  center:
-  {
-    flex:1,
+  center: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    width: "100%"
-  }
+    width: "100%",
+  },
 });

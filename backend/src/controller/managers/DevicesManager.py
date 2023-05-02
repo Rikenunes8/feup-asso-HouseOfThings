@@ -1,6 +1,7 @@
 import time
 
 from src.api.ApiException import ApiException
+from src.api.utils import format_sse
 from src.model.devices.Device import Device
 from src.model.devices.ConcreteDevice import ConcreteDevice
 from src.controller.managers.Manager import Manager
@@ -9,6 +10,7 @@ from src.controller.device_connectors.BasicLightMqttConnector import BasicLightM
 from src.controller.device_connectors.BasicLightPiConnector import BasicLightPiConnector
 from src.controller.device_connectors.ThermometerPiConnector import ThermometerPiConnector
 from src.controller.observer.Subscriber import Subscriber
+from src.controller.announcer.MessageAnnouncer import MessageAnnouncer
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 
@@ -21,7 +23,15 @@ class DevicesManager(Manager):
     def __init__(self, cid) -> None:
         super().__init__(cid)
         self._devices: dict[str, Device] = {}
+        self._announcer = MessageAnnouncer()
     
+    def announcer(self) -> MessageAnnouncer:
+        return self._announcer
+
+    def announce(self, data: str) -> None:
+        msg = format_sse(data=data)
+        self._announcer.announce(msg=msg)
+
     def all(self) -> list[Device]:
         def valid(dev: Device) -> bool:
             return dev != None and dev.get().is_connected()

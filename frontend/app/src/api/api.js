@@ -42,6 +42,19 @@ const getCategories = async () => {
   }
 };
 
+const addRule = async (rule) => {
+  try {
+    console.log(rule);
+    const response = await apiClient.post(`/rules`, rule);
+    if (response.data.error) throw new Error(response.data.error);
+    if (response.data.rule == null) throw new Error("No rule returned");
+    return response.data.rule;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
 const addDivision = async (division) => {
   try {
     const response = await apiClient.post(`/divisions`, division);
@@ -182,6 +195,7 @@ export default {
   getDivisions,
   addDivision,
   addDevice,
+  addRule,
   disconnectDevice,
   actionDevice,
   renameDevice,

@@ -1,18 +1,30 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
+
 import colors from "../../configs/colors";
 
-export default function ContextMenu({ isContextMenuVisible, options }) {
+export default function ContextMenu({
+  isContextMenuVisible,
+  options,
+  position,
+  backgroundColor,
+}) {
   return (
-    <View style={styles(isContextMenuVisible).menu}>
+    <View
+      style={
+        styles(isContextMenuVisible, false, position, backgroundColor).menu
+      }
+    >
       {options.map((option) => (
         <TouchableOpacity
           key={option.name}
           style={styles().menuOption}
           onPress={option.callback}
         >
-          <Icon name={option.icon} size={20} color={option.color} />
+          {option.icon != null ? (
+            <Icon name={option.icon} size={20} color={option.color} />
+          ) : null}
           <Text
             style={styles(isContextMenuVisible, option.color).menuOptionText}
           >
@@ -24,16 +36,21 @@ export default function ContextMenu({ isContextMenuVisible, options }) {
   );
 }
 
-const styles = (isContextMenuVisible = false, optionColor = false) =>
+const styles = (
+  isContextMenuVisible = false,
+  optionColor = false,
+  position = [55, 25],
+  backgroundColor = colors.white
+) =>
   StyleSheet.create({
     menu: {
       display: isContextMenuVisible ? "flex" : "none",
       position: "absolute",
-      top: 55,
-      right: 25,
+      top: position[0],
+      right: position[1],
       paddingEnd: 10,
       borderRadius: 10,
-      backgroundColor: colors.white,
+      backgroundColor: backgroundColor,
     },
     menuOption: {
       flexDirection: "row",

@@ -9,7 +9,6 @@ def _get_uri(user: str or None, password: str or None, host: str, port: str or N
         credentials = f"{user}:{password}"
     else:
         credentials = user
-    
     if port:
         address = f"{host}:{port}"
     else:

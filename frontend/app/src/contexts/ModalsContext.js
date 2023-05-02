@@ -11,6 +11,9 @@ export const ModalsProvider = ({ children }) => {
   // Now corresponds to the device uid whose details are being shown
   const [deviceDetailsModalVisible, setDeviceDetailsModalVisible] =
     useState(null);
+  
+  const [createRuleModalVisible, setCreateRuleModalVisible] =
+    useState(false);
 
   const [isChooseDeviceModalLoading, setIsChooseDeviceModalLoading] =
     useState(false);
@@ -20,8 +23,11 @@ export const ModalsProvider = ({ children }) => {
     useState(false);
   const [isDeviceDetailsModalLoading, setIsDeviceDetailsModalLoading] =
     useState(false);
+  const [isCreateRuleModalLoading, setIsCreateRuleModalLoading] =
+    useState(false);
 
   const [isMenuModalRenaming, setIsMenuModalRenaming] = useState(false);
+  
 
   return (
     <ModalsContext.Provider
@@ -32,15 +38,18 @@ export const ModalsProvider = ({ children }) => {
         setDeviceDetailsModalVisible,
         addDeviceFormModalVisible,
         setAddDeviceFormModalVisible,
+        createRuleModalVisible,
+        setCreateRuleModalVisible,
         addDivisionFormModalVisible,
         setAddDivisionFormModalVisible,
-
         isChooseDeviceModalLoading,
         setIsChooseDeviceModalLoading,
         isDeviceDetailsModalLoading,
         setIsDeviceDetailsModalLoading,
         isDeviceFormModalLoading,
         setIsDeviceFormModalLoading,
+        isCreateRuleModalLoading,
+        setIsCreateRuleModalLoading,
         isDivisionFormModalLoading,
         setIsDivisionFormModalLoading,
         isMenuModalRenaming,

@@ -17,6 +17,7 @@ import RulesContext from "../contexts/RulesContext";
 
 import colors from "../../configs/colors";
 import api from "../api/api";
+import { CreateRuleProvider } from "../contexts/CreateRuleContext";
 
 export default function RulesScreen() {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,8 +53,9 @@ export default function RulesScreen() {
           {rules.map((rule) => (
             <RuleCard key={rule.id} rule={rule} />
           ))}
-
-          <NewRuleCard />
+          <CreateRuleProvider>
+            <NewRuleCard />
+          </CreateRuleProvider>
         </ScrollView>
       </View>
     </SafeAreaView>

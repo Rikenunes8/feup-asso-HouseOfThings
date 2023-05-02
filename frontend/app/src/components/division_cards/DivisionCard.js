@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 
 import DeviceDisplay from "../division_form/DeviceDisplay";
@@ -7,6 +7,7 @@ import IconModal from "../modal/IconModal";
 import DivisionIcon from "./DivisionIcon";
 import colors from "../../../configs/colors";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
+import DevicesContext from "../../contexts/DevicesContext";
 
 export default function DivisionCard({
   division,
@@ -14,18 +15,13 @@ export default function DivisionCard({
   allowLongPress,
   highlighted,
 }) {
+  const { devices } = useContext(DevicesContext);
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
   const [searchDeviceName, setSearchDeviceName] = useState(null);
 
   const showDevices = () => {
-    //TODO: Remove hardcoded devices
-    let devices = [
-      {name: "Philips Bulb", divisions: ["Family Room"], subcategory: "light bulb", on: true},
-      {name: "Philips Bulb 2", divisions: ["Tiago Room"], subcategory: "light bulb", on: false},
-      {name: "Philips Bulb 3", divisions: ["Tiago Room"], subcategory: "light bulb", on: true}
-    ]
     if (devices) {
       return devices.map((device) => (
         <DeviceDisplay key={device.name} device={device} />

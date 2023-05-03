@@ -24,9 +24,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 25,
   },
-  icon: {
-    alignSelf: "flex-end",
-  },
   message: {
     color: colors.white,
     fontSize: 28,

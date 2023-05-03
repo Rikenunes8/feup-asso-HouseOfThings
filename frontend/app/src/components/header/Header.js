@@ -1,12 +1,14 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import Logo from "../../../../assets/logo.svg";
 
 import colors from "../../../configs/colors";
 
 export default function Header() {
   return (
     <View style={styles.header}>
-      <Text style={styles.message}>Hello!</Text>
+      <Logo width={80} height={80} />
+      <Text style={styles.message}>House of Things</Text>
     </View>
   );
 }
@@ -16,21 +18,18 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 0.15,
     backgroundColor: colors.primary,
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingVertical: 15,
+    alignItems: "flex-end",
+    justifyContent: "center",
+    flexDirection: "row",
+    paddingTop: 10,
+    paddingBottom: 25,
   },
   icon: {
-    padding: 12,
-    borderRadius: 24,
     alignSelf: "flex-end",
-    backgroundColor: colors.white,
   },
   message: {
     color: colors.white,
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: "bold",
-    marginStart: 15,
   },
 });

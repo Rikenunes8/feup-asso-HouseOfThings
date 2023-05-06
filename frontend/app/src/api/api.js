@@ -54,6 +54,18 @@ const addDivision = async (division) => {
   }
 };
 
+const deleteDivision = async (division) => {
+  try {
+    const response = await apiClient.post(`/divisions`, division);
+    if (response.data.error) throw new Error(response.data.error);
+    if (response.data.division == null) throw new Error("No division returned");
+    return response.data.division;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
 const addDevice = async (id, device) => {
   try {
     const response = await apiClient.post(`/devices/${id}/connect`, device);

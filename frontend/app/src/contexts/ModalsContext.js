@@ -8,6 +8,7 @@ export const ModalsProvider = ({ children }) => {
     useState(false);
   const [addDivisionFormModalVisible, setAddDivisionFormModalVisible] =
     useState(false);
+
   // Now corresponds to the device uid whose details are being shown
   const [deviceDetailsModalVisible, setDeviceDetailsModalVisible] =
     useState(null);
@@ -19,6 +20,8 @@ export const ModalsProvider = ({ children }) => {
   const [isDivisionFormModalLoading, setIsDivisionFormModalLoading] =
     useState(false);
   const [isDeviceDetailsModalLoading, setIsDeviceDetailsModalLoading] =
+    useState(false);
+  const [isDivisionDetailsModalLoading, setIsDivisionDetailsModalLoading] = 
     useState(false);
 
   const [isMenuModalRenaming, setIsMenuModalRenaming] = useState(false);
@@ -45,6 +48,8 @@ export const ModalsProvider = ({ children }) => {
         setIsDivisionFormModalLoading,
         isMenuModalRenaming,
         setIsMenuModalRenaming,
+        isDivisionDetailsModalLoading,
+        setIsDivisionDetailsModalLoading
       }}
     >
       {children}

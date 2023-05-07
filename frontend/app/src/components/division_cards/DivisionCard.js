@@ -45,8 +45,6 @@ export default function DivisionCard({
     }
   }
 
-  console.log("Division: ", division.id)
-
   return (
     <TouchableOpacity
       style={
@@ -59,7 +57,7 @@ export default function DivisionCard({
         allowLongPress && setIsDetailsModalVisible(!isDetailsModalVisible)
       }
     >
-      {/* TODO icon=division.icon*/}
+
       <IconModal
         title={divisionName}
         titleEditable={isMenuModalRenaming}
@@ -83,14 +81,16 @@ export default function DivisionCard({
             <DivisionRenamingContextMenu
               isContextMenuVisible={isContextMenuVisible}
               setIsContextMenuVisible={setIsContextMenuVisible}
-              divisionContextMenuUid={1} //TODO: Get division id
+              divisionContextMenuId={division.id}
               divisionContextMenuName={division.name}
               resetDivisionContextMenuName={resetDivisionName}
             />
           ) : (
             <DivisionDetailsContextMenu
+              setIsDetailsModalVisible={setIsDetailsModalVisible}
               isContextMenuVisible={isContextMenuVisible}
               setIsContextMenuVisible={setIsContextMenuVisible}
+              divisionContextMenuId={division.id}
             />
           )
         }

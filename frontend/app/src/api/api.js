@@ -54,12 +54,12 @@ const addDivision = async (division) => {
   }
 };
 
-const deleteDivision = async (division) => {
+const deleteDivision = async (id) => {
   try {
-    const response = await apiClient.post(`/divisions`, division);
+    const response = await apiClient.delete(`/divisions/${id}`);
     if (response.data.error) throw new Error(response.data.error);
-    if (response.data.division == null) throw new Error("No division returned");
-    return response.data.division;
+    console.log("response.data: ", response.data)
+    return response.data;
   } catch (error) {
     console.error(error);
     return null;
@@ -200,4 +200,5 @@ export default {
   availableDevices,
   getRules,
   executeRule,
+  deleteDivision,
 };

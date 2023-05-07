@@ -2,6 +2,8 @@ import React from "react";
 
 import ModalsContext from "../../contexts/ModalsContext";
 import ContextMenu from "../ContextMenu";
+import DivisionsContext from "../../contexts/DivisionsContext";
+
 import colors from "../../../configs/colors";
 import utils from "../../utils/utils";
 import { useContext } from "react";
@@ -9,9 +11,12 @@ import { useContext } from "react";
 import api from "../../api/api";
 
 export default function DivisionDetailsContextMenu({
+  setIsDetailsModalVisible,
   isContextMenuVisible,
   setIsContextMenuVisible,
+  divisionContextMenuId
 }) {
+  const { removeDivision } = useContext(DivisionsContext)
 
   const { setIsDivisionDetailsModalLoading, setIsMenuModalRenaming } =
     useContext(ModalsContext);
@@ -23,24 +28,23 @@ export default function DivisionDetailsContextMenu({
       () => {
         console.log("Deleting division...");
 
-        /*
+        
         setIsDivisionDetailsModalLoading(true);
         
-        api.disconnectDevice(deviceContextMenuUid).then((success) => {
+        api.deleteDivision(divisionContextMenuId).then((success) => {
           setIsDivisionDetailsModalLoading(false);
           setIsContextMenuVisible(false);
   
           if (success) {
             console.log("Division deleted successfully");
-            setIsDetailsModalVisible(null);
-            removeDevice(deviceContextMenuUid);
+            setIsDetailsModalVisible(false);
+            removeDivision(divisionContextMenuId);
             return;
           }
   
-          console.log("Failed to disconnect device");
-          utils.showErrorMessage("Failed to disconnect device");
+          console.log("Failed to delete division");
+          utils.showErrorMessage("Failed to delete division");
         });
-        */
       },
       () => {
         console.log("Canceling delete division...");

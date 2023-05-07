@@ -48,6 +48,11 @@ export default function DivisionDetailsContextMenu({
     );
   };
 
+  const renameCallback = () => {
+    setIsContextMenuVisible(false);
+    setIsMenuModalRenaming(true);
+  };
+
   return (
     <ContextMenu
       isContextMenuVisible={isContextMenuVisible}
@@ -57,7 +62,7 @@ export default function DivisionDetailsContextMenu({
           name: "Rename",
           icon: "edit-2",
           color: colors.primaryText,
-          callback: () => console.log("TODO: Rename"),
+          callback: renameCallback,
         },
         {
           name: "Change Icon",

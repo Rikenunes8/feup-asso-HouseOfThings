@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 
 import DeviceDisplay from "../division_form/DeviceDisplay";
@@ -8,6 +8,8 @@ import DivisionIcon from "./DivisionIcon";
 import colors from "../../../configs/colors";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import DevicesContext from "../../contexts/DevicesContext";
+import DivisionRenamingContextMenu from "../division_details/DivisionRenamingContextMenu";
+import ModalsContext from "../../contexts/ModalsContext";
 
 export default function DivisionCard({
   division,
@@ -19,7 +21,21 @@ export default function DivisionCard({
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
+  const { isMenuModalRenaming, setIsMenuModalRenaming } = useContext(ModalsContext)
+
+  const [divisionName, setDivisionName] = useState(division.name);
+
   const [searchDeviceName, setSearchDeviceName] = useState(null);
+
+  const refDivisionName = useRef(null);
+
+  const renameCallback = (name) => {
+    setDivisionName(name);
+  };
+
+  const resetDivisionName = () => {
+    setDivisionName(division.name);
+  };
 
   const showDevices = () => {
     if (devices) {
@@ -28,6 +44,8 @@ export default function DivisionCard({
       ))
     }
   }
+
+  console.log("Division: ", division.id)
 
   return (
     <TouchableOpacity
@@ -43,7 +61,10 @@ export default function DivisionCard({
     >
       {/* TODO icon=division.icon*/}
       <IconModal
-        title={division.name}
+        title={divisionName}
+        titleEditable={isMenuModalRenaming}
+        titleOnChangeCallback={renameCallback}
+        titleRef={refDivisionName}
         subtitle={division.numDevices + " devices"}
         visible={isDetailsModalVisible}
         icon={division.icon}
@@ -53,13 +74,25 @@ export default function DivisionCard({
         leftIconCallback={() => {
           setIsDetailsModalVisible(false);
           setIsContextMenuVisible(false);
+          setIsMenuModalRenaming(false);
+          resetDivisionName();
         }}
         rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
         contextMenu={
-          <DivisionDetailsContextMenu
-            isContextMenuVisible={isContextMenuVisible}
-            setIsContextMenuVisible={setIsContextMenuVisible}
-          />
+          isMenuModalRenaming ? (
+            <DivisionRenamingContextMenu
+              isContextMenuVisible={isContextMenuVisible}
+              setIsContextMenuVisible={setIsContextMenuVisible}
+              divisionContextMenuUid={1} //TODO: Get division id
+              divisionContextMenuName={division.name}
+              resetDivisionContextMenuName={resetDivisionName}
+            />
+          ) : (
+            <DivisionDetailsContextMenu
+              isContextMenuVisible={isContextMenuVisible}
+              setIsContextMenuVisible={setIsContextMenuVisible}
+            />
+          )
         }
         modalContent={
           <View>

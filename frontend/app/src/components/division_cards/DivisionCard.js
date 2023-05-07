@@ -82,7 +82,7 @@ export default function DivisionCard({
               isContextMenuVisible={isContextMenuVisible}
               setIsContextMenuVisible={setIsContextMenuVisible}
               divisionContextMenuId={division.id}
-              divisionContextMenuName={division.name}
+              divisionContextMenuName={divisionName}
               resetDivisionContextMenuName={resetDivisionName}
             />
           ) : (

@@ -58,11 +58,26 @@ const deleteDivision = async (id) => {
   try {
     const response = await apiClient.delete(`/divisions/${id}`);
     if (response.data.error) throw new Error(response.data.error);
-    console.log("response.data: ", response.data)
     return response.data;
   } catch (error) {
     console.error(error);
     return null;
+  }
+};
+
+const renameDivision = async (id, name) => {
+  try {
+    const response = await apiClient.post(`/divisions/${id}/rename`, {
+      name: name,
+    });
+    if (response.data.error) {
+      console.error(response.data.error);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
   }
 };
 
@@ -201,4 +216,5 @@ export default {
   getRules,
   executeRule,
   deleteDivision,
+  renameDivision,
 };

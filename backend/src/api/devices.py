@@ -59,5 +59,5 @@ class DevicesApi(CrudApi):
         return Response(stream(), mimetype='text/event-stream')
 
     def test_sse(self):
-        self.get_manager().announce("pong")
+        self.get_manager().announce("pong", "test")
         return {}, 200

@@ -28,8 +28,8 @@ class DevicesManager(Manager):
     def announcer(self) -> MessageAnnouncer:
         return self._announcer
 
-    def announce(self, data: str) -> None:
-        msg = format_sse(data=data)
+    def announce(self, data: str, event=None) -> None:
+        msg = format_sse(data=data, event=event)
         self._announcer.announce(msg=msg)
 
     def all(self) -> list[Device]:

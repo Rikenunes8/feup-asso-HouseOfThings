@@ -4,24 +4,15 @@ import api from "../../api/api";
 
 export default function DevicesListener({ children }) {
   useEffect(() => {
+    console.log("DevicesListener mounted.");
+    console.log("api.devicesListenerURL:", api.devicesListenerURL);
+
     const sse = new EventSource(api.devicesListenerURL);
+    console.log("sse:", sse);
 
-    const listener = (event) => {
-      if (event.type === "open") {
-        console.log("Open SSE connection.");
-      } else if (event.type === "message") {
-        // TODO: Update devices context accordingly with event.data
-        console.log("Message:", event.data);
-      } else if (event.type === "error") {
-        console.error("Connection error:", event.message);
-      } else if (event.type === "exception") {
-        console.error("Error:", event.message, event.error);
-      }
-    };
-
-    sse.addEventListener("open", listener);
-    sse.addEventListener("message", listener);
-    sse.addEventListener("error", listener);
+    sse.addEventListener("devices-update", (event) => {
+      console.log("event:", event);
+    });
 
     return () => {
       sse.removeAllEventListeners();

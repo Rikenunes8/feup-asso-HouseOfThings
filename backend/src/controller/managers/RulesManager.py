@@ -58,8 +58,7 @@ class RulesManager(Manager):
         return rule
 
     def execute(self, rule_id: str) -> list[Device]:
-        rule = self._rules.get(rule_id)
-        if rule == None: return "Rule not found"
+        rule = self.get(rule_id)
         return rule.execute(self._device_manager)
     
     def load(self) -> None:

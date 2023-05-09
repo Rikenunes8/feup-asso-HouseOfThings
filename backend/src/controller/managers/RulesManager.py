@@ -4,9 +4,11 @@ from src.model.rules.DeviceCondition import DeviceCondition
 from src.model.rules.Action import Action
 from src.model.rules.Rule import Rule
 from src.model.rules.Condition import Condition
+from src.model.devices.Device import Device
 from src.controller.managers.Manager import Manager
 from src.controller.managers.DevicesManager import DevicesManager
-from src.model.devices.Device import Device
+from src.database.DB import DB
+from src.database.CollectionTypes import Collection
 
 class RulesManager(Manager):
     def __init__(self, cid: str, device_manager: DevicesManager):
@@ -59,3 +61,9 @@ class RulesManager(Manager):
         rule = self._rules.get(rule_id)
         if rule == None: return "Rule not found"
         return rule.execute(self._device_manager)
+    
+    def load(self) -> None:
+        rules = DB().get(Collection.RULES).find_all()
+        for rule in rules:
+            try: self.create(rule)
+            except ApiException as e: continue

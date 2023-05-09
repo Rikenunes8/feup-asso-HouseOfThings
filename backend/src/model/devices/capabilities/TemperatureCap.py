@@ -18,6 +18,6 @@ class TemperatureCap(BaseCapability, Subscriber):
         self.update(state)
 
 
-    def notify(self, data: dict):
+    def notified(self, data: dict):
         self._set_state(data)
             

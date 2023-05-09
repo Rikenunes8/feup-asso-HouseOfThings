@@ -9,14 +9,17 @@ from src.database.CollectionTypes import Collection
 
 
 class Rule:
-    def __init__(self, name: str, operation: str, conditions: list[Condition], actions: list[Action]) -> None:
+    def __init__(self, name: str, operation: str, conditions: list[Condition], actions: list[Action], id: str = None) -> None:
         self._id = None
         self._name = name
         self._operation = operation 
         self._conditions = conditions
         self._actions = actions
-        self._id = self._create()
-        DB().get(Collection.RULES).update(self._id, {"id": self._id})
+        if id != None:
+            self._id = id
+        else:
+          self._id = self._create()
+          DB().get(Collection.RULES).update(self._id, {"id": self._id})
 
     def get_id(self) -> str:
         return self._id

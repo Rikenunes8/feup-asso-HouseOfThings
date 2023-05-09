@@ -65,5 +65,9 @@ class RulesManager(Manager):
     def load(self) -> None:
         rules = DB().get(Collection.RULES).find_all()
         for rule in rules:
-            try: self.create(rule)
+            try: 
+                conditions = self._build_conditions(rule['when'])
+                actions = self._build_actions(rule['then'])
+                rule = Rule(rule['name'], rule['operation'], conditions, actions, rule['id'])
+                self._rules[rule.get_id()] = rule
             except ApiException as e: continue

@@ -1,6 +1,5 @@
 from src.api.ApiException import ApiException
 from src.model.rules.Condition import Condition
-from src.model.rules.ScheduleCondition import ScheduleCondition
 from src.model.rules.Action import Action
 from src.model.devices.Device import Device
 from src.controller.managers.DevicesManager import DevicesManager
@@ -74,7 +73,6 @@ class Rule(Subscriber):
 
     def notified(self, data: dict = None):
         checks = list(map(lambda condition: condition.check(), self._conditions))
-        print(checks)
         to_execute = all(checks) if self._operation == 'and' else any(checks)
         if to_execute:
             self._subscriber.notified({"rule_id": self._id})

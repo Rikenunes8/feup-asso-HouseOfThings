@@ -4,7 +4,6 @@ from src.model.devices.ConcreteDevice import ConcreteDevice
 from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 
 class BaseCapability(Device, ABC):
-
     def __init__(self, device: Device, notifier: DeviceStateNotifier):
         super().__init__(device.get_id(), notifier)
         self._device: Device = device

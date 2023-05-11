@@ -1,7 +1,6 @@
 from src.model.rules.Condition import Condition
 import schedule
 
-# TODO cancel schedule when rule is deleted or updated
 class ScheduleCondition(Condition):
   def __init__(self, time: str, days: list[int]) -> None:
     super().__init__()
@@ -9,8 +8,6 @@ class ScheduleCondition(Condition):
     self._days = days
 
   def configure(self, data: dict = None):
-    self._job = schedule.every(20).seconds.do(self.notify)
-    return
     for day in self._days:
       if day == 0:
         self._job = schedule.every().monday.at(self._time).do(self.notify)
@@ -28,6 +25,7 @@ class ScheduleCondition(Condition):
         self._job = schedule.every().sunday.at(self._time).do(self.notify)
   
   def clear(self):
+    if not self._job: return
     schedule.cancel_job(self._job)
 
   def check(self) -> bool:

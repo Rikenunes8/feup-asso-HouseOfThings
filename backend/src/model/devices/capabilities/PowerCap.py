@@ -3,7 +3,6 @@ from src.model.devices.Device import Device
 from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 
 class PowerCap(BaseCapability):
-
     def __init__(self, device: Device, notifier: DeviceStateNotifier, state: dict = {}):
         super().__init__(device, notifier)
         power = state.get('power', False)

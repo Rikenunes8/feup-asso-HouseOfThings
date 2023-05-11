@@ -7,7 +7,6 @@ class Condition(ABC):
     super().__init__()
     self._check = False
 
-  # Template Method
   def initialize(self, subscriber: Subscriber, data: dict = None):
     self._subscriber = subscriber
     self.configure(data)

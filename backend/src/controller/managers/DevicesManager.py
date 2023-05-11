@@ -9,9 +9,9 @@ from src.controller.device_connectors.BasicLightMqttConnector import BasicLightM
 from src.controller.device_connectors.BasicLightPiConnector import BasicLightPiConnector
 from src.controller.device_connectors.ThermometerPiConnector import ThermometerPiConnector
 from src.controller.observer.Subscriber import Subscriber
+from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
-from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 
 # DO NOT REMOVE THESE IMPORTS, THEY ARE NEEDED FOR THE EVAL TO WORK
 from src.model.devices.capabilities.PowerCap import PowerCap

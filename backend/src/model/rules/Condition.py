@@ -15,6 +15,9 @@ class Condition(ABC):
   def notify(self):
     self._check = True
     self._subscriber.notified()
+  
+  def clear(self):
+    pass
 
   @abstractmethod
   def check(self) -> bool:

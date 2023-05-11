@@ -29,7 +29,12 @@ class Rule(Subscriber):
     def _create(self):
         return DB().get(Collection.RULES).add(self.to_json())
 
+    def _clear_conditions(self):
+        for condition in self._conditions:
+            condition.clear()
+
     def update(self, name: str, operation: str, conditions: list[Condition], actions: list[Action]):
+        self._clear_conditions()
         self._name = name
         self._operation = operation 
         self._conditions = conditions
@@ -37,6 +42,7 @@ class Rule(Subscriber):
         DB().get(Collection.RULES).update(self._id, self.to_json())
 
     def delete(self):
+        self._clear_conditions()
         DB().get(Collection.RULES).delete(self._id)
 
     def execute(self, device_manager: DevicesManager) -> list[Device]:

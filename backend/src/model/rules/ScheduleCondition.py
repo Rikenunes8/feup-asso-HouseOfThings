@@ -9,24 +9,27 @@ class ScheduleCondition(Condition):
     self._days = days
 
   def configure(self, data: dict = None):
-    schedule.every(20).seconds.do(self.notify)
+    self._job = schedule.every(20).seconds.do(self.notify)
     return
     for day in self._days:
       if day == 0:
-        schedule.every().monday.at(self._time).do(self.notify)
+        self._job = schedule.every().monday.at(self._time).do(self.notify)
       elif day == 1:
-        schedule.every().tuesday.at(self._time).do(self.notify)
+        self._job = schedule.every().tuesday.at(self._time).do(self.notify)
       elif day == 2:
-        schedule.every().wednesday.at(self._time).do(self.notify)
+        self._job = schedule.every().wednesday.at(self._time).do(self.notify)
       elif day == 3:
-        schedule.every().thursday.at(self._time).do(self.notify)
+        self._job = schedule.every().thursday.at(self._time).do(self.notify)
       elif day == 4:
-        schedule.every().friday.at(self._time).do(self.notify)
+        self._job = schedule.every().friday.at(self._time).do(self.notify)
       elif day == 5:
-        schedule.every().saturday.at(self._time).do(self.notify)
+        self._job = schedule.every().saturday.at(self._time).do(self.notify)
       elif day == 6:
-        schedule.every().sunday.at(self._time).do(self.notify)
+        self._job = schedule.every().sunday.at(self._time).do(self.notify)
   
+  def clear(self):
+    schedule.cancel_job(self._job)
+
   def check(self) -> bool:
     old_check = self._check
     self._check = False

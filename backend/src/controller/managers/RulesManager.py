@@ -63,6 +63,7 @@ class RulesManager(Manager, Subscriber):
         conditions = self._build_conditions(data['when'])
         actions = self._build_actions(data['then'])
         rule.update(data['name'], data['operation'], conditions, actions)
+        rule.init_notifier(self, self._device_manager)
         return rule
 
     def execute(self, rule_id: str) -> list[Device]:

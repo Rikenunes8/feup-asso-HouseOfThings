@@ -1,14 +1,16 @@
 from src.api.ApiException import ApiException
 from src.model.rules.Condition import Condition
+from src.model.rules.ScheduleCondition import ScheduleCondition
 from src.model.rules.Action import Action
 from src.model.devices.Device import Device
 from src.controller.managers.DevicesManager import DevicesManager
+from src.controller.observer.Subscriber import Subscriber
 
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 
 
-class Rule:
+class Rule(Subscriber):
     def __init__(self, name: str, operation: str, conditions: list[Condition], actions: list[Action], id: str = None) -> None:
         self._id = None
         self._name = name
@@ -20,6 +22,10 @@ class Rule:
         else:
           self._id = self._create()
           DB().get(Collection.RULES).update(self._id, {"id": self._id})
+        
+        for condition in self._conditions:
+            if isinstance(condition, ScheduleCondition):
+                condition.set_alarm(self)
 
     def get_id(self) -> str:
         return self._id
@@ -55,3 +61,10 @@ class Rule:
             "when": list(map(lambda condition: condition.to_json(), self._conditions)),
             "then": list(map(lambda action: action.to_json(), self._actions))
         }
+
+    def set_subscriber(self, subscriber: Subscriber) -> None:
+        self._subscriber = subscriber
+
+    def notified(self, data: dict = None):
+        # TODO: Check if the rule should be executed
+        self._subscriber.notified({"rule_id": self._id})

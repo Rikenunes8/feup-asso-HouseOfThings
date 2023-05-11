@@ -1,3 +1,6 @@
+import time
+import schedule
+import threading
 from src.api.ApiException import ApiException
 from src.model.rules.ScheduleCondition import ScheduleCondition
 from src.model.rules.DeviceCondition import DeviceCondition
@@ -9,8 +12,9 @@ from src.controller.managers.Manager import Manager
 from src.controller.managers.DevicesManager import DevicesManager
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
+from src.controller.observer.Subscriber import Subscriber
 
-class RulesManager(Manager):
+class RulesManager(Manager, Subscriber):
     def __init__(self, cid: str, device_manager: DevicesManager):
         super().__init__(cid)
         self._rules: dict[str, Rule] = {}
@@ -41,6 +45,7 @@ class RulesManager(Manager):
         conditions = self._build_conditions(data['when'])
         actions = self._build_actions(data['then'])
         rule = Rule(data['name'], data['operation'], conditions, actions)
+        rule.set_subscriber(self)
         self._rules[rule.get_id()] = rule
         return rule
 
@@ -68,5 +73,23 @@ class RulesManager(Manager):
                 conditions = self._build_conditions(rule['when'])
                 actions = self._build_actions(rule['then'])
                 rule = Rule(rule['name'], rule['operation'], conditions, actions, rule['id'])
+                rule.set_subscriber(self)
                 self._rules[rule.get_id()] = rule
             except ApiException as e: continue
+
+    def run_alarms(self) -> None:
+        cease_continuous_run = threading.Event()
+
+        class ScheduleThread(threading.Thread):
+            @classmethod
+            def run(cls):
+                while not cease_continuous_run.is_set():
+                    schedule.run_pending()
+                    time.sleep(1)
+
+        continuous_thread = ScheduleThread()
+        continuous_thread.start()
+
+    def notified(self, data: dict = None):
+        rule_id = data['rule_id']
+        self.execute(rule_id)

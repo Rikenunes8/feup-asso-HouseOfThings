@@ -1,12 +1,13 @@
+from abc import ABC, abstractmethod
 from src.model.devices.Device import Device
 from src.model.devices.ConcreteDevice import ConcreteDevice
-from abc import ABC
+from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 
 class BaseCapability(Device, ABC):
 
-    def __init__(self, device: Device):
+    def __init__(self, device: Device, notifier: DeviceStateNotifier):
+        super().__init__(device.get_id(), notifier)
         self._device: Device = device
-        self._id: str = device.get_id()
     
     def get(self) -> ConcreteDevice:
         return self._device.get()
@@ -16,3 +17,12 @@ class BaseCapability(Device, ABC):
     
     def to_json(self) -> dict:
         return self._device.to_json()
+
+    def update_state(self, state = {}):
+        valid_state = self.build_state(state)
+        self.update(valid_state)
+        self.notify(valid_state)
+
+    @abstractmethod
+    def build_state(self, state = {}):
+        pass

@@ -1,23 +1,25 @@
 from src.model.devices.BaseCapability import BaseCapability
 from src.model.devices.Device import Device
 from src.controller.observer.Subscriber import Subscriber
+from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 
 
 class TemperatureCap(BaseCapability, Subscriber):
-    def __init__(self, device: Device, state: dict = {}):
-        super().__init__(device)
+    def __init__(self, device: Device, notifier: DeviceStateNotifier, state: dict = {}):
+        super().__init__(device, notifier)
         temperature = state.get('temperature', 0)
-        self._set_state({'temperature': temperature})
+        self.update_state({'temperature': temperature})
 
     def _build_state(self, temperature: float) -> dict:
         return {'temperature': temperature}
-    def _set_state(self, state = {}):
+
+    def build_state(self, state = {}) -> dict:
         temperature = state.get('temperature')
         if temperature == None: return
-        state = self._build_state(temperature)
-        self.update(state)
+        return self._build_state(temperature)
 
-
+    # TODO: make a SelfUpdatedCap that extends BaseCapability and implements Subscriber 
+    # and has this method and the TemperatureCap class extends SelfUpdatedCap
     def notified(self, data: dict):
-        self._set_state(data)
+        self.update_state(data)
             

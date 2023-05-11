@@ -11,6 +11,7 @@ from src.controller.device_connectors.ThermometerPiConnector import ThermometerP
 from src.controller.observer.Subscriber import Subscriber
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
+from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 
 # DO NOT REMOVE THESE IMPORTS, THEY ARE NEEDED FOR THE EVAL TO WORK
 from src.model.devices.capabilities.PowerCap import PowerCap
@@ -105,11 +106,12 @@ class DevicesManager(Manager):
         connector = connectors[0]
         capabilities: list[str] = connector.get_capabilities()
 
-        device = ConcreteDevice(uid, config, connector)
+        notifier = DeviceStateNotifier()
+        device = ConcreteDevice(uid, config, connector, notifier)
         for capability in capabilities:
             # eval to get the respective decorator capabililty class instead of making an inifinite if-else
             # TODO check if getattr is better
-            device = eval(f"{capability.title()}Cap")(device, data)
+            device = eval(f"{capability.title()}Cap")(device, notifier, data)
             if isinstance(device, Subscriber):
                 connector.subscribe(device)
 

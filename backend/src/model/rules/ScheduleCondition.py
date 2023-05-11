@@ -9,6 +9,8 @@ class ScheduleCondition(Condition):
     self._days = days
 
   def configure(self, data: dict = None):
+    schedule.every(20).seconds.do(self.notify)
+    return
     for day in self._days:
       if day == 0:
         schedule.every().monday.at(self._time).do(self.notify)
@@ -24,6 +26,11 @@ class ScheduleCondition(Condition):
         schedule.every().saturday.at(self._time).do(self.notify)
       elif day == 6:
         schedule.every().sunday.at(self._time).do(self.notify)
+  
+  def check(self) -> bool:
+    old_check = self._check
+    self._check = False
+    return old_check
 
   def to_json(self) -> dict:
     return {

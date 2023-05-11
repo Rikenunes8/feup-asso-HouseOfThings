@@ -31,6 +31,14 @@ class RulesManager(Manager, Subscriber):
     @staticmethod
     def _build_actions(actions) -> list[Action]:
         return list(map(lambda action: Action(action['device_id'], action['action']), actions))
+    
+    def _create(self, data: dict, rule_id: str = None) -> Rule:
+        conditions = self._build_conditions(data['when'])
+        actions = self._build_actions(data['then'])
+        rule = Rule(data['name'], data['operation'], conditions, actions, rule_id)
+        rule.init_notifier(self, self._device_manager)
+        self._rules[rule.get_id()] = rule
+        return rule
 
     def all(self) -> list[Rule]:
         return self._rules.values()
@@ -42,12 +50,7 @@ class RulesManager(Manager, Subscriber):
         return rule
 
     def create(self, data: dict) -> Rule:
-        conditions = self._build_conditions(data['when'])
-        actions = self._build_actions(data['then'])
-        rule = Rule(data['name'], data['operation'], conditions, actions)
-        rule.set_subscriber(self)
-        self._rules[rule.get_id()] = rule
-        return rule
+        return self._create(data)
 
     def delete(self, rule_id: str):
         rule = self._rules.pop(rule_id, None)
@@ -69,12 +72,7 @@ class RulesManager(Manager, Subscriber):
     def load(self) -> None:
         rules = DB().get(Collection.RULES).find_all()
         for rule in rules:
-            try: 
-                conditions = self._build_conditions(rule['when'])
-                actions = self._build_actions(rule['then'])
-                rule = Rule(rule['name'], rule['operation'], conditions, actions, rule['id'])
-                rule.set_subscriber(self)
-                self._rules[rule.get_id()] = rule
+            try: self._create(rule, rule['id'])
             except ApiException as e: continue
 
     def run_alarms(self) -> None:

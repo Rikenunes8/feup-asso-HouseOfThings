@@ -5,14 +5,20 @@ from src.controller.observer.Subscriber import Subscriber
 class Condition(ABC):
   def __init__(self) -> None:
     super().__init__()
+    self._check = False
 
   # Template Method
-  def initialize(self, subscriber: Subscriber):
+  def initialize(self, subscriber: Subscriber, data: dict = None):
     self._subscriber = subscriber
-    self.configure()
+    self.configure(data)
 
   def notify(self):
+    self._check = True
     self._subscriber.notified()
+
+  @abstractmethod
+  def check(self) -> bool:
+    pass
 
   @abstractmethod
   def configure(self, data: dict = None):

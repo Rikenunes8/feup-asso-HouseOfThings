@@ -22,9 +22,6 @@ class Rule(Subscriber):
         else:
           self._id = self._create()
           DB().get(Collection.RULES).update(self._id, {"id": self._id})
-        
-        for condition in self._conditions:
-            condition.initialize(self)
 
     def get_id(self) -> str:
         return self._id
@@ -61,9 +58,17 @@ class Rule(Subscriber):
             "then": list(map(lambda action: action.to_json(), self._actions))
         }
 
-    def set_subscriber(self, subscriber: Subscriber) -> None:
+    def init_notifier(self, subscriber: Subscriber, device_manager: DevicesManager) -> None:
         self._subscriber = subscriber
+        for condition in self._conditions:
+            try:
+              condition.initialize(self, {"device_manager": device_manager})
+            except ApiException as e:
+              print(e)
 
     def notified(self, data: dict = None):
-        # TODO: Check if the rule should be executed
-        self._subscriber.notified({"rule_id": self._id})
+        checks = list(map(lambda condition: condition.check(), self._conditions))
+        print(checks)
+        to_execute = all(checks) if self._operation == 'and' else any(checks)
+        if to_execute:
+            self._subscriber.notified({"rule_id": self._id})

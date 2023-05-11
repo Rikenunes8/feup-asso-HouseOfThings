@@ -31,6 +31,7 @@ export default function IconModal({
   leftIconCallback,
   rightIconCallback,
   icon,
+  iconEditable = false,
   type,
   contextMenu,
   modalContent,
@@ -110,7 +111,9 @@ export default function IconModal({
                     </View>
                     <Text style={styles.detailsSubtitle}>{subtitle}</Text>
                   </View>
-                  {displayIcon()}
+                  { iconEditable ?
+                      null : displayIcon()
+                  }
                 </View>
                 {contextMenu}
               </View>

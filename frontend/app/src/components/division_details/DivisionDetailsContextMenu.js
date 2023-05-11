@@ -18,8 +18,7 @@ export default function DivisionDetailsContextMenu({
 }) {
   const { removeDivision } = useContext(DivisionsContext)
 
-  const { setIsDivisionDetailsModalLoading, setIsMenuModalRenaming } =
-    useContext(ModalsContext);
+  const { setIsDivisionDetailsModalLoading, setIsMenuModalRenaming, setIsMenuModalChangeIcon } = useContext(ModalsContext);
 
   const deleteDivisionCallback = () => {
     utils.showConfirmDialog(
@@ -57,6 +56,11 @@ export default function DivisionDetailsContextMenu({
     setIsMenuModalRenaming(true);
   };
 
+  const changeIconCallback = () => {
+    setIsContextMenuVisible(false);
+    setIsMenuModalChangeIcon(true);
+  };
+
   return (
     <ContextMenu
       isContextMenuVisible={isContextMenuVisible}
@@ -72,7 +76,7 @@ export default function DivisionDetailsContextMenu({
           name: "Change Icon",
           icon: "image",
           color: colors.primaryText,
-          callback: () => console.log("TODO: Change Icon"),
+          callback: changeIconCallback,
         },
         {
           name: "Delete",

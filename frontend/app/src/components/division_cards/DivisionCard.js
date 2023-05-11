@@ -10,6 +10,7 @@ import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import DevicesContext from "../../contexts/DevicesContext";
 import DivisionRenamingContextMenu from "../division_details/DivisionRenamingContextMenu";
 import ModalsContext from "../../contexts/ModalsContext";
+import DivisionChangingIconContextMenu from "../division_details/DivisionChangingIconContextMenu";
 
 export default function DivisionCard({
   division,
@@ -21,7 +22,7 @@ export default function DivisionCard({
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
-  const { isMenuModalRenaming, setIsMenuModalRenaming } = useContext(ModalsContext)
+  const { isMenuModalRenaming, isMenuModalChangeIcon, setIsMenuModalRenaming, setIsMenuModalChangeIcon } = useContext(ModalsContext)
 
   const [divisionName, setDivisionName] = useState(division.name);
 
@@ -66,6 +67,7 @@ export default function DivisionCard({
         subtitle={division.numDevices + " devices"}
         visible={isDetailsModalVisible}
         icon={division.icon}
+        iconEditable={isMenuModalChangeIcon}
         type="division" 
         leftIcon="close"
         rightIcon="ellipsis1"
@@ -73,6 +75,7 @@ export default function DivisionCard({
           setIsDetailsModalVisible(false);
           setIsContextMenuVisible(false);
           setIsMenuModalRenaming(false);
+          setIsMenuModalChangeIcon(false);
           resetDivisionName();
         }}
         rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
@@ -84,6 +87,12 @@ export default function DivisionCard({
               divisionContextMenuId={division.id}
               divisionContextMenuName={divisionName}
               resetDivisionContextMenuName={resetDivisionName}
+            />
+          ) : isMenuModalChangeIcon ? (
+            <DivisionChangingIconContextMenu
+              isContextMenuVisible={isContextMenuVisible}
+              setIsContextMenuVisible={setIsContextMenuVisible}
+              divisionContextMenuId={division.id}
             />
           ) : (
             <DivisionDetailsContextMenu

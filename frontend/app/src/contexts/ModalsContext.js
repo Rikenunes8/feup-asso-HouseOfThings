@@ -25,6 +25,7 @@ export const ModalsProvider = ({ children }) => {
     useState(false);
 
   const [isMenuModalRenaming, setIsMenuModalRenaming] = useState(false);
+  const [isMenuModalChangeIcon, setIsMenuModalChangeIcon] = useState(false);
 
   return (
     <ModalsContext.Provider
@@ -49,7 +50,9 @@ export const ModalsProvider = ({ children }) => {
         isMenuModalRenaming,
         setIsMenuModalRenaming,
         isDivisionDetailsModalLoading,
-        setIsDivisionDetailsModalLoading
+        setIsDivisionDetailsModalLoading,
+        isMenuModalChangeIcon,
+        setIsMenuModalChangeIcon
       }}
     >
       {children}

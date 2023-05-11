@@ -5,6 +5,9 @@ class DeviceCondition(Condition):
     super().__init__()
     self._device_id = device_id
     self._state = state
+  
+  def configure(self, data: dict = None):
+    pass
 
   def to_json(self) -> dict:
     return {

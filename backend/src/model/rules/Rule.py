@@ -24,8 +24,7 @@ class Rule(Subscriber):
           DB().get(Collection.RULES).update(self._id, {"id": self._id})
         
         for condition in self._conditions:
-            if isinstance(condition, ScheduleCondition):
-                condition.set_alarm(self)
+            condition.initialize(self)
 
     def get_id(self) -> str:
         return self._id

@@ -1,6 +1,5 @@
 from src.model.rules.Condition import Condition
 import schedule
-from src.controller.observer.Subscriber import Subscriber
 
 # TODO cancel schedule when rule is deleted or updated
 class ScheduleCondition(Condition):
@@ -9,8 +8,7 @@ class ScheduleCondition(Condition):
     self._time = time
     self._days = days
 
-  def set_alarm(self, subscriber: Subscriber):
-    self._subscriber = subscriber
+  def configure(self, data: dict = None):
     for day in self._days:
       if day == 0:
         schedule.every().monday.at(self._time).do(self.notify)
@@ -26,9 +24,6 @@ class ScheduleCondition(Condition):
         schedule.every().saturday.at(self._time).do(self.notify)
       elif day == 6:
         schedule.every().sunday.at(self._time).do(self.notify)
-
-  def notify(self):
-    self._subscriber.notified()
 
   def to_json(self) -> dict:
     return {

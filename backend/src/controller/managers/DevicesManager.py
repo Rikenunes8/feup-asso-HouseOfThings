@@ -7,6 +7,7 @@ from src.controller.managers.Manager import Manager
 from src.controller.device_connectors.DeviceConnector import DeviceConnector
 from src.controller.device_connectors.BasicLightMqttConnector import BasicLightMqttConnector
 from src.controller.device_connectors.BasicLightPiConnector import BasicLightPiConnector
+from src.controller.device_connectors.ComplexLightPiConnector import ComplexLightPiConnector
 from src.controller.device_connectors.ThermometerPiConnector import ThermometerPiConnector
 from src.controller.observer.Subscriber import Subscriber
 from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
@@ -16,6 +17,8 @@ from src.database.CollectionTypes import Collection
 # DO NOT REMOVE THESE IMPORTS, THEY ARE NEEDED FOR THE EVAL TO WORK
 from src.model.devices.capabilities.PowerCap import PowerCap
 from src.model.devices.capabilities.TemperatureCap import TemperatureCap
+from src.model.devices.capabilities.ColorPalleteCap import ColorPalleteCap
+from src.model.devices.capabilities.BrightnessCap import BrightnessCap
 
 
 class DevicesManager(Manager):
@@ -111,7 +114,7 @@ class DevicesManager(Manager):
         for capability in capabilities:
             # eval to get the respective decorator capabililty class instead of making an inifinite if-else
             # TODO check if getattr is better
-            device = eval(f"{capability.title()}Cap")(device, notifier, data)
+            device = eval(f"{capability.title().replace('_', '')}Cap")(device, notifier, data)
             if isinstance(device, Subscriber):
                 connector.subscribe(device)
 
@@ -129,6 +132,9 @@ class DevicesManager(Manager):
                 connectors.append(BasicLightMqttConnector(cid, uid, config))
             if protocol == "raspberry pi" or protocol == None:
                 connectors.append(BasicLightPiConnector(cid, uid, config))
+        elif subcategory == "light bulb rgb":
+            if protocol == "raspberry pi" or protocol == None:
+                connectors.append(ComplexLightPiConnector(cid, uid, config))
         elif subcategory == "thermometer":
             if protocol == "raspberry pi" or protocol == None:
                 connectors.append(ThermometerPiConnector(cid, uid, config))

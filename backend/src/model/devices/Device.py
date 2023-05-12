@@ -26,6 +26,9 @@ class Device(Publisher, ABC):
 
     @abstractmethod
     def get(self):
+        """
+        @return: ConcreteDevice
+        """
         pass
 
     @abstractmethod

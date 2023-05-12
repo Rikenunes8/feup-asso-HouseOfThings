@@ -10,6 +10,7 @@ from src.controller.device_connectors.BasicLightPiConnector import BasicLightPiC
 from src.controller.device_connectors.ThermometerPiConnector import ThermometerPiConnector
 from src.controller.observer.Subscriber import Subscriber
 from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
+from src.controller.observer.NewDevicePublisher import NewDevicePublisher
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 
@@ -18,10 +19,14 @@ from src.model.devices.capabilities.PowerCap import PowerCap
 from src.model.devices.capabilities.TemperatureCap import TemperatureCap
 
 
-class DevicesManager(Manager):
+class DevicesManager(Manager, NewDevicePublisher):
     def __init__(self, cid) -> None:
         super().__init__(cid)
         self._devices: dict[str, Device] = {}
+    
+    def _add(self, uid: str, device: Device) -> Device:
+        self._devices[uid] = device
+        return device
     
     def all(self) -> list[Device]:
         def valid(dev: Device) -> bool:
@@ -45,7 +50,8 @@ class DevicesManager(Manager):
             concrete_device.rename(name)
         if divisions != None: # TODO should this also change divisions
             concrete_device.set_divisions(divisions)
-        self.add(uid, new_device)
+        self._add(uid, new_device)
+        self.notify(uid, {"device": new_device})
         return new_device
     
     def update(self, uid: str, data: dict) -> Device:
@@ -58,10 +64,6 @@ class DevicesManager(Manager):
         if device == None:
             raise ApiException("No device with uid " + uid + " to disconnect")
         device.get().disconnect()
-
-    def add(self, uid: str, device: Device) -> Device:
-        self._devices[uid] = device
-        return device
 
     def action(self, uid: str, action: str, data: dict) -> Device:
         device = self.get(uid)
@@ -81,7 +83,7 @@ class DevicesManager(Manager):
                 new_device_concrete: ConcreteDevice = new_device.get()
                 new_device_concrete.connect(True)
 
-                self.add(device['uid'], new_device)
+                self._add(device['uid'], new_device)
             except ApiException as e: continue
 
     def available(self, config: dict):

@@ -1,21 +1,23 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   StyleSheet,
   Text,
   Modal,
   View,
-  Image,
   TouchableOpacity,
   SafeAreaView,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
   TextInput,
+  Dimensions,
 } from "react-native";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../../../configs/colors";
 import utils from "../../utils/utils";
+import { icons } from "../division_cards/DivisionIcon";
+import DynamicDropDown from "../form/DynamicDropDown";
 
 //INFO detailsIcon names: close, check and ellipsis1
 
@@ -38,6 +40,27 @@ export default function IconModal({
   inputOnFocus,
   isLoading = false,
 }) {
+
+  const [iconItems, setIconItems] = useState(
+    Object.keys(icons).map((icon) => {
+      return {
+        label: utils.capitalize(icon.replace("-icon", "")),
+        value: icon,
+        icon: () => <IconModal icon={icon} size={20} color={colors.black} />,
+      };
+    })
+  );
+
+  const modalProps = {
+    transparent: true,
+    presentationStyle: "overFullScreen",
+  };
+
+  const [divisionIcon, setDivisionIcon] = useState( typeof(icon) === "string" ? {
+    label: utils.capitalize("OI"),
+    value: icon,
+    icon: () => <IconModal icon={icon} size={20} color={colors.black} />,
+  } : null);
 
   function displayIcon() {
     if(inputOnFocus) return null;
@@ -92,14 +115,17 @@ export default function IconModal({
                 <View style={styles.detailsView}>
                   <View style={styles.detailsInfo}>
                     <View style={styles.detailsTitleSection}>
-                      {!titleEditable ? null : (
+                      {!titleEditable ? 
+                        null : 
+                        (
                         <Icon
                           style={styles.detailsTitleEditIcon}
                           name="edit"
                           size={20}
                           color={colors.white}
                         />
-                      )}
+                        )
+                      }
                       <TextInput
                         ref={titleRef}
                         value={title}
@@ -112,7 +138,18 @@ export default function IconModal({
                     <Text style={styles.detailsSubtitle}>{subtitle}</Text>
                   </View>
                   { iconEditable ?
-                      null : displayIcon()
+                      (
+                        <DynamicDropDown
+                        label={"ICON"}
+                        items={iconItems}
+                        setItems={setIconItems}
+                        value={divisionIcon}
+                        setValue={setDivisionIcon}
+                        listMode={"MODAL"}
+                        modalProps={modalProps}
+                        modalContentContainerStyle={styles.modalContent}
+                        />
+                      ) : displayIcon()
                   }
                 </View>
                 {contextMenu}
@@ -193,5 +230,14 @@ const styles = StyleSheet.create({
   modalHeader: {
     flex: 0.5,
     justifyContent: "space-around",
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    marginHorizontal: 28,
+    marginBottom: 25,
+    marginTop:
+      105 +
+      Dimensions.get("window").height *
+        (Platform.OS === "android" ? 0.15 : 0.3),
   },
 });

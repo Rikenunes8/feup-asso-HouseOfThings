@@ -19,10 +19,11 @@ const styles = StyleSheet.create({
     flex: 0.15,
     backgroundColor: colors.primary,
     alignItems: "flex-end",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     flexDirection: "row",
     paddingTop: 10,
-    paddingBottom: 25,
+    paddingBottom: 20,
+    paddingHorizontal: 20,
   },
   message: {
     color: colors.white,

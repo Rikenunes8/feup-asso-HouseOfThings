@@ -189,6 +189,16 @@ const executeRule = async (id) => {
   }
 };
 
+const updateRule = async (id, rule) => {
+  try {
+    const response = await apiClient.post(`/rules/${id}/`, rule);
+    if (response.data.error) throw Error(response.data.error);
+    return response.data.rule;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export default {
   getDevices,
   getCategories,

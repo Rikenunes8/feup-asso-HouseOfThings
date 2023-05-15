@@ -9,13 +9,17 @@ import {
 import Icon from "react-native-vector-icons/AntDesign";
 
 import DevicesContext from "../../contexts/DevicesContext";
+import ModalsContext from "../../contexts/ModalsContext";
+import RuleDetails from "../rule_details/RuleDetails";
 
 import colors from "../../../configs/colors";
 import api from "../../api/api";
 import utils from "../../utils/utils";
+import RuleDetailsModal from "../../screens/modals/RuleDetailsModal";
 
 export default function RuleCard({ rule }) {
   const { updateDevice } = useContext(DevicesContext);
+  const { setRuleDetailsModalVisible } = useContext(ModalsContext);
 
   const [isRuleExecuting, setIsRuleExecuting] = useState(false);
 
@@ -60,7 +64,11 @@ export default function RuleCard({ rule }) {
     <TouchableOpacity
       style={styles.ruleCard}
       // TODO(RULES): onPress = show modal with rule details
+      onPress={() => {
+        setRuleDetailsModalVisible(true);
+      }}
     >
+      <RuleDetailsModal rule={rule} />
       <View>
         <Text style={styles.ruleName}>{getName()}</Text>
         <Text style={styles.ruleText}>

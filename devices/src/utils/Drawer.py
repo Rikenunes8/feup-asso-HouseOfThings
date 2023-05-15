@@ -32,11 +32,12 @@ class Drawer:
     self.screen.blit(textObj, textRect)
 
 
-  def drawLight(self, connected, state):
+  def drawLight(self, connected, state, color = None):
+    if color == None: LIGHT_ON if state else LIGHT_OFF
     self.screen.fill(BG_COLOR)
     text = "Connected" if connected else "Disconnected"
     self.drawText(text, TEXT_COLOR, 10, HEIGHT - self.font.size(text)[1]*1.5)
-    pygame.draw.circle(self.screen, (LIGHT_ON if state else LIGHT_OFF), (WIDTH/2, HEIGHT/2), 100)
+    pygame.draw.circle(self.screen, color, (WIDTH/2, HEIGHT/2), 100)
     pygame.display.update()
   
   def drawThermometer(self, temperature):

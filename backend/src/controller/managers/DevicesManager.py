@@ -5,10 +5,12 @@ from src.model.devices.Device import Device
 from src.model.devices.ConcreteDevice import ConcreteDevice
 from src.controller.managers.Manager import Manager
 from src.controller.device_connectors.DeviceConnector import DeviceConnector
-from src.controller.device_connectors.BasicLightMqttConnector import BasicLightMqttConnector
+from src.controller.device_connectors.BasicLightVirtualConnector import BasicLightVirtualConnector
 from src.controller.device_connectors.BasicLightPiConnector import BasicLightPiConnector
 from src.controller.device_connectors.ComplexLightPiConnector import ComplexLightPiConnector
+from src.controller.device_connectors.ComplexLightVirtualConnector import ComplexLightVirtualConnector
 from src.controller.device_connectors.ThermometerPiConnector import ThermometerPiConnector
+from src.controller.device_connectors.ThermometerVirtualConnector import ThermometerVirtualConnector
 from src.controller.observer.Subscriber import Subscriber
 from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 from src.database.DB import DB
@@ -129,13 +131,17 @@ class DevicesManager(Manager):
         connectors = []
         if subcategory == "light bulb":
             if protocol == "virtual" or protocol == None:
-                connectors.append(BasicLightMqttConnector(cid, uid, config))
+                connectors.append(BasicLightVirtualConnector(cid, uid, config))
             if protocol == "raspberry pi" or protocol == None:
                 connectors.append(BasicLightPiConnector(cid, uid, config))
         elif subcategory == "light bulb rgb":
+            if protocol == "virtual" or protocol == None:
+                connectors.append(ComplexLightVirtualConnector(cid, uid, config))
             if protocol == "raspberry pi" or protocol == None:
                 connectors.append(ComplexLightPiConnector(cid, uid, config))
         elif subcategory == "thermometer":
+            if protocol == "virtual" or protocol == None:
+                connectors.append(ThermometerVirtualConnector(cid, uid, config))
             if protocol == "raspberry pi" or protocol == None:
                 connectors.append(ThermometerPiConnector(cid, uid, config))
 

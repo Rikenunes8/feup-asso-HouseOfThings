@@ -16,6 +16,7 @@ export default function DynamicDropDown({
   modalProps = {},
   modalAnimationType = "fade",
   modalContentContainerStyle = {},
+  onSelectItem = () => {},
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -43,6 +44,7 @@ export default function DynamicDropDown({
         modalProps={modalProps}
         modalAnimationType={modalAnimationType}
         modalContentContainerStyle={modalContentContainerStyle}
+        onSelectItem={onSelectItem}
       />
     </View>
   );
@@ -51,6 +53,7 @@ export default function DynamicDropDown({
 const styles = StyleSheet.create({
   container: {
     margin: 15,
+    width: "100%",
   },
   dropdown: {
     backgroundColor: colors.background,

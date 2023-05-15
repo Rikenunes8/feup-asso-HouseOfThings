@@ -6,7 +6,7 @@ import DynamicDropDown from "../form/DynamicDropDown";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 import DivisionsContext from "../../contexts/DivisionsContext";
 
-import IconModal from "../division_cards/DivisionIcon";
+import DivisionIcon from "../division_cards/DivisionIcon";
 import colors from "../../../configs/colors";
 import utils from "../../utils/utils";
 
@@ -29,7 +29,14 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
         label: utils.capitalize(item.name),
         value: item.id,
         icon: () => {
-          return <IconModal type="device" icon={item.icon} size={20} color={colors.black} />
+          return (
+            <DivisionIcon
+              type="device"
+              icon={item.icon}
+              size={20}
+              color={colors.black}
+            />
+          );
         },
       };
     })

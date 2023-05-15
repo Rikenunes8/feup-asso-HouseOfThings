@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -18,6 +18,7 @@ import colors from "../../../configs/colors";
 import utils from "../../utils/utils";
 import { icons } from "../division_cards/DivisionIcon";
 import DynamicDropDown from "../form/DynamicDropDown";
+import DivisionIcon from "../division_cards/DivisionIcon";
 
 //INFO detailsIcon names: close, check and ellipsis1
 
@@ -40,13 +41,12 @@ export default function IconModal({
   inputOnFocus,
   isLoading = false,
 }) {
-
   const [iconItems, setIconItems] = useState(
     Object.keys(icons).map((icon) => {
       return {
         label: utils.capitalize(icon.replace("-icon", "")),
         value: icon,
-        icon: () => <IconModal icon={icon} size={20} color={colors.black} />,
+        icon: () => <DivisionIcon icon={icon} size={20} color={colors.black} />,
       };
     })
   );
@@ -56,16 +56,14 @@ export default function IconModal({
     presentationStyle: "overFullScreen",
   };
 
-  const [divisionIcon, setDivisionIcon] = useState( typeof(icon) === "string" ? {
-    label: utils.capitalize("OI"),
-    value: icon,
-    icon: () => <IconModal icon={icon} size={20} color={colors.black} />,
-  } : null);
+  const [divisionIcon, setDivisionIcon] = useState(
+    type === "division" ? icon : null
+  );
 
   function displayIcon() {
-    if(inputOnFocus) return null;
+    if (inputOnFocus) return null;
 
-    switch(type) {
+    switch (type) {
       case "device":
         return utils.getDeviceImg(icon);
       case "division":
@@ -75,7 +73,7 @@ export default function IconModal({
     }
   }
 
-  return ( 
+  return (
     <Modal animationType="slide" transparent={true} visible={visible}>
       {/*TODO: remove the transparent view when we get the bottom page to be darker*/}
       <KeyboardAvoidingView
@@ -115,17 +113,14 @@ export default function IconModal({
                 <View style={styles.detailsView}>
                   <View style={styles.detailsInfo}>
                     <View style={styles.detailsTitleSection}>
-                      {!titleEditable ? 
-                        null : 
-                        (
+                      {!titleEditable ? null : (
                         <Icon
                           style={styles.detailsTitleEditIcon}
                           name="edit"
                           size={20}
                           color={colors.white}
                         />
-                        )
-                      }
+                      )}
                       <TextInput
                         ref={titleRef}
                         value={title}
@@ -137,10 +132,14 @@ export default function IconModal({
                     </View>
                     <Text style={styles.detailsSubtitle}>{subtitle}</Text>
                   </View>
-                  { iconEditable ?
-                      (
-                        <DynamicDropDown
-                        label={"ICON"}
+                  {iconEditable ? (
+                    <View
+                      style={{
+                        width: 200,
+                      }}
+                    >
+                      <DynamicDropDown
+                        label={"ICON *"}
                         items={iconItems}
                         setItems={setIconItems}
                         value={divisionIcon}
@@ -148,9 +147,11 @@ export default function IconModal({
                         listMode={"MODAL"}
                         modalProps={modalProps}
                         modalContentContainerStyle={styles.modalContent}
-                        />
-                      ) : displayIcon()
-                  }
+                      />
+                    </View>
+                  ) : (
+                    displayIcon()
+                  )}
                 </View>
                 {contextMenu}
               </View>

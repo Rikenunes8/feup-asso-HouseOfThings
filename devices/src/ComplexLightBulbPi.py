@@ -22,7 +22,7 @@ color_pallete = {
 start = time.time()
 
 
-uid = "4"
+uid = "6"
 cid = None # id of the controller that is connected to the light
 
 def is_connected() -> bool: return cid != None

@@ -3,6 +3,7 @@ from src.database.CollectionTypes import Collection
 from src.model.devices.Device import Device
 from src.controller.device_connectors.DeviceConnector import DeviceConnector
 from src.controller.device_connectors.ActuatorDeviceConnector import ActuatorDeviceConnector
+from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 
 
 class ConcreteDevice(Device):
@@ -10,8 +11,8 @@ class ConcreteDevice(Device):
 
     def get(self): return self
 
-    def __init__(self, id: str, config: dict[str, object], connector: DeviceConnector) -> None:
-        super().__init__(id)
+    def __init__(self, id: str, config: dict[str, object], connector: DeviceConnector, notifier: DeviceStateNotifier) -> None:
+        super().__init__(id, notifier)
         self._config: dict[str, object] = config
         self._connector: DeviceConnector = connector
         self._connected = False
@@ -70,6 +71,7 @@ class ConcreteDevice(Device):
         if self._connector.action(action, data):
             if updated_state != None:
                 self.update(updated_state)
+                self.notify(updated_state)
             return True
         return False
 

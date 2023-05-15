@@ -1,21 +1,21 @@
 from src.model.devices.BaseCapability import BaseCapability
 from src.model.devices.Device import Device
-
+from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 
 class PowerCap(BaseCapability):
-
-    def __init__(self, device: Device, state: dict = {}):
-        super().__init__(device)
+    def __init__(self, device: Device, notifier: DeviceStateNotifier, state: dict = {}):
+        super().__init__(device, notifier)
         power = state.get('power', False)
-        self._set_state({'power': power})
+        self.update_state({'power': power})
 
     def _build_state(self, power: bool) -> dict:
         return {'power': power}
-    def _set_state(self, state = {}):
+    
+    def build_state(self, state = {}) -> dict:
         power = state.get('power')
         if power == None: return
-        state = self._build_state(power)
-        self.update(state)
+        return self._build_state(power)
+
     def turn_on(self) -> None:
         return self._build_state(True)
     def turn_off(self) -> None:

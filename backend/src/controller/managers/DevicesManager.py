@@ -9,6 +9,7 @@ from src.controller.device_connectors.BasicLightMqttConnector import BasicLightM
 from src.controller.device_connectors.BasicLightPiConnector import BasicLightPiConnector
 from src.controller.device_connectors.ThermometerPiConnector import ThermometerPiConnector
 from src.controller.observer.Subscriber import Subscriber
+from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 
@@ -105,11 +106,12 @@ class DevicesManager(Manager):
         connector = connectors[0]
         capabilities: list[str] = connector.get_capabilities()
 
-        device = ConcreteDevice(uid, config, connector)
+        notifier = DeviceStateNotifier()
+        device = ConcreteDevice(uid, config, connector, notifier)
         for capability in capabilities:
             # eval to get the respective decorator capabililty class instead of making an inifinite if-else
             # TODO check if getattr is better
-            device = eval(f"{capability.title()}Cap")(device, data)
+            device = eval(f"{capability.title()}Cap")(device, notifier, data)
             if isinstance(device, Subscriber):
                 connector.subscribe(device)
 

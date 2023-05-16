@@ -5,6 +5,7 @@ from src.api.ApiException import ApiException
 from src.model.rules.ScheduleCondition import ScheduleCondition
 from src.model.rules.DeviceCondition import DeviceCondition
 from src.model.rules.Action import Action
+from src.model.rules.DeviceAction import DeviceAction
 from src.model.rules.Rule import Rule
 from src.model.rules.Condition import Condition
 from src.model.devices.Device import Device
@@ -30,7 +31,11 @@ class RulesManager(Manager, Subscriber):
 
     @staticmethod
     def _build_actions(actions) -> list[Action]:
-        return list(map(lambda action: Action(action['device_id'], action['action']), actions))
+        messageActions = list(filter(lambda action: action['kind'] == "message", actions))
+        deviceActions = list(filter(lambda action: action['kind'] == "device", actions))
+        
+        deviceActions = list(map(lambda action: DeviceAction(action['device_id'], action['action']), deviceActions))
+        return list(map(lambda action: DeviceAction(action['device_id'], action['action']), actions))
     
     def _create(self, data: dict, rule_id: str = None) -> Rule:
         conditions = self._build_conditions(data['when'])

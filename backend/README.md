@@ -10,25 +10,31 @@ The swagger documentation for the REST API of the server is available at `/swagg
 
 ## How to run
 
-You can conveniently run the backend server by simply running `docker-compose up`. You may feel the need to tweak some of the environment variables: for that you may just create a `.env` file in the `backend` folder and set the variables there. The variables are:
+You can conveniently run the backend server by simply running `docker-compose up`. Logs for MongoDB and Flask may be found in the `backend/logs` folder. You may feel the need to tweak some of the environment variables: for that you may just create a `.env` file in the `backend` folder and set the variables there. The variables are:
 
-| Variable            | Description                                                              | Default value               |
-| ------------------- | ------------------------------------------------------------------------ | --------------------------- |
-| MONGODB_USERNAME    | Username for the MongoDB database                                        | user                        |
-| MONGODB_PASSWORD    | Password for the MongoDB database. Only use the default for development! | DEFAULT_PASSWORD_DO_NOT_USE |
-| MONGO_ROOT_USERNAME | MongoDB root username                                                    | user                        |
-| MONGO_ROOT_PASSWORD | MongoDB root password. Only use the default for development!             | DEFAULT_PASSWORD_DO_NOT_USE |
-| MONGODB_DATABASE    | Database name for the MongoDB database                                   | HoT                         |
-| MQTT_BROKER         | MQTT broker address                                                      | broker.emqx.io              |
-| MQTT_PORT           | MQTT broker port                                                         | 1883                        |
-| MQTT_USERNAME       | MQTT broker username                                                     | emqx                        |
-| MQTT_PASSWORD       | MQTT broker password. Only use the default for development!              | DEFAULT_PASSWORD_DO_NOT_USE |
+| Variable              | Description                                                              | Default value                       |
+| --------------------- | ------------------------------------------------------------------------ | ----------------------------------- |
+| APP_ENV               | Application environment (production or development)                      | development                         |
+| MONGODB_ROOT_USERNAME | MongoDB root username                                                    | admin                               |
+| MONGODB_ROOT_PASSWORD | MongoDB root password. Only use the default for development!             | DEFAULT_PASSWORD_DO_NOT_USE         |
+| MONGODB_USERNAME      | Username for the MongoDB database                                        | user                                |
+| MONGODB_PASSWORD      | Password for the MongoDB database. Only use the default for development! | DEFAULT_PASSWORD_DO_NOT_USE         |
+| MONGODB_HOSTNAME      | MongoDB hostname                                                         | localhost, mongodb inside container |
+| MONGODB_PORT          | MongoDB port                                                             | 27017                               |
+| MONGODB_DATABASE      | Database name for the MongoDB database                                   | HoT                                 |
+| MQTT_BROKER           | MQTT broker address                                                      | broker.emqx.io                      |
+| MQTT_PORT             | MQTT broker port                                                         | 1883                                |
+| MQTT_USERNAME         | MQTT broker username                                                     | emqx                                |
+| MQTT_PASSWORD         | MQTT broker password. Only use the default for development!              | DEFAULT_PASSWORD_DO_NOT_USE         |
 
-Otherwise, if you are not a docker fan, you can create a .env file in the root, install the dependecies with `pip install -r requirements.txt`, and run `python3 app.py`.
+Note: if you intend to use this server in production, it is **strongly recomended** that you set `APP_ENV`, `MONGODB_PASSWORD`, `MONGO_ROOT_PASSWORD`, `MQTT_PASSWORD`, and `MQTT_BROKER` for safety reasons. 
 
-An example of a .env:
+If you are not a docker fan, you can alternatively still create the `.env` file, install the dependecies with `pip install -r requirements.txt`, and run `python3 app.py`.
+
+An example of an `.env` for development:
 
 ```
+APP_ENV=development
 MONGODB_HOSTNAME=localhost
 MONGODB_PORT=27017
 MONGODB_DATABASE=HoT

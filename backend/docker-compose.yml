@@ -5,13 +5,13 @@ services:
     container_name: flask
     build:
       context: .
-    #restart: unless-stopped
+    restart: unless-stopped
     environment:
       APP_ENV: ${APP_ENV:-development}
-      MONGODB_USERNAME: ${MONGODB_USERNAME:-user} # TODO currently the user is the root. Ideally we should have a separate user for the app
+      MONGODB_USERNAME: ${MONGODB_USERNAME:-user}
       MONGODB_PASSWORD: ${MONGODB_PASSWORD:-DEFAULT_PASSWORD_DO_NOT_USE}
       MONGODB_HOSTNAME: ${MONGODB_HOSTNAME:-mongodb}
-      MONGODB_PORT: 27017
+      MONGODB_PORT: ${MONGODB_PORT:-27017}
       MONGODB_DATABASE: ${MONGODB_DATABASE:-HoT}
       MQTT_BROKER: ${MQTT_BROKER:-broker.emqx.io}
       MQTT_PORT: ${MQTT_PORT:-1883}
@@ -29,18 +29,22 @@ services:
   mongodb:
     image: mongo:6.0.4
     container_name: mongodb
-    #restart: unless-stopped
-    command: mongod --auth
+    restart: unless-stopped
+    command: mongod --logpath /var/log/mongodb/mongo.log --logappend --oplogSize 128 --auth
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME:-user}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME:-admin}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD:-DEFAULT_PASSWORD_DO_NOT_USE}
       MONGO_INITDB_DATABASE: ${MONGODB_DATABASE:-HoT}
+      HOT_USERNAME: ${MONGODB_USERNAME:-user}
+      HOT_PASSWORD: ${MONGODB_PASSWORD:-DEFAULT_PASSWORD_DO_NOT_USE}
       MONGODB_DATA_DIR: /data/db
-      MONDODB_LOG_DIR: /dev/null
+      MONDODB_LOG_DIR: /var/log/mongodb
     volumes:
       - ./data/db:/data/db
+      - ./logs:/var/log/mongodb
+      - "./mongo-entrypoint/:/docker-entrypoint-initdb.d/:ro"
     ports:
-      - 27017:27017
+      - ${MONGODB_PORT:-27017}:27017
     networks:
       - backend
 

@@ -3,8 +3,40 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from flask import Flask
 from src.api.api import api
 from dotenv import load_dotenv
+from logging.config import dictConfig
 
 load_dotenv('.env')
+debug_mode = os.environ.get('APP_ENV') != 'production'
+
+dictConfig({
+    "version": 1,
+    "disable_existing_loggers": True,
+    "formatters": {
+        "default": {
+            "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "default",
+            "stream": "ext://sys.stdout",
+        },
+        "file": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "formatter": "default",
+            "filename": "logs/server.log",
+            "maxBytes": 31457280,
+            "backupCount": 10,
+            "delay": "True",
+        },
+    },
+    "root": {
+        "level": "DEBUG" if debug_mode else "INFO",
+        "handlers": ["console", "file"],
+    }
+})
 
 SWAGGER_URL = '/swagger'
 API_URL = '/static/swagger.yaml'
@@ -22,12 +54,11 @@ app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 app.register_blueprint(api)
 
 if __name__ == '__main__':
-    debug_mode = os.environ.get('APP_ENV') != 'production'
     if debug_mode:
         print("""
             You are running the app in debug mode. This is not recommended for production environments.
 
-            For production environments, please set the environment variable APP_ENV to 'production' 
+            For production environments, please set the environment variable APP_ENV to 'production'
             before starting the server.
         """)
     

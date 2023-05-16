@@ -10,12 +10,12 @@ export default function DevicesListener({ children }) {
     const sse = new EventSource(api.devicesListenerURL);
     console.log("sse:", sse);
 
-    sse.addEventListener("devices-update", (event) => {
-      console.log("event:", event);
+    // TODO: fix this!!!
+    sse.onmessage((e) => {
+      console.log("sse.onMessage(e):", e);
     });
 
     return () => {
-      sse.removeAllEventListeners();
       sse.close();
     };
   }, []);

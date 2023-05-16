@@ -33,7 +33,7 @@ class Drawer:
 
 
   def drawLight(self, connected, state, color = None):
-    if color == None: LIGHT_ON if state else LIGHT_OFF
+    if color == None: color = LIGHT_ON if state else LIGHT_OFF
     self.screen.fill(BG_COLOR)
     text = "Connected" if connected else "Disconnected"
     self.drawText(text, TEXT_COLOR, 10, HEIGHT - self.font.size(text)[1]*1.5)

@@ -7,9 +7,9 @@ const getDivisions = async () => {
   } catch (error) {
     console.error(error);
     return [
-      { name: "Family Room", icon: "bedroom-icon", numDevices: 1 },
-      { name: "Tiago Room", icon: "bedroom-icon", numDevices: 1 },
-      { name: "Kitchen", icon: "kitchen-icon", numDevices: 0 },
+      { id: 0, name: "Family Room", icon: "bedroom-icon", numDevices: 1 },
+      { id: 1, name: "Tiago Room", icon: "bedroom-icon", numDevices: 1 },
+      { id: 2, name: "Kitchen", icon: "kitchen-icon", numDevices: 0 },
     ];
   }
 };

@@ -5,5 +5,5 @@ class Subscriber(ABC):
         super().__init__()
 
     @abstractmethod
-    def notify(self, data: dict = None):
+    def notified(self, data: dict = None):
         pass

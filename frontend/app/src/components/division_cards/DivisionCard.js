@@ -25,6 +25,7 @@ export default function DivisionCard({
   const { isMenuModalRenaming, isMenuModalChangeIcon, setIsMenuModalRenaming, setIsMenuModalChangeIcon } = useContext(ModalsContext)
 
   const [divisionName, setDivisionName] = useState(division.name);
+  const [divisionIcon, setDivisionIcon] = useState(division.icon);
 
   const [searchDeviceName, setSearchDeviceName] = useState(null);
 
@@ -34,9 +35,17 @@ export default function DivisionCard({
     setDivisionName(name);
   };
 
+  const changeIconCallback = (icon) => {
+    setDivisionIcon(icon);
+  };
+
   const resetDivisionName = () => {
     setDivisionName(division.name);
   };
+
+  const resetDivisionIcon = () => {
+    setDivisionIcon(division.icon);
+  }
 
   const showDevices = () => {
     if (devices) {
@@ -66,8 +75,9 @@ export default function DivisionCard({
         titleRef={refDivisionName}
         subtitle={division.numDevices + " devices"}
         visible={isDetailsModalVisible}
-        icon={division.icon}
+        icon={divisionIcon}
         iconEditable={isMenuModalChangeIcon}
+        iconOnChangeCallback={changeIconCallback}
         type="division" 
         leftIcon="close"
         rightIcon="ellipsis1"
@@ -77,6 +87,7 @@ export default function DivisionCard({
           setIsMenuModalRenaming(false);
           setIsMenuModalChangeIcon(false);
           resetDivisionName();
+          resetDivisionIcon();
         }}
         rightIconCallback={() => setIsContextMenuVisible(!isContextMenuVisible)}
         contextMenu={
@@ -93,6 +104,8 @@ export default function DivisionCard({
               isContextMenuVisible={isContextMenuVisible}
               setIsContextMenuVisible={setIsContextMenuVisible}
               divisionContextMenuId={division.id}
+              divisionContextMenuName={divisionName}
+              resetDivisionContextMenuIcon={resetDivisionIcon}
             />
           ) : (
             <DivisionDetailsContextMenu

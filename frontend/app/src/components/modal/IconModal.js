@@ -35,6 +35,7 @@ export default function IconModal({
   rightIconCallback,
   icon,
   iconEditable = false,
+  iconOnChangeCallback,
   type,
   contextMenu,
   modalContent,
@@ -142,8 +143,8 @@ export default function IconModal({
                         label={"ICON *"}
                         items={iconItems}
                         setItems={setIconItems}
-                        value={divisionIcon}
-                        setValue={setDivisionIcon}
+                        value={icon}
+                        setValue={(icon) => iconOnChangeCallback(icon)}
                         listMode={"MODAL"}
                         modalProps={modalProps}
                         modalContentContainerStyle={styles.modalContent}

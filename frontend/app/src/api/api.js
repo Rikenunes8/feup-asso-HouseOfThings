@@ -81,6 +81,22 @@ const renameDivision = async (id, name) => {
   }
 };
 
+const changeDivisionIcon = async (id, icon) => {
+  try {
+    const response = await apiClient.post(`/${id}/change-icon`, {
+      icon: icon,
+    });
+    if (response.data.error) {
+      console.error(response.data.error);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 const addDevice = async (id, device) => {
   try {
     const response = await apiClient.post(`/devices/${id}/connect`, device);
@@ -217,4 +233,5 @@ export default {
   executeRule,
   deleteDivision,
   renameDivision,
+  changeDivisionIcon,
 };

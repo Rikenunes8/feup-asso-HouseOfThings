@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text, Animated, TouchableOpacity } from "react-native";
 
 import DevicesContext from "../../../contexts/DevicesContext";
 import CreateRuleContext from "../../../contexts/CreateRuleContext";
@@ -10,6 +10,8 @@ import colors from "../../../../configs/colors";
 import Row from "../../grid/Row";
 import SpecificDetails from "./SpecificDetails";
 import DynamicDropDown from "../../form/DynamicDropDown";
+
+import { Swipeable } from "react-native-gesture-handler";
 
 export default function NewConditionCard(props) {
   const [type, setType] = useState(null);
@@ -61,8 +63,23 @@ export default function NewConditionCard(props) {
     presentationStyle: "overFullScreen",
   };
 
+  const leftSwipe = (progress, dragX) => {
+    const scale = dragX.interpolate({
+      inputRange: [0, 100],
+      outputRange: [0, 1],
+      extrapolate: "clamp",
+    });
+    return (
+      <TouchableOpacity onPress={props.handleDelete} activeOpacity={0.6}>
+        <View style={styles.deleteBox}>
+          <Animated.Text>DElete</Animated.Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
-    <View style={styles.container}>
+    /*<View style={styles.container}>
       <Row>
         <DynamicDropDown
           items={items}
@@ -84,7 +101,12 @@ export default function NewConditionCard(props) {
           category={info.category}
         ></SpecificDetails>
       ) : null}
-    </View>
+    </View>*/
+    <Swipeable renderLeftActions={leftSwipe}>
+      <View style={styles.container}>
+        <Text>ola</Text>
+      </View>
+    </Swipeable>
   );
 }
 
@@ -109,5 +131,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 28,
     marginBottom: 25,
     marginTop: "92.5%",
+  },
+  deleteBox: {
+    backgroundColor: "red",
+    justifyContent: "center",
+    width: 100,
+    alignItems: "center",
   },
 });

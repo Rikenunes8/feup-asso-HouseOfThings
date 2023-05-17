@@ -12,7 +12,7 @@ export default function DivisionChangingIconContextMenu({
   isContextMenuVisible,
   setIsContextMenuVisible,
   divisionContextMenuId,
-  resetDivisionContextMenuName,
+  divisionContextMenuIcon,
   resetDivisionContextMenuIcon
 }) {
   const { updateDivision } = useContext(DivisionsContext);
@@ -26,21 +26,21 @@ export default function DivisionChangingIconContextMenu({
     setIsDivisionDetailsModalLoading(true);
     
     api
-      .changeDivisionIcon(divisionContextMenuId, divisionContextMenuName)
+      .changeDivisionIcon(divisionContextMenuId, divisionContextMenuIcon)
       .then((success) => {
         setIsDivisionDetailsModalLoading(false);
         setIsContextMenuVisible(false);
         setIsMenuModalChangeIcon(false);
 
         if (success) {
-          console.log("Division renamed successfully");
-          renameDivision(divisionContextMenuId, divisionContextMenuName);
+          console.log("Division Icon changed successfully");
+          updateDivision({icon: divisionContextMenuIcon} ,divisionContextMenuId);
           return;
         }
 
-        console.log("Failed to rename division");
-        utils.showErrorMessage("Failed to rename division");
-        resetDivisionContextMenuName();
+        console.log("Failed to change division icon");
+        utils.showErrorMessage("Failed to change division icon");
+        resetDivisionContextMenuIcon();
       });
     
   };

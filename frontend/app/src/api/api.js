@@ -83,7 +83,7 @@ const renameDivision = async (id, name) => {
 
 const changeDivisionIcon = async (id, icon) => {
   try {
-    const response = await apiClient.post(`/${id}/change-icon`, {
+    const response = await apiClient.post(`/divisions/${id}/change-icon`, {
       icon: icon,
     });
     if (response.data.error) {

@@ -21,7 +21,7 @@ export default function ConditionForm() {
   const { setRuleOperation } = useContext(CreateRuleContext);
 
   const [conditionCards, setConditionCards] = useState([
-    { id: Date.now().toString()},
+    { id: Date.now().toString() },
   ]);
 
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
@@ -32,20 +32,17 @@ export default function ConditionForm() {
   };
 
   const addConditionCard = () => {
-    const newCard = { id: Date.now().toString()};
+    const newCard = { id: Date.now().toString() };
     setConditionCards([...conditionCards, newCard]);
   };
 
   const deleteItem = (id) => {
-    if(conditionCards.length > 1)
-    {
-      setConditionCards((prevCards) => prevCards.filter((card) => card.id !== id));
+    if (conditionCards.length > 1) {
+      setConditionCards((prevCards) =>
+        prevCards.filter((card) => card.id !== id)
+      );
     }
   };
-
-  const renderConditionCard = ({ item }) => (
-    <NewConditionCard id={item.id} handleDelete={() => deleteItem(item.id)} />
-  );
 
   const operations = [
     {
@@ -91,11 +88,16 @@ export default function ConditionForm() {
         </TouchableOpacity>
       </View>
 
-      <FlatList
-        data={conditionCards}
-        renderItem={renderConditionCard}
-        keyExtractor={(item) => item.id}
-      />
+      <View>
+        {conditionCards.map((card, index) => (
+          <NewConditionCard
+            index={index}
+            key={card.id}
+            card={card}
+            handleDelete={() => deleteItem(card.id)}
+          />
+        ))}
+      </View>
     </View>
   );
 }

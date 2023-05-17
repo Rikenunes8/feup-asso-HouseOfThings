@@ -1,5 +1,11 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, View, Text, Animated, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Animated,
+  TouchableOpacity,
+} from "react-native";
 
 import DevicesContext from "../../../contexts/DevicesContext";
 import CreateRuleContext from "../../../contexts/CreateRuleContext";
@@ -10,6 +16,7 @@ import colors from "../../../../configs/colors";
 import Row from "../../grid/Row";
 import SpecificDetails from "./SpecificDetails";
 import DynamicDropDown from "../../form/DynamicDropDown";
+import Icon from "react-native-vector-icons/AntDesign";
 
 import { Swipeable } from "react-native-gesture-handler";
 
@@ -25,6 +32,7 @@ export default function NewConditionCard(props) {
       item.parent == "device"
         ? { kind: item.parent, device_id: item.value }
         : { kind: item.parent };
+    console.log(x);
     addRuleCondition(props.index, x);
   };
 
@@ -69,44 +77,50 @@ export default function NewConditionCard(props) {
       outputRange: [0, 1],
       extrapolate: "clamp",
     });
+
     return (
-      <TouchableOpacity onPress={props.handleDelete} activeOpacity={0.6}>
-        <View style={styles.deleteBox}>
-          <Animated.Text>DElete</Animated.Text>
+      <TouchableOpacity
+        onPress={props.handleDelete}
+        activeOpacity={0.6}
+        style={styles.deleteBox}
+      >
+        <View>
+          <Animated.View style={{ transform: [{ scale: scale }] }}>
+            <Icon name={"delete"} size={30} color={colors.white} />
+          </Animated.View>
         </View>
       </TouchableOpacity>
     );
   };
 
   return (
-    /*<View style={styles.container}>
-      <Row>
-        <DynamicDropDown
-          items={items}
-          setItems={setItems}
-          value={type}
-          setValue={setType}
-          listMode={"MODAL"}
-          modalProps={modalProps}
-          modalContentContainerStyle={styles.modalContent}
-          onSelectItem={(e) => handleTypeChange(e)}
-        ></DynamicDropDown>
-      </Row>
 
-      {type != {} ? (
-        <SpecificDetails
-          type={info.parent}
-          index={props.index}
-          capabilities={info.capabilities}
-          category={info.category}
-        ></SpecificDetails>
-      ) : null}
-    </View>*/
-    <Swipeable renderLeftActions={leftSwipe}>
-      <View style={styles.container}>
-        <Text>ola</Text>
-      </View>
-    </Swipeable>
+      <Swipeable renderLeftActions={leftSwipe}>
+        <View style={styles.container}>
+          <Row>
+            <DynamicDropDown
+              items={items}
+              setItems={setItems}
+              value={type}
+              setValue={setType}
+              listMode={"MODAL"}
+              modalProps={modalProps}
+              modalContentContainerStyle={styles.modalContent}
+              onSelectItem={(e) => handleTypeChange(e)}
+            ></DynamicDropDown>
+          </Row>
+
+          {type != {} ? (
+            <SpecificDetails
+              type={info.parent}
+              index={props.index}
+              capabilities={info.capabilities}
+              category={info.category}
+            ></SpecificDetails>
+          ) : null}
+        </View>
+      </Swipeable>
+
   );
 }
 
@@ -125,6 +139,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     paddingHorizontal: 20,
     zIndex: 0,
+    marginHorizontal:3
   },
   modalContent: {
     backgroundColor: colors.white,
@@ -133,9 +148,22 @@ const styles = StyleSheet.create({
     marginTop: "92.5%",
   },
   deleteBox: {
-    backgroundColor: "red",
-    justifyContent: "center",
-    width: 100,
+    backgroundColor: colors.red,
     alignItems: "center",
+    alignContent: "center",
+    justifyContent: "center",
+    borderBottomLeftRadius: 5,
+    borderTopLeftRadius: 5,
+    shadowColor: "#171717",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
+    marginVertical: 10,
+    width: 90,
+    zIndex: 0,
   },
+  disabled:{
+    backgroundColor: colors.desactive,
+  }
 });

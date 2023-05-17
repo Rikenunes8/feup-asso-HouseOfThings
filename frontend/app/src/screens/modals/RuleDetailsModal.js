@@ -29,7 +29,6 @@ export default function RuleDetailsModal({ rule }) {
   } = useContext(CreateRuleContext);
 
   useEffect(() => {
-    console.log(ruleConditions);
   }, [ruleConditions]);
 
   // TODO: Função que valida a questão da operation
@@ -48,7 +47,7 @@ export default function RuleDetailsModal({ rule }) {
       setIsRuleDetailsModalLoading(false);
       if (updatedRule != null) {
         updateRule(updatedRule);
-        setRuleDetailsModalVisible(false);
+        setRuleDetailsModalVisible(null);
         // resetCreateRuleContext();
       } else {
         utils.showErrorMessage("Failed to update rule");
@@ -58,7 +57,7 @@ export default function RuleDetailsModal({ rule }) {
 
   return (
     <TitleModal
-      visible={ruleDetailsModalVisible}
+      visible={ruleDetailsModalVisible === rule.id}
       title={rule.name}
       leftIcon={"close"}
       rightIcon={"ellipsis1"}

@@ -26,6 +26,7 @@ export default function WeekDayPicker({ updateWeekdays }) {
     const weekdaysSelected = weekdayLabels.filter((key) => (weekdays[key]));
     const indexes = weekdaysSelected.map((day) => weekdayLabels.indexOf(day));
     updateWeekdays(indexes);
+    console.log("WeekDayPicker: weekdaysSelected: ", weekdaysSelected);
   };
 
   return (

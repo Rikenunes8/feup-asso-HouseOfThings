@@ -65,7 +65,7 @@ export default function RuleCard({ rule }) {
       style={styles.ruleCard}
       // TODO(RULES): onPress = show modal with rule details
       onPress={() => {
-        setRuleDetailsModalVisible(true);
+        setRuleDetailsModalVisible(rule.id);
       }}
     >
       <RuleDetailsModal rule={rule} />

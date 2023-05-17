@@ -30,7 +30,6 @@ export default function CreateRuleModal() {
   } = useContext(CreateRuleContext);
 
   useEffect(() => {
-    console.log(ruleConditions);
   }, [ruleConditions]);
 
   // TODO: Função que valida a questão da operation

@@ -44,7 +44,6 @@ const getCategories = async () => {
 
 const addRule = async (rule) => {
   try {
-    console.log(rule);
     const response = await apiClient.post(`/rules`, rule);
     if (response.data.error) throw new Error(response.data.error);
     if (response.data.rule == null) throw new Error("No rule returned");

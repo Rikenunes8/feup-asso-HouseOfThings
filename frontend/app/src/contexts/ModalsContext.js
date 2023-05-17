@@ -15,7 +15,7 @@ export const ModalsProvider = ({ children }) => {
   const [createRuleModalVisible, setCreateRuleModalVisible] =
     useState(false);
   const [ruleDetailsModalVisible, setRuleDetailsModalVisible] =
-    useState(false);
+    useState(null);
 
   const [isChooseDeviceModalLoading, setIsChooseDeviceModalLoading] =
     useState(false);

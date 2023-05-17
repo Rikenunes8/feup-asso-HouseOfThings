@@ -1,27 +1,14 @@
-import React, { useContext } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import Icon from "react-native-vector-icons/SimpleLineIcons";
-
-import UsernameContext from "../../contexts/UsernameContext";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import Logo from "../../../../assets/logo.svg";
 
 import colors from "../../../configs/colors";
 
 export default function Header() {
-  const navigation = useNavigation();
-
-  const { username } = useContext(UsernameContext);
-
   return (
     <View style={styles.header}>
-      <TouchableOpacity
-        // on press should open the profile screen
-        onPress={() => navigation.navigate("Profile")}
-        style={styles.icon}
-      >
-        <Icon name={"user"} size={20} color={colors.primaryText} />
-      </TouchableOpacity>
-      <Text style={styles.message}>Hello, {username.trim()}!</Text>
+      <Logo width={80} height={80} />
+      <Text style={styles.message}>House of Things</Text>
     </View>
   );
 }
@@ -31,21 +18,16 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 0.15,
     backgroundColor: colors.primary,
-    alignItems: "flex-start",
-    justifyContent: "space-between",
+    alignItems: "flex-end",
+    justifyContent: "flex-start",
+    flexDirection: "row",
+    paddingTop: 10,
+    paddingBottom: 20,
     paddingHorizontal: 20,
-    paddingVertical: 15,
-  },
-  icon: {
-    padding: 12,
-    borderRadius: 24,
-    alignSelf: "flex-end",
-    backgroundColor: colors.white,
   },
   message: {
     color: colors.white,
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: "bold",
-    marginStart: 15,
   },
 });

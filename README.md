@@ -26,21 +26,15 @@ Our product currently permits:
 
 <!-- Very briefly explain how to build, run the tests and run the application itself in a development environment. -->
 
-In order to run the application, you need to run both the frontend and the backend. For the backend, you may use docker with the commands `docker-compose build` to build and `docker-compose up` to run in the `backend` folder. For more information, namely regarding environment variables, see the [backend README](backend/README.md). For the frontend you may install dependencies with `npm install` and run with the command `npm start` in the `frontend` folder, and then scan the QR code in the console with your phone (provided you have installed [ExpoGo](https://expo.dev/client)). You may need to change the server IP address to connect to in the `frontend/.env` file. For more information, see the [frontend README](frontend/README.md).
+In order to run the application, you need to run both the frontend and the backend. For the backend, you may use docker with the commands `docker-compose build` to build and `docker-compose up` to run in the `backend` folder. For more information, namely regarding environment variables, see the [backend README](backend/README.md). For the frontend you may install dependencies with `npm install` and run with the command `npm start` in the `frontend` folder, and then scan the QR code in the console with your phone (provided you have installed [ExpoGo](https://expo.dev/client)). You may need to change the server IP address to connect to the backend in the `frontend/.env` file. For more information, see the [frontend README](frontend/README.md).
 
 You may want to connect virtual devices to test the application. For running virtual devices, refer to the [devices README](devices/README.md).
 
 ## Packaging and deploying
 
-Running the backend in production mode is very convenient. You basically just need to set the flag `APP_ENV` to `production` in your `.env` file before running `docker-compose up`. However, you are also **strongly encouraged** to set secure passwords for the database and broker, as well as the broker host, since you are deploying to production. For more information, see the [backend README](backend/README.md). Since docker is being used, the backend shoud be portable to different kinds of hardware and infrastructure. The logs to monitor the backend may be found in the `backend/logs` folder.
+Running the backend in production mode is very convenient. You basically just need to set the flag `APP_ENV` to `production` in your `.env` file before running `docker-compose up`. However, you are also **strongly encouraged** to set secure passwords for the database and broker, as well as the broker host, since you are deploying to production. For more information, see the [backend README](backend/README.md). Since docker is being used, the backend shoud be portable to different kinds of hardware and infrastructure that support docker, from Raspberry Pis to cloud services. The logs to monitor the backend may be found in the `backend/logs` folder.
 
-#TODO:
- - frontend
- - broker
-
-<!-- Very briefly explain how to package, deploy and run the system to a production (or production-like) environment. -->
-
-<!-- ... -->
+For the frontend, you may run `npm start --no-dev --minify` to quickly run the application as if it were in production mode. On the other hand, in case you intend to actually deploy the application to the app stores, you may run `eas build --profile production` to build and then `eas submit` to deploy. Note that this will require you to enter your credentials to an Expo account, which must have paid membership to the Google Play Store and/or Apple App Store in order to actually deploy to the stores. More information about deployment may be found in the [EAS Build docs](https://docs.expo.dev/build/introduction).
 
 ## Design and architecture
 

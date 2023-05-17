@@ -76,6 +76,7 @@ export default function NewConditionCard(props) {
           modalProps={modalProps}
           modalContentContainerStyle={styles.modalContent}
           onSelectItem={(e) => handleTypeChange(e)}
+          hasCategory={true}
         ></DynamicDropDown>
       </Row>
 

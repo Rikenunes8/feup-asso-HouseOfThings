@@ -45,6 +45,8 @@ export default function DynamicDropDown({
         modalAnimationType={modalAnimationType}
         modalContentContainerStyle={modalContentContainerStyle}
         onSelectItem={onSelectItem}
+        categorySelectable={false}
+        listParentLabelStyle={styles.parent}
       />
     </View>
   );
@@ -79,4 +81,8 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontSize: 14,
   },
+  parent : {
+    fontWeight: "bold",
+    color: colors.primary,
+  }
 });

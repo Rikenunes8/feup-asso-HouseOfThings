@@ -2,15 +2,14 @@ import React, { useContext } from "react";
 import { ScrollView, StyleSheet, View, Text } from "react-native";
 import colors from "../../../configs/colors";
 
-import ActionForm from "../rule_form/action/ActionForm";
 import ScheduleCondition from "./condition/ScheduleCondition";
 import DeviceCondition from "./condition/DeviceCondition";
 import DevicesContext from "../../contexts/DevicesContext";
-import RuleAction from "./RuleAction";
+import DeviceAction from "./action/DeviceAction";
+import MessageAction from "./action/MessageAction";
 
 export default function RuleDetails({ rule }) {
   const { devices } = useContext(DevicesContext);
-  console.log("RuleDetails: rule: ", rule.then);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -38,19 +37,25 @@ export default function RuleDetails({ rule }) {
         ))}
       </View>
 
-      <View style={styles.condition_container}>
+      <View style={styles.action_container}>
         <View style={styles.header}>
           <Text style={styles.title}>THEN</Text>
         </View>
 
         {[...Array(rule.then.length)].map((_, index) => (
           <View style={styles.card} key={index}>
-              <RuleAction
+            {/**TODO: change when kind exists for action*/}
+            {rule.then[index].device_id ? (
+              <DeviceAction
                 device={devices.find(
                   (device) => device.uid == rule.then[index].device_id
                 )}
                 action={rule.then[index].action}
+                data={rule.then[index].data}
               />
+            ) : (
+              <MessageAction />
+            )}
           </View>
         ))}
       </View>
@@ -65,6 +70,10 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   condition_container: {
+    margin: 20,
+    width: "90%",
+  },
+  action_container: {
     margin: 20,
     width: "90%",
   },

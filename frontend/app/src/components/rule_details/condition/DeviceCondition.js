@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import colors from "../../../../configs/colors";
 import Icon from "react-native-vector-icons/Feather";
+import colors from "../../../../configs/colors";
 
 export default function DeviceCondition({ device, state }) {
   return (

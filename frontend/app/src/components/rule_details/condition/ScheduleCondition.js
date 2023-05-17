@@ -1,7 +1,5 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-
-import Row from "../../grid/Row";
 import colors from "../../../../configs/colors";
 
 export default function ScheduleCondition({ time, daysOfWeek }) {

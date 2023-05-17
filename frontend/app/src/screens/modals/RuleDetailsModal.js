@@ -1,17 +1,20 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import TitleModal from "../../components/modal/TitleModal";
 
 import CreateRuleContext from "../../contexts/CreateRuleContext";
 import RulesContext from "../../contexts/RulesContext";
 import ModalsContext from "../../contexts/ModalsContext";
+import ContextMenu from "../../components/ContextMenu";
 
 import utils from "../../utils/utils";
 import api from "../../api/api";
 import RuleDetails from "../../components/rule_details/RuleDetails";
 
+import colors from "../../../configs/colors";
+
 export default function RuleDetailsModal({ rule }) {
-  const { updateRule } = useContext(RulesContext);
+  const { updateRule, removeRule } = useContext(RulesContext);
 
   const {
     ruleDetailsModalVisible,
@@ -20,16 +23,12 @@ export default function RuleDetailsModal({ rule }) {
     setIsRuleDetailsModalLoading,
   } = useContext(ModalsContext);
 
-  const {
-    ruleName,
-    ruleOperation,
-    ruleConditions,
-    ruleActions,
-    resetCreateRuleContext,
-  } = useContext(CreateRuleContext);
+  const { ruleName, ruleOperation, ruleConditions, ruleActions } =
+    useContext(CreateRuleContext);
 
-  useEffect(() => {
-  }, [ruleConditions]);
+  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
+
+  useEffect(() => {}, [ruleConditions]);
 
   // TODO: Função que valida a questão da operation
   const updateCallback = () => {
@@ -48,11 +47,39 @@ export default function RuleDetailsModal({ rule }) {
       if (updatedRule != null) {
         updateRule(updatedRule);
         setRuleDetailsModalVisible(null);
-        // resetCreateRuleContext();
       } else {
         utils.showErrorMessage("Failed to update rule");
       }
     });
+  };
+
+  const deleteCallback = () => {
+    utils.showConfirmDialog(
+      "Delete rule",
+      "Are you sure you want to delete this rule?",
+      () => {
+        console.log("Deleting rule...");
+        setIsRuleDetailsModalLoading(true);
+
+        api.deleteRule(rule.id).then((success) => {
+          setIsRuleDetailsModalLoading(false);
+          setIsContextMenuVisible(false);
+
+          if (success) {
+            console.log("Rule delelted successfully");
+            setRuleDetailsModalVisible(null);
+            removeRule(rule.id);
+            return;
+          }
+
+          console.log("Failed to delete rule");
+          utils.showErrorMessage("Failed to delete rule");
+        });
+      },
+      () => {
+        console.log("Canceling delete rule...");
+      }
+    );
   };
 
   return (
@@ -62,15 +89,34 @@ export default function RuleDetailsModal({ rule }) {
       leftIcon={"close"}
       rightIcon={"ellipsis1"}
       leftIconCallback={() => {
-        setRuleDetailsModalVisible(false);
-        //resetCreateRuleContext();
+        setRuleDetailsModalVisible(null);
       }}
       rightIconCallback={() => {
-        //TODO
+        setIsContextMenuVisible(!isContextMenuVisible);
       }}
       modalContent={RuleDetails({
         rule: rule,
       })}
+      contextMenu={
+        <ContextMenu
+          isContextMenuVisible={isContextMenuVisible}
+          setIsContextMenuVisible={setIsContextMenuVisible}
+          options={[
+            {
+              name: "Edit",
+              icon: "edit-2",
+              color: colors.primaryText,
+              callback: () => console.log("TODO: Edit Rule"),
+            },
+            {
+              name: "Delete",
+              icon: "trash-2",
+              color: colors.red,
+              callback: deleteCallback,
+            },
+          ]}
+        />
+      }
       isLoading={isRuleDetailsModalLoading}
     />
   );

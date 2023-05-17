@@ -198,6 +198,17 @@ const updateRule = async (id, rule) => {
   }
 };
 
+const deleteRule = async (id) => {
+  try {
+    const response = await apiClient.delete(`/rules/${id}`);
+    if (response.data.error) throw Error(response.data.error);
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 export default {
   getDevices,
   getCategories,
@@ -211,4 +222,6 @@ export default {
   availableDevices,
   getRules,
   executeRule,
+  updateRule,
+  deleteRule,
 };

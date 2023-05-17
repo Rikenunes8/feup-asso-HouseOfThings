@@ -39,7 +39,6 @@ export default function NewActionCard(props) {
         capabilities: capabilities,
       });
     });
-    console.log("All Items:", all_items);
     return all_items;
   });
 
@@ -53,7 +52,6 @@ export default function NewActionCard(props) {
     presentationStyle: "overFullScreen",
   };
 
-  console.log(info);
   return (
     <View style={styles.container}>
       <Row>

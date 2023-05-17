@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import colors from "../../../configs/colors";
 import Icon from "react-native-vector-icons/Feather";
+import colors from "../../../../configs/colors";
 
-export default function RuleAction({ device, action }) {
+export default function DeviceAction({ device, action, data }) {
   return (
     <View style={styles.container}>
       <Text style={styles.name}>{device.name}</Text>
@@ -26,14 +26,14 @@ export default function RuleAction({ device, action }) {
         {action === "set_brightness" && (
           <View style={styles.row}>
             <Icon name="sun" size={17} color={colors.primaryText} />
-            <Text style={styles.text}> 100 {/**TODO: change hardcoded*/}</Text>
+            <Text style={styles.text}> {data}</Text>
           </View>
         )}
 
         {action === "set_rgb" && (
           <View style={styles.row}>
             <Icon name="droplet" size={17} color={colors.primaryText} />
-            <Text style={styles.text}> green{/**TODO: change hardcoded*/}</Text>
+            <Text style={styles.text}> {data}</Text>
           </View>
         )}
       </View>

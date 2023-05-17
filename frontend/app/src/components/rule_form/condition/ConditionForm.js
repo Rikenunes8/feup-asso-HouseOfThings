@@ -36,7 +36,7 @@ export default function ConditionForm() {
     setConditionCards([...conditionCards, newCard]);
   };
 
-  const deleteItem = (id) => {
+  const deleteConditionCard = (id) => {
     if (conditionCards.length > 1) {
       setConditionCards((prevCards) =>
         prevCards.filter((card) => card.id !== id)
@@ -94,7 +94,7 @@ export default function ConditionForm() {
             index={index}
             key={card.id}
             card={card}
-            handleDelete={() => deleteItem(card.id)}
+            handleDelete={() => deleteConditionCard(card.id)}
           />
         ))}
       </View>

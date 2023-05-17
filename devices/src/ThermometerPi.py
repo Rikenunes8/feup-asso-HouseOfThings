@@ -7,7 +7,7 @@ from utils.mqtt import connect_mqtt, subscribe, publish
 
 sense = SenseHat()
 
-uid = "2"
+uid = "4"
 cid = None # id of the controller that is connected to the light
 
 def is_connected() -> bool: return cid != None
@@ -52,7 +52,7 @@ def start_mqtt():
 
 if __name__ == '__main__':
   if (len(sys.argv) > 2):
-    print("Usage: python3 vThermometerPI.py [uuid]")
+    print("Usage: python3 ThermometerPI.py [uuid]")
     exit(1)
   elif (len(sys.argv) == 2):
     uid = sys.argv[1]

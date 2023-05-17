@@ -71,15 +71,14 @@ def start_drawer():
   global drawer
   pygame.init()
   
-  print(type(uid))
-  print(f"Starting vLight with uid `{uid}`")
+  print(f"Starting LightBulbVirtual with uid `{uid}`")
 
-  drawer = Drawer(f"vLight uid `{uid}`")
+  drawer = Drawer(f"LightBulbVirtual uid `{uid}`")
 
 
 if __name__ == '__main__':
   if (len(sys.argv) > 2):
-    print("Usage: python3 vLightMqtt.py [uuid]")
+    print("Usage: python3 LightBulbVirtual.py [uuid]")
     exit(1)
   elif (len(sys.argv) == 2):
     uid = sys.argv[1]

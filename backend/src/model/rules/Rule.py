@@ -3,20 +3,24 @@ from src.model.rules.Condition import Condition
 from src.model.rules.Action import Action
 from src.model.devices.Device import Device
 from src.controller.managers.DevicesManager import DevicesManager
+from src.controller.observer.Subscriber import Subscriber
 
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 
 
-class Rule:
-    def __init__(self, name: str, operation: str, conditions: list[Condition], actions: list[Action]) -> None:
+class Rule(Subscriber):
+    def __init__(self, name: str, operation: str, conditions: list[Condition], actions: list[Action], id: str = None) -> None:
         self._id = None
         self._name = name
         self._operation = operation 
         self._conditions = conditions
         self._actions = actions
-        self._id = self._create()
-        DB().get(Collection.RULES).update(self._id, {"id": self._id})
+        if id != None:
+            self._id = id
+        else:
+          self._id = self._create()
+          DB().get(Collection.RULES).update(self._id, {"id": self._id})
 
     def get_id(self) -> str:
         return self._id
@@ -24,7 +28,12 @@ class Rule:
     def _create(self):
         return DB().get(Collection.RULES).add(self.to_json())
 
+    def _clear_conditions(self):
+        for condition in self._conditions:
+            condition.clear()
+
     def update(self, name: str, operation: str, conditions: list[Condition], actions: list[Action]):
+        self._clear_conditions()
         self._name = name
         self._operation = operation 
         self._conditions = conditions
@@ -32,6 +41,7 @@ class Rule:
         DB().get(Collection.RULES).update(self._id, self.to_json())
 
     def delete(self):
+        self._clear_conditions()
         DB().get(Collection.RULES).delete(self._id)
 
     def execute(self, device_manager: DevicesManager) -> list[Device]:
@@ -52,3 +62,17 @@ class Rule:
             "when": list(map(lambda condition: condition.to_json(), self._conditions)),
             "then": list(map(lambda action: action.to_json(), self._actions))
         }
+
+    def init_notifier(self, subscriber: Subscriber, device_manager: DevicesManager) -> None:
+        self._subscriber = subscriber
+        for condition in self._conditions:
+            try:
+              condition.initialize(self, {"device_manager": device_manager})
+            except ApiException as e:
+              print(e)
+
+    def notified(self, data: dict = None):
+        checks = list(map(lambda condition: condition.check(), self._conditions))
+        to_execute = all(checks) if self._operation == 'and' else any(checks)
+        if to_execute:
+            self._subscriber.notified({"rule_id": self._id})

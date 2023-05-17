@@ -7,9 +7,9 @@ const getDivisions = async () => {
   } catch (error) {
     console.error(error);
     return [
-      { name: "Family Room", icon: "bedroom-icon", numDevices: 1 },
-      { name: "Tiago Room", icon: "bedroom-icon", numDevices: 1 },
-      { name: "Kitchen", icon: "kitchen-icon", numDevices: 0 },
+      { id: 0, name: "Family Room", icon: "bedroom-icon", numDevices: 1 },
+      { id: 1, name: "Tiago Room", icon: "bedroom-icon", numDevices: 1 },
+      { id: 2, name: "Kitchen", icon: "kitchen-icon", numDevices: 0 },
     ];
   }
 };
@@ -39,6 +39,19 @@ const getCategories = async () => {
         subcategories: ["light1"],
       },
     ];
+  }
+};
+
+const addRule = async (rule) => {
+  try {
+    console.log(rule);
+    const response = await apiClient.post(`/rules`, rule);
+    if (response.data.error) throw new Error(response.data.error);
+    if (response.data.rule == null) throw new Error("No rule returned");
+    return response.data.rule;
+  } catch (error) {
+    console.error(error);
+    return null;
   }
 };
 
@@ -182,6 +195,7 @@ export default {
   getDivisions,
   addDivision,
   addDevice,
+  addRule,
   disconnectDevice,
   actionDevice,
   renameDevice,

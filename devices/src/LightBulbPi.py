@@ -18,7 +18,7 @@ def fill(color):
 start = time.time()
 
 
-uid = "3"
+uid = "2"
 cid = None # id of the controller that is connected to the light
 
 def is_connected() -> bool: return cid != None
@@ -88,7 +88,7 @@ red_screen = False
 
 if __name__ == '__main__':
   if (len(sys.argv) > 2):
-    print("Usage: python3 vLightBulbPi.py [uuid]")
+    print("Usage: python3 LightBulbPi.py [uuid]")
     exit(1)
   elif (len(sys.argv) == 2):
     uid = sys.argv[1]

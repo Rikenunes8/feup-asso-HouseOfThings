@@ -73,7 +73,7 @@ export default function NewActionCard(props) {
       <TouchableOpacity
         onPress={props.handleDelete}
         activeOpacity={0.6}
-        style={styles.deleteBox}
+        style={styles(props.deleteDisabled).deleteBox}
       >
         <View>
           <Animated.View style={{ transform: [{ scale: scale }] }}>
@@ -87,7 +87,7 @@ export default function NewActionCard(props) {
   console.log(info);
   return (
     <Swipeable renderLeftActions={leftSwipe}>
-      <View style={styles.container}>
+      <View style={styles().container}>
         <Row>
           <DynamicDropDown
             items={items}
@@ -96,7 +96,7 @@ export default function NewActionCard(props) {
             setValue={setDevice}
             listMode={"MODAL"}
             modalProps={modalProps}
-            modalContentContainerStyle={styles.modalContent}
+            modalContentContainerStyle={styles().modalContent}
             onSelectItem={(e) => handleDeviceChange(e)}
           ></DynamicDropDown>
         </Row>
@@ -113,7 +113,8 @@ export default function NewActionCard(props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = (deleteDisabled = false) =>
+  StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     alignItems: "center",
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     paddingHorizontal: 20,
     zIndex: 0,
-    marginHorizontal: 3,
+    marginHorizontal:3
   },
   modalContent: {
     backgroundColor: colors.white,
@@ -151,8 +152,9 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     width: 90,
     zIndex: 0,
+    opacity: deleteDisabled ? 0.5 : 1
   },
-  disabled: {
+  disabled:{
     backgroundColor: colors.desactive,
-  },
+  }
 });

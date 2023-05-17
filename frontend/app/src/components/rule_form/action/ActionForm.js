@@ -42,6 +42,7 @@ export default function ActionForm() {
           key={card.id}
           card={card}
           handleDelete={() => deleteActionCard(card.id)}
+          deleteDisabled={actionCards.length == 1}
         />
       ))}
     </View>

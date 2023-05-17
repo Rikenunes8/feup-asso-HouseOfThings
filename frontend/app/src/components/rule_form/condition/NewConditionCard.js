@@ -82,7 +82,8 @@ export default function NewConditionCard(props) {
       <TouchableOpacity
         onPress={props.handleDelete}
         activeOpacity={0.6}
-        style={styles.deleteBox}
+        style={styles(props.deleteDisabled).deleteBox}
+        disabled={true}
       >
         <View>
           <Animated.View style={{ transform: [{ scale: scale }] }}>
@@ -96,7 +97,7 @@ export default function NewConditionCard(props) {
   return (
 
       <Swipeable renderLeftActions={leftSwipe}>
-        <View style={styles.container}>
+        <View style={styles().container}>
           <Row>
             <DynamicDropDown
               items={items}
@@ -105,7 +106,7 @@ export default function NewConditionCard(props) {
               setValue={setType}
               listMode={"MODAL"}
               modalProps={modalProps}
-              modalContentContainerStyle={styles.modalContent}
+              modalContentContainerStyle={styles().modalContent}
               onSelectItem={(e) => handleTypeChange(e)}
             ></DynamicDropDown>
           </Row>
@@ -124,7 +125,8 @@ export default function NewConditionCard(props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = (deleteDisabled = false) =>
+  StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     alignItems: "center",
@@ -162,6 +164,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     width: 90,
     zIndex: 0,
+    opacity: deleteDisabled ? 0.5 : 1
   },
   disabled:{
     backgroundColor: colors.desactive,

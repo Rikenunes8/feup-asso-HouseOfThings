@@ -95,6 +95,7 @@ export default function ConditionForm() {
             key={card.id}
             card={card}
             handleDelete={() => deleteConditionCard(card.id)}
+            deleteDisabled={conditionCards.length == 1}
           />
         ))}
       </View>

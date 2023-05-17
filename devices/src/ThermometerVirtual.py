@@ -1,17 +1,17 @@
+import pygame
 import time
 import sys
-try:    from sense_hat import SenseHat
-except: from sense_emu import SenseHat
 
 from utils.mqtt import connect_mqtt, subscribe, publish
+from utils.Drawer import Drawer
 
-sense = SenseHat()
 
-uid = "4"
+uid = "3"
 cid = None # id of the controller that is connected to the light
 
 def is_connected() -> bool: return cid != None
-temp : float = sense.get_temperature()
+temp : float = 25.0
+drawer : Drawer = None
 
 def on_connect(client, userdata, msg):
   global cid
@@ -37,7 +37,7 @@ def on_available(client, userdata, msg):
     print(f"Thermometer is not available")
     return
   cidTemp = msg.payload.decode()
-  publish(client, f"{cidTemp}-thermometer-available-pi", uid)
+  publish(client, f"{cidTemp}-thermometer-available-virtual", uid)
 
   
 def start_mqtt():
@@ -45,25 +45,46 @@ def start_mqtt():
 
   subscribe(client, f"{uid}-connect", on_connect)
   subscribe(client, f"{uid}-disconnect", on_disconnect)
-  subscribe(client, "thermometer-available-pi", on_available)
+  subscribe(client, "thermometer-available-virtual", on_available)
 
   client.loop_start()
   return client
 
+def start_drawer():
+  global drawer
+  pygame.init()
+  
+  print(f"Starting ThermometerVirtual with uid `{uid}`")
+
+  drawer = Drawer(f"ThermometerVirtual uid `{uid}`")
+
 if __name__ == '__main__':
   if (len(sys.argv) > 2):
-    print("Usage: python3 ThermometerPI.py [uuid]")
+    print("Usage: python3 ThermometerVirtual.py [uuid]")
     exit(1)
   elif (len(sys.argv) == 2):
     uid = sys.argv[1]
     
   mqtt_client = start_mqtt()
+  start_drawer()
+
   running = True
+  counter = 0
   while running:
     if (mqtt_client == None): running = False
-    if (is_connected()):
-      temp = sense.get_temperature()
-      print(temp)
+    drawer.drawThermometer(temp)
+    if (is_connected() and counter == 0):
       publish(mqtt_client, f"{uid}-temperature", temp)
-    time.sleep(5)
+    time.sleep(0.1)
+    counter = (counter + 1) % 50
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+        running = False
+      elif event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_UP:
+          temp += 1.5
+        elif event.key == pygame.K_DOWN:
+          temp -= 1.5
+
+  pygame.quit()
   print("Exiting...")

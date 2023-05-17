@@ -10,7 +10,7 @@ The swagger documentation for the REST API of the server is available at `/swagg
 
 ## How to run
 
-You can conveniently run the backend server by simply running `docker-compose up`. Logs for MongoDB and Flask may be found in the `backend/logs` folder. You may feel the need to tweak some of the environment variables: for that you may just create a `.env` file in the `backend` folder and set the variables there. The variables are:
+You can conveniently run the backend server by simply running `docker-compose up`. Logs for MongoDB, Flask and MQTT may be found in the `backend/logs` folder. You may feel the need to tweak some of the environment variables: for that you may just create a `.env` file in the `backend` folder and set the variables there. The variables are:
 
 | Variable              | Description                                                              | Default value                       |
 | --------------------- | ------------------------------------------------------------------------ | ----------------------------------- |
@@ -22,12 +22,13 @@ You can conveniently run the backend server by simply running `docker-compose up
 | MONGODB_HOSTNAME      | MongoDB hostname                                                         | localhost, mongodb inside container |
 | MONGODB_PORT          | MongoDB port                                                             | 27017                               |
 | MONGODB_DATABASE      | Database name for the MongoDB database                                   | HoT                                 |
-| MQTT_BROKER           | MQTT broker address                                                      | broker.emqx.io                      |
+| MQTT_BROKER           | MQTT broker address                                                      | localhost, mqtt inside container    |
 | MQTT_PORT             | MQTT broker port                                                         | 1883                                |
 | MQTT_USERNAME         | MQTT broker username                                                     | emqx                                |
 | MQTT_PASSWORD         | MQTT broker password. Only use the default for development!              | DEFAULT_PASSWORD_DO_NOT_USE         |
+| MQTT_SECRET           | MQTT broker secret cookie                                                | DEFAULT_SECRET_DO_NOT_USE           |
 
-Note: if you intend to use this server in production, it is **strongly recomended** that you set `APP_ENV`, `MONGODB_PASSWORD`, `MONGO_ROOT_PASSWORD`, `MQTT_PASSWORD`, and `MQTT_BROKER` for safety reasons. 
+Note: if you intend to use this server in production, it is **strongly recomended** that you set `APP_ENV`, `MONGODB_PASSWORD`, `MONGO_ROOT_PASSWORD`, `MQTT_PASSWORD`, and `MQTT_SECRET` for safety reasons. Then, you will have to open `http://127.0.0.1:18083/#/` and login to the MQTT Dashboard using `admin` username and `public` password (you will be prompted to set a safer password), so that you can create a user with the username and password you set in the `.env` file for MQTT.
 
 If you are not a docker fan, you can alternatively still create the `.env` file, install the dependecies with `pip install -r requirements.txt`, and run `python3 app.py`.
 

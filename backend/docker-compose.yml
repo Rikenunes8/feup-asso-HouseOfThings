@@ -13,7 +13,7 @@ services:
       MONGODB_HOSTNAME: ${MONGODB_HOSTNAME:-mongodb}
       MONGODB_PORT: ${MONGODB_PORT:-27017}
       MONGODB_DATABASE: ${MONGODB_DATABASE:-HoT}
-      MQTT_BROKER: ${MQTT_BROKER:-broker.emqx.io}
+      MQTT_BROKER: ${MQTT_BROKER:-mqtt}
       MQTT_PORT: ${MQTT_PORT:-1883}
       MQTT_USERNAME: ${MQTT_USERNAME:-emqx}
       MQTT_PASSWORD: ${MQTT_PASSWORD:-DEFAULT_PASSWORD_DO_NOT_USE}
@@ -45,6 +45,30 @@ services:
       - "./mongo-entrypoint/:/docker-entrypoint-initdb.d/:ro"
     ports:
       - ${MONGODB_PORT:-27017}:27017
+    networks:
+      - backend
+
+  mqtt:
+    image: emqx/emqx:5.0.25
+    container_name: mqtt
+    restart: unless-stopped
+    environment:
+      EMQX_NAME: mqtt
+      EMQX_HOST: 127.0.0.1
+      EMQX_NODE__COOKIE: ${MQTT_SECRET:-DEFAULT_PASSWORD_DO_NOT_USE}
+      EMQX_LOG__TO: both
+      EMQX_ALLOW__ANONYMOUS: "false"
+      EMQX_ACL__NOMATCH: deny
+    ports:
+      - ${MQTT_PORT:-1883}:1883
+      - 8081:8081
+      - 8083:8083
+      - 8084:8084
+      - 8883:8883
+      - 18083:18083
+    volumes:
+      - ./data/mqtt:/opt/emqx/data
+      - ./logs/mqtt:/opt/emqx/log
     networks:
       - backend
 

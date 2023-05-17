@@ -4,13 +4,6 @@ import colors from "../../../../configs/colors";
 import Icon from "react-native-vector-icons/Feather";
 
 export default function DeviceCondition({ device, state }) {
-  state = {
-    status: "turn_on",
-    brightness: 100,
-    rgb: "green",
-    temperature: 27,
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.name}>{device.name}</Text>
@@ -33,17 +26,17 @@ export default function DeviceCondition({ device, state }) {
           </View>
         )}
 
-        {state.rgb && (
-          <View style={styles.row}>
-            <Icon name="droplet" size={15} color={colors.primaryText} />
-            <Text style={styles.text}> {state.rgb}</Text>
-          </View>
-        )}
-
         {state.temperature && (
           <View style={styles.row}>
             <Icon name="thermometer" size={15} color={colors.primaryText} />
             <Text style={styles.text}> {state.temperature}</Text>
+          </View>
+        )}
+
+        {state.rgb && (
+          <View style={styles.row}>
+            <Icon name="droplet" size={15} color={colors.primaryText} />
+            <Text style={styles.text}> {state.rgb}</Text>
           </View>
         )}
       </View>
@@ -67,7 +60,8 @@ const styles = StyleSheet.create({
   specs: {
     flexDirection: "row",
     flexGrow: 1,
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
+    gap: 15,
   },
   row: {
     flexDirection: "row",

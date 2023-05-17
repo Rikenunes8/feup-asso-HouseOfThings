@@ -28,7 +28,9 @@ You can conveniently run the backend server by simply running `docker-compose up
 | MQTT_PASSWORD         | MQTT broker password. Only use the default for development!              | DEFAULT_PASSWORD_DO_NOT_USE         |
 | MQTT_SECRET           | MQTT broker secret cookie                                                | DEFAULT_SECRET_DO_NOT_USE           |
 
-Note: if you intend to use this server in production, it is **strongly recomended** that you set `APP_ENV`, `MONGODB_PASSWORD`, `MONGO_ROOT_PASSWORD`, `MQTT_PASSWORD`, and `MQTT_SECRET` for safety reasons. Then, you will have to open `http://127.0.0.1:18083/#/` and login to the MQTT Dashboard using `admin` username and `public` password (you will be prompted to set a safer password), so that you can create a user with the username and password you set in the `.env` file for MQTT.
+Note: if you intend to use this server in production, it is **strongly recomended** that you set `APP_ENV`, `MONGODB_PASSWORD`, `MONGO_ROOT_PASSWORD`, `MQTT_PASSWORD`, and `MQTT_SECRET` for safety reasons. 
+
+You will need to set up the user in the MQTT broker (unless you set `MQTT_BROKER` to `broker.emqx.io` for testing purposes). For that, open `http://127.0.0.1:18083/#/` and login to the MQTT Dashboard using `admin` username and `public` password (you will be prompted to set a safer password), so that you can create a user with the username and password you set in the `.env` file for MQTT.
 
 If you are not a docker fan, you can alternatively still create the `.env` file, install the dependecies with `pip install -r requirements.txt`, and run `python3 app.py`.
 

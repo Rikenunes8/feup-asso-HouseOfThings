@@ -62,7 +62,7 @@ if __name__ == '__main__':
             before starting the server.
         """)
     
-        app.run(host='0.0.0.0', debug=False)
+        app.run(host='0.0.0.0', debug=True)
     else:
         # Only import waitress if we are running in production mode
         from waitress import serve

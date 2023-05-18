@@ -80,7 +80,7 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
         for division_id in device.find()["divisions"]:
             try:
                 division = self.get(division_id)
-                division.add_device(device.get_uid())
+                division.add_device(device.get_id())
                 actual_divisions.append(division_id)
             except ApiException:
                 # No problem: division will not be appended
@@ -93,7 +93,7 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
         for division_id in device.find()["divisions"]:
             try:
                 division = self.get(division_id)
-                division.remove_device(device.get_uid())
+                division.remove_device(device.get_id())
             except ApiException:
                 # No problem: just remove all other devices
                 continue

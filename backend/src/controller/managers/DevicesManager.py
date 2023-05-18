@@ -5,22 +5,12 @@ from src.model.devices.Device import Device
 from src.model.devices.ConcreteDevice import ConcreteDevice
 from src.controller.managers.Manager import Manager
 from src.controller.device_connectors.DeviceConnector import DeviceConnector
-from src.controller.device_connectors.BasicLightVirtualConnector import (
-    BasicLightVirtualConnector,
-)
+from src.controller.device_connectors.BasicLightVirtualConnector import BasicLightVirtualConnector
 from src.controller.device_connectors.BasicLightPiConnector import BasicLightPiConnector
-from src.controller.device_connectors.ComplexLightPiConnector import (
-    ComplexLightPiConnector,
-)
-from src.controller.device_connectors.ComplexLightVirtualConnector import (
-    ComplexLightVirtualConnector,
-)
-from src.controller.device_connectors.ThermometerPiConnector import (
-    ThermometerPiConnector,
-)
-from src.controller.device_connectors.ThermometerVirtualConnector import (
-    ThermometerVirtualConnector,
-)
+from src.controller.device_connectors.ComplexLightPiConnector import ComplexLightPiConnector
+from src.controller.device_connectors.ComplexLightVirtualConnector import ComplexLightVirtualConnector
+from src.controller.device_connectors.ThermometerPiConnector import ThermometerPiConnector
+from src.controller.device_connectors.ThermometerVirtualConnector import ThermometerVirtualConnector
 from src.controller.observer.Subscriber import Subscriber
 from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 from src.controller.observer.DeviceConnectionPublisher import DeviceConnectionPublisher

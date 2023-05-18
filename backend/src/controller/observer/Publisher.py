@@ -4,7 +4,7 @@ from src.controller.observer.Subscriber import Subscriber
 class Publisher(ABC):
     def __init__(self):
         super().__init__()
-        self._subscribers = []
+        self._subscribers: list[Subscriber] = []
 
     def subscribe(self, subscriber: Subscriber):
         self._subscribers.append(subscriber)
@@ -14,4 +14,4 @@ class Publisher(ABC):
 
     def notify(self, data: dict = None):
         for subscriber in self._subscribers:
-            subscriber.notify(data)
+            subscriber.notified(data)

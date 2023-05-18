@@ -1,21 +1,21 @@
 import time
-
+import json
 from src.controller.device_connectors.ActuatorDeviceConnector import ActuatorDeviceConnector
 from src.controller.mqtt import connect_mqtt, disconnect_mqtt, publish, subscribe
 
 
-class BasicLightMqttConnector(ActuatorDeviceConnector):
+class ComplexLightPiConnector(ActuatorDeviceConnector):
 
     MAX_TIME_TO_CONNECT = 5
 
     def __init__(self, cid: str, uid: str, config: dict):
         super().__init__()
-        self.set_protocol("virtual")
-        self.set_capabilities(['power'])
+        self.set_protocol('raspberry pi')
+        self.set_capabilities(['power', 'color_pallete', 'brightness'])
         self._client = None
         self._cid = cid
         self._uid = uid
-        self._config = {'protocol': self.get_protocol(), **config}
+        self._config = {'protocol': self._protocol, **config}
         self._available = []
 
     def on_connect(self, client, userdata, msg):
@@ -56,8 +56,8 @@ class BasicLightMqttConnector(ActuatorDeviceConnector):
         self._client = connect_mqtt()
         self._client.loop_start()
 
-        subscribe(self._client, f"{self._cid}-light-available-virtual", self.on_available)
-        publish(self._client, "light-available-virtual", self._cid)
+        subscribe(self._client, f"{self._cid}-light-available-pi", self.on_available)
+        publish(self._client, "light-available-pi", self._cid)
 
     def finish_discovery(self) -> list[str]:
         disconnect_mqtt(self._client)
@@ -68,9 +68,10 @@ class BasicLightMqttConnector(ActuatorDeviceConnector):
 
 
 
-    def action(self, action: str, data: dict = None) -> bool:
-        if action == "turn_on":
-            publish(self._client, f"{self._uid}-turnOn", self._cid)
+    def action(self, action: str, data: dict or None) -> bool:
+        if data == None: data = {}
+        if action == "turn_on" or action == "set_color" or action == "set_brightness":
+            publish(self._client, f"{self._uid}-turnOn", json.dumps({**data, 'cid': self._cid}))
         elif action == "turn_off":
             publish(self._client, f"{self._uid}-turnOff", self._cid)
         else: return False

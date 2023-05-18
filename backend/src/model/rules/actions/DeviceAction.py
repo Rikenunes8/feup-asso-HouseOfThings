@@ -4,6 +4,7 @@ from src.controller.managers.DevicesManager import DevicesManager
 
 class DeviceAction(Action):
     def __init__(self, device_id: str, action: str, data: dict) -> None:
+        super().__init__("device")
         self._device_id = device_id
         self._action = action
         self._data = data
@@ -15,4 +16,4 @@ class DeviceAction(Action):
         return device
 
     def to_json(self) -> dict:
-        return {"kind": "device", "device_id": self._device_id, "action": self._action, "data": self._data}
+        return {"kind": self._kind, "device_id": self._device_id, "action": self._action, "data": self._data}

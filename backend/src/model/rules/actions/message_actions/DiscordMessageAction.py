@@ -4,8 +4,7 @@ from discord import SyncWebhook
 
 class DiscordMessageAction(MessageAction):
     def __init__(self, data: dict) -> None:
-        self._service = "discord"
-        self._data = {"url": data.get("url")}
+        super().__init__("discord", {"url": data.get("url")})
   
     def execute(self, data: dict) -> Device:
         rule_name = data.get("rule_name")

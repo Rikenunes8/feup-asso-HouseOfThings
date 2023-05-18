@@ -6,7 +6,7 @@ from src.controller.observer.NewDeviceSubscriber import NewDeviceSubscriber
 
 class DeviceCondition(Condition, Subscriber, NewDeviceSubscriber):
   def __init__(self, device_id: str, state: dict) -> None:
-    super().__init__()
+    super().__init__("device")
     self._device_id = device_id
     self._state = state
     self._active = True
@@ -40,7 +40,7 @@ class DeviceCondition(Condition, Subscriber, NewDeviceSubscriber):
 
   def to_json(self) -> dict:
     return {
-      "kind": "device",
+      "kind": self._kind,
       "device_id": self._device_id,
       "state": self._state
     }

@@ -77,5 +77,3 @@ class ConcreteDevice(Device):
 
     def to_json(self) -> dict:
         return self.find()
-
-

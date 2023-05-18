@@ -58,7 +58,7 @@ class DevicesManager(Manager, NewDevicePublisher):
             concrete_device.set_divisions(divisions)
         self._add(uid, new_device)
         self.notify(uid, {"device": new_device})
-        Logger().info(f"Device '{name}' with uid '{uid}' connected")
+        Logger().info(f"Device '{name}' with uid '{uid}' connected.")
         return new_device
     
     def update(self, uid: str, data: dict) -> Device:
@@ -70,7 +70,7 @@ class DevicesManager(Manager, NewDevicePublisher):
         device = self._devices.pop(uid, None)
         if device == None:
             raise ApiException("No device with uid " + uid + " to disconnect")
-        Logger().info(f"Device '{device.find()['name']}' with uid '{uid}' disconnected")
+        Logger().info(f"Device '{device.find()['name']}' with uid '{uid}' disconnected.")
         device.get().disconnect()
 
     def action(self, uid: str, action: str, data: dict) -> Device:

@@ -6,6 +6,9 @@ from src.controller.managers.DevicesManager import DevicesManager
 from src.controller.Logger import Logger
 from src.controller.observer.DeviceConnectionSubscriber import DeviceConnectionSubscriber
 
+from src.model.devices.ConcreteDevice import ConcreteDevice
+from src.database.DB import DB
+from src.database.CollectionTypes import Collection
 
 class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
     def __init__(self, cid: str, device_manager: DevicesManager):
@@ -22,14 +25,26 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
         if division == None:
             raise ApiException("Division not found")
         return division
+    
+    def load(self) -> None:
+        divisions = DB().get(Collection.DIVISIONS).find_all()
+        for division in divisions:
+            try: self._create(division, division['id'])
+            except ApiException as e: continue
 
-    def create(self, data: dict) -> Division:
-        division = Division(data["name"], data["icon"], data["devices"])
+    def _create(self, data: dict, division_id: str = None) -> Division:
+        division = Division(
+            data["name"], data["icon"], data["devices"], division_id
+        )
         self._divisions[division.get_id()] = division
-        Logger().info(f"Division '{data['name']}' created.")
         for device_uid in data["devices"]:
             device = self._device_manager.get(device_uid).get()
             device.add_division(division.get_id())
+        return division
+
+    def create(self, data: dict) -> Division:
+        division = self._create(data)
+        Logger().info(f"Division '{data['name']}' created.")
         return division
 
     def delete(self, id: str):

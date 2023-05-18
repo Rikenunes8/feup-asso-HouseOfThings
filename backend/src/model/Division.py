@@ -2,13 +2,17 @@ from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 
 class Division:
-  def __init__(self, name: str, icon: str, devices: list[int]) -> None:
+  def __init__(self, name: str, icon: str, devices: list[int], id: str = None) -> None:
     self._id = None
     self._name = name
     self._icon = icon
     self._devices = devices
-    self._id = self._create()
-    DB().get(Collection.DIVISIONS).update(self._id, {"id": self._id})
+
+    if id != None:
+        self._id = id
+    else:
+      self._id = self._create()
+      DB().get(Collection.DIVISIONS).update(self._id, {"id": self._id})
   
   def get_id(self) -> str:
     return self._id

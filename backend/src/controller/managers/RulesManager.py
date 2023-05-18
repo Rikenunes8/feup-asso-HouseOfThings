@@ -39,7 +39,7 @@ class RulesManager(Manager, Subscriber):
         rule = Rule(data['name'], data['operation'], conditions, actions, rule_id)
         rule.init_notifier(self, self._device_manager)
         self._rules[rule.get_id()] = rule
-        Logger().info(f"Rule '{data['name']}' created.")
+        
         return rule
 
     def all(self) -> list[Rule]:
@@ -52,7 +52,9 @@ class RulesManager(Manager, Subscriber):
         return rule
 
     def create(self, data: dict) -> Rule:
-        return self._create(data)
+        rule = self._create(data)
+        Logger().info(f"Rule '{data['name']}' created.")
+        return rule
 
     def delete(self, rule_id: str):
         rule = self._rules.pop(rule_id, None)

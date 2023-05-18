@@ -15,7 +15,6 @@ class HoTMeta(type):
 
 class HoT(metaclass=HoTMeta):
     def __init__(self):
-        print("HoT init")
         self._cid = "HoT"
         self._device_manager = DevicesManager(self._cid)
         self._rules_manager = RulesManager(self._cid, self._device_manager)

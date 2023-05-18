@@ -85,7 +85,7 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
             except ApiException:
                 # No problem: division will not be appended
                 continue
-        device.set_divisions(actual_divisions)
+        device.get().set_divisions(actual_divisions)
         return True
 
     def on_device_disconnect(self, data: dict = None):

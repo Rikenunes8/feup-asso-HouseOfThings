@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import Row from "../grid/Row";
 import Col from "../grid/Column";
 
@@ -10,7 +10,7 @@ import ConfigurationsForm from "./condition/ConfigurationsForm";
 import colors from "../../../configs/colors";
 
 export default function LightSpecs({ index, isRuleCondition, capabilities }) {
-  console.log("LightSpecs: capabilities: ", capabilities);
+  //console.log("LightSpecs: capabilities: ", capabilities);
 
   const capabilitiesMap = {
     power: {
@@ -25,18 +25,30 @@ export default function LightSpecs({ index, isRuleCondition, capabilities }) {
       name: "Temperature",
       component: isRuleCondition ? "slider" : "dropdown",
     },
+    color_pallete: {
+      name: "Color",
+      component: "color-picker",
+    },
   };
 
-  const [possibleConfigurations, setPossibleConfigurations] = useState(
-    capabilities.map((capability) => {
-      return {
-        label: capabilitiesMap[capability].name,
-        value: capabilitiesMap[capability].component,
-      };
-    })
-  );
+  const [possibleConfigurations, setPossibleConfigurations] = useState([{}]);
 
-  console.log("LightSpecs: possibleConfigurations: ", possibleConfigurations);
+  const updateConfigurations = () => {
+    setPossibleConfigurations(
+      capabilities.map((capability) => {
+        return {
+          label: capabilitiesMap[capability].name,
+          value: capabilitiesMap[capability].component,
+        };
+      })
+    );
+  };
+
+  useEffect(() => {
+    updateConfigurations();
+  }, [capabilities]);
+
+  //console.log("LightSpecs: possibleConfigurations: ", possibleConfigurations);
 
   const [currentConfiguration, setCurrentConfiguration] = useState(
     possibleConfigurations[0].value

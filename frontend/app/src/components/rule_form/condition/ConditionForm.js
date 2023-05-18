@@ -26,7 +26,6 @@ export default function ConditionForm() {
     setNumConditionCards(numConditionCards + 1);
   };
 
-  //TODO: Include the manual
   const operations = [
     {
       name: "AND",
@@ -42,7 +41,6 @@ export default function ConditionForm() {
     },
   ];
 
-  // TODO: Make the selected other color
   return (
     <View style={styles.container}>
       <View style={styles.header}>

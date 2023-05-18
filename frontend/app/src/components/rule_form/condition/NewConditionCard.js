@@ -27,30 +27,19 @@ export default function NewConditionCard(props) {
   };
 
   const [items, setItems] = useState(() => {
-    fixed_fields = [
-      "category",
-      "connected",
-      "divisions",
-      "name",
-      "protocol",
-      "subcategory",
-      "uid",
-    ];
     all_items = [
       { label: "Time", value: "time", parent: "schedule" },
       { label: "Schedule", value: "schedule" },
       { label: "Devices", value: "device" },
     ];
     devices.map((item) => {
-      capabilities = Object.keys(item).filter(
-        (key) => !fixed_fields.includes(key)
-      );
+ 
       all_items.push({
         label: utils.capitalize(item.name),
         value: item.uid,
         parent: "device",
         category: item.category,
-        capabilities: capabilities,
+        capabilities: item.capabilities,
       });
     });
     return all_items;
@@ -76,7 +65,7 @@ export default function NewConditionCard(props) {
         ></DynamicDropDown>
       </Row>
 
-      {type != {} ? (
+      {type != undefined ? (
         <SpecificDetails
           type={info.parent}
           index={props.index}

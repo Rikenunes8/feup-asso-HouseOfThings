@@ -15,16 +15,17 @@ const getDivisions = async () => {
 };
 
 const getDevices = async () => {
-  try {
+  /*try {
     const response = await apiClient.get("/devices");
     return response.data.devices;
   } catch (error) {
-    console.error(error);
+    console.error(error);*/
     return [
-      { name: "Philips Bulb", divisions: ["Family Room"], enabled: true },
-      { name: "Philips Bulb", divisions: ["Tiago Room"], enabled: false },
+      { name: "Simple light", divisions: ["Family Room"], category: "light", subcategory: "light bulb", capabilities: ['power'], uid: 0},
+      { name: "RGB light", divisions: ["Family Room"], category: "light", subcategory: "light bulb rgb", capabilities: ['power', 'color_pallete', 'brightness'], uid: 1 },
+      { name: "Thermometer", divisions: ["Family Room"], category: "thermometer", subcategory: "thermometer", capabilities: ['temperature'], uid: 2},
     ];
-  }
+  //}
 };
 
 const getCategories = async () => {

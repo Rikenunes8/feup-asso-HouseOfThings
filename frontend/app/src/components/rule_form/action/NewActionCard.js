@@ -18,25 +18,16 @@ export default function NewActionCard(props) {
   const [info, setInfo] = useState({});
 
   const [items, setItems] = useState(() => {
-    fixed_fields = [
-      "category",
-      "connected",
-      "divisions",
-      "name",
-      "protocol",
-      "subcategory",
-      "uid",
-    ];
+
     all_items = [];
+
     devices.map((item) => {
-      capabilities = Object.keys(item).filter(
-        (key) => !fixed_fields.includes(key)
-      );
+      console.log("ITEM", item)
       all_items.push({
         label: utils.capitalize(item.name),
         value: item.uid,
         category: item.category,
-        capabilities: capabilities,
+        capabilities: item.capabilities,
       });
     });
     console.log("All Items:", all_items);
@@ -53,7 +44,6 @@ export default function NewActionCard(props) {
     presentationStyle: "overFullScreen",
   };
 
-  console.log(info);
   return (
     <View style={styles.container}>
       <Row>

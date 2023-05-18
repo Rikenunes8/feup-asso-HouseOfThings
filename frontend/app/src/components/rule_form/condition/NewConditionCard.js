@@ -1,11 +1,5 @@
 import React, { useState, useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Animated,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import DevicesContext from "../../../contexts/DevicesContext";
 import CreateRuleContext from "../../../contexts/CreateRuleContext";
@@ -16,9 +10,7 @@ import colors from "../../../../configs/colors";
 import Row from "../../grid/Row";
 import SpecificDetails from "./SpecificDetails";
 import DynamicDropDown from "../../form/DynamicDropDown";
-import Icon from "react-native-vector-icons/AntDesign";
-
-import { Swipeable } from "react-native-gesture-handler";
+import DeletableCard from "../../DeletableCard";
 
 export default function NewConditionCard(props) {
   const [type, setType] = useState(null);
@@ -71,62 +63,39 @@ export default function NewConditionCard(props) {
     presentationStyle: "overFullScreen",
   };
 
-  const leftSwipe = (progress, dragX) => {
-    const scale = dragX.interpolate({
-      inputRange: [0, 100],
-      outputRange: [0, 1],
-      extrapolate: "clamp",
-    });
-
-    return (
-      <TouchableOpacity
-        onPress={props.handleDelete}
-        activeOpacity={0.6}
-        style={styles(props.deleteDisabled).deleteBox}
-        disabled={true}
-      >
-        <View>
-          <Animated.View style={{ transform: [{ scale: scale }] }}>
-            <Icon name={"delete"} size={30} color={colors.white} />
-          </Animated.View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
   return (
+    <DeletableCard
+      deleteDisabled={props.deleteDisabled}
+      handleDelete={props.handleDelete}
+    >
+      <View style={styles.container}>
+        <Row>
+          <DynamicDropDown
+            items={items}
+            setItems={setItems}
+            value={type}
+            setValue={setType}
+            listMode={"MODAL"}
+            modalProps={modalProps}
+            modalContentContainerStyle={styles.modalContent}
+            onSelectItem={(e) => handleTypeChange(e)}
+          ></DynamicDropDown>
+        </Row>
 
-      <Swipeable renderLeftActions={leftSwipe}>
-        <View style={styles().container}>
-          <Row>
-            <DynamicDropDown
-              items={items}
-              setItems={setItems}
-              value={type}
-              setValue={setType}
-              listMode={"MODAL"}
-              modalProps={modalProps}
-              modalContentContainerStyle={styles().modalContent}
-              onSelectItem={(e) => handleTypeChange(e)}
-            ></DynamicDropDown>
-          </Row>
-
-          {type != {} ? (
-            <SpecificDetails
-              type={info.parent}
-              index={props.index}
-              capabilities={info.capabilities}
-              category={info.category}
-            ></SpecificDetails>
-          ) : null}
-        </View>
-      </Swipeable>
-
+        {type != {} ? (
+          <SpecificDetails
+            type={info.parent}
+            index={props.index}
+            capabilities={info.capabilities}
+            category={info.category}
+          ></SpecificDetails>
+        ) : null}
+      </View>
+    </DeletableCard>
   );
 }
 
-const styles = (deleteDisabled = false) =>
-  StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     alignItems: "center",
@@ -141,7 +110,7 @@ const styles = (deleteDisabled = false) =>
     marginVertical: 10,
     paddingHorizontal: 20,
     zIndex: 0,
-    marginHorizontal:3
+    marginHorizontal: 3,
   },
   modalContent: {
     backgroundColor: colors.white,
@@ -149,24 +118,4 @@ const styles = (deleteDisabled = false) =>
     marginBottom: 25,
     marginTop: "92.5%",
   },
-  deleteBox: {
-    backgroundColor: colors.red,
-    alignItems: "center",
-    alignContent: "center",
-    justifyContent: "center",
-    borderBottomLeftRadius: 5,
-    borderTopLeftRadius: 5,
-    shadowColor: "#171717",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3,
-    marginVertical: 10,
-    width: 90,
-    zIndex: 0,
-    opacity: deleteDisabled ? 0.5 : 1
-  },
-  disabled:{
-    backgroundColor: colors.desactive,
-  }
 });

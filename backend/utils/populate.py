@@ -47,7 +47,8 @@ def add_lights(db):
     db.insert_one({
         'name': 'light',
         'subcategories': [
-            'light bulb'
+            'light bulb',
+            'light bulb rgb'
         ]
     })
 

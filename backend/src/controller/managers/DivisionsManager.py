@@ -73,4 +73,4 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
         device = data["device"]
         for division_id in device.find()["divisions"]:
             division = self.get(division_id)
-            division.remove_device(device.get_uid())
+            division.remove_device(device.get_id())

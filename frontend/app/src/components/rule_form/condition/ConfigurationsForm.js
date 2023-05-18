@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Switch, StyleSheet, View, Text } from "react-native";
 import RangeSlider from "../../form/RangeSlider";
 
@@ -12,14 +12,18 @@ export default function ConfigurationsForm(props) {
   const { addRuleConditionState, updateRuleAction } =
     useContext(CreateRuleContext);
   const [state, setState] = useState(false);
-  const [operation, setOperation] = useState({});
-  const [value, setValue] = useState({});
+  const [operation, setOperation] = useState();
+  const [value, setValue] = useState();
   const [selectedColor, setSelectedColor] = useState(colors.purple);
 
+  useEffect(() => {
+    console.log(operation);
+  }, [operation]);
+
   const [possibleOperations, setPossibleOperations] = useState([
-    { label: "ADD", value: 0 },
-    { label: "SUB", value: 1 },
-    { label: "SET", value: 2 },
+    { label: "ADD", value: "add_" },
+    { label: "SUB", value: "sub_" },
+    { label: "SET", value: "set_" },
   ]);
 
   const [step, setStep] = useState(
@@ -53,7 +57,7 @@ export default function ConfigurationsForm(props) {
   };
 
   const handleOperationChange = (item) => {
-    val = item.label + value.label;
+    val = item.label + value;
 
     if (!props.isCondition) {
       updateRuleAction(props.index, val);
@@ -63,7 +67,7 @@ export default function ConfigurationsForm(props) {
   };
 
   const handleValueChange = (item) => {
-    val = operation.label + item.label;
+    val = operation + item.label;
 
     if (!props.isCondition) {
       updateRuleAction(props.index, val);

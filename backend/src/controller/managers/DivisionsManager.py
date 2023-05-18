@@ -37,9 +37,17 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
             data["name"], data["icon"], data["devices"], division_id
         )
         self._divisions[division.get_id()] = division
+        
+        actual_devices = []
         for device_uid in data["devices"]:
-            device = self._device_manager.get(device_uid).get()
-            device.add_division(division.get_id())
+            try:
+                device = self._device_manager.get(device_uid).get()
+                device.add_division(division.get_id())
+                actual_devices.append(device_uid)
+            except ApiException:
+                # No problem: device will not be appended
+                continue
+        division.update({"devices": actual_devices})
         return division
 
     def create(self, data: dict) -> Division:
@@ -53,8 +61,12 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
             raise ApiException("Division not found")
         Logger().info(f"Division '{division.get_name()}' removed.")
         for device_uid in division.get_devices():
-            device = self._device_manager.get(device_uid).get()
-            device.remove_division(id)
+            try:
+                device = self._device_manager.get(device_uid).get()
+                device.remove_division(id)
+            except ApiException:
+                # No problem: just remove all other divisions
+                continue
         division.delete()
 
     def update(self, id: str, config: dict):
@@ -82,12 +94,24 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
 
     def on_device_connect(self, data: dict = None):
         device = data["device"]
+        actual_divisions = []
         for division_id in device.find()["divisions"]:
-            division = self.get(division_id)
-            division.add_device(device.get_uid())
+            try:
+                division = self.get(division_id)
+                division.add_device(device.get_id())
+                actual_divisions.append(division_id)
+            except ApiException:
+                # No problem: division will not be appended
+                continue
+        device.set_divisions(actual_divisions)
+        return True
 
     def on_device_disconnect(self, data: dict = None):
         device = data["device"]
         for division_id in device.find()["divisions"]:
-            division = self.get(division_id)
-            division.remove_device(device.get_uid())
+            try:
+                division = self.get(division_id)
+                division.remove_device(device.get_id())
+            except ApiException:
+                # No problem: just remove all other devices
+                continue

@@ -1,6 +1,6 @@
 from src.api.ApiException import ApiException
-from src.model.rules.Condition import Condition
-from src.model.rules.Action import Action
+from src.model.rules.conditions.Condition import Condition
+from src.model.rules.actions.Action import Action
 from src.model.devices.Device import Device
 from src.controller.managers.DevicesManager import DevicesManager
 from src.controller.observer.Subscriber import Subscriber
@@ -48,7 +48,7 @@ class Rule(Subscriber):
         devices_updated: list[Device] = []
         for action in self._actions:
             try:
-                result = action.execute(device_manager)
+                result = action.execute({"rule_id": self._id, "rule_name": self._name, "device_manager": device_manager})
                 devices_updated.append(result)
             except ApiException as e:
                 print(e)

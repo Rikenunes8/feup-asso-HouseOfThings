@@ -94,8 +94,7 @@ def on_available(client, userdata, msg):
   if (cid != None):
     print(f"Light is not available")
     return
-  cidTemp = msg.payload.decode()
-  publish(client, f"{cidTemp}-light-available-pi", uid)
+  publish(client, "light-pi-is-available", uid)
 
   
 def start_mqtt():
@@ -105,7 +104,7 @@ def start_mqtt():
   subscribe(client, f"{uid}-disconnect", on_disconnect)
   subscribe(client, f"{uid}-turnOn", on_turn_on)
   subscribe(client, f"{uid}-turnOff", on_turn_off)
-  subscribe(client, "light-available-pi", on_available)
+  subscribe(client, "is-light-pi-available", on_available)
 
   client.loop_start()
   return client
@@ -114,12 +113,14 @@ red_screen = False
 
 if __name__ == '__main__':
   if (len(sys.argv) > 2):
-    print("Usage: python3 vLightBulbPi.py [uuid]")
+    print("Usage: python3 ComplexLightBulbPi.py [uuid]")
     exit(1)
   elif (len(sys.argv) == 2):
     uid = sys.argv[1]
     
   mqtt_client = start_mqtt()
+  publish(mqtt_client, "light-pi-is-available", uid)
+
   running = True
   while running:
     if mqtt_client == None: running = False

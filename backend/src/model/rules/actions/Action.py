@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from src.controller.managers.DevicesManager import DevicesManager
 from src.model.devices.Device import Device
 
 class Action(ABC):
@@ -8,7 +7,7 @@ class Action(ABC):
         self._action = action
 
     @abstractmethod
-    def execute(self, device_manager : DevicesManager) -> Device:
+    def execute(self, data: dict) -> Device:
         pass
 
     @abstractmethod

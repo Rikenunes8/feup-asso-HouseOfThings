@@ -1,4 +1,4 @@
-from src.model.rules.Condition import Condition
+from src.model.rules.conditions.Condition import Condition
 from src.controller.managers.DevicesManager import DevicesManager
 from src.controller.observer.Publisher import Publisher 
 from src.controller.observer.Subscriber import Subscriber

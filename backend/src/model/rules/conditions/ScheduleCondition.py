@@ -1,4 +1,4 @@
-from src.model.rules.Condition import Condition
+from src.model.rules.conditions.Condition import Condition
 import schedule
 
 class ScheduleCondition(Condition):

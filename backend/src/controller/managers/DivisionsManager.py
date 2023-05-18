@@ -66,7 +66,8 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
         device = data["device"]
         for division_id in device.find()["divisions"]:
             division = self.get(division_id)
-            division.add_device(device.get_uid())
+            division.add_device(device.get_id())
+        return True
 
     def on_device_disconnect(self, data: dict = None):
         device = data["device"]

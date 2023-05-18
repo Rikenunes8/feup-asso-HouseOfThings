@@ -14,6 +14,7 @@ from src.controller.device_connectors.ThermometerVirtualConnector import Thermom
 from src.controller.observer.Subscriber import Subscriber
 from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 from src.controller.observer.NewDevicePublisher import NewDevicePublisher
+from src.controller.Logger import Logger
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 
@@ -57,6 +58,7 @@ class DevicesManager(Manager, NewDevicePublisher):
             concrete_device.set_divisions(divisions)
         self._add(uid, new_device)
         self.notify(uid, {"device": new_device})
+        Logger().info(f"Device '{name}' with uid '{uid}' connected")
         return new_device
     
     def update(self, uid: str, data: dict) -> Device:
@@ -68,6 +70,7 @@ class DevicesManager(Manager, NewDevicePublisher):
         device = self._devices.pop(uid, None)
         if device == None:
             raise ApiException("No device with uid " + uid + " to disconnect")
+        Logger().info(f"Device '{device.find()['name']}' with uid '{uid}' disconnected")
         device.get().disconnect()
 
     def action(self, uid: str, action: str, data: dict) -> Device:

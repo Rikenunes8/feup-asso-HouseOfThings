@@ -3,6 +3,7 @@ from src.model.Division import Division
 
 from src.controller.managers.CrudManager import CrudManager
 from src.controller.managers.DevicesManager import DevicesManager
+from src.controller.Logger import Logger
 from src.model.devices.ConcreteDevice import ConcreteDevice
 
 
@@ -26,12 +27,14 @@ class DivisionsManager(CrudManager):
             data["name"], data["icon"], data["devices"]
         )
         self._divisions[division.get_id()] = division
+        Logger().info(f"Division '{data['name']}' created")
         return division
 
     def delete(self, id: str):
         division = self._divisions.pop(id, None)
         if division == None:
             raise ApiException("Division not found")
+        Logger().info(f"Division '{division.get_name()}' removed")
         division.delete()
 
     def update(self, id: str, config: dict):

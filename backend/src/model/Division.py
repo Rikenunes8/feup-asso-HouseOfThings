@@ -13,6 +13,9 @@ class Division:
   def get_id(self) -> str:
     return self._id
 
+  def get_name(self) -> str:
+    return self._name
+
   def _create(self):
     return DB().get(Collection.DIVISIONS).add(self.to_json())
   

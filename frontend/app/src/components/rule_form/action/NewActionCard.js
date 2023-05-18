@@ -12,17 +12,16 @@ import utils from "../../../utils/utils";
 import colors from "../../../../configs/colors";
 
 export default function NewActionCard(props) {
+
   const { addRuleAction } = useContext(CreateRuleContext);
   const { devices } = useContext(DevicesContext);
   const [device, setDevice] = useState(null);
   const [info, setInfo] = useState({});
 
   const [items, setItems] = useState(() => {
-
     all_items = [];
 
     devices.map((item) => {
-      console.log("ITEM", item)
       all_items.push({
         label: utils.capitalize(item.name),
         value: item.uid,
@@ -30,7 +29,7 @@ export default function NewActionCard(props) {
         capabilities: item.capabilities,
       });
     });
-    console.log("All Items:", all_items);
+
     return all_items;
   });
 
@@ -59,12 +58,14 @@ export default function NewActionCard(props) {
         ></DynamicDropDown>
       </Row>
       <Row>
-        <DeviceForm
-          index={props.index}
-          category={info.category}
-          isRuleCondition={false}
-          capabilities={info.capabilities}
-        />
+        {device != undefined ? (
+          <DeviceForm
+            index={props.index}
+            category={info.category}
+            isRuleCondition={false}
+            capabilities={info.capabilities}
+          />
+        ) : null}
       </Row>
     </View>
   );

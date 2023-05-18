@@ -9,6 +9,6 @@ class DeviceConnectionSubscriber(ABC):
     def on_device_connect(self, data: dict = None) -> bool:
         """Returns whether the subscriber should continue to be notified."""
 
-    # Not an abstract method because it's implementation is optional
+    # Not an abstract method because its implementation is optional
     def on_device_disconnect(self, data: dict = None):
         pass

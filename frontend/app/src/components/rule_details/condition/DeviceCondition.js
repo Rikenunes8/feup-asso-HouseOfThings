@@ -3,42 +3,51 @@ import { StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import colors from "../../../../configs/colors";
 
-export default function DeviceCondition({ device, state }) {
+export default function DeviceCondition({ device, data }) {
   return (
     <View style={styles.container}>
       <Text style={styles.name}>{device.name}</Text>
 
       <View style={styles.specs}>
-        {state.status && (
-          <View style={styles.row}>
-            <Icon name="power" size={15} color={colors.primaryText} />
-            <Text style={styles.text}>
-              {" "}
-              {state.status === "turn_on" ? "on" : "off"}
-            </Text>
-          </View>
-        )}
+        {data.map((condition, index) => {
+          return (
+            <View style={styles.row} key={index}>
+              {condition.attribute === "power" && (
+                <View style={styles.row}>
+                  <Icon name="power" size={15} color={colors.primaryText} />
+                  <Text style={styles.text}>
+                    {" "}
+                    {condition.state ? "on" : "off"}
+                  </Text>
+                </View>
+              )}
 
-        {state.brightness && (
-          <View style={styles.row}>
-            <Icon name="sun" size={17} color={colors.primaryText} />
-            <Text style={styles.text}> {state.brightness}</Text>
-          </View>
-        )}
+              {condition.attribute === "brightness" && (
+                <View style={styles.row}>
+                  <Icon name="sun" size={17} color={colors.primaryText} />
+                  <Text style={styles.text}>
+                    {" "}
+                    {condition.comparator} {condition.state}
+                  </Text>
+                </View>
+              )}
 
-        {state.temperature && (
-          <View style={styles.row}>
-            <Icon name="thermometer" size={15} color={colors.primaryText} />
-            <Text style={styles.text}> {state.temperature}</Text>
-          </View>
-        )}
-
-        {state.rgb && (
-          <View style={styles.row}>
-            <Icon name="droplet" size={15} color={colors.primaryText} />
-            <Text style={styles.text}> {state.rgb}</Text>
-          </View>
-        )}
+              {condition.attribute === "temperature" && (
+                <View style={styles.row}>
+                  <Icon
+                    name="thermometer"
+                    size={15}
+                    color={colors.primaryText}
+                  />
+                  <Text style={styles.text}>
+                    {" "}
+                    {condition.comparator} {condition.state}
+                  </Text>
+                </View>
+              )}
+            </View>
+          );
+        })}
       </View>
     </View>
   );
@@ -48,6 +57,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "flex-start",
+    justifyContent: "space-between",
     width: "100%",
     flexWrap: "wrap",
     gap: 10,
@@ -59,8 +69,7 @@ const styles = StyleSheet.create({
   },
   specs: {
     flexDirection: "row",
-    flexGrow: 1,
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
     gap: 15,
   },
   row: {

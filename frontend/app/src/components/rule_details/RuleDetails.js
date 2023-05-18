@@ -11,28 +11,116 @@ import MessageAction from "./action/MessageAction";
 export default function RuleDetails({ rule }) {
   const { devices } = useContext(DevicesContext);
 
+  // TODO: remove when it comes in this format from backend
+  rule.then = [
+    {
+      kind: "device",
+      device_id: "1",
+      action: "turn_on",
+    },
+    {
+      kind: "device",
+      device_id: "1",
+      action: "set_color",
+      data: {
+        color: "#FF0000",
+      },
+    },
+    {
+      kind: "device",
+      device_id: "1",
+      action: "set_brightness",
+      data: {
+        brightness: "50",
+      },
+    },
+    {
+      kind: "message",
+      service: "discord",
+      data: {
+        url: "https://discord.com/api/webhooks/1108084159903178892/-wfJopfOfAmXNI-XYh2sZA20Q1CxMmgOYN9eEu0EoRJ69TatLzWaVoh89_mqunzP8RG6",
+      },
+    },
+    {
+      kind: "message",
+      service: "whatsapp",
+      data: {
+        number: "987654321",
+      },
+    },
+  ];
+
+  rule.when = [
+    {
+      kind: "device",
+      device_id: "1",
+      comparator: "==",
+      attribute: "power",
+      state: true,
+    },
+    {
+      kind: "device",
+      device_id: "1",
+      comparator: "<", // [==, <, >]
+      attribute: "brightness",
+      state: 50,
+    },
+    {
+      kind: "schedule",
+      time: "10:30",
+      days: [1, 3, 5],
+    },
+  ];
+
+  const whenByDevice = {};
+  rule.when.forEach((item) => {
+    if (item.kind === "device") {
+      const deviceId = item.device_id;
+      if (!whenByDevice[deviceId]) {
+        whenByDevice[deviceId] = [];
+      }
+      whenByDevice[deviceId].push({
+        comparator: item.comparator,
+        attribute: item.attribute,
+        state: item.state,
+      });
+    }
+  });
+
+  const thenByDevice = {};
+  rule.then.forEach((item) => {
+    if (item.kind === "device") {
+      const deviceId = item.device_id;
+      if (!thenByDevice[deviceId]) {
+        thenByDevice[deviceId] = [];
+      }
+      thenByDevice[deviceId].push({ [item.action]: item.data });
+    }
+  });
+
+  const whenBySchedule = rule.when.filter((item) => item.kind === "schedule");
+  const thenByMessage = rule.then.filter((item) => item.kind === "message");
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.condition_container}>
         <View style={styles.header}>
           <Text style={styles.title}>WHEN</Text>
+          <Text style={styles.operation}>{rule.operation.toUpperCase()}</Text>
         </View>
 
-        {[...Array(rule.when.length)].map((_, index) => (
-          <View style={styles.card} key={index}>
-            {rule.when[index].kind === "device" ? (
-              <DeviceCondition
-                device={devices.find(
-                  (device) => device.uid == rule.when[index].device_id
-                )}
-                state={rule.when[index].state}
-              />
-            ) : (
-              <ScheduleCondition
-                time={rule.when[index].time}
-                daysOfWeek={rule.when[index].days}
-              />
-            )}
+        {Object.keys(whenByDevice).map((deviceId) => (
+          <View style={styles.card} key={deviceId}>
+            <DeviceCondition
+              device={devices.find((device) => device.uid == deviceId)}
+              data={whenByDevice[deviceId]}
+            />
+          </View>
+        ))}
+
+        {whenBySchedule.map((item) => (
+          <View style={styles.card} key={item.time}>
+            <ScheduleCondition time={item.time} daysOfWeek={item.days} />
           </View>
         ))}
       </View>
@@ -42,20 +130,18 @@ export default function RuleDetails({ rule }) {
           <Text style={styles.title}>THEN</Text>
         </View>
 
-        {[...Array(rule.then.length)].map((_, index) => (
-          <View style={styles.card} key={index}>
-            {/**TODO: change when kind exists for action*/}
-            {rule.then[index].device_id ? (
-              <DeviceAction
-                device={devices.find(
-                  (device) => device.uid == rule.then[index].device_id
-                )}
-                action={rule.then[index].action}
-                data={rule.then[index].data}
-              />
-            ) : (
-              <MessageAction />
-            )}
+        {Object.keys(thenByDevice).map((deviceId) => (
+          <View style={styles.card} key={deviceId}>
+            <DeviceAction
+              device={devices.find((device) => device.uid == deviceId)}
+              actions={thenByDevice[deviceId]}
+            />
+          </View>
+        ))}
+
+        {thenByMessage.map((item) => (
+          <View style={styles.card} key={item.service}>
+            <MessageAction service={item.service} data={item.data} />
           </View>
         ))}
       </View>
@@ -79,15 +165,19 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    backgroundColor: colors.white,
     zIndex: 1,
   },
   title: {
-    flexGrow: 1,
     fontSize: 15,
     color: colors.primary,
   },
-  icon: {
-    flexGrow: 0,
+  operation: {
+    alignSelf: "flex-end",
+    fontSize: 12,
+    color: colors.primary,
     marginRight: 5,
   },
   card: {

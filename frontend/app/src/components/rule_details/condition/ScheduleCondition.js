@@ -4,11 +4,10 @@ import colors from "../../../../configs/colors";
 
 export default function ScheduleCondition({ time, daysOfWeek }) {
   weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  console.log("ScheduleCondition: daysOfWeek: ", daysOfWeek);
 
   return (
-    <View>
-      <Text style={styles.time}>Time: {time}</Text>
+    <View style={styles.container}>
+      <Text style={styles.time}>{time}</Text>
       <View style={styles.daysOfWeek}>
         {daysOfWeek.map((day) => (
           <View key={day} style={styles.day}>
@@ -21,8 +20,15 @@ export default function ScheduleCondition({ time, daysOfWeek }) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    flexWrap: "wrap",
+    gap: 10,
+  },
   time: {
-    marginBottom: 10,
     fontWeight: "bold",
     color: colors.primaryText,
   },
@@ -30,12 +36,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.transparentPrimary,
     borderRadius: 5,
     padding: 5,
-    margin: 3,
+    marginHorizontal: 3,
   },
   daysOfWeek: {
     flexDirection: "row",
     flexWrap: "wrap",
-    width: "100%",
-    justifyContent: "flex-start",
+    justifyContent: "flex-end",
   },
 });

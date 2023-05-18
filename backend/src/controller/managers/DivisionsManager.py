@@ -11,6 +11,7 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
         super().__init__(cid)
         self._divisions: dict[str, Division] = {}
         self._device_manager = device_manager
+        self._device_manager.subscribe_all(self)
 
     def all(self):
         return self._divisions.values()

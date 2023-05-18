@@ -46,6 +46,7 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
                 actual_devices.append(device_uid)
             except ApiException:
                 # No problem: device will not be appended
+                Logger().warning(f"Did not assign division '{data["name"]}' to device with uid '{device_uid}' because it does not exist.")
                 continue
         division.update({"devices": actual_devices})
         return division
@@ -94,14 +95,16 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
 
     def on_device_connect(self, data: dict = None):
         device = data["device"]
+        device_data = device.find()
         actual_divisions = []
-        for division_id in device.find()["divisions"]:
+        for division_id in device_data["divisions"]:
             try:
                 division = self.get(division_id)
                 division.add_device(device.get_id())
                 actual_divisions.append(division_id)
             except ApiException:
                 # No problem: division will not be appended
+                Logger().warning(f"Did not assign device '{device_data['name']}' to division with id '{division_id}' because it does not exist.")
                 continue
         device.set_divisions(actual_divisions)
         return True

@@ -1,11 +1,12 @@
 import React, { useState, useContext } from "react";
-import { Switch, StyleSheet, View } from "react-native";
+import { Switch, StyleSheet, View, Text } from "react-native";
 import RangeSlider from "../../form/RangeSlider";
 
 import colors from "../../../../configs/colors";
 import Col from "../../grid/Column";
 import CreateRuleContext from "../../../contexts/CreateRuleContext";
 import DynamicDropDown from "../../form/DynamicDropDown";
+import ColorPicker from "../../form/ColorPicker";
 
 export default function ConfigurationsForm(props) {
   const { addRuleConditionState, updateRuleAction } =
@@ -13,6 +14,7 @@ export default function ConfigurationsForm(props) {
   const [state, setState] = useState(false);
   const [operation, setOperation] = useState({});
   const [value, setValue] = useState({});
+  const [selectedColor, setSelectedColor] = useState(colors.purple);
 
   const [possibleOperations, setPossibleOperations] = useState([
     { label: "ADD", value: 0 },
@@ -35,9 +37,18 @@ export default function ConfigurationsForm(props) {
     setState(!state);
     action = item ? "turn_on" : "turn_off";
     if (props.isCondition)
-      addRuleConditionState(props.index, { ["status"]: action });
+      addRuleConditionState(props.index, { ["power"]: item });
     else {
       updateRuleAction(props.index, action);
+    }
+  };
+
+  const handleColorChange = (item) => {
+    setSelectedColor(item);
+    if (props.isCondition)
+      addRuleConditionState(props.index, { ["color"]: item });
+    else {
+      updateRuleAction(props.index, item);
     }
   };
 
@@ -90,7 +101,7 @@ export default function ConfigurationsForm(props) {
     case "dropdown":
       return (
         <>
-          <Col numRows={1}>
+          <Col flex={1.2}>
             <DynamicDropDown
               items={possibleOperations}
               setItems={setPossibleOperations}
@@ -102,7 +113,7 @@ export default function ConfigurationsForm(props) {
               onSelectItem={handleOperationChange}
             ></DynamicDropDown>
           </Col>
-          <Col numRows={1}>
+          <Col flex={0.9}>
             <DynamicDropDown
               items={step}
               setItems={setStep}
@@ -115,6 +126,13 @@ export default function ConfigurationsForm(props) {
             ></DynamicDropDown>
           </Col>
         </>
+      );
+    case "color-picker":
+      return (
+        <ColorPicker
+          selectedColor={selectedColor}
+          setSelectedColor={handleColorChange}
+        ></ColorPicker>
       );
     default:
       return null;

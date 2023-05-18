@@ -24,7 +24,7 @@ export default function DeviceForm(props) {
       name: "Temperature",
       component: props.isRuleCondition ? "slider" : "dropdown",
     },
-    color_pallete: {
+    color: {
       name: "Color",
       component: "color-picker",
     },
@@ -36,6 +36,7 @@ export default function DeviceForm(props) {
     setPossibleConfigurations(
       props.capabilities.map((capability) => {
         return {
+          
           label: capabilitiesMap[capability].name,
           value: capabilitiesMap[capability].component,
         };
@@ -44,7 +45,7 @@ export default function DeviceForm(props) {
   };
 
   useEffect(() => {
-    updateConfigurations();
+    if(props.capabilities != undefined) updateConfigurations();
   }, [props.capabilities]);
 
   const [currentConfiguration, setCurrentConfiguration] = useState(
@@ -58,7 +59,7 @@ export default function DeviceForm(props) {
 
   return (
     <Row>
-      <Col numRows={3}>
+      <Col flex={2}>
         <DynamicDropDown
           items={possibleConfigurations}
           setItems={setPossibleConfigurations}
@@ -68,15 +69,13 @@ export default function DeviceForm(props) {
           modalProps={modalProps}
           modalContentContainerStyle={styles.modalContent}
         ></DynamicDropDown>
-      </Col>
-
-      <Col numRows={1}>
+      </Col> 
         <ConfigurationsForm
           feat={currentConfiguration}
           index={props.index}
           isCondition={props.isRuleCondition}
         ></ConfigurationsForm>
-      </Col>
+    
     </Row>
   );
 }

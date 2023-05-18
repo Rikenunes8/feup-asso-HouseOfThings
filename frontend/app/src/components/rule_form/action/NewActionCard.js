@@ -12,21 +12,31 @@ import utils from "../../../utils/utils";
 import colors from "../../../../configs/colors";
 
 export default function NewActionCard(props) {
-
   const { addRuleAction } = useContext(CreateRuleContext);
   const { devices } = useContext(DevicesContext);
   const [device, setDevice] = useState(null);
   const [info, setInfo] = useState({});
 
   const [items, setItems] = useState(() => {
+    fixed_fields = [
+      "category",
+      "connected",
+      "divisions",
+      "name",
+      "protocol",
+      "subcategory",
+      "uid",
+    ];
     all_items = [];
-
     devices.map((item) => {
+      capabilities = Object.keys(item).filter(
+        (key) => !fixed_fields.includes(key)
+      );
       all_items.push({
         label: utils.capitalize(item.name),
         value: item.uid,
         category: item.category,
-        capabilities: item.capabilities,
+        capabilities: capabilities,
       });
     });
 

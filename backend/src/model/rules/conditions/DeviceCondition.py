@@ -5,10 +5,12 @@ from src.controller.observer.Subscriber import Subscriber
 from src.controller.observer.NewDeviceSubscriber import NewDeviceSubscriber
 
 class DeviceCondition(Condition, Subscriber, NewDeviceSubscriber):
-  def __init__(self, device_id: str, state: dict) -> None:
+  def __init__(self, device_id: str, data: dict) -> None:
     super().__init__("device")
     self._device_id = device_id
-    self._state = state
+    self._comparator = data.get('comparator')
+    self._attribute = data.get('attribute')
+    self._state = data.get('state')
     self._active = True
   
   def configure(self, data: dict = None):
@@ -25,10 +27,13 @@ class DeviceCondition(Condition, Subscriber, NewDeviceSubscriber):
 
   def notified(self, data: dict) -> bool:
     if not self._active: return False
-    for key in self._state:
-      if self._state[key] != data.get(key): 
+    current_state = data.get(self._attribute)
+    if (self._comparator == '==' and self._state != current_state) \
+      or (self._comparator == '<' and self._state < current_state) \
+      or (self._comparator == '>' and self._state > current_state):
         self._check = False
         return True
+    if self._check: return True
     self.notify()
     return True
 
@@ -42,5 +47,7 @@ class DeviceCondition(Condition, Subscriber, NewDeviceSubscriber):
     return {
       "kind": self._kind,
       "device_id": self._device_id,
+      "comparator": self._comparator,
+      "attribute": self._attribute,
       "state": self._state
     }

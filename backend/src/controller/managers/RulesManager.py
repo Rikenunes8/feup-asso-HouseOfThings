@@ -27,7 +27,7 @@ class RulesManager(Manager, Subscriber):
         scheduleConditions = list(filter(lambda condition: condition['kind'] == "schedule", conditions))
         deviceConditions = list(filter(lambda condition: condition['kind'] == "device", conditions))
         scheduleConditions = list(map(lambda condition: ScheduleCondition(condition['time'], condition['days']), scheduleConditions))
-        deviceConditions = list(map(lambda condition: DeviceCondition(condition['device_id'], condition['state']), deviceConditions))
+        deviceConditions = list(map(lambda condition: DeviceCondition(condition['device_id'], condition), deviceConditions))
         return scheduleConditions + deviceConditions
 
     @staticmethod

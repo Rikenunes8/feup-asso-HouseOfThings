@@ -23,16 +23,16 @@ class DeviceConnectionPublisher:
 
     def notify_connect(self, device_id: str, data: dict = None):
         subscribers = self._subscribers.get(device_id, [])
-        for subscriber in subscribers:
-            if not subscriber.on_device_connect(data):
-                self.unsubscribe(device_id, subscriber)
         for subscriber in self._global_subscribers:
             if not subscriber.on_device_connect(data):
                 self.unsubscribe_all(subscriber)
+        for subscriber in subscribers:
+            if not subscriber.on_device_connect(data):
+                self.unsubscribe(device_id, subscriber)
 
     def notify_disconnect(self, device_id: str, data: dict = None):
         subscribers = self._subscribers.get(device_id, [])
-        for subscriber in subscribers:
-            subscriber.on_device_disconnect(data)
         for subscriber in self._global_subscribers:
+            subscriber.on_device_disconnect(data)
+        for subscriber in subscribers:
             subscriber.on_device_disconnect(data)

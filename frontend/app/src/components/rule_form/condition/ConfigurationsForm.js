@@ -9,17 +9,6 @@ import DynamicDropDown from "../../form/DynamicDropDown";
 import ColorPicker from "../../form/ColorPicker";
 
 export default function ConfigurationsForm(props) {
-  const { addRuleConditionState, updateRuleAction } =
-    useContext(CreateRuleContext);
-  const [state, setState] = useState(false);
-  const [operation, setOperation] = useState();
-  const [value, setValue] = useState();
-  const [selectedColor, setSelectedColor] = useState(colors.purple);
-
-  useEffect(() => {
-    console.log(operation);
-  }, [operation]);
-
   const [possibleOperations, setPossibleOperations] = useState([
     { label: "ADD", value: "add_" },
     { label: "SUB", value: "sub_" },
@@ -33,8 +22,21 @@ export default function ConfigurationsForm(props) {
     }))
   );
 
-  const handleBrightnessChange = (item) => {
-    addRuleConditionState(props.index, { ["brightness"]: item });
+  const { addRuleConditionState, updateRuleAction } =
+    useContext(CreateRuleContext);
+  const [state, setState] = useState(false);
+  const [operation, setOperation] = useState(possibleOperations[0].value);
+  const [value, setValue] = useState(step[0].value);
+  const [selectedColor, setSelectedColor] = useState(colors.purple);
+
+  useEffect(() => {
+    //console.log(operation);
+  }, []);
+
+  const handleSliderChange = (item, name) => {
+    console.log(item);
+    console.log(name);
+    addRuleConditionState(props.index, { [name]: item });
   };
 
   const handleStatusChange = (item) => {
@@ -97,8 +99,8 @@ export default function ConfigurationsForm(props) {
       return (
         <View style={styles.center}>
           <RangeSlider
-            setValue={handleBrightnessChange}
-            name={"brightness"}
+            setValue={handleSliderChange}
+            name={"test"}
           ></RangeSlider>
         </View>
       );

@@ -17,7 +17,6 @@ const getDivisions = async () => {
 const getDevices = async () => {
   try {
     const response = await apiClient.get("/devices");
-    console.log(response.data.devices);
     return response.data.devices;
   } catch (error) {
     console.error(error);

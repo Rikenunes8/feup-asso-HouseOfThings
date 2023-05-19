@@ -10,7 +10,6 @@ import ConfigurationsForm from "./condition/ConfigurationsForm";
 import colors from "../../../configs/colors";
 
 export default function DeviceForm(props) {
-
   const capabilitiesMap = {
     power: {
       name: "Status",
@@ -36,20 +35,28 @@ export default function DeviceForm(props) {
     setPossibleConfigurations(
       props.capabilities.map((capability) => {
         return {
-          
           label: capabilitiesMap[capability].name,
           value: capabilitiesMap[capability].component,
         };
       })
     );
+    setCurrentConfiguration(capabilitiesMap[props.capabilities[0]].component);
+  };
+
+  const handleConfigurationChange = (value) => {
+    setCurrentConfiguration(value);
   };
 
   useEffect(() => {
-    if(props.capabilities != undefined) updateConfigurations();
+    if (props.capabilities != undefined) 
+    {
+      updateConfigurations();
+    }
+      
   }, [props.capabilities]);
 
   const [currentConfiguration, setCurrentConfiguration] = useState(
-    possibleConfigurations[0].value
+    props.capabilities[0].value
   );
 
   const modalProps = {
@@ -68,14 +75,17 @@ export default function DeviceForm(props) {
           listMode={"MODAL"}
           modalProps={modalProps}
           modalContentContainerStyle={styles.modalContent}
+          onSelectItem={handleConfigurationChange}
         ></DynamicDropDown>
-      </Col> 
+      </Col>
+      {currentConfiguration != undefined ? (
         <ConfigurationsForm
           feat={currentConfiguration}
+          //featName={capabilitiesMap[currentConfiguration].name}
           index={props.index}
           isCondition={props.isRuleCondition}
         ></ConfigurationsForm>
-    
+      ) : null}
     </Row>
   );
 }
@@ -88,5 +98,3 @@ const styles = StyleSheet.create({
     marginTop: "92.5%",
   },
 });
-
-

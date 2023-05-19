@@ -95,7 +95,7 @@ def on_available(client, userdata, msg):
     print(f"Light is not available")
     return
   cidTemp = msg.payload.decode()
-  publish(client, f"{cidTemp}-light-available-pi", uid)
+  publish(client, f"{cidTemp}-light-complex-available-pi", uid)
 
   
 def start_mqtt():
@@ -105,7 +105,7 @@ def start_mqtt():
   subscribe(client, f"{uid}-disconnect", on_disconnect)
   subscribe(client, f"{uid}-turnOn", on_turn_on)
   subscribe(client, f"{uid}-turnOff", on_turn_off)
-  subscribe(client, "light-available-pi", on_available)
+  subscribe(client, "light-complex-available-pi", on_available)
 
   client.loop_start()
   return client

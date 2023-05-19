@@ -26,12 +26,17 @@ class Division:
     DB().get(Collection.DIVISIONS).update(self._id, config)
   
   def add_device(self, device: str) -> None:
-    self._devices.append(device)
+    if device not in self._devices:
+      self._devices.append(device)
     DB().get(Collection.DIVISIONS).update(self._id, {"devices": self._devices})
   
   def remove_device(self, device: str) -> None:
-    self._devices.remove(device)
+    if device in self._devices:
+      self._devices.remove(device)
     DB().get(Collection.DIVISIONS).update(self._id, {"devices": self._devices})
+  
+  def get_devices(self) -> list[str]:
+    return self._devices
   
   def delete(self):
     DB().get(Collection.DIVISIONS).delete(self._id)

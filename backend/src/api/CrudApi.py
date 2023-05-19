@@ -4,19 +4,17 @@ from src.controller.managers.CrudManager import CrudManager
 from src.api.ApiException import ApiException
 from src.api.BaseApi import BaseApi
 
+
 class CrudApi(BaseApi):
-    def __init__(self):
+    def __init__(self, manager: CrudManager):
         super().__init__()
-    
+        self._manager = manager
+
     def get_collection_name(self) -> str:
-        return self.get_element_name() + 's'
+        return self.get_element_name() + "s"
 
     @abstractmethod
     def get_element_name(self) -> str:
-        pass
-
-    @abstractmethod
-    def get_manager(self) -> CrudManager:
         pass
 
     @abstractmethod
@@ -25,14 +23,16 @@ class CrudApi(BaseApi):
 
     def all(self):
         def inner():
-            elements = [element.to_json() for element in self.get_manager().all()]
+            elements = [element.to_json() for element in self._manager.all()]
             return {self.get_collection_name(): elements}
+
         return self.handle_request(inner)
 
     def get(self, id):
         def inner():
-            element = self.get_manager().get(id)
+            element = self._manager.get(id)
             return {self.get_element_name(): element.to_json()}
+
         return self.handle_request(inner)
 
     def create(self, id=None):
@@ -41,10 +41,11 @@ class CrudApi(BaseApi):
             if error:
                 raise ApiException(error)
             if id is None:
-                element = self.get_manager().create(data)
+                element = self._manager.create(data)
             else:
-                element = self.get_manager().create(data, id)
+                element = self._manager.create(data, id)
             return {self.get_element_name(): element.to_json()}
+
         return self.handle_request_with_data(inner)
 
     def update(self, id):
@@ -52,8 +53,9 @@ class CrudApi(BaseApi):
             error = self.validate(data)
             if error:
                 raise ApiException(error)
-            element = self.get_manager().update(id, request.json)
+            element = self._manager.update(id, request.json)
             return {self.get_element_name(): element.to_json()}
+
         return self.handle_request_with_data(inner)
 
     def partial_update(self, id, fields):
@@ -64,12 +66,14 @@ class CrudApi(BaseApi):
                 if values[f] is None:
                     raise ApiException(f"Missing field {f}")
 
-            element = self.get_manager().update(id, values)
+            element = self._manager.update(id, values)
             return {self.get_element_name(): element.to_json()}
+
         return self.handle_request_with_data(inner)
-        
+
     def delete(self, id):
         def inner():
-            self.get_manager().delete(id)
+            self._manager.delete(id)
             return {}
+
         return self.handle_request(inner)

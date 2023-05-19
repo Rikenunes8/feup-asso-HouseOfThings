@@ -9,9 +9,9 @@ class BaseApi(ABC):
         super().__init__()
 
     @abstractmethod
-    def get_blueprint(self) -> Blueprint:
+    def get_api(self) -> Blueprint:
         pass
-    
+
     def handle_request_with_data(self, handler):
         if not is_content_json(request):
             return not_json_error()
@@ -20,7 +20,7 @@ class BaseApi(ABC):
             return jsonify(result)
         except ApiException as e:
             return make_error(str(e), e.code)
-        
+
     def handle_request(self, handler):
         try:
             result = handler()

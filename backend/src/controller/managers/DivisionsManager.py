@@ -1,12 +1,9 @@
 from src.api.ApiException import ApiException
 from src.model.Division import Division
-
 from src.controller.managers.CrudManager import CrudManager
 from src.controller.managers.DevicesManager import DevicesManager
 from src.controller.Logger import Logger
 from src.controller.observer.DeviceConnectionSubscriber import DeviceConnectionSubscriber
-
-from src.model.devices.ConcreteDevice import ConcreteDevice
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 
@@ -106,7 +103,7 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
                 # No problem: division will not be appended
                 Logger().warning(f"Did not assign device '{device_data['name']}' to division with id '{division_id}' because it does not exist.")
                 continue
-        device.set_divisions(actual_divisions)
+        device.get().set_divisions(actual_divisions)
         return True
 
     def on_device_disconnect(self, data: dict = None):

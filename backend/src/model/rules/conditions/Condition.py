@@ -3,8 +3,9 @@ from src.controller.observer.Subscriber import Subscriber
 
 
 class Condition(ABC):
-  def __init__(self) -> None:
+  def __init__(self, kind) -> None:
     super().__init__()
+    self._kind = kind
     self._check = False
 
   def initialize(self, subscriber: Subscriber, data: dict = None):

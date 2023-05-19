@@ -25,7 +25,7 @@ class RulesApi(CrudApi):
 
     def execute(self, id):
         def inner():
-            devices = HoT().get_rules_manager().execute(id)
+            devices = self._manager.execute(id)
             return {"devices": list(map(lambda d: d.to_json(), devices))}
 
         return self.handle_request(inner)
@@ -69,13 +69,19 @@ class RulesApi(CrudApi):
             return "Invalid kind provided"
         if kind == "device":
             device_id = condition.get("device_id")
+            comparator = condition.get("comparator")
+            attribute = condition.get("attribute")
             state = condition.get("state")
             if device_id == None:
                 return "No device_id provided"
+            if comparator == None:
+                return "No comparator provided"
+            if comparator not in ["==", ">", "<"]:
+                return "Invalid comparator provided"
+            if attribute == None:
+                return "No attribute provided"
             if state == None:
                 return "No state provided"
-            if not isinstance(state, dict):
-                return "State must be a dict"
         elif kind == "schedule":
             time = condition.get("time")
             days = condition.get("days")
@@ -94,9 +100,27 @@ class RulesApi(CrudApi):
                     return "Invalid day provided"
 
     def _validate_action(self, action: dict):
-        device_id = action.get("device_id")
-        action_concrete = action.get("action")
-        if device_id == None:
-            return "No device_id provided"
-        if action_concrete == None:
-            return "No action provided"
+        kind = action.get("kind")
+        if kind == None:
+            return "No kind provided"
+        if kind not in ["device", "message"]:
+            return "Invalid kind provided"
+        if kind == "device":
+            device_id = action.get("device_id")
+            action_concrete = action.get("action")
+            if device_id == None:
+                return "No device_id provided"
+            if action_concrete == None:
+                return "No action provided"
+        elif kind == "message":
+            service = action.get("service")
+            if service == None:
+                return "No service provided"
+            data = action.get("data")
+            if data == None or type(data) != dict:
+                return "No data provided"
+            if service == "discord":
+                url = data.get("url")
+                if url == None:
+                    return "No url provided"
+

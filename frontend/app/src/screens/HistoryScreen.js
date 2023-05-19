@@ -230,6 +230,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   content: {
-    marginBottom: 100,
+    marginBottom: 120,
   },
 });

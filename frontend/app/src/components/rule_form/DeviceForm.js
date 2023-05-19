@@ -10,41 +10,49 @@ import ConfigurationsForm from "./condition/ConfigurationsForm";
 import colors from "../../../configs/colors";
 
 export default function DeviceForm(props) {
+  const [possibleConfigurations, setPossibleConfigurations] = useState([{}]);
   const capabilitiesMap = {
     power: {
-      name: "Status",
-      component: "switch",
+      label: "Power",
+      value: "switch",
     },
     brightness: {
-      name: "Brightness",
-      component: props.isRuleCondition ? "slider" : "dropdown",
+      label: "Brightness",
+      value: props.isRuleCondition ? "slider" : "dropdown",
     },
     temperature: {
-      name: "Temperature",
-      component: props.isRuleCondition ? "slider" : "dropdown",
+      label: "Temperature",
+      value: props.isRuleCondition ? "slider" : "dropdown",
     },
     color: {
-      name: "Color",
-      component: "color-picker",
+      label: "Color",
+      value: "color",
     },
   };
-
-  const [possibleConfigurations, setPossibleConfigurations] = useState([{}]);
 
   const updateConfigurations = () => {
     setPossibleConfigurations(
       props.capabilities.map((capability) => {
-        return {
-          label: capabilitiesMap[capability].name,
-          value: capabilitiesMap[capability].component,
-        };
+        return capabilitiesMap[capability];
       })
     );
-    setCurrentConfiguration(capabilitiesMap[props.capabilities[0]].component);
+    setFeat(capabilitiesMap[props.capabilities[0]]);
+    setCurrentConfiguration(capabilitiesMap[props.capabilities[0]].value);
+  };
+ 
+  const [currentConfiguration, setCurrentConfiguration] = useState(
+    capabilitiesMap[props.capabilities[0].value]
+  );
+  const [feat, setFeat] = useState(capabilitiesMap[props.capabilities[0]])
+
+  const modalProps = {
+    transparent: true,
+    presentationStyle: "overFullScreen",
   };
 
-  const handleConfigurationChange = (value) => {
-    setCurrentConfiguration(value);
+  const handleConfigurationChange = (item) => {
+    setFeat(item);
+    setCurrentConfiguration(item.value);
   };
 
   useEffect(() => {
@@ -54,15 +62,6 @@ export default function DeviceForm(props) {
     }
       
   }, [props.capabilities]);
-
-  const [currentConfiguration, setCurrentConfiguration] = useState(
-    props.capabilities[0].value
-  );
-
-  const modalProps = {
-    transparent: true,
-    presentationStyle: "overFullScreen",
-  };
 
   return (
     <Row>
@@ -75,13 +74,12 @@ export default function DeviceForm(props) {
           listMode={"MODAL"}
           modalProps={modalProps}
           modalContentContainerStyle={styles.modalContent}
-          onSelectItem={handleConfigurationChange}
+          onSelectItem={(item ) => handleConfigurationChange(item)}
         ></DynamicDropDown>
       </Col>
       {currentConfiguration != undefined ? (
         <ConfigurationsForm
-          feat={currentConfiguration}
-          //featName={capabilitiesMap[currentConfiguration].name}
+          feat={feat}
           index={props.index}
           isCondition={props.isRuleCondition}
         ></ConfigurationsForm>

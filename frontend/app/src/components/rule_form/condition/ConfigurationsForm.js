@@ -9,6 +9,7 @@ import DynamicDropDown from "../../form/DynamicDropDown";
 import ColorPicker from "../../form/ColorPicker";
 
 export default function ConfigurationsForm(props) {
+  const label = props.feat.label.toLowerCase();
   const [possibleOperations, setPossibleOperations] = useState([
     { label: "ADD", value: "add_" },
     { label: "SUB", value: "sub_" },
@@ -28,22 +29,18 @@ export default function ConfigurationsForm(props) {
   const [operation, setOperation] = useState(possibleOperations[0].value);
   const [value, setValue] = useState(step[0].value);
   const [selectedColor, setSelectedColor] = useState(colors.purple);
+  const [valueOnRange, setValuesOnRange] = useState([50, 80]);
 
-  useEffect(() => {
-    //console.log(operation);
-  }, []);
-
-  const handleSliderChange = (item, name) => {
-    console.log(item);
-    console.log(name);
-    addRuleConditionState(props.index, { [name]: item });
+  const handleSliderChange = (newValues) => {
+    setValuesOnRange(newValues);
+    addRuleConditionState(props.index, { [label]: newValues });
   };
 
   const handleStatusChange = (item) => {
     setState(!state);
     action = item ? "turn_on" : "turn_off";
     if (props.isCondition)
-      addRuleConditionState(props.index, { ["power"]: item });
+      addRuleConditionState(props.index, { [label]: item });
     else {
       updateRuleAction(props.index, action);
     }
@@ -52,14 +49,14 @@ export default function ConfigurationsForm(props) {
   const handleColorChange = (item) => {
     setSelectedColor(item);
     if (props.isCondition)
-      addRuleConditionState(props.index, { ["color"]: item });
+      addRuleConditionState(props.index, { [label]: item });
     else {
       updateRuleAction(props.index, item);
     }
   };
 
   const handleOperationChange = (item) => {
-    val = item.label + value;
+    val = item.value + value;
 
     if (!props.isCondition) {
       updateRuleAction(props.index, val);
@@ -69,7 +66,7 @@ export default function ConfigurationsForm(props) {
   };
 
   const handleValueChange = (item) => {
-    val = operation + item.label;
+    val = operation + item.value;
 
     if (!props.isCondition) {
       updateRuleAction(props.index, val);
@@ -82,7 +79,32 @@ export default function ConfigurationsForm(props) {
     presentationStyle: "overFullScreen",
   };
 
-  switch (props.feat) {
+  function getDefaultConditionValue(val) {
+    switch (val) {
+      case "slider":
+        return valueOnRange;
+      case "dropdown":
+        return operation + value; // Default numeric value for condition2
+      case "color":
+        return selectedColor; // Default boolean value for condition3
+      case "switch":
+        return props.isCondition ? state : state ? "turn_on" : "turn_off";
+      default:
+        return null; // Default value for other conditions
+    }
+  }
+
+  useEffect(() => {
+    const defaultValue = getDefaultConditionValue(props.feat.value);
+
+    if (props.isCondition)
+      addRuleConditionState(props.index, { [label]: defaultValue });
+    else {
+      updateRuleAction(props.index, defaultValue);
+    }
+  }, [props.feat]);
+
+  switch (props.feat.value) {
     case "switch":
       return (
         <View style={styles.center}>
@@ -99,8 +121,9 @@ export default function ConfigurationsForm(props) {
       return (
         <View style={styles.center}>
           <RangeSlider
+            values={valueOnRange}
             setValue={handleSliderChange}
-            name={"test"}
+            name={props.feat.label}
           ></RangeSlider>
         </View>
       );
@@ -133,7 +156,7 @@ export default function ConfigurationsForm(props) {
           </Col>
         </>
       );
-    case "color-picker":
+    case "color":
       return (
         <ColorPicker
           selectedColor={selectedColor}
@@ -154,7 +177,7 @@ const styles = StyleSheet.create({
     marginTop: "92.5%",
   },
   center: {
-    flex: 1,
+    flex: 2,
     alignItems: "center",
     justifyContent: "center",
     width: "100%",

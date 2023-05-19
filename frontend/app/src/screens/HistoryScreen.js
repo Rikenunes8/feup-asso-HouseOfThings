@@ -22,7 +22,7 @@ const data = [
     id: "1",
     content: "Added a new device",
     type: "error",
-    time: "2023-05-18T7:30:00",
+    time: "2023-05-18T07:30:00",
   },
   {
     id: "2",
@@ -34,67 +34,67 @@ const data = [
     id: "3",
     content: "Added a new device",
     type: "error",
-    time: "2023-05-18T9:30:00",
+    time: "2023-05-18T09:30:00",
   },
   {
     id: "4",
     content: "Added a new device",
     type: "error",
-    time: "2023-04-18T9:30:00",
+    time: "2023-04-18T09:30:00",
   },
   {
     id: "5",
     content: "Added a new device",
     type: "info",
-    time: "2023-04-18T9:30:00",
+    time: "2023-04-18T09:30:00",
   },
   {
     id: "6",
     content: "Added a new device",
     type: "error",
-    time: "2023-04-18T9:30:00",
+    time: "2023-04-18T09:30:00",
   },
   {
     id: "7",
     content: "Added a new device",
     type: "error",
-    time: "2023-04-18T9:30:00",
+    time: "2023-04-18T09:30:00",
   },
   {
     id: "8",
     content: "Added a new device",
     type: "error",
-    time: "2023-04-18T9:30:00",
+    time: "2023-04-18T09:30:00",
   },
   {
     id: "9",
     content: "Added a new device",
     type: "info",
-    time: "2023-04-18T9:30:00",
+    time: "2023-04-18T09:30:00",
   },
   {
     id: "10",
     content: "Added a new device",
     type: "error",
-    time: "2023-04-18T9:30:00",
+    time: "2023-04-18T09:30:00",
   },
   {
     id: "11",
     content: "Added a new device",
     type: "error",
-    time: "2023-04-18T9:30:00",
+    time: "2023-04-18T09:30:00",
   },
   {
     id: "12",
     content: "Added a new device",
     type: "info",
-    time: "2023-04-18T9:30:00",
+    time: "2023-04-18T09:30:00",
   },
   {
     id: "13",
     content: "Added a new device",
     type: "error",
-    time: "2022-04-18T9:30:00",
+    time: "2022-04-18T09:30:00",
   },
 ];
 
@@ -169,12 +169,14 @@ export default function HistoryScreen() {
         )}
 
         <View style={styles.scrollBody}>
-          <FlatList
-            data={data}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            ItemSeparatorComponent={renderSeparator}
-          />
+          <View style={styles.content}>
+            <FlatList
+              data={data}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+              ItemSeparatorComponent={renderSeparator}
+            />
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -212,7 +214,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 3,
-    padding:20,
+    padding: 20,
   },
   loadingIndicator: {
     width: "100%",
@@ -226,5 +228,8 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  content: {
+    marginBottom: 100,
   },
 });

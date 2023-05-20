@@ -14,10 +14,6 @@ export default function LightBulbRGBCard({ device }) {
   const { updateDevice } = useContext(DevicesContext);
   const [disabled, setDisabled] = useState(false);
 
-  console.log(device);
-  // {"brightness": 100, "category": "light", "color": "yellow",
-  // "connected": true, "divisions": [], "name": "complex", "power": false, "protocol": "virtual", "subcategory": "light bulb rgb", "uid": "5"}
-
   const onOffHandler = (isEnabled, setDisabled) => {
     console.log(`Turning ${isEnabled ? "off" : "on"} device...`);
 
@@ -59,7 +55,7 @@ export default function LightBulbRGBCard({ device }) {
               power={device.power}
               color={device.color}
               brightness={device.brightness}
-              handler={() => {}}
+              powerHandler={onOffHandler}
             />
           }
         />

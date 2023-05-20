@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, Response
 from src.HoT import HoT
 from src.controller.managers.DevicesManager import DevicesManager
 from src.api.CrudApi import CrudApi
@@ -16,6 +16,7 @@ class DevicesApi(CrudApi):
         self._bp.add_url_rule("/<id>/disconnect", methods=('POST',), view_func=self.delete)
         self._bp.add_url_rule("/<id>/action", methods=('POST',), view_func=self.action)
         self._bp.add_url_rule("/<id>/rename", methods=('POST',), view_func=self.rename)
+        self._bp.add_url_rule("/listener", methods=('GET',), view_func=self.listener)
 
     def get_blueprint(self) -> Blueprint:
         return self._bp
@@ -46,3 +47,12 @@ class DevicesApi(CrudApi):
             device = self.get_manager().action(id, action, payload)
             return {'device': device.to_json()}
         return self.handle_request_with_data(inner)
+
+    def listener(self):
+        def stream():
+            announcer = self.get_manager().announcer()
+            messages = announcer.listen()  
+            while True:
+                msg = messages.get() 
+                yield msg
+        return Response(stream(), mimetype='text/event-stream')

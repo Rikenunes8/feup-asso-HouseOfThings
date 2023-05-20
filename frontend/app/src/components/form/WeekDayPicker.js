@@ -7,20 +7,16 @@ import colors from "../../../configs/colors";
 
 const weekdayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-export default function WeekDayPicker({ weekDays, updateWeekdays }) {
-  const [weekdays, setWeekdays] = useState(
-    weekDays
-      ? weekDays
-      : {
-          Mon: true,
-          Tue: true,
-          Wed: true,
-          Thu: true,
-          Fri: true,
-          Sat: true,
-          Sun: true,
-        }
-  );
+export default function WeekDayPicker({ updateWeekdays }) {
+  const [weekdays, setWeekdays] = useState({
+    Mon: false,
+    Tue: false,
+    Wed: false,
+    Thu: false,
+    Fri: false,
+    Sat: false,
+    Sun: false,
+  });
 
   const handleWeekDaySelected = (weekday) => {
     setWeekdays((prevState) => ({

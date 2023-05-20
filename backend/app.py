@@ -32,6 +32,12 @@ dictConfig({
             "delay": "True",
         },
     },
+    'loggers': {
+        'HoT': {
+            'handlers': [],
+            'level': "DEBUG" if debug_mode else "INFO",
+        },
+    },
     "root": {
         "level": "DEBUG" if debug_mode else "INFO",
         "handlers": ["console", "file"],

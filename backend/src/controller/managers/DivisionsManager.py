@@ -3,6 +3,7 @@ from src.model.Division import Division
 
 from src.controller.managers.CrudManager import CrudManager
 from src.controller.managers.DevicesManager import DevicesManager
+from src.controller.Logger import Logger
 from src.controller.observer.DeviceConnectionSubscriber import DeviceConnectionSubscriber
 
 
@@ -25,6 +26,7 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
     def create(self, data: dict) -> Division:
         division = Division(data["name"], data["icon"], data["devices"])
         self._divisions[division.get_id()] = division
+        Logger().info(f"Division '{data['name']}' created.")
         
         actual_devices = []
         for device_uid in data["devices"]:
@@ -42,6 +44,8 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
         division = self._divisions.pop(id, None)
         if division == None:
             raise ApiException("Division not found")
+        Logger().info(f"Division '{division.get_name()}' removed.")
+        
         for device_uid in division.get_devices():
             try:
                 device = self._device_manager.get(device_uid).get()

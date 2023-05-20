@@ -10,6 +10,7 @@ import api from "../../api/api";
 import utils from "../../utils/utils";
 
 export default function EditRuleContextMenu({
+  rule,
   setIsEditingRule,
   isContextMenuVisible,
   setIsContextMenuVisible,
@@ -19,8 +20,13 @@ export default function EditRuleContextMenu({
   const { setRuleDetailsModalVisible, setIsRuleDetailsModalLoading } =
     useContext(ModalsContext);
 
-  const { ruleName, ruleOperation, ruleConditions, ruleActions } =
-    useContext(CreateRuleContext);
+  const {
+    ruleName,
+    ruleOperation,
+    ruleConditions,
+    ruleActions,
+    resetCreateRuleContext,
+  } = useContext(CreateRuleContext);
 
   // TODO: Função que valida a questão da operation
   const updateCallback = () => {
@@ -31,14 +37,17 @@ export default function EditRuleContextMenu({
       then: ruleActions,
     };
 
-    console.log("Updating RULE", id, updatedRule);
+    console.log("Updating RULE", rule.id);
     setIsRuleDetailsModalLoading(true);
 
     api.updateRule(rule.id, updatedRule).then((updatedRule) => {
       setIsRuleDetailsModalLoading(false);
       if (updatedRule != null) {
-        updateRule(updatedRule);
+        updateRule(updatedRule, rule.id);
         setRuleDetailsModalVisible(null);
+        resetCreateRuleContext();
+        setIsContextMenuVisible(false);
+        setIsEditingRule(false);
       } else {
         utils.showErrorMessage("Failed to update rule");
       }

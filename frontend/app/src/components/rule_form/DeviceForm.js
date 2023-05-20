@@ -7,6 +7,8 @@ export default function DeviceForm(props) {
     case "light":
       return (
         <LightSpecs
+          condition={props.condition}
+          action={props.action}
           index={props.index}
           capabilities={props.capabilities}
           isRuleCondition={props.isRuleCondition}

@@ -12,7 +12,7 @@ export default function RuleDetails({ rule }) {
   const { devices } = useContext(DevicesContext);
 
   // TODO: remove when it comes in this format from backend
-  rule.then = [
+  /*rule.then = [
     {
       kind: "device",
       device_id: "1",
@@ -70,7 +70,7 @@ export default function RuleDetails({ rule }) {
       time: "10:30",
       days: [1, 3, 5],
     },
-  ];
+  ];*/
 
   const whenByDevice = {};
   rule.when.forEach((item) => {

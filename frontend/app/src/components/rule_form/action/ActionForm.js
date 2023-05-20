@@ -6,8 +6,10 @@ import AntDesignIcon from "react-native-vector-icons/AntDesign";
 
 import colors from "../../../../configs/colors";
 
-export default function ActionForm() {
-  const [numActionsCards, setNumActionsCards] = useState(1);
+export default function ActionForm({ actions }) {
+  const [numActionsCards, setNumActionsCards] = useState(
+    actions ? actions.length : 1
+  );
 
   const addActionCard = () => {
     setNumActionsCards(numActionsCards + 1);
@@ -26,7 +28,11 @@ export default function ActionForm() {
         />
       </View>
       {[...Array(numActionsCards)].map((_, index) => (
-        <NewActionCard index={index} key={index} />
+        <NewActionCard
+          index={index}
+          key={index}
+          action={actions ? actions[index] : null}
+        />
       ))}
     </View>
   );

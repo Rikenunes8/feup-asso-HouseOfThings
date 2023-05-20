@@ -5,7 +5,7 @@ import ModalsContext from "../../contexts/ModalsContext";
 import RuleDetails from "../../components/rule_details/RuleDetails";
 import RuleDetailsContextMenu from "../../components/rule_details/RuleDetailsContextMenu";
 import EditRuleContextMenu from "../../components/rule_details/EditRuleContextMenu";
-import EditRuleForm from "../../components/rule_details/EditRuleForm";
+import CreateRuleForm from "../../components/rule_form/CreateRuleForm";
 
 export default function RuleDetailsModal({ rule }) {
   const {
@@ -34,7 +34,7 @@ export default function RuleDetailsModal({ rule }) {
       }}
       modalContent={
         isEditingRule ? (
-          <EditRuleForm
+          <CreateRuleForm
             inputOnFocus={inputOnFocus}
             setInputOnFocus={setInputOnFocus}
             rule={rule}
@@ -46,12 +46,14 @@ export default function RuleDetailsModal({ rule }) {
       contextMenu={
         isEditingRule ? (
           <EditRuleContextMenu
+            rule={rule}
             setIsEditingRule={setIsEditingRule}
             isContextMenuVisible={isContextMenuVisible}
             setIsContextMenuVisible={setIsContextMenuVisible}
           />
         ) : (
           <RuleDetailsContextMenu
+            rule={rule}
             setIsEditingRule={setIsEditingRule}
             isContextMenuVisible={isContextMenuVisible}
             setIsContextMenuVisible={setIsContextMenuVisible}

@@ -7,13 +7,18 @@ import ModalsContext from "../../contexts/ModalsContext";
 import colors from "../../../configs/colors";
 import api from "../../api/api";
 import utils from "../../utils/utils";
+import CreateRuleContext from "../../contexts/CreateRuleContext";
 
 export default function RuleDetailsContextMenu({
+  rule,
   setIsEditingRule,
   isContextMenuVisible,
   setIsContextMenuVisible,
 }) {
   const { removeRule } = useContext(RulesContext);
+
+  const { setRuleName, setRuleOperation, setRuleConditions, setRuleActions } =
+    useContext(CreateRuleContext);
 
   const { setRuleDetailsModalVisible, setIsRuleDetailsModalLoading } =
     useContext(ModalsContext);
@@ -50,6 +55,10 @@ export default function RuleDetailsContextMenu({
   const editCallback = () => {
     setIsContextMenuVisible(false);
     setIsEditingRule(true);
+    setRuleName(rule.name);
+    setRuleOperation(rule.operation);
+    setRuleConditions(rule.when);
+    setRuleActions(rule.then);
   };
 
   return (

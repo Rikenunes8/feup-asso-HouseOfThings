@@ -28,6 +28,7 @@ class DeviceCondition(Condition, Subscriber, NewDeviceSubscriber):
   def notified(self, data: dict) -> bool:
     if not self._active: return False
     current_state = data.get(self._attribute)
+    print(self._attribute)
     if (self._comparator == '==' and self._state != current_state) \
       or (self._comparator == '<' and self._state < current_state) \
       or (self._comparator == '>' and self._state > current_state):

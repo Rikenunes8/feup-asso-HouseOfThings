@@ -9,7 +9,7 @@ import ConfigurationsForm from "./condition/ConfigurationsForm";
 
 import colors from "../../../configs/colors";
 
-export default function LightSpecs({ index, isRuleCondition, capabilities }) {
+export default function LightSpecs({ index, isRuleCondition, capabilities, condition, action }) {
   const capabilitiesMap = {
     power: {
       name: "Status",
@@ -25,6 +25,12 @@ export default function LightSpecs({ index, isRuleCondition, capabilities }) {
     },
   };
 
+  const capabilitiesActionsMap = {
+    turn_on: "power",
+    turn_off: "power",
+    set_brightness: "brightness",
+  };
+
   const [possibleConfigurations, setPossibleConfigurations] = useState(
     capabilities.map((capability) => {
       return {
@@ -35,7 +41,11 @@ export default function LightSpecs({ index, isRuleCondition, capabilities }) {
   );
 
   const [currentConfiguration, setCurrentConfiguration] = useState(
-    possibleConfigurations[0].value
+    condition
+      ? capabilitiesMap[condition.attribute].component
+      : action
+      ? capabilitiesMap[capabilitiesActionsMap[action.action]].component
+      : possibleConfigurations[0].value
   );
 
   const modalProps = {
@@ -59,6 +69,8 @@ export default function LightSpecs({ index, isRuleCondition, capabilities }) {
 
       <Col numRows={1}>
         <ConfigurationsForm
+          condition={condition}
+          action={action}
           feat={currentConfiguration}
           index={index}
           isCondition={isRuleCondition}

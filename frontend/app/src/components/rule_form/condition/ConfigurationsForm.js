@@ -10,9 +10,16 @@ import DynamicDropDown from "../../form/DynamicDropDown";
 export default function ConfigurationsForm(props) {
   const { addRuleConditionState, updateRuleAction } =
     useContext(CreateRuleContext);
-  const [state, setState] = useState(false);
   const [operation, setOperation] = useState({});
   const [value, setValue] = useState({});
+
+  const [state, setState] = useState(
+    props.condition && props.condition.attribute == "power"
+      ? props.condition.state
+      : props.action && props.action.action == "turn_on"
+  );
+
+  // TODO: set brightness, color and temperature values
 
   const [possibleOperations, setPossibleOperations] = useState([
     { label: "ADD", value: 0 },
@@ -34,8 +41,7 @@ export default function ConfigurationsForm(props) {
   const handleStatusChange = (item) => {
     setState(!state);
     action = item ? "turn_on" : "turn_off";
-    if (props.isCondition)
-      addRuleConditionState(props.index, { ["status"]: action });
+    if (props.isCondition) addRuleConditionState(props.index, { action });
     else {
       updateRuleAction(props.index, action);
     }

@@ -7,26 +7,29 @@ import colors from "../../../configs/colors";
 
 const weekdayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-export default function WeekDayPicker({ updateWeekdays }) {
-  const [weekdays, setWeekdays] = useState({
-    Mon: true,
-    Tue: true,
-    Wed: true,
-    Thu: true,
-    Fri: true,
-    Sat: true,
-    Sun: true,
-  });
+export default function WeekDayPicker({ weekDays, updateWeekdays }) {
+  const [weekdays, setWeekdays] = useState(
+    weekDays
+      ? weekDays
+      : {
+          Mon: true,
+          Tue: true,
+          Wed: true,
+          Thu: true,
+          Fri: true,
+          Sat: true,
+          Sun: true,
+        }
+  );
 
   const handleWeekDaySelected = (weekday) => {
     setWeekdays((prevState) => ({
       ...prevState,
       [weekday]: !prevState[weekday],
     }));
-    const weekdaysSelected = weekdayLabels.filter((key) => (weekdays[key]));
+    const weekdaysSelected = weekdayLabels.filter((key) => weekdays[key]);
     const indexes = weekdaysSelected.map((day) => weekdayLabels.indexOf(day));
     updateWeekdays(indexes);
-    console.log("WeekDayPicker: weekdaysSelected: ", weekdaysSelected);
   };
 
   return (

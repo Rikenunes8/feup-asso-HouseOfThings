@@ -49,14 +49,14 @@ export default function RulesScreen() {
           />
         )}
 
-        <ScrollView style={styles.scrollBody}>
-          {rules.map((rule) => (
-            <RuleCard key={rule.id} rule={rule} />
-          ))}
-          <CreateRuleProvider>
+        <CreateRuleProvider>
+          <ScrollView style={styles.scrollBody}>
+            {rules.map((rule) => (
+              <RuleCard key={rule.id} rule={rule} />
+            ))}
             <NewRuleCard />
-          </CreateRuleProvider>
-        </ScrollView>
+          </ScrollView>
+        </CreateRuleProvider>
       </View>
     </SafeAreaView>
   );

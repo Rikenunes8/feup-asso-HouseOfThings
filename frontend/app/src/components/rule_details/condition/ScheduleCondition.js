@@ -36,11 +36,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.transparentPrimary,
     borderRadius: 5,
     padding: 5,
+    marginVertical: 3,
     marginHorizontal: 3,
   },
   daysOfWeek: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
   },
 });

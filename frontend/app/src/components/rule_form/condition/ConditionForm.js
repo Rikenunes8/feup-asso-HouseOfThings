@@ -11,10 +11,11 @@ import CreateRuleContext from "../../../contexts/CreateRuleContext";
 
 import colors from "../../../../configs/colors";
 
-export default function ConditionForm() {
+export default function ConditionForm({ conditions }) {
   const { setRuleOperation } = useContext(CreateRuleContext);
-
-  const [numConditionCards, setNumConditionCards] = useState(1);
+  const [numConditionCards, setNumConditionCards] = useState(
+    conditions ? conditions.length : 1
+  );
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
   const changeOperation = (item) => {
@@ -74,7 +75,11 @@ export default function ConditionForm() {
       </View>
 
       {[...Array(numConditionCards)].map((_, index) => (
-        <NewConditionCard index={index} key={index} />
+        <NewConditionCard
+          index={index}
+          key={index}
+          condition={conditions ? conditions[index] : null}
+        />
       ))}
     </View>
   );

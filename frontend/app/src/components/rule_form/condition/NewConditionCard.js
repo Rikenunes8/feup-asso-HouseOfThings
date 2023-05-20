@@ -12,19 +12,16 @@ import SpecificDetails from "./SpecificDetails";
 import DynamicDropDown from "../../form/DynamicDropDown";
 
 export default function NewConditionCard(props) {
-  const [type, setType] = useState(null);
-  const [info, setInfo] = useState({});
   const { devices } = useContext(DevicesContext);
   const { addRuleCondition } = useContext(CreateRuleContext);
 
-  const handleTypeChange = (item) => {
-    setInfo(item);
-    x =
-      item.parent == "device"
-        ? { kind: item.parent, device_id: item.value }
-        : { kind: item.parent };
-    addRuleCondition(props.index, x);
-  };
+  const [type, setType] = useState(
+    !props.condition
+      ? {}
+      : props.condition.kind == "device"
+      ? props.condition.device_id
+      : "time"
+  );
 
   const [items, setItems] = useState(() => {
     fixed_fields = [
@@ -56,6 +53,19 @@ export default function NewConditionCard(props) {
     return all_items;
   });
 
+  const [info, setInfo] = useState(
+    props.condition ? items.find((item) => item.value == type) : {}
+  );
+
+  const handleTypeChange = (item) => {
+    setInfo(item);
+    x =
+      item.parent == "device"
+        ? { kind: item.parent, device_id: item.value }
+        : { kind: item.parent };
+    addRuleCondition(props.index, x);
+  };
+
   const modalProps = {
     transparent: true,
     presentationStyle: "overFullScreen",
@@ -78,6 +88,7 @@ export default function NewConditionCard(props) {
 
       {type != {} ? (
         <SpecificDetails
+          condition={props.condition}
           type={info.parent}
           index={props.index}
           capabilities={info.capabilities}

@@ -56,7 +56,7 @@ class Rule(Subscriber):
                 result = action.execute({"rule_id": self._id, "rule_name": self._name, "device_manager": device_manager})
                 devices_updated.append(result)
             except ApiException as e:
-                Logger().error(f"While executing rule '{self._name}' actions: {str(e)}")
+                Logger().warn(f"Action in rule '{self._name}' not executed: {str(e)}")
                 print(e)
         return devices_updated
 

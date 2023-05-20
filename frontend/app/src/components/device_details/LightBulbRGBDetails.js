@@ -49,10 +49,10 @@ export default function LightBulbRGBDetails({
             return;
           }
 
-          // TODO: Revert color change to the previous one successful
+          setPickerColor(toHsv(color));
           console.log("Failed to change light color");
         });
-      }, 500); // 500ms
+      }, 500);
     };
 
     colorHandler();
@@ -78,17 +78,15 @@ export default function LightBulbRGBDetails({
           .actionSetBrightnessDevice(uid, selectedBrightness)
           .then((deviceUpdated) => {
             if (deviceUpdated != null) {
-              // int with initial -> set new
               console.log(`Changed light brightness successfully`);
               updateDevice(deviceUpdated, uid);
               return;
             }
 
-            // TODO: Revert brigtness change to the previous one successful
-            // setvalue with previous saved
+            setSliderValue(brightness);
             console.log("Failed to change light brightness");
           });
-      }, 500); // 500ms
+      }, 500);
     };
 
     brightnessHandler();

@@ -1,5 +1,7 @@
 import apiClient from "./client";
 
+const devicesListenerURL = apiClient.defaults.baseURL + "/devices/listener";
+
 const getDivisions = async () => {
   try {
     const response = await apiClient.get("/divisions");
@@ -190,6 +192,7 @@ const executeRule = async (id) => {
 };
 
 export default {
+  devicesListenerURL,
   getDevices,
   getCategories,
   getDivisions,

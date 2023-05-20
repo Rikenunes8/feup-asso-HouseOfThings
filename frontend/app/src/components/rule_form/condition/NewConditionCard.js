@@ -39,7 +39,6 @@ export default function NewConditionCard(props) {
     all_items = [
       { label: "Time", value: "time", parent: "schedule" },
       { label: "Schedule", value: "schedule" },
-      { label: "Devices", value: "device" },
     ];
     devices.map((item) => {
       capabilities = Object.keys(item).filter(
@@ -53,6 +52,10 @@ export default function NewConditionCard(props) {
         capabilities: capabilities,
       });
     });
+
+    if (devices.length != 0)
+      all_items.push({ label: "Devices", value: "device" });
+
     return all_items;
   });
 
@@ -73,6 +76,7 @@ export default function NewConditionCard(props) {
           modalProps={modalProps}
           modalContentContainerStyle={styles.modalContent}
           onSelectItem={(e) => handleTypeChange(e)}
+          hasCategory={true}
         ></DynamicDropDown>
       </Row>
 

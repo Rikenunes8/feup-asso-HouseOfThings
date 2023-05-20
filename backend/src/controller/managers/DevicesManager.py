@@ -1,6 +1,7 @@
 import time
 
 from src.api.ApiException import ApiException
+from src.api.utils import format_sse
 from src.model.devices.Device import Device
 from src.model.devices.ConcreteDevice import ConcreteDevice
 from src.controller.managers.Manager import Manager
@@ -13,8 +14,9 @@ from src.controller.device_connectors.ThermometerPiConnector import ThermometerP
 from src.controller.device_connectors.ThermometerVirtualConnector import ThermometerVirtualConnector
 from src.controller.observer.Subscriber import Subscriber
 from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
-from src.controller.Logger import Logger
 from src.controller.observer.DeviceConnectionPublisher import DeviceConnectionPublisher
+from src.controller.announcer.MessageAnnouncer import MessageAnnouncer
+from src.controller.Logger import Logger
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 
@@ -29,6 +31,14 @@ class DevicesManager(Manager, DeviceConnectionPublisher):
     def __init__(self, cid) -> None:
         super().__init__(cid)
         self._devices: dict[str, Device] = {}
+        self._announcer = MessageAnnouncer()
+    
+    def announcer(self) -> MessageAnnouncer:
+        return self._announcer
+
+    def announce(self, data: str, event=None) -> None:
+        msg = format_sse(data=data, event=event)
+        self._announcer.announce(msg=msg)
 
     def _add(self, uid: str, device: Device) -> Device:
         self._devices[uid] = device
@@ -120,7 +130,7 @@ class DevicesManager(Manager, DeviceConnectionPublisher):
         connector = connectors[0]
         capabilities: list[str] = connector.get_capabilities()
 
-        notifier = DeviceStateNotifier()
+        notifier = DeviceStateNotifier(self)
         device = ConcreteDevice(uid, config, connector, notifier)
         for capability in capabilities:
             # eval to get the respective decorator capabililty class instead of making an inifinite if-else

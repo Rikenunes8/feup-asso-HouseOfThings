@@ -44,6 +44,7 @@ dictConfig({
     }
 })
 
+
 SWAGGER_URL = '/swagger'
 API_URL = '/static/swagger.yaml'
 SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(

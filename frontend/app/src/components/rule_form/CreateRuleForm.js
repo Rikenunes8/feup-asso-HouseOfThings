@@ -6,6 +6,7 @@ import ConditionForm from "./condition/ConditionForm";
 import ActionForm from "./action/ActionForm";
 
 import CreateRuleContext from "../../contexts/CreateRuleContext";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function CreateRuleForm({
   inputOnFocus,
@@ -23,8 +24,10 @@ export default function CreateRuleForm({
         inputOnFocus={inputOnFocus}
         setInputOnFocus={setInputOnFocus}
       />
-      <ConditionForm conditions={rule ? rule.when : null}></ConditionForm>
-      <ActionForm actions={rule ? rule.then : null}></ActionForm>
+      <GestureHandlerRootView>
+        <ConditionForm conditions={rule ? rule.when : null}></ConditionForm>
+        <ActionForm actions={rule ? rule.then : null}></ActionForm>
+      </GestureHandlerRootView>
     </ScrollView>
   );
 }

@@ -1,5 +1,11 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 
 import ContextMenu from "../../ContextMenu";
 import NewConditionCard from "./NewConditionCard";
@@ -13,9 +19,13 @@ import colors from "../../../../configs/colors";
 
 export default function ConditionForm({ conditions }) {
   const { setRuleOperation } = useContext(CreateRuleContext);
-  const [numConditionCards, setNumConditionCards] = useState(
-    conditions ? conditions.length : 1
-  );
+
+  const [conditionCards, setConditionCards] = useState([
+    conditions
+      ? conditions.map((_) => ({ id: Date.now().toString() }))
+      : { id: Date.now().toString() },
+  ]);
+
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
   const changeOperation = (item) => {
@@ -24,10 +34,18 @@ export default function ConditionForm({ conditions }) {
   };
 
   const addConditionCard = () => {
-    setNumConditionCards(numConditionCards + 1);
+    const newCard = { id: Date.now().toString() };
+    setConditionCards([...conditionCards, newCard]);
   };
 
-  //TODO: Include the manual
+  const deleteConditionCard = (id) => {
+    if (conditionCards.length > 1) {
+      setConditionCards((prevCards) =>
+        prevCards.filter((card) => card.id !== id)
+      );
+    }
+  };
+
   const operations = [
     {
       name: "AND",
@@ -43,7 +61,6 @@ export default function ConditionForm({ conditions }) {
     },
   ];
 
-  // TODO: Make the selected other color
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -63,24 +80,28 @@ export default function ConditionForm({ conditions }) {
           onPress={() => setIsContextMenuVisible(!isContextMenuVisible)}
         />
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={addConditionCard}>
           <AntDesignIcon
             name={"plus"}
             size={20}
             color={colors.primary}
             style={styles.icon}
-            onPress={() => addConditionCard()}
           />
         </TouchableOpacity>
       </View>
 
-      {[...Array(numConditionCards)].map((_, index) => (
-        <NewConditionCard
-          index={index}
-          key={index}
-          condition={conditions ? conditions[index] : null}
-        />
-      ))}
+      <View>
+        {conditionCards.map((card, index) => (
+          <NewConditionCard
+            index={index}
+            key={card.id}
+            card={card}
+            condition={conditions ? conditions[index] : null}
+            handleDelete={() => deleteConditionCard(card.id)}
+            deleteDisabled={conditionCards.length == 1}
+          />
+        ))}
+      </View>
     </View>
   );
 }

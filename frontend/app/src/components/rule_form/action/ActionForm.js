@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import NewActionCard from "./NewActionCard";
 import AntDesignIcon from "react-native-vector-icons/AntDesign";
@@ -7,31 +7,45 @@ import AntDesignIcon from "react-native-vector-icons/AntDesign";
 import colors from "../../../../configs/colors";
 
 export default function ActionForm({ actions }) {
-  const [numActionsCards, setNumActionsCards] = useState(
-    actions ? actions.length : 1
-  );
+  const [actionCards, setActionCards] = useState([
+    actions
+      ? actions.map((_) => ({ id: Date.now().toString() }))
+      : { id: Date.now().toString() },
+  ]);
 
   const addActionCard = () => {
-    setNumActionsCards(numActionsCards + 1);
+    const newCard = { id: Date.now().toString() };
+    setActionCards([...actionCards, newCard]);
+  };
+
+  const deleteActionCard = (id) => {
+    if (actionCards.length > 1) {
+      setActionCards((prevCards) => prevCards.filter((card) => card.id !== id));
+    }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>THEN</Text>
-        <AntDesignIcon
-          name={"plus"}
-          size={20}
-          color={colors.primary}
-          style={styles.plus_icon}
-          onPress={addActionCard}
-        />
+        <TouchableOpacity onPress={addActionCard}>
+          <AntDesignIcon
+            name={"plus"}
+            size={20}
+            color={colors.primary}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
       </View>
-      {[...Array(numActionsCards)].map((_, index) => (
+
+      {actionCards.map((card, index) => (
         <NewActionCard
           index={index}
-          key={index}
+          key={card.id}
+          card={card}
           action={actions ? actions[index] : null}
+          handleDelete={() => deleteActionCard(card.id)}
+          deleteDisabled={actionCards.length == 1}
         />
       ))}
     </View>

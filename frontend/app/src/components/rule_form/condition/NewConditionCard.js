@@ -10,6 +10,7 @@ import colors from "../../../../configs/colors";
 import Row from "../../grid/Row";
 import SpecificDetails from "./SpecificDetails";
 import DynamicDropDown from "../../form/DynamicDropDown";
+import DeletableCard from "../../DeletableCard";
 
 export default function NewConditionCard(props) {
   const { devices } = useContext(DevicesContext);
@@ -75,30 +76,35 @@ export default function NewConditionCard(props) {
   };
 
   return (
-    <View style={styles.container}>
-      <Row>
-        <DynamicDropDown
-          items={items}
-          setItems={setItems}
-          value={type}
-          setValue={setType}
-          listMode={"MODAL"}
-          modalProps={modalProps}
-          modalContentContainerStyle={styles.modalContent}
-          onSelectItem={(e) => handleTypeChange(e)}
-        ></DynamicDropDown>
-      </Row>
+    <DeletableCard
+      deleteDisabled={props.deleteDisabled}
+      handleDelete={props.handleDelete}
+    >
+      <View style={styles.container}>
+        <Row>
+          <DynamicDropDown
+            items={items}
+            setItems={setItems}
+            value={type}
+            setValue={setType}
+            listMode={"MODAL"}
+            modalProps={modalProps}
+            modalContentContainerStyle={styles.modalContent}
+            onSelectItem={(e) => handleTypeChange(e)}
+            hasCategory={true}
+          />
+        </Row>
 
-      {type != {} ? (
-        <SpecificDetails
-          condition={props.condition}
-          type={info.parent}
-          index={props.index}
-          capabilities={info.capabilities}
-          category={info.category}
-        ></SpecificDetails>
-      ) : null}
-    </View>
+        {type != {} ? (
+          <SpecificDetails
+            type={info.parent}
+            index={props.index}
+            capabilities={info.capabilities}
+            category={info.category}
+          ></SpecificDetails>
+        ) : null}
+      </View>
+    </DeletableCard>
   );
 }
 
@@ -117,6 +123,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     paddingHorizontal: 20,
     zIndex: 0,
+    marginHorizontal: 3,
   },
   modalContent: {
     backgroundColor: colors.white,

@@ -29,14 +29,17 @@ class DeviceCondition(Condition, Subscriber, DeviceConnectionSubscriber):
         return self._check
 
     def notified(self, data: dict) -> bool:
-        if not self._active: return False
+        if not self._active:
+            return False
         current_state = data.get(self._attribute)
+
         if (self._comparator == '==' and self._state != current_state) \
           or (self._comparator == '<' and self._state < current_state) \
           or (self._comparator == '>' and self._state > current_state):
             self._check = False
             return True
-        if self._check: return True
+        if self._check: 
+            return True
         self.notify()
         return True
 
@@ -48,10 +51,10 @@ class DeviceCondition(Condition, Subscriber, DeviceConnectionSubscriber):
         return True
 
     def to_json(self) -> dict:
-      return {
-        "kind": self._kind,
-        "device_id": self._device_id,
-        "comparator": self._comparator,
-        "attribute": self._attribute,
-        "state": self._state
-      }
+        return {
+          "kind": self._kind,
+          "device_id": self._device_id,
+          "comparator": self._comparator,
+          "attribute": self._attribute,
+          "state": self._state
+        }

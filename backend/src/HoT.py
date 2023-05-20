@@ -22,6 +22,7 @@ class HoT(metaclass=HoTMeta):
         self._device_manager.load()
         self._rules_manager.load()
         self._rules_manager.run_alarms()
+        self._divisions_manager.load()
 
     def get_device_manager(self):
         return self._device_manager

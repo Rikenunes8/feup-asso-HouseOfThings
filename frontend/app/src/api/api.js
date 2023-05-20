@@ -1,5 +1,7 @@
 import apiClient from "./client";
 
+const devicesListenerURL = apiClient.defaults.baseURL + "/devices/listener";
+
 const getDivisions = async () => {
   try {
     const response = await apiClient.get("/divisions");
@@ -103,6 +105,20 @@ const actionDevice = async (id, action) => {
   } catch (error) {
     console.error(error);
   }
+};
+
+const actionSetColorDevice = async (id, color) => {
+  return await actionDevice(id, {
+    action: "set_color",
+    data: { color: color },
+  });
+};
+
+const actionSetBrightnessDevice = async (id, brightness) => {
+  return await actionDevice(id, {
+    action: "set_brightness",
+    data: { brightness: brightness },
+  });
 };
 
 const renameDevice = async (id, name) => {
@@ -210,6 +226,7 @@ const deleteRule = async (id) => {
 };
 
 export default {
+  devicesListenerURL,
   getDevices,
   getCategories,
   getDivisions,
@@ -218,6 +235,8 @@ export default {
   addRule,
   disconnectDevice,
   actionDevice,
+  actionSetColorDevice,
+  actionSetBrightnessDevice,
   renameDevice,
   availableDevices,
   getRules,

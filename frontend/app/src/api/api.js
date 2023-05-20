@@ -107,11 +107,9 @@ const actionDevice = async (id, action) => {
 };
 
 const actionSetColorDevice = async (id, color) => {
-  console.log("actionSetColorDevice", id, color);
-  // TODO: change request to allow for hex colors...
   return await actionDevice(id, {
     action: "set_color",
-    data: { color: "green" },
+    data: { color: color },
   });
 };
 

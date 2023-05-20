@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { Switch, StyleSheet, View } from "react-native";
+import React, { useState, useContext, useEffect } from "react";
+import { Switch, StyleSheet, View, Text } from "react-native";
 import RangeSlider from "../../form/RangeSlider";
 
 import colors from "../../../../configs/colors";
@@ -8,23 +8,11 @@ import CreateRuleContext from "../../../contexts/CreateRuleContext";
 import DynamicDropDown from "../../form/DynamicDropDown";
 
 export default function ConfigurationsForm(props) {
-  const { addRuleConditionState, updateRuleAction } =
-    useContext(CreateRuleContext);
-  const [operation, setOperation] = useState({});
-  const [value, setValue] = useState({});
-
-  const [state, setState] = useState(
-    props.condition && props.condition.attribute == "power"
-      ? props.condition.state
-      : props.action && props.action.action == "turn_on"
-  );
-
-  // TODO: set brightness, color and temperature values
-
+  const label = props.feat.label.toLowerCase();
   const [possibleOperations, setPossibleOperations] = useState([
-    { label: "ADD", value: 0 },
-    { label: "SUB", value: 1 },
-    { label: "SET", value: 2 },
+    { label: "ADD", value: "add_" },
+    { label: "SUB", value: "sub_" },
+    { label: "SET", value: "set_" },
   ]);
 
   const [step, setStep] = useState(
@@ -34,21 +22,46 @@ export default function ConfigurationsForm(props) {
     }))
   );
 
-  const handleBrightnessChange = (item) => {
-    addRuleConditionState(props.index, { ["brightness"]: item });
+  const { addRuleConditionState, updateRuleAction } =
+    useContext(CreateRuleContext);
+  const [state, setState] = useState(
+    props.condition && props.condition.attribute == "power"
+      ? props.condition.state
+      : props.action && props.action.action == "turn_on"
+  );
+  const [operation, setOperation] = useState(possibleOperations[0].value);
+  const [value, setValue] = useState(step[0].value);
+  const [selectedColor, setSelectedColor] = useState(
+    props.action && props.action.action == "set_color"
+  );
+  const [valueOnRange, setValuesOnRange] = useState([50, 80]);
+
+  const handleSliderChange = (newValues) => {
+    setValuesOnRange(newValues);
+    addRuleConditionState(props.index, { [label]: newValues });
   };
 
   const handleStatusChange = (item) => {
     setState(!state);
     action = item ? "turn_on" : "turn_off";
-    if (props.isCondition) addRuleConditionState(props.index, { action });
+    if (props.isCondition)
+      addRuleConditionState(props.index, { [label]: item });
     else {
       updateRuleAction(props.index, action);
     }
   };
 
+  const handleColorChange = (item) => {
+    setSelectedColor(item);
+    if (props.isCondition)
+      addRuleConditionState(props.index, { [label]: item });
+    else {
+      updateRuleAction(props.index, item);
+    }
+  };
+
   const handleOperationChange = (item) => {
-    val = item.label + value.label;
+    val = item.value + value;
 
     if (!props.isCondition) {
       updateRuleAction(props.index, val);
@@ -58,7 +71,7 @@ export default function ConfigurationsForm(props) {
   };
 
   const handleValueChange = (item) => {
-    val = operation.label + item.label;
+    val = operation + item.value;
 
     if (!props.isCondition) {
       updateRuleAction(props.index, val);
@@ -71,7 +84,32 @@ export default function ConfigurationsForm(props) {
     presentationStyle: "overFullScreen",
   };
 
-  switch (props.feat) {
+  function getDefaultConditionValue(val) {
+    switch (val) {
+      case "slider":
+        return valueOnRange;
+      case "dropdown":
+        return operation + value; // Default numeric value for condition2
+      case "color":
+        return selectedColor; // Default boolean value for condition3
+      case "switch":
+        return props.isCondition ? state : state ? "turn_on" : "turn_off";
+      default:
+        return null; // Default value for other conditions
+    }
+  }
+
+  useEffect(() => {
+    const defaultValue = getDefaultConditionValue(props.feat.value);
+
+    if (props.isCondition)
+      addRuleConditionState(props.index, { [label]: defaultValue });
+    else {
+      updateRuleAction(props.index, defaultValue);
+    }
+  }, [props.feat]);
+
+  switch (props.feat.value) {
     case "switch":
       return (
         <View style={styles.center}>
@@ -88,15 +126,16 @@ export default function ConfigurationsForm(props) {
       return (
         <View style={styles.center}>
           <RangeSlider
-            setValue={handleBrightnessChange}
-            name={"brightness"}
+            values={valueOnRange}
+            setValue={handleSliderChange}
+            name={props.feat.label}
           ></RangeSlider>
         </View>
       );
     case "dropdown":
       return (
         <>
-          <Col numRows={1}>
+          <Col flex={1.2}>
             <DynamicDropDown
               items={possibleOperations}
               setItems={setPossibleOperations}
@@ -108,7 +147,7 @@ export default function ConfigurationsForm(props) {
               onSelectItem={handleOperationChange}
             ></DynamicDropDown>
           </Col>
-          <Col numRows={1}>
+          <Col flex={0.9}>
             <DynamicDropDown
               items={step}
               setItems={setStep}
@@ -122,6 +161,13 @@ export default function ConfigurationsForm(props) {
           </Col>
         </>
       );
+    /*case "color":
+      return (
+        <ColorPicker
+          selectedColor={selectedColor}
+          setSelectedColor={handleColorChange}
+        ></ColorPicker>
+      );*/
     default:
       return null;
   }
@@ -136,7 +182,7 @@ const styles = StyleSheet.create({
     marginTop: "92.5%",
   },
   center: {
-    flex: 1,
+    flex: 2,
     alignItems: "center",
     justifyContent: "center",
     width: "100%",

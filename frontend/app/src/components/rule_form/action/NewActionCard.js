@@ -16,7 +16,7 @@ export default function NewActionCard(props) {
   const { devices } = useContext(DevicesContext);
   const [device, setDevice] = useState(
     !props.action
-      ? {}
+      ? null
       : props.action.kind == "device"
       ? props.action.device_id
       : "message"
@@ -76,13 +76,14 @@ export default function NewActionCard(props) {
         ></DynamicDropDown>
       </Row>
       <Row>
-        <DeviceForm
-          index={props.index}
-          category={info.category}
-          isRuleCondition={false}
-          capabilities={info.capabilities}
-          action={props.action}
-        />
+        {device != undefined ? (
+          <DeviceForm
+            index={props.index}
+            category={info.category}
+            isRuleCondition={false}
+            capabilities={info.capabilities}
+          />
+        ) : null}
       </Row>
     </View>
   );

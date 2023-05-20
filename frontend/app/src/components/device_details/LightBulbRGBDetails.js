@@ -35,7 +35,7 @@ export default function LightBulbRGBDetails({
   useEffect(() => {
     let colorTimeoutId;
 
-    // Change color - after 500ms of no change
+    // Change color - after 300ms of no change
     const colorHandler = () => {
       clearTimeout(colorTimeoutId);
       colorTimeoutId = setTimeout(() => {

@@ -40,7 +40,7 @@ export default function LightBulbRGBCard({ device }) {
       specificFeature={
         <Switch
           trackColor={{ false: colors.desactive, true: device.color }}
-          thumbColor={device.power ? colors.white : colors.white}
+          thumbColor={colors.white}
           onValueChange={() => onOffHandler(device.power, setDisabled)}
           value={device.power}
           disabled={disabled}

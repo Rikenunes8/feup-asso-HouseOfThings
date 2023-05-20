@@ -108,6 +108,20 @@ const actionDevice = async (id, action) => {
   }
 };
 
+const actionSetColorDevice = async (id, color) => {
+  return await actionDevice(id, {
+    action: "set_color",
+    data: { color: color },
+  });
+};
+
+const actionSetBrightnessDevice = async (id, brightness) => {
+  return await actionDevice(id, {
+    action: "set_brightness",
+    data: { brightness: brightness },
+  });
+};
+
 const renameDevice = async (id, name) => {
   try {
     const response = await apiClient.post(`/devices/${id}/rename`, {
@@ -201,6 +215,8 @@ export default {
   addRule,
   disconnectDevice,
   actionDevice,
+  actionSetColorDevice,
+  actionSetBrightnessDevice,
   renameDevice,
   availableDevices,
   getRules,

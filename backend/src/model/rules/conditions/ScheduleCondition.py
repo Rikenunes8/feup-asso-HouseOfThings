@@ -1,9 +1,9 @@
-from src.model.rules.Condition import Condition
+from src.model.rules.conditions.Condition import Condition
 import schedule
 
 class ScheduleCondition(Condition):
   def __init__(self, time: str, days: list[int]) -> None:
-    super().__init__()
+    super().__init__("schedule")
     self._time = time
     self._days = days
 
@@ -35,7 +35,7 @@ class ScheduleCondition(Condition):
 
   def to_json(self) -> dict:
     return {
-      "kind": "schedule",
+      "kind": self._kind,
       "time": self._time,
       "days": self._days
     }

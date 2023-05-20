@@ -56,8 +56,8 @@ class ComplexLightPiConnector(ActuatorDeviceConnector):
         self._client = connect_mqtt()
         self._client.loop_start()
 
-        subscribe(self._client, f"{self._cid}-light-available-pi", self.on_available)
-        publish(self._client, "light-available-pi", self._cid)
+        subscribe(self._client, f"{self._cid}-light-complex-available-pi", self.on_available)
+        publish(self._client, "light-complex-available-pi", self._cid)
 
     def finish_discovery(self) -> list[str]:
         disconnect_mqtt(self._client)

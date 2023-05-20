@@ -80,7 +80,10 @@ class RulesManager(Manager, Subscriber):
 
     def execute(self, rule_id: str) -> list[Device]:
         rule = self.get(rule_id)
-        return rule.execute(self._device_manager)
+        devices = rule.execute(self._device_manager)
+        devices = list(filter(lambda d: d != None, devices))
+        self._device_manager.announce([device.to_json() for device in devices], "update")
+        return devices
     
     def load(self) -> None:
         rules = DB().get(Collection.RULES).find_all()

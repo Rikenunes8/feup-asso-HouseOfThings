@@ -34,7 +34,13 @@ export default function DeviceCard({ device, specificFeature, modal }) {
       <View style={styles.deviceContent}>
         <View style={{ justifyContent: "center" }}>
           <Text style={styles.deviceName}>{device.name}</Text>
-          <Text style={styles.divisionText}>{deviceDivisions}</Text>
+          <Text style={styles.divisionText}>
+            {Array.isArray(device.divisions) && device.divisions.length > 0 ? (
+              deviceDivisions
+            ) : (
+              <Text style={{ fontStyle: "italic" }}>No division</Text>
+            )}
+          </Text>
         </View>
 
         {specificFeature}

@@ -52,6 +52,7 @@ export default function LightBulbRGBCard({ device }) {
           icon={utils.getDeviceIcon(device.subcategory)}
           modalContent={
             <LightBulbRGBDetails
+              uid={device.uid}
               power={device.power}
               color={device.color}
               brightness={device.brightness}

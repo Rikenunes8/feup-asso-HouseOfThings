@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { ColorPicker, toHsv, fromHsv } from "react-native-color-picker";
 import Slider from "react-native-a11y-slider";
 
+import DevicesContext from "../../contexts/DevicesContext";
+
 import LineIcon from "react-native-vector-icons/SimpleLineIcons";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import colors from "../../../configs/colors";
+import api from "../../api/api";
 
 export default function LightBulbRGBDetails({
+  uid,
   power,
   color, // in hex format
   brightness,
@@ -15,6 +19,7 @@ export default function LightBulbRGBDetails({
 }) {
   const stateText = power ? "On" : "Off";
 
+  const { updateDevice } = useContext(DevicesContext);
   const [disabled, setDisabled] = React.useState(false);
   const [pickerColor, setPickerColor] = useState(toHsv(color));
   const [sliderValue, setSliderValue] = useState(brightness);
@@ -33,8 +38,20 @@ export default function LightBulbRGBDetails({
       clearTimeout(colorTimeoutId);
       colorTimeoutId = setTimeout(() => {
         if (color == fromHsv(pickerColor)) return;
-        console.log(`Color changed: ${fromHsv(pickerColor)}`);
-        // actionDevice(device.uid, { action: "set_color", "data": { "color": color (hex ?) } })
+
+        const selectedColor = fromHsv(pickerColor);
+        console.log(`Changing color device... ${selectedColor}`);
+
+        api.actionSetColorDevice(uid, selectedColor).then((deviceUpdated) => {
+          if (deviceUpdated != null) {
+            console.log(`Changed light color successfully`);
+            updateDevice(deviceUpdated, uid);
+            return;
+          }
+
+          // TODO: Revert color change to the previous one successful
+          console.log("Failed to change light color");
+        });
       }, 500); // 500ms
     };
 
@@ -53,8 +70,24 @@ export default function LightBulbRGBDetails({
       clearTimeout(brightnessTimeoutId);
       brightnessTimeoutId = setTimeout(() => {
         if (brightness == sliderValue) return;
-        console.log(`Brightness changed: ${sliderValue}`);
-        // actionDevice(device.uid, { action: "set_brightness", "data": { "brightness": brightness } })
+
+        const selectedBrightness = sliderValue;
+        console.log(`Changing brightness device... ${selectedBrightness}`);
+
+        api
+          .actionSetBrightnessDevice(uid, selectedBrightness)
+          .then((deviceUpdated) => {
+            if (deviceUpdated != null) {
+              // int with initial -> set new
+              console.log(`Changed light brightness successfully`);
+              updateDevice(deviceUpdated, uid);
+              return;
+            }
+
+            // TODO: Revert brigtness change to the previous one successful
+            // setvalue with previous saved
+            console.log("Failed to change light brightness");
+          });
       }, 500); // 500ms
     };
 

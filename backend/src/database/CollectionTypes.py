@@ -5,3 +5,4 @@ class Collection(tuple[str, str or None], Enum):
     DEVICES = 'devices', 'uid'
     RULES = 'rules', None
     DIVISIONS = 'divisions', None
+    LOGS = 'logs', None

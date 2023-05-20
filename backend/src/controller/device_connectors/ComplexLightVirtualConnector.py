@@ -56,8 +56,8 @@ class ComplexLightVirtualConnector(ActuatorDeviceConnector):
         self._client = connect_mqtt()
         self._client.loop_start()
 
-        subscribe(self._client, f"{self._cid}-light-available-virtual", self.on_available)
-        publish(self._client, "light-available-virtual", self._cid)
+        subscribe(self._client, f"{self._cid}-light-complex-available-virtual", self.on_available)
+        publish(self._client, "light-complex-available-virtual", self._cid)
 
     def finish_discovery(self) -> list[str]:
         disconnect_mqtt(self._client)

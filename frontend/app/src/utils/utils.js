@@ -38,6 +38,8 @@ function getDeviceIcon(subcategory) {
   switch (subcategory) {
     case "light bulb":
       return require("../../../assets/devices/light_bulb.png");
+    case "light bulb rgb":
+      return require("../../../assets/devices/light_bulb_rgb.png");
     case "thermometer":
       return require("../../../assets/devices/thermometer.png");
     default:

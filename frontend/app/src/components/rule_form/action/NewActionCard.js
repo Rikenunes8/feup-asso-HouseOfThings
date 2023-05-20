@@ -7,6 +7,7 @@ import CreateRuleContext from "../../../contexts/CreateRuleContext";
 import Row from "../../grid/Row";
 import DynamicDropDown from "../../form/DynamicDropDown";
 import DeviceForm from "../DeviceForm";
+import DeletableCard from "../../DeletableCard";
 
 import utils from "../../../utils/utils";
 import colors from "../../../../configs/colors";
@@ -53,30 +54,34 @@ export default function NewActionCard(props) {
     presentationStyle: "overFullScreen",
   };
 
-  console.log(info);
   return (
-    <View style={styles.container}>
-      <Row>
-        <DynamicDropDown
-          items={items}
-          setItems={setItems}
-          value={device}
-          setValue={setDevice}
-          listMode={"MODAL"}
-          modalProps={modalProps}
-          modalContentContainerStyle={styles.modalContent}
-          onSelectItem={(e) => handleDeviceChange(e)}
-        ></DynamicDropDown>
-      </Row>
-      <Row>
-        <DeviceForm
-          index={props.index}
-          category={info.category}
-          isRuleCondition={false}
-          capabilities={info.capabilities}
-        />
-      </Row>
-    </View>
+    <DeletableCard
+      deleteDisabled={props.deleteDisabled}
+      handleDelete={props.handleDelete}
+    >
+      <View style={styles.container}>
+        <Row>
+          <DynamicDropDown
+            items={items}
+            setItems={setItems}
+            value={device}
+            setValue={setDevice}
+            listMode={"MODAL"}
+            modalProps={modalProps}
+            modalContentContainerStyle={styles.modalContent}
+            onSelectItem={(e) => handleDeviceChange(e)}
+          ></DynamicDropDown>
+        </Row>
+        <Row>
+          <DeviceForm
+            index={props.index}
+            category={info.category}
+            isRuleCondition={false}
+            capabilities={info.capabilities}
+          />
+        </Row>
+      </View>
+    </DeletableCard>
   );
 }
 
@@ -94,6 +99,8 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 10,
     paddingHorizontal: 20,
+    zIndex: 0,
+    marginHorizontal: 3,
   },
   modalContent: {
     backgroundColor: colors.white,

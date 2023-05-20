@@ -7,7 +7,7 @@ import { DivisionsProvider } from "./app/src/contexts/DivisionsContext";
 import { ModalsProvider } from "./app/src/contexts/ModalsContext";
 import { RulesProvider } from "./app/src/contexts/RulesContext";
 import { BuildProviderTree } from "./app/src/contexts/BuildProviderTree";
-import DevicesListener from "./app/src/services/listeners/DevicesListener";
+import SSEClient from "./app/src/services/SSEClient";
 
 import NavBar from "./app/src/components/navbar/NavBar";
 import ProfileScreen from "./app/src/screens/ProfileScreen";
@@ -25,18 +25,17 @@ const Providers = BuildProviderTree([
 export default function App() {
   return (
     <Providers>
-      <DevicesListener>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              options={{ headerShown: false }}
-              name="NavBar"
-              component={NavBar}
-            />
-            <Stack.Screen name="Profile" component={ProfileScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </DevicesListener>
+      <SSEClient />
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="NavBar"
+            component={NavBar}
+          />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </Providers>
   );
 }

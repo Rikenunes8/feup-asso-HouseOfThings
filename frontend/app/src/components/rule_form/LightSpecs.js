@@ -10,7 +10,7 @@ import ConfigurationsForm from "./condition/ConfigurationsForm";
 import colors from "../../../configs/colors";
 
 export default function LightSpecs({ index, isRuleCondition, capabilities }) {
-  console.log("LightSpecs: capabilities: ", capabilities);
+  // console.log("LightSpecs: capabilities: ", capabilities);
 
   const capabilitiesMap = {
     power: {
@@ -36,7 +36,7 @@ export default function LightSpecs({ index, isRuleCondition, capabilities }) {
     })
   );
 
-  console.log("LightSpecs: possibleConfigurations: ", possibleConfigurations);
+  // console.log("LightSpecs: possibleConfigurations: ", possibleConfigurations);
 
   const [currentConfiguration, setCurrentConfiguration] = useState(
     possibleConfigurations[0].value

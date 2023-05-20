@@ -1,9 +1,8 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import colors from "../../../configs/colors";
 
-export default function Row({ children}) {
-  return <View style={[styles.row]}>{children}</View>;
+export default function Row({ children, style }) {
+  return <View style={[styles.row, style]}>{children}</View>;
 }
 
 const styles = StyleSheet.create({

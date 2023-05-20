@@ -3,7 +3,8 @@ import { Text } from "react-native";
 import LightSpecs from "./LightSpecs";
 
 export default function DeviceForm(props) {
-  console.log("DeviceForm: props: ", props);
+  // console.log("DeviceForm: props: ", props);
+
   switch (props.category) {
     case "light":
       return (

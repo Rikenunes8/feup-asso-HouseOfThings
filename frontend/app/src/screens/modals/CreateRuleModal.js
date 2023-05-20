@@ -29,9 +29,9 @@ export default function CreateRuleModal() {
     resetCreateRuleContext,
   } = useContext(CreateRuleContext);
 
-  useEffect(() => {
-    console.log(ruleConditions);
-  }, [ruleConditions]);
+  // useEffect(() => {
+  //   console.log(ruleConditions);
+  // }, [ruleConditions]);
 
   // TODO: Função que valida a questão da operation
   const connectCallback = () => {

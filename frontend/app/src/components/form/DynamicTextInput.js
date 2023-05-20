@@ -7,7 +7,7 @@ export default function DynamicTextInput({
   name,
   setName,
   inputOnFocus,
-  setInputOnFocus,
+  setInputOnFocus = () => {},
 }) {
   return (
     <View style={styles.container}>

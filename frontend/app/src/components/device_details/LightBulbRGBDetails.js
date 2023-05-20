@@ -18,11 +18,13 @@ export default function LightBulbRGBDetails({
   powerHandler,
 }) {
   const stateText = power ? "On" : "Off";
+  const timeout = 300;
 
-  const { updateDevice } = useContext(DevicesContext);
   const [disabled, setDisabled] = React.useState(false);
   const [pickerColor, setPickerColor] = useState(toHsv(color));
   const [sliderValue, setSliderValue] = useState(brightness);
+
+  const { updateDevice } = useContext(DevicesContext);
 
   // Turn on/off the device (click middle button of the color picker)
   const onPickerColorSelected = (_) => {
@@ -52,7 +54,7 @@ export default function LightBulbRGBDetails({
           setPickerColor(toHsv(color));
           console.log("Failed to change light color");
         });
-      }, 500);
+      }, timeout);
     };
 
     colorHandler();
@@ -86,7 +88,7 @@ export default function LightBulbRGBDetails({
             setSliderValue(brightness);
             console.log("Failed to change light brightness");
           });
-      }, 500);
+      }, timeout);
     };
 
     brightnessHandler();
@@ -112,16 +114,19 @@ export default function LightBulbRGBDetails({
       </View>
 
       <View style={styles().colorPickerView}>
-        <ColorPicker
-          color={pickerColor}
-          defaultColor={toHsv(color)}
-          onColorChange={(color) => setPickerColor(color)}
-          onColorSelected={onPickerColorSelected}
-          hideSliders={true}
-          style={{ flex: 1 }}
-        />
+        {power && (
+          <ColorPicker
+            color={pickerColor}
+            defaultColor={toHsv(color)}
+            onColorChange={(color) => setPickerColor(color)}
+            onColorSelected={onPickerColorSelected}
+            hideSliders={true}
+            style={{ flex: 1 }}
+          />
+        )}
+
         <TouchableOpacity
-          style={styles().powerIconOpacity}
+          style={styles(power, color).powerIconOpacity}
           onPress={() => powerHandler(power, setDisabled)}
           disabled={disabled}
         >
@@ -133,18 +138,20 @@ export default function LightBulbRGBDetails({
         <MaterialIcon
           name={brightnessIconName(sliderValue)}
           size={20}
-          color={colors.primaryText}
+          color={power ? colors.primaryText : colors.white}
         />
-        <Slider
-          min={1}
-          max={100}
-          values={[sliderValue]}
-          markerColor={colors.primaryText}
-          trackStyle={styles().trackBrightnessSlider}
-          showLabel={false}
-          onChange={(values) => setSliderValue(values[0])}
-        />
-        <Text style={styles().lightText}>{sliderValue}</Text>
+        {power && (
+          <Slider
+            min={1}
+            max={100}
+            values={[sliderValue]}
+            markerColor={colors.primaryText}
+            trackStyle={styles().trackBrightnessSlider}
+            showLabel={false}
+            onChange={(values) => setSliderValue(values[0])}
+          />
+        )}
+        <Text style={styles().lightText}>{power ? sliderValue : ""}</Text>
       </View>
     </View>
   );
@@ -177,11 +184,13 @@ const styles = (power = false, color = colors.active) =>
       flexDirection: "row",
       justifyContent: "center",
       alignItems: "center",
-      padding: 20,
+      padding: 22,
     },
     powerIconOpacity: {
       position: "absolute",
       alignSelf: "center",
+      backgroundColor: power ? "transparent" : colors.desactive,
+      borderRadius: 100,
       padding: 20,
     },
     brightnessView: {

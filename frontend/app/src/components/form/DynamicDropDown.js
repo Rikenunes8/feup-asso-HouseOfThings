@@ -17,13 +17,15 @@ export default function DynamicDropDown({
   modalAnimationType = "fade",
   modalContentContainerStyle = {},
   onSelectItem = () => {},
-  hasCategory = false
+  hasCategory = false,
 }) {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.field}>{label}</Text>
+    <View style={styles().container}>
+      {label && label !== "" && (
+        <Text style={styles(label && label !== "").field}>{label}</Text>
+      )}
 
       <DropDownPicker
         open={open}
@@ -33,57 +35,60 @@ export default function DynamicDropDown({
         setValue={setValue}
         setItems={setItems}
         placeholder=""
-        dropDownContainerStyle={styles.dropdown}
-        style={styles.selector}
-        closeIconStyle={styles.closeIcon}
-        iconContainerStyle={styles.iconContainer}
+        dropDownContainerStyle={styles().dropdown}
+        style={styles().selector}
+        closeIconStyle={styles().closeIcon}
+        iconContainerStyle={styles().iconContainer}
         disabled={disabled}
         showArrowIcon={showArrowIcon}
         listMode={listMode}
         modalTitle={label}
-        modalTitleStyle={styles.modalTitle}
+        modalTitleStyle={styles().modalTitle}
         modalProps={modalProps}
         modalAnimationType={modalAnimationType}
         modalContentContainerStyle={modalContentContainerStyle}
         onSelectItem={onSelectItem}
         categorySelectable={!hasCategory}
-        listParentLabelStyle={hasCategory ? styles.parent : null}
+        listParentLabelStyle={hasCategory ? styles().parent : null}
       />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    margin: 15,
-    width: "100%",
-  },
-  dropdown: {
-    backgroundColor: colors.background,
-  },
-  selector: {
-    borderColor: colors.white,
-    borderBottomColor: colors.black,
-    borderRadius: 0,
-    backgroundColor: colors.transparent,
-  },
-  closeIcon: {
-    height: 20,
-    width: 20,
-  },
-  iconContainer: {
-    width: 25,
-    alignItems: "center",
-  },
-  field: {
-    color: colors.primary,
-  },
-  modalTitle: {
-    color: colors.primary,
-    fontSize: 14,
-  },
-  parent : {
-    fontWeight: "bold",
-    color: colors.primary,
-  }
-});
+const styles = (label = true) =>
+  StyleSheet.create({
+    container: {
+      merginTop: label ? 15 : 0,
+      marginBottom: label ? 15 : 7,
+      marginHorizontal: 15,
+      width: "100%",
+    },
+    dropdown: {
+      backgroundColor: colors.background,
+    },
+    selector: {
+      borderColor: colors.white,
+      borderBottomColor: colors.black,
+      borderRadius: 0,
+      backgroundColor: colors.transparent,
+    },
+    closeIcon: {
+      height: 20,
+      width: 20,
+    },
+    iconContainer: {
+      width: 25,
+      alignItems: "center",
+    },
+    field: {
+      color: colors.primary,
+    },
+    modalTitle: {
+      color: colors.primary,
+      fontSize: 14,
+    },
+    parent: {
+      fontWeight: "bold",
+      color: colors.primary,
+    },
+  });

@@ -1,10 +1,14 @@
 from abc import ABC, abstractmethod
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
+from src.controller.observer.Publisher import Publisher
+from src.controller.observer.Subscriber import Subscriber
+from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 
-class Device(ABC):
-    def __init__(self, id: str) -> None:
+class Device(Publisher, ABC):
+    def __init__(self, id: str, notifier: DeviceStateNotifier) -> None:
         self._id: str = id
+        self._notifier: DeviceStateNotifier = notifier
 
     def get_id(self) -> str:
         return self._id
@@ -22,6 +26,9 @@ class Device(ABC):
 
     @abstractmethod
     def get(self):
+        """
+        @return: ConcreteDevice
+        """
         pass
 
     @abstractmethod
@@ -31,3 +38,15 @@ class Device(ABC):
     @abstractmethod
     def to_json(self) -> dict:
         pass
+
+
+    def subscribe(self, subscriber: Subscriber):
+        self._notifier.subscribe(subscriber)
+        self.notify(self.find())
+    
+    def unsubscribe(self, subscriber: Subscriber):
+        self._notifier.unsubscribe(subscriber)
+        self.notify(self.find())
+    
+    def notify(self, data: dict = None):
+        self._notifier.notify(data)

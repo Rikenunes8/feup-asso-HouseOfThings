@@ -16,6 +16,8 @@ export default function DynamicDropDown({
   modalProps = {},
   modalAnimationType = "fade",
   modalContentContainerStyle = {},
+  onSelectItem = () => {},
+  hasCategory = false
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -43,6 +45,9 @@ export default function DynamicDropDown({
         modalProps={modalProps}
         modalAnimationType={modalAnimationType}
         modalContentContainerStyle={modalContentContainerStyle}
+        onSelectItem={onSelectItem}
+        categorySelectable={!hasCategory}
+        listParentLabelStyle={hasCategory ? styles.parent : null}
       />
     </View>
   );
@@ -51,6 +56,7 @@ export default function DynamicDropDown({
 const styles = StyleSheet.create({
   container: {
     margin: 15,
+    width: "100%",
   },
   dropdown: {
     backgroundColor: colors.background,
@@ -76,4 +82,8 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontSize: 14,
   },
+  parent : {
+    fontWeight: "bold",
+    color: colors.primary,
+  }
 });

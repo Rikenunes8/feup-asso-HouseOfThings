@@ -17,7 +17,6 @@ class DevicesApi(CrudApi):
         self._bp.add_url_rule("/<id>/action", methods=('POST',), view_func=self.action)
         self._bp.add_url_rule("/<id>/rename", methods=('POST',), view_func=self.rename)
         self._bp.add_url_rule("/listener", methods=('GET',), view_func=self.listener)
-        self._bp.add_url_rule("/sse/test", methods=('GET',), view_func=self.test_sse)
 
     def get_blueprint(self) -> Blueprint:
         return self._bp
@@ -57,7 +56,3 @@ class DevicesApi(CrudApi):
                 msg = messages.get() 
                 yield msg
         return Response(stream(), mimetype='text/event-stream')
-
-    def test_sse(self):
-        self.get_manager().announce("pong", "test")
-        return {}, 200

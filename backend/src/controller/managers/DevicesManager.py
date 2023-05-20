@@ -127,7 +127,7 @@ class DevicesManager(Manager, DeviceConnectionPublisher):
         connector = connectors[0]
         capabilities: list[str] = connector.get_capabilities()
 
-        notifier = DeviceStateNotifier()
+        notifier = DeviceStateNotifier(self)
         device = ConcreteDevice(uid, config, connector, notifier)
         for capability in capabilities:
             # eval to get the respective decorator capabililty class instead of making an inifinite if-else

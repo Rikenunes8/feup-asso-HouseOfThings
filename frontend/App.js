@@ -19,7 +19,7 @@ const Providers = BuildProviderTree([
 export default function App() {
   return (
     <Providers>
-      <SSEClient />
+      {/* <SSEClient /> */}
       <NavigationContainer>
         <NavBar />
       </NavigationContainer>

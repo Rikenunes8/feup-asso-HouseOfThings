@@ -6,7 +6,7 @@ from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 class ColorCap(BaseCapability):
     def __init__(self, device: Device, notifier: DeviceStateNotifier, state: dict = {}):
         super().__init__(device, notifier)
-        color = state.get('color', '')
+        color = state.get('color', '#FFFF00')
         self.update_state({'color': color})
 
     def _build_state(self, color: str) -> dict:

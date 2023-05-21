@@ -5,7 +5,7 @@ import DevicesContext from "../contexts/DevicesContext";
 import api from "../api/api";
 
 export default function SSEClient() {
-  const { initialized, updateDevice } = useContext(DevicesContext);
+  const { initialized, devices, updateDevice } = useContext(DevicesContext);
 
   useEffect(() => {
     if (!initialized) return;
@@ -13,7 +13,7 @@ export default function SSEClient() {
     console.log("SSE: Devices Listener...", api.devicesListenerURL);
     const devicesSSE = new EventSource(api.devicesListenerURL);
 
-    devicesSSE.addEventListener("update", (event) => {
+    const updateHandler = (event) => {
       console.log("SSE: devices update...");
       const json = event.data
         .replace(/'/g, '"')
@@ -21,12 +21,14 @@ export default function SSEClient() {
         .replace(/False/g, "false");
       const devices = JSON.parse(json);
       devices.map((device) => updateDevice(device, device.uid));
-    });
+    };
+
+    devicesSSE.addEventListener("update", updateHandler);
 
     return () => {
       devicesSSE.close();
     };
-  }, [initialized]);
+  }, [initialized, devices]);
 
   return null;
 }

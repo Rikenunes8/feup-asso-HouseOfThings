@@ -23,7 +23,7 @@ from src.database.CollectionTypes import Collection
 # DO NOT REMOVE THESE IMPORTS, THEY ARE NEEDED FOR THE EVAL TO WORK
 from src.model.devices.capabilities.PowerCap import PowerCap
 from src.model.devices.capabilities.TemperatureCap import TemperatureCap
-from src.model.devices.capabilities.ColorPalleteCap import ColorPalleteCap
+from src.model.devices.capabilities.ColorCap import ColorCap
 from src.model.devices.capabilities.BrightnessCap import BrightnessCap
 
 
@@ -143,9 +143,7 @@ class DevicesManager(Manager, DeviceConnectionPublisher):
 
         return device
 
-    def _make_connectors(
-        self, cid: str, uid: str, config: dict
-    ) -> list[DeviceConnector]:
+    def _make_connectors(self, cid: str, uid: str, config: dict) -> list[DeviceConnector]:
         category = config.get("category")
         subcategory = config.get("subcategory")
         protocol = config.get("protocol")

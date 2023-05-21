@@ -11,7 +11,7 @@ class ComplexLightVirtualConnector(ActuatorDeviceConnector):
     def __init__(self, cid: str, uid: str, config: dict):
         super().__init__()
         self.set_protocol('virtual')
-        self.set_capabilities(['power', 'color_pallete', 'brightness'])
+        self.set_capabilities(['power', 'color', 'brightness'])
         self._client = None
         self._cid = cid
         self._uid = uid

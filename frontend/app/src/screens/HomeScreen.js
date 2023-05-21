@@ -29,7 +29,7 @@ export default function HomeScreen() {
     setDevices(devs);
     setTimeout(() => {
       setInitialized(true);
-    }, 500);
+    }, 200);
   };
 
   const fetchDivisions = async () => {

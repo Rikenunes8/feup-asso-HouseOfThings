@@ -10,7 +10,11 @@ export const DevicesProvider = ({ children }) => {
   });
 
   const addDevice = (newDevice) => {
+    setInitialized(false);
     setDevices([newDevice, ...devices]);
+    setTimeout(() => {
+      setInitialized(true);
+    }, 200);
   };
 
   const updateDevice = (newUpdateDevice, uid) => {
@@ -22,7 +26,11 @@ export const DevicesProvider = ({ children }) => {
   };
 
   const removeDevice = (uid) => {
+    setInitialized(false);
     setDevices(devices.filter((device) => device.uid !== uid));
+    setTimeout(() => {
+      setInitialized(true);
+    }, 200);
   };
 
   const renameDevice = (uid, name) => {

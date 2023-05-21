@@ -32,7 +32,7 @@ export default function DivisionCard({
   const { setDivisions } = useContext(DivisionsContext);
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
-  
+
   const { selectedDevices, setSelectedDevices, resetAddDivisionContext } =
     useContext(AddDivisionContext);
   const {
@@ -82,11 +82,10 @@ export default function DivisionCard({
       }
       onPress={onPress}
       onLongPress={() => {
-          if (!allowLongPress) return;
-          setSelectedDevices(division.devices);
-          setIsDetailsModalVisible(!isDetailsModalVisible);
-        }
-      }
+        if (!allowLongPress) return;
+        setSelectedDevices(division.devices);
+        setIsDetailsModalVisible(!isDetailsModalVisible);
+      }}
     >
       <IconModal
         title={divisionName}
@@ -103,7 +102,9 @@ export default function DivisionCard({
         rightIcon="ellipsis1"
         leftIconCallback={async () => {
           toAdd = selectedDevices.filter((e) => !division.devices.includes(e));
-          toRemove = division.devices.filter((e) => !selectedDevices.includes(e));
+          toRemove = division.devices.filter(
+            (e) => !selectedDevices.includes(e)
+          );
           for (const device of toAdd) {
             await api.addDivisionDevice(division.id, device);
           }
@@ -155,18 +156,6 @@ export default function DivisionCard({
           <View>
             <View style={styles.topSearch}>
               <Text style={styles.devicesText}>Devices</Text>
-              <View style={styles.search}>
-                <TextInput
-                  style={styles.writeSearch}
-                  value={searchDeviceName ?? ""}
-                  onChangeText={setSearchDeviceName}
-                />
-                <FontAwesome5Icon
-                  name="search"
-                  size={15}
-                  color={colors.primary}
-                />
-              </View>
             </View>
 
             <View style={styles.devices}>{showDevices()}</View>

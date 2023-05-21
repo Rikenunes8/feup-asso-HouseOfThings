@@ -3,6 +3,7 @@ import React from "react";
 import ModalsContext from "../../contexts/ModalsContext";
 import ContextMenu from "../ContextMenu";
 import DivisionsContext from "../../contexts/DivisionsContext";
+import DevicesContext from "../../contexts/DevicesContext";
 
 import colors from "../../../configs/colors";
 import utils from "../../utils/utils";
@@ -17,8 +18,14 @@ export default function DivisionDetailsContextMenu({
   divisionContextMenuId
 }) {
   const { removeDivision } = useContext(DivisionsContext)
+  const { setDevices } = useContext(DevicesContext);
 
   const { setIsDivisionDetailsModalLoading, setIsMenuModalRenaming, setIsMenuModalChangeIcon } = useContext(ModalsContext);
+
+  const fetchDevices = async () => {
+    const devs = await api.getDevices();
+    if (devs != null) setDevices(devs);
+  };
 
   const deleteDivisionCallback = () => {
     utils.showConfirmDialog(
@@ -35,6 +42,7 @@ export default function DivisionDetailsContextMenu({
           setIsContextMenuVisible(false);
   
           if (success) {
+            fetchDevices();
             console.log("Division deleted successfully");
             setIsDetailsModalVisible(false);
             removeDivision(divisionContextMenuId);

@@ -9,7 +9,7 @@ export const DivisionsProvider = ({ children }) => {
   };
 
   const addDivision = (newDivision) => {
-    setDivisions([newDivision, ...divisions]);
+    setDivisions([...divisions, newDivision]);
   };
 
   const removeDivision = (id) => {

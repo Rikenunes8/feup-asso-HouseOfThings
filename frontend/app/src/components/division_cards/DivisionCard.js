@@ -1,5 +1,11 @@
 import React, { useState, useContext, useRef } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 
 import DeviceDisplay from "../division_form/DeviceDisplay";
 import DivisionDetailsContextMenu from "../division_details/DivisionDetailsContextMenu";
@@ -10,7 +16,11 @@ import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import DevicesContext from "../../contexts/DevicesContext";
 import DivisionRenamingContextMenu from "../division_details/DivisionRenamingContextMenu";
 import ModalsContext from "../../contexts/ModalsContext";
+import AddDivisionContext from "../../contexts/AddDivisionContext";
+import DivisionsContext from "../../contexts/DivisionsContext";
 import DivisionChangingIconContextMenu from "../division_details/DivisionChangingIconContextMenu";
+
+import api from "../../api/api";
 
 export default function DivisionCard({
   division,
@@ -18,11 +28,19 @@ export default function DivisionCard({
   allowLongPress,
   highlighted,
 }) {
-  const { devices } = useContext(DevicesContext);
+  const { devices, setDevices } = useContext(DevicesContext);
+  const { setDivisions } = useContext(DivisionsContext);
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
-
-  const { isMenuModalRenaming, isMenuModalChangeIcon, setIsMenuModalRenaming, setIsMenuModalChangeIcon } = useContext(ModalsContext)
+  
+  const { selectedDevices, setSelectedDevices, resetAddDivisionContext } =
+    useContext(AddDivisionContext);
+  const {
+    isMenuModalRenaming,
+    isMenuModalChangeIcon,
+    setIsMenuModalRenaming,
+    setIsMenuModalChangeIcon,
+  } = useContext(ModalsContext);
 
   const [divisionName, setDivisionName] = useState(division.name);
   const [divisionIcon, setDivisionIcon] = useState(division.icon);
@@ -45,15 +63,15 @@ export default function DivisionCard({
 
   const resetDivisionIcon = () => {
     setDivisionIcon(division.icon);
-  }
+  };
 
   const showDevices = () => {
     if (devices) {
       return devices.map((device) => (
         <DeviceDisplay key={device.name} device={device} />
-      ))
+      ));
     }
-  }
+  };
 
   return (
     <TouchableOpacity
@@ -63,11 +81,13 @@ export default function DivisionCard({
           : styles.divisionCard
       }
       onPress={onPress}
-      onLongPress={() =>
-        allowLongPress && setIsDetailsModalVisible(!isDetailsModalVisible)
+      onLongPress={() => {
+          if (!allowLongPress) return;
+          setSelectedDevices(division.devices);
+          setIsDetailsModalVisible(!isDetailsModalVisible);
+        }
       }
     >
-
       <IconModal
         title={divisionName}
         titleEditable={isMenuModalRenaming}
@@ -78,10 +98,25 @@ export default function DivisionCard({
         icon={divisionIcon}
         iconEditable={isMenuModalChangeIcon}
         iconOnChangeCallback={changeIconCallback}
-        type="division" 
+        type="division"
         leftIcon="close"
         rightIcon="ellipsis1"
-        leftIconCallback={() => {
+        leftIconCallback={async () => {
+          toAdd = selectedDevices.filter((e) => !division.devices.includes(e));
+          toRemove = division.devices.filter((e) => !selectedDevices.includes(e));
+          for (const device of toAdd) {
+            await api.addDivisionDevice(division.id, device);
+          }
+          for (const device of toRemove) {
+            await api.removeDivisionDevice(division.id, device);
+          }
+          if (toAdd.length > 0 || toRemove.length > 0) {
+            const updatedDivisions = await api.getDivisions();
+            const updatedDevices = await api.getDevices();
+            setDivisions(updatedDivisions);
+            setDevices(updatedDevices);
+          }
+          resetAddDivisionContext();
           setIsDetailsModalVisible(false);
           setIsContextMenuVisible(false);
           setIsMenuModalRenaming(false);
@@ -118,22 +153,23 @@ export default function DivisionCard({
         }
         modalContent={
           <View>
-              <View style={styles.topSearch}>
-                <Text style={styles.devicesText}>Devices</Text>
-                <View style={styles.search}>
-                  <TextInput 
-                    style={styles.writeSearch}
-                    value={searchDeviceName ?? ""}
-                    onChangeText={setSearchDeviceName}
-                  />
-                  <FontAwesome5Icon name="search" size={15} color={colors.primary} />
-                </View>
+            <View style={styles.topSearch}>
+              <Text style={styles.devicesText}>Devices</Text>
+              <View style={styles.search}>
+                <TextInput
+                  style={styles.writeSearch}
+                  value={searchDeviceName ?? ""}
+                  onChangeText={setSearchDeviceName}
+                />
+                <FontAwesome5Icon
+                  name="search"
+                  size={15}
+                  color={colors.primary}
+                />
               </View>
+            </View>
 
-              <View style={styles.devices}>
-                {showDevices()}
-              </View>
-
+            <View style={styles.devices}>{showDevices()}</View>
           </View>
         }
       />
@@ -180,7 +216,7 @@ const styles = StyleSheet.create({
   devicesText: {
     color: colors.primary,
     fontWeight: 700,
-    fontSize: 18
+    fontSize: 18,
   },
   topSearch: {
     paddingHorizontal: 5,
@@ -193,12 +229,12 @@ const styles = StyleSheet.create({
   writeSearch: {
     padding: 0,
     borderBottomWidth: 1,
-    minWidth: 125
+    minWidth: 125,
   },
   search: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   devices: {
     marginTop: 20,
@@ -207,7 +243,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width: "100%",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   divisionIcon: {
     marginVertical: 5,

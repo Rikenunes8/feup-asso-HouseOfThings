@@ -29,6 +29,51 @@ const getDevices = async () => {
   }
 };
 
+const getRules = async () => {
+  try {
+    const response = await apiClient.get("/rules");
+    return response.data.rules;
+  } catch (error) {
+    console.error(error);
+    return [
+      {
+        id: 1,
+        name: "Family Room Lights Off",
+        operation: "and",
+        when: [],
+        then: [
+          {
+            device_id: 1,
+            action: "turn_off",
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: "Lights Off at Night",
+        operation: "or",
+        when: [
+          {
+            kind: "schedule",
+            time: "22:30",
+            days: [1, 2, 3, 4, 5, 6, 7],
+          },
+        ],
+        then: [
+          {
+            device_id: 1,
+            action: "turn_off",
+          },
+          {
+            device_id: 2,
+            action: "turn_off",
+          },
+        ],
+      },
+    ];
+  }
+};
+
 const getCategories = async () => {
   try {
     const response = await apiClient.get("/categories");
@@ -72,6 +117,32 @@ const addDivision = async (division) => {
 const deleteDivision = async (id) => {
   try {
     const response = await apiClient.delete(`/divisions/${id}`);
+    if (response.data.error) throw new Error(response.data.error);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+const addDivisionDevice = async (id, deviceId) => {
+  try {
+    const response = await apiClient.post(`/divisions/${id}/add-device`, {
+      device: deviceId,
+    });
+    if (response.data.error) throw new Error(response.data.error);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+const removeDivisionDevice = async (id, deviceId) => {
+  try {
+    const response = await apiClient.post(`/divisions/${id}/remove-device`, {
+      device: deviceId,
+    });
     if (response.data.error) throw new Error(response.data.error);
     return response.data;
   } catch (error) {
@@ -193,51 +264,6 @@ const availableDevices = async (body) => {
   }
 };
 
-const getRules = async () => {
-  try {
-    const response = await apiClient.get("/rules");
-    return response.data.rules;
-  } catch (error) {
-    console.error(error);
-    return [
-      {
-        id: 1,
-        name: "Family Room Lights Off",
-        operation: "and",
-        when: [],
-        then: [
-          {
-            device_id: 1,
-            action: "turn_off",
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: "Lights Off at Night",
-        operation: "or",
-        when: [
-          {
-            kind: "schedule",
-            time: "22:30",
-            days: [1, 2, 3, 4, 5, 6, 7],
-          },
-        ],
-        then: [
-          {
-            device_id: 1,
-            action: "turn_off",
-          },
-          {
-            device_id: 2,
-            action: "turn_off",
-          },
-        ],
-      },
-    ];
-  }
-};
-
 const executeRule = async (id) => {
   try {
     const response = await apiClient.post(`/rules/${id}/execute`);
@@ -253,6 +279,7 @@ export default {
   getDevices,
   getCategories,
   getDivisions,
+  getRules,
   addDivision,
   addDevice,
   addRule,
@@ -262,9 +289,10 @@ export default {
   actionSetBrightnessDevice,
   renameDevice,
   availableDevices,
-  getRules,
   executeRule,
   deleteDivision,
   renameDivision,
   changeDivisionIcon,
+  addDivisionDevice,
+  removeDivisionDevice,
 };

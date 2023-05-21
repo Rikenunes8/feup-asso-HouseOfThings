@@ -11,7 +11,7 @@ export default function BrightnessAction({ index, action }) {
   const [step, setStep] = useState(
     Array.from({ length: 21 }, (_, index) => ({
       label: `${index * 5}`,
-      value: (index + 1) * 5,
+      value: index * 5,
     }))
   );
 

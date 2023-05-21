@@ -10,6 +10,7 @@ import colors from "../../../../configs/colors";
 import Row from "../../grid/Row";
 import SpecificDetails from "./SpecificDetails";
 import DynamicDropDown from "../../form/DynamicDropDown";
+import DeletableCard from "../../DeletableCard";
 
 export default function NewConditionCard(props) {
   const [type, setType] = useState(null);
@@ -24,6 +25,7 @@ export default function NewConditionCard(props) {
       item.parent == "device"
         ? { kind: item.parent, device_id: item.value }
         : { kind: item.parent };
+    console.log(x);
     addRuleCondition(props.index, x);
   };
 
@@ -40,7 +42,6 @@ export default function NewConditionCard(props) {
     all_items = [
       { label: "Time", value: "time", parent: "schedule" },
       { label: "Schedule", value: "schedule" },
-      { label: "Devices", value: "device" },
     ];
     devices.map((item) => {
       capabilities = Object.keys(item).filter(
@@ -54,6 +55,10 @@ export default function NewConditionCard(props) {
         capabilities: capabilities,
       });
     });
+
+    if (devices.length != 0)
+      all_items.push({ label: "Devices", value: "device" });
+
     return all_items;
   });
 
@@ -63,29 +68,35 @@ export default function NewConditionCard(props) {
   };
 
   return (
-    <View style={styles.container}>
-      <Row>
-        <DynamicDropDown
-          items={items}
-          setItems={setItems}
-          value={type}
-          setValue={setType}
-          listMode={"MODAL"}
-          modalProps={modalProps}
-          modalContentContainerStyle={styles.modalContent}
-          onSelectItem={(e) => handleTypeChange(e)}
-        ></DynamicDropDown>
-      </Row>
+    <DeletableCard
+      deleteDisabled={props.deleteDisabled}
+      handleDelete={props.handleDelete}
+    >
+      <View style={styles.container}>
+        <Row>
+          <DynamicDropDown
+            items={items}
+            setItems={setItems}
+            value={type}
+            setValue={setType}
+            listMode={"MODAL"}
+            modalProps={modalProps}
+            modalContentContainerStyle={styles.modalContent}
+            onSelectItem={(e) => handleTypeChange(e)}
+            hasCategory={true}
+          />
+        </Row>
 
-      {type != undefined ? (
-        <SpecificDetails
-          type={info.parent}
-          index={props.index}
-          capabilities={info.capabilities}
-          category={info.category}
-        ></SpecificDetails>
-      ) : null}
-    </View>
+        {type != {} ? (
+          <SpecificDetails
+            type={info.parent}
+            index={props.index}
+            capabilities={info.capabilities}
+            category={info.category}
+          ></SpecificDetails>
+        ) : null}
+      </View>
+    </DeletableCard>
   );
 }
 
@@ -104,6 +115,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     paddingHorizontal: 20,
     zIndex: 0,
+    marginHorizontal: 3,
   },
   modalContent: {
     backgroundColor: colors.white,

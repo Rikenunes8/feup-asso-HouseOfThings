@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from src.model.devices.Device import Device
 from src.model.devices.ConcreteDevice import ConcreteDevice
 from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
+from src.controller.Logger import Logger
 
 class BaseCapability(Device, ABC):
     def __init__(self, device: Device, notifier: DeviceStateNotifier):
@@ -21,6 +22,7 @@ class BaseCapability(Device, ABC):
         valid_state = self.build_state(state)
         self.update(valid_state)
         self.notify(valid_state)
+        Logger().info(f"Updated {self._device.get_id()} state to {valid_state}")
 
     @abstractmethod
     def build_state(self, state = {}):

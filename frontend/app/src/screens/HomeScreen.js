@@ -26,7 +26,7 @@ export default function HomeScreen() {
 
   const fetchDevices = async () => {
     const devs = await api.getDevices();
-    setDevices(devs);
+    setDevices(devs.filter((device) => device !== null));
     setTimeout(() => {
       setInitialized(true);
     }, 200);

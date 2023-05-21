@@ -18,11 +18,15 @@ export const DevicesProvider = ({ children }) => {
   };
 
   const updateDevice = (newUpdateDevice, uid) => {
+    setInitialized(false);
     setDevices(
       devices.map((device) =>
         device.uid === uid ? { ...device, ...newUpdateDevice } : device
       )
     );
+    setTimeout(() => {
+      setInitialized(true);
+    }, 200);
   };
 
   const removeDevice = (uid) => {
@@ -34,11 +38,15 @@ export const DevicesProvider = ({ children }) => {
   };
 
   const renameDevice = (uid, name) => {
+    setInitialized(false);
     setDevices(
       devices.map((device) =>
         device.uid === uid ? { ...device, name: name } : device
       )
     );
+    setTimeout(() => {
+      setInitialized(true);
+    }, 200);
   };
 
   const editDevice = (newEditDevice) => {

@@ -16,6 +16,7 @@ from src.controller.observer.Subscriber import Subscriber
 from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 from src.controller.observer.DeviceConnectionPublisher import DeviceConnectionPublisher
 from src.controller.announcer.MessageAnnouncer import MessageAnnouncer
+from src.controller.Logger import Logger
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 
@@ -68,6 +69,7 @@ class DevicesManager(Manager, DeviceConnectionPublisher):
             concrete_device.set_divisions(divisions)
         self._add(uid, new_device)
         self.notify_connect(uid, {"device": new_device})
+        Logger().info(f"Device '{name}' with uid '{uid}' connected.")
         return new_device
 
     def update(self, uid: str, data: dict) -> Device:
@@ -79,6 +81,7 @@ class DevicesManager(Manager, DeviceConnectionPublisher):
         device = self._devices.pop(uid, None)
         if device == None:
             raise ApiException("No device with uid " + uid + " to disconnect")
+        Logger().info(f"Device '{device.find()['name']}' with uid '{uid}' disconnected.")
         self.notify_disconnect(uid, {"device": device})
         device.get().disconnect()
 

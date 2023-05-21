@@ -21,5 +21,7 @@ class TemperatureCap(BaseCapability, Subscriber):
     # TODO: make a SelfUpdatedCap that extends BaseCapability and implements Subscriber 
     # and has this method and the TemperatureCap class extends SelfUpdatedCap
     def notified(self, data: dict):
+        state = self.find()
+        if self.build_state(state) == self.build_state(data): return
         self.update_state(data)
-        self._notifier.announce(self.find())
+        self._notifier.announce(state)

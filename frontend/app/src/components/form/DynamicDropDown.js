@@ -58,7 +58,7 @@ export default function DynamicDropDown({
 const styles = (label = true) =>
   StyleSheet.create({
     container: {
-      merginTop: label ? 15 : 0,
+      marginTop: label ? 15 : 0,
       marginBottom: label ? 15 : 7,
       marginHorizontal: 15,
       width: "100%",

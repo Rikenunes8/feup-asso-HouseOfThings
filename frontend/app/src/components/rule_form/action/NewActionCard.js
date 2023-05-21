@@ -38,19 +38,21 @@ export default function NewActionCard(props) {
     if (Array.isArray(devices) && devices.length > 0) {
       all_items.push({ label: "Devices", value: "device" });
 
-      devices.map((item) => {
-        capabilities = Object.keys(item).filter(
-          (key) => !fixed_fields.includes(key)
-        );
+      devices
+        .filter((device) => device.category !== "sensor")
+        .map((item) => {
+          capabilities = Object.keys(item).filter(
+            (key) => !fixed_fields.includes(key)
+          );
 
-        all_items.push({
-          label: utils.capitalize(item.name),
-          value: item.uid,
-          category: item.category,
-          capabilities: capabilities,
-          parent: "device",
+          all_items.push({
+            label: utils.capitalize(item.name),
+            value: item.uid,
+            category: item.category,
+            capabilities: capabilities,
+            parent: "device",
+          });
         });
-      });
     }
 
     return all_items;

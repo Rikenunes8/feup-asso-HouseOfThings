@@ -49,7 +49,7 @@ class DevicesApi(CrudApi):
     
     def listener(self):
         def stream():
-            announcer = self.get_manager().announcer()
+            announcer = self._manager.announcer()
             messages = announcer.listen()  
             while True:
                 msg = messages.get() 

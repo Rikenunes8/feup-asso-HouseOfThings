@@ -10,7 +10,7 @@ export default function SSEClient() {
   useEffect(() => {
     if (!initialized) return;
 
-    console.log("SSE: Devices Listener...", api.devicesListenerURL);
+    // console.log("SSE: Devices Listener...", api.devicesListenerURL);
     const devicesSSE = new EventSource(api.devicesListenerURL);
 
     const updateHandler = (event) => {

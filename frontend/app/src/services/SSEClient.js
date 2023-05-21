@@ -5,11 +5,12 @@ import DevicesContext from "../contexts/DevicesContext";
 import api from "../api/api";
 
 export default function SSEClient() {
-  const { updateDevice } = useContext(DevicesContext);
+  const { initialized, updateDevice } = useContext(DevicesContext);
 
   useEffect(() => {
-    console.log("SSE: Devices Listener...", api.devicesListenerURL);
+    if (!initialized) return;
 
+    console.log("SSE: Devices Listener...", api.devicesListenerURL);
     const devicesSSE = new EventSource(api.devicesListenerURL);
 
     devicesSSE.addEventListener("update", (event) => {
@@ -25,7 +26,7 @@ export default function SSEClient() {
     return () => {
       devicesSSE.close();
     };
-  }, []);
+  }, [initialized]);
 
   return null;
 }

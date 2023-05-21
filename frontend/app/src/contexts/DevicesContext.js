@@ -2,6 +2,7 @@ import { createContext, useState } from "react";
 const DevicesContext = createContext();
 
 export const DevicesProvider = ({ children }) => {
+  const [initialized, setInitialized] = useState(false);
   const [devices, setDevices] = useState([]);
   const [deviceEdit, setDeviceEdit] = useState({
     edit: false,
@@ -42,6 +43,8 @@ export const DevicesProvider = ({ children }) => {
   return (
     <DevicesContext.Provider
       value={{
+        initialized,
+        setInitialized,
         devices,
         setDevices,
         addDevice,

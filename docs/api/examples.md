@@ -7,62 +7,44 @@
       { 
           "kind": "device",
           "device_id": "5",
-          "data": {
-              "comparator": "equal",
-              "state": {
-                  "power": true
-              }
-          }
+          "comparator": "==",
+          "attribute": "power",
+          "state": true
       },
       { 
           "kind": "device",
           "device_id": "1",
-          "data": {
-              "comparator": "equal",
-              "state": {
-                  "power": false
-              }
-          }
+          "comparator": "==",
+          "attribute": power,
+          "state": false
       },
       { 
           "kind": "device",
           "device_id": "5",
-          "data": {
-              "comparator": "greater", // [greater, less, equal]
-              "state": {
-                  "brigthness": 50
-              }
-          }
+          "comparator": ">", // [>, <, ==]
+          "attribute": brigthness,
+          "state": 50
       },
       { 
           "kind": "device",
           "device_id": "5",
-          "data": {
-              "comparator": "less",
-              "state": {
-                  "brigthness": 50
-              }
-          }
+          "comparator": "<",
+          "attribute": brigthness,
+          "state": 50
       },
       { 
           "kind": "device",
           "device_id": "3",
-          "data": {
-              "comparator": "less",
-              "state": {
-                  "temperature": 20
-              }
-          }
+          "comparator": "<",
+          "attribute": temperature,
+          "state": 20
       },
       { 
           "kind": "device",
           "device_id": "3",
-          "data": {
-              "comparator": "greater",
-              "state": {
-                  "temperature": 10
-              }
-          }
+          "comparator": ">",
+          "attribute": temperature,
+          "state": 10
       },
       { 
           "kind": "schedule",

@@ -5,19 +5,13 @@ try:    from sense_hat import SenseHat
 except: from sense_emu import SenseHat
 
 from utils.mqtt import connect_mqtt, subscribe, publish
+from PIL import ImageColor
 
 sense = SenseHat()
 
-color_pallete = {
-  "black": (0, 0, 0),
-  "red": (255, 0, 0),
-  "green": (0, 255, 0),
-  "blue": (0, 0, 255),
-  "yellow": (255, 255, 0),
-  "purple": (255, 0, 255),
-  "cyan": (0, 255, 255),
-  "white": (255, 255, 255)
-}
+color_yellow = (255, 255, 0)
+color_black = (0, 0, 0)
+color_red = (255, 0, 0)
 
 start = time.time()
 
@@ -27,7 +21,7 @@ cid = None # id of the controller that is connected to the light
 
 def is_connected() -> bool: return cid != None
 state = False
-rgb = color_pallete["yellow"]
+rgb = color_yellow
 brightness = 100
 
 
@@ -45,7 +39,7 @@ def on_connect(client, userdata, msg):
     print(f"Light was already connected by `{cid}`")
     return
   cid = msg.payload.decode()
-  fill(color_pallete["black"])
+  fill(color_black)
   print(f"Light was connected by `{cid}`")
   publish(client, f"{cid}-connected", uid)
 
@@ -55,10 +49,10 @@ def on_disconnect(client, userdata, msg):
     print(f"Light is not connected or is connected to other cid")
     return
   print(f"Light was disconnected by `{cid}`")
-  fill(color_pallete["black"])
+  fill(color_black)
   cid = None
   state = False
-  rgb = color_pallete["yellow"]
+  rgb = color_yellow
   brightness = 100
 
 
@@ -73,7 +67,7 @@ def on_turn_on(client, userdata, msg):
     return
   state = True
   if data_color != None:
-    color = color_pallete.get(data_color)
+    color = ImageColor.getrgb(data_color)
     if color != None: rgb = color
   if data_brightness != None and data_brightness >= 0 and data_brightness <= 100:
     brightness = data_brightness
@@ -86,7 +80,7 @@ def on_turn_off(client, userdata, msg):
     print(f"Light is not connected or is connected to other cid")
     return
   state = False
-  fill(color_pallete["black"])
+  fill(color_black)
   print(f"Light was turned off by `{cid}`")
 
 def on_available(client, userdata, msg):
@@ -94,7 +88,7 @@ def on_available(client, userdata, msg):
   if (cid != None):
     print(f"Light is not available")
     return
-  publish(client, "light-pi-is-available", uid)
+  publish(client, "light-complex-pi-is-available", uid)
 
   
 def start_mqtt():
@@ -104,7 +98,7 @@ def start_mqtt():
   subscribe(client, f"{uid}-disconnect", on_disconnect)
   subscribe(client, f"{uid}-turnOn", on_turn_on)
   subscribe(client, f"{uid}-turnOff", on_turn_off)
-  subscribe(client, "is-light-pi-available", on_available)
+  subscribe(client, "is-light-complex-pi-available", on_available)
 
   client.loop_start()
   return client
@@ -127,9 +121,9 @@ if __name__ == '__main__':
     if not is_connected():
         brightness = 100
         if red_screen and int(time.time() - start) % 2 == 0:
-            fill(color_pallete["black"])
+            fill(color_black)
             red_screen = False
         elif not red_screen and int(time.time() - start) % 2 == 1:
-            fill(color_pallete["red"])
+            fill(color_red)
             red_screen = True
     time.sleep(0.1)

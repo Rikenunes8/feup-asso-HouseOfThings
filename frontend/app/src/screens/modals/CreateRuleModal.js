@@ -29,18 +29,16 @@ export default function CreateRuleModal() {
     resetCreateRuleContext,
   } = useContext(CreateRuleContext);
 
-  useEffect(() => {}, [ruleConditions]);
-
-  // TODO: Função que valida a questão da operation
   const connectCallback = () => {
     const rule = {
-      name: ruleName,
+      name: ruleName ?? "undefined",
       operation: ruleOperation,
       when: ruleConditions,
       then: ruleActions,
     };
 
-    console.log("Adding RULE", rule);
+    console.log("Adding rule: ", rule);
+
     setIsCreateRuleModalLoading(true);
 
     api.addRule(rule).then((newRule) => {

@@ -35,15 +35,17 @@ export default function NewActionCard(props) {
     ];
     all_items = [];
     devices.map((item) => {
-      capabilities = Object.keys(item).filter(
-        (key) => !fixed_fields.includes(key)
-      );
-      all_items.push({
-        label: utils.capitalize(item.name),
-        value: item.uid,
-        category: item.category,
-        capabilities: capabilities,
-      });
+      if (item.subcategory != "thermometer") {
+        capabilities = Object.keys(item).filter(
+          (key) => !fixed_fields.includes(key)
+        );
+        all_items.push({
+          label: utils.capitalize(item.name),
+          value: item.uid,
+          category: item.category,
+          capabilities: capabilities,
+        });
+      }
     });
     return all_items;
   });
@@ -54,7 +56,7 @@ export default function NewActionCard(props) {
 
   const handleDeviceChange = (item) => {
     setInfo(item);
-    addRuleAction(props.index, { device_id: item.value });
+    addRuleAction(props.index, { kind: "device", device_id: item.value });
   };
 
   const modalProps = {
@@ -87,6 +89,7 @@ export default function NewActionCard(props) {
               category={info.category}
               isRuleCondition={false}
               capabilities={info.capabilities}
+              action={props.action}
             />
           ) : null}
         </Row>

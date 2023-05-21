@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 import Col from "../grid/Column";
 import DynamicDropDown from "./DynamicDropDown";
@@ -39,7 +39,7 @@ export default function TimePicker({ time = "00:00", setTime }) {
 
   return (
     <>
-      <Col numRows={1}>
+      <Col flex={1}>
         <DynamicDropDown
           items={hours}
           setItems={setHours}
@@ -52,11 +52,11 @@ export default function TimePicker({ time = "00:00", setTime }) {
           key="hour-dropdown"
         />
       </Col>
-      <Col>
+      <Col flex={0}>
         <Text style={styles.text}>H</Text>
       </Col>
 
-      <Col numRows={1}>
+      <Col flex={1}>
         <DynamicDropDown
           items={minutes}
           setItems={setMinutes}

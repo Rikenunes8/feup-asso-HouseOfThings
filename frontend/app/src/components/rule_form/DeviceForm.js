@@ -11,7 +11,6 @@ import colors from "../../../configs/colors";
 
 export default function DeviceForm(props) {
   const [possibleConfigurations, setPossibleConfigurations] = useState([{}]);
-
   const capabilitiesMap = {
     power: {
       label: "Power",
@@ -52,15 +51,15 @@ export default function DeviceForm(props) {
         return capabilitiesMap[capability];
       })
     );
-    setFeat(capabilitiesMap[props.capabilities[0]]);
-    //setCurrentConfiguration(capabilitiesMap[props.capabilities[0]].value);
-    setCurrentConfiguration(
-      props.condition
-        ? capabilitiesMap[props.condition.attribute].component
-        : props.action
-        ? capabilitiesMap[capabilitiesActionsMap[props.action.action]].component
-        : capabilitiesMap[props.capabilities[0]].value
-    );
+
+    const config =
+      props.condition && props.condition.attribute
+        ? capabilitiesMap[props.condition.attribute]
+        : props.action && props.action.action
+        ? capabilitiesMap[capabilitiesActionsMap[props.action.action]]
+        : capabilitiesMap[props.capabilities[0]];
+    setFeat(config);
+    setCurrentConfiguration(config.value);
   };
 
   const modalProps = {
@@ -98,6 +97,8 @@ export default function DeviceForm(props) {
           feat={feat}
           index={props.index}
           isCondition={props.isRuleCondition}
+          condition={props.condition ? props.condition : null}
+          action={props.action ? props.action : null}
         ></ConfigurationsForm>
       ) : null}
     </Row>

@@ -23,8 +23,9 @@ const getDevices = async () => {
   } catch (error) {
     console.error(error);
     return [
-      { name: "Philips Bulb", divisions: ["Family Room"], enabled: true },
-      { name: "Philips Bulb", divisions: ["Tiago Room"], enabled: false },
+      { name: "Simple light", divisions: ["Family Room"], category: "light", subcategory: "light bulb", power: "true", uid: 0},
+      { name: "RGB light", divisions: ["Family Room"], category: "light", subcategory: "light bulb rgb", power: "false", color: "#222222", brightness: 100, uid: 1 },
+      { name: "Thermometer", divisions: ["Family Room"], category: "thermometer", subcategory: "thermometer", temperature: 25 , uid: 2},
     ];
   }
 };

@@ -42,6 +42,7 @@ export default function NewConditionCard(props) {
       capabilities = Object.keys(item).filter(
         (key) => !fixed_fields.includes(key)
       );
+      capabilities = capabilities.filter((capability) => capability != "color");
       all_items.push({
         label: utils.capitalize(item.name),
         value: item.uid,
@@ -101,6 +102,7 @@ export default function NewConditionCard(props) {
             index={props.index}
             capabilities={info.capabilities}
             category={info.category}
+            condition={props.condition}
           ></SpecificDetails>
         ) : null}
       </View>

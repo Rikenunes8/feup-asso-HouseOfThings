@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
 import Row from "../grid/Row";
@@ -15,7 +15,7 @@ export default function ScheduleForm(props) {
   );
 
   const [weekDays] = useState(
-    props.condition
+    props.condition && props.condition.days
       ? {
           Mon: props.condition.days.includes(0),
           Tue: props.condition.days.includes(1),
@@ -36,6 +36,11 @@ export default function ScheduleForm(props) {
   const updateWeekDays = (item) => {
     updateRuleCondition(props.index, "days", item);
   };
+
+  useEffect(() => {
+    updateRuleCondition(props.index, "time", time);
+    updateRuleCondition(props.index, "days", []);
+  }, []);
 
   return (
     <View style={styles.container}>

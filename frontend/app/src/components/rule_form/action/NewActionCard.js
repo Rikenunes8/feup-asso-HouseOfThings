@@ -35,12 +35,15 @@ export default function NewActionCard(props) {
       { label: "Discord Message", value: "discord", parent: "message" },
     ];
 
-    if (Array.isArray(devices) && devices.length > 0) {
-      all_items.push({ label: "Devices", value: "device" });
+    if (Array.isArray(devices)) {
+      const actuators = devices.filter(
+        (device) => device.category !== "sensor"
+      );
 
-      devices
-        .filter((device) => device.category !== "sensor")
-        .map((item) => {
+      if (actuators.length > 0) {
+        all_items.push({ label: "Devices", value: "device" });
+
+        actuators.map((item) => {
           capabilities = Object.keys(item).filter(
             (key) => !fixed_fields.includes(key)
           );
@@ -53,6 +56,7 @@ export default function NewActionCard(props) {
             parent: "device",
           });
         });
+      }
     }
 
     return all_items;

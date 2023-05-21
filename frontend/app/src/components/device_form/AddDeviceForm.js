@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, Dimensions } from "react-native";
 
 import DynamicTextInput from "../form/DynamicTextInput";
 import DynamicDropDown from "../form/DynamicDropDown";
@@ -93,8 +93,12 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: colors.white,
-    marginHorizontal: 28,
+    paddingHorizontal: 28,
+    marginHorizontal: 0,
     marginBottom: 25,
-    marginTop: "92.5%",
+    marginTop:
+      Dimensions.get("window").height *
+      (Platform.OS === "android" ? 0.5 : 0.65),
+    borderRadius: 30,
   },
 });

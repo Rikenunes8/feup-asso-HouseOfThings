@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Switch, StyleSheet, View } from "react-native";
+import { Switch, StyleSheet, View, Dimensions } from "react-native";
 import RangeSlider from "../../form/RangeSlider";
 
 import colors from "../../../../configs/colors";
@@ -125,9 +125,14 @@ const styles = StyleSheet.create({
   switch: { marginRight: 15 },
   modalContent: {
     backgroundColor: colors.white,
-    marginHorizontal: 28,
-    marginBottom: 25,
-    marginTop: "92.5%",
+    paddingHorizontal: 28,
+    marginHorizontal: 0,
+    paddingBottom: 25,
+    marginTop:
+      67 +
+      Dimensions.get("window").height *
+        (Platform.OS === "android" ? 0.15 : 0.3),
+    borderRadius: 30,
   },
   center: {
     flex: 1,

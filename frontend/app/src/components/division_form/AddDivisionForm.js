@@ -62,11 +62,13 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: colors.white,
-    marginHorizontal: 28,
+    paddingHorizontal: 28,
+    marginHorizontal: 0,
     marginBottom: 25,
     marginTop:
-      105 +
+      67 +
       Dimensions.get("window").height *
         (Platform.OS === "android" ? 0.15 : 0.3),
+    borderRadius: 30,
   },
 });

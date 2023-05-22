@@ -19,6 +19,7 @@ const styles = (backgroundColor = colors.cold) =>
       paddingVertical: 2,
       paddingHorizontal: 8,
       width: 45,
+      height: 22,
       justifyContent: "center",
       alignItems: "center",
     },

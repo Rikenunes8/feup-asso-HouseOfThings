@@ -12,8 +12,8 @@ class DBCollection:
         else:
             return {self._id: id}
 
-    def find_all(self) -> list[dict]:
-        return list(self._collection.find({}, {"_id": 0}))
+    def find_all(self, include = False) -> list[dict]:
+        return list(self._collection.find({}, {"_id": 0} if not include else {}))
 
     def find(self, id) -> dict:
         return self._collection.find_one(self._get_query(id), {"_id": 0})

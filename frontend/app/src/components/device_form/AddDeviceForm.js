@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     paddingHorizontal: 28,
     marginHorizontal: 0,
-    marginBottom: 25,
+    paddingBottom: 25,
     marginTop:
       Dimensions.get("window").height *
       (Platform.OS === "android" ? 0.5 : 0.65),

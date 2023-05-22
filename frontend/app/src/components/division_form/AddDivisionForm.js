@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     paddingHorizontal: 28,
     marginHorizontal: 0,
-    marginBottom: 25,
+    paddingBottom: 25,
     marginTop:
       67 +
       Dimensions.get("window").height *

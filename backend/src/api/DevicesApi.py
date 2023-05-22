@@ -12,11 +12,12 @@ class DevicesApi(CrudApi):
         self._bp.add_url_rule("/", methods=("GET",), view_func=self.all)
         self._bp.add_url_rule("/available", methods=("GET",), view_func=self.available)
         self._bp.add_url_rule("/<id>/connect", methods=("POST",), view_func=self.create)
-        self._bp.add_url_rule("/<id>/disconnect", methods=("POST",), view_func=self.delete)
+        self._bp.add_url_rule(
+            "/<id>/disconnect", methods=("POST",), view_func=self.delete
+        )
         self._bp.add_url_rule("/<id>/action", methods=("POST",), view_func=self.action)
         self._bp.add_url_rule("/<id>/rename", methods=("POST",), view_func=self.rename)
-        self._bp.add_url_rule("/listener", methods=('GET',), view_func=self.listener)
-
+        self._bp.add_url_rule("/listener", methods=("GET",), view_func=self.listener)
 
     def get_api(self) -> Blueprint:
         return self._bp
@@ -46,12 +47,13 @@ class DevicesApi(CrudApi):
             return {"device": device.to_json()}
 
         return self.handle_request_with_data(inner)
-    
+
     def listener(self):
         def stream():
             announcer = self._manager.announcer()
-            messages = announcer.listen()  
+            messages = announcer.listen()
             while True:
-                msg = messages.get() 
+                msg = messages.get()
                 yield msg
-        return Response(stream(), mimetype='text/event-stream')
+
+        return Response(stream(), mimetype="text/event-stream")

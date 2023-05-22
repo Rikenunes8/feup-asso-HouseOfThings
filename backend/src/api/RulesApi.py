@@ -123,4 +123,3 @@ class RulesApi(CrudApi):
                 url = data.get("url")
                 if url == None:
                     return "No url provided"
-

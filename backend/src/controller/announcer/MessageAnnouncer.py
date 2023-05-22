@@ -1,7 +1,7 @@
 import queue
 
-class MessageAnnouncer:
 
+class MessageAnnouncer:
     def __init__(self):
         self.listeners = []
 

@@ -11,17 +11,24 @@ from src.database.CollectionTypes import Collection
 
 
 class Rule(Subscriber):
-    def __init__(self, name: str, operation: str, conditions: list[Condition], actions: list[Action], id: str = None) -> None:
+    def __init__(
+        self,
+        name: str,
+        operation: str,
+        conditions: list[Condition],
+        actions: list[Action],
+        id: str = None,
+    ) -> None:
         self._id = None
         self._name = name
-        self._operation = operation 
+        self._operation = operation
         self._conditions = conditions
         self._actions = actions
         if id != None:
             self._id = id
         else:
-          self._id = self._create()
-          DB().get(Collection.RULES).update(self._id, {"id": self._id})
+            self._id = self._create()
+            DB().get(Collection.RULES).update(self._id, {"id": self._id})
 
     def get_id(self) -> str:
         return self._id
@@ -36,10 +43,16 @@ class Rule(Subscriber):
         for condition in self._conditions:
             condition.clear()
 
-    def update(self, name: str, operation: str, conditions: list[Condition], actions: list[Action]):
+    def update(
+        self,
+        name: str,
+        operation: str,
+        conditions: list[Condition],
+        actions: list[Action],
+    ):
         self._clear_conditions()
         self._name = name
-        self._operation = operation 
+        self._operation = operation
         self._conditions = conditions
         self._actions = actions
         DB().get(Collection.RULES).update(self._id, self.to_json())
@@ -53,7 +66,13 @@ class Rule(Subscriber):
         Logger().info(f"Rule '{self._name}' was triggered.")
         for action in self._actions:
             try:
-                result = action.execute({"rule_id": self._id, "rule_name": self._name, "device_manager": device_manager})
+                result = action.execute(
+                    {
+                        "rule_id": self._id,
+                        "rule_name": self._name,
+                        "device_manager": device_manager,
+                    }
+                )
                 devices_updated.append(result)
             except ApiException as e:
                 Logger().warn(f"Action in rule '{self._name}' not executed: {str(e)}")
@@ -66,19 +85,21 @@ class Rule(Subscriber):
             "name": self._name,
             "operation": self._operation,
             "when": list(map(lambda condition: condition.to_json(), self._conditions)),
-            "then": list(map(lambda action: action.to_json(), self._actions))
+            "then": list(map(lambda action: action.to_json(), self._actions)),
         }
 
-    def init_notifier(self, subscriber: Subscriber, device_manager: DevicesManager) -> None:
+    def init_notifier(
+        self, subscriber: Subscriber, device_manager: DevicesManager
+    ) -> None:
         self._subscriber = subscriber
         for condition in self._conditions:
             try:
-              condition.initialize(self, {"device_manager": device_manager})
+                condition.initialize(self, {"device_manager": device_manager})
             except ApiException as e:
-              print(e)
+                print(e)
 
     def notified(self, data: dict = None):
         checks = list(map(lambda condition: condition.check(), self._conditions))
-        to_execute = all(checks) if self._operation == 'and' else any(checks)
+        to_execute = all(checks) if self._operation == "and" else any(checks)
         if to_execute:
             self._subscriber.notified({"rule_id": self._id})

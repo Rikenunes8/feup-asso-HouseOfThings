@@ -1,6 +1,8 @@
 import time
 import json
-from src.controller.device_connectors.ActuatorDeviceConnector import ActuatorDeviceConnector
+from src.controller.device_connectors.ActuatorDeviceConnector import (
+    ActuatorDeviceConnector,
+)
 from src.controller.mqtt import connect_mqtt, disconnect_mqtt, publish, subscribe
 
 
@@ -10,12 +12,12 @@ class ComplexLightVirtualConnector(ActuatorDeviceConnector):
 
     def __init__(self, cid: str, uid: str, config: dict):
         super().__init__()
-        self.set_protocol('virtual')
-        self.set_capabilities(['power', 'color', 'brightness'])
+        self.set_protocol("virtual")
+        self.set_capabilities(["power", "color", "brightness"])
         self._client = None
         self._cid = cid
         self._uid = uid
-        self._config = {'protocol': self._protocol, **config}
+        self._config = {"protocol": self._protocol, **config}
         self._available = []
 
     def on_connect(self, client, userdata, msg):
@@ -48,12 +50,12 @@ class ComplexLightVirtualConnector(ActuatorDeviceConnector):
         self._client = None
         self._connected = False
 
-
-
     def on_available(self, client, userdata, msg):
         uid = msg.payload.decode()
-        if self._uid == None: self._available.append(uid)
-        elif self._uid == uid: publish(self._client, f"{self._uid}-connect", self._cid)
+        if self._uid == None:
+            self._available.append(uid)
+        elif self._uid == uid:
+            publish(self._client, f"{self._uid}-connect", self._cid)
 
     def start_discovery(self):
         self._client = connect_mqtt()
@@ -69,13 +71,17 @@ class ComplexLightVirtualConnector(ActuatorDeviceConnector):
         self._available = []
         return aux
 
-
-
     def action(self, action: str, data: dict or None) -> bool:
-        if data == None: data = {}
+        if data == None:
+            data = {}
         if action == "turn_on" or action == "set_color" or action == "set_brightness":
-            publish(self._client, f"{self._uid}-turnOn", json.dumps({**data, 'cid': self._cid}))
+            publish(
+                self._client,
+                f"{self._uid}-turnOn",
+                json.dumps({**data, "cid": self._cid}),
+            )
         elif action == "turn_off":
             publish(self._client, f"{self._uid}-turnOff", self._cid)
-        else: return False
+        else:
+            return False
         return True

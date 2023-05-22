@@ -7,12 +7,22 @@ from src.model.devices.Device import Device
 from src.model.devices.ConcreteDevice import ConcreteDevice
 from src.controller.managers.Manager import Manager
 from src.controller.device_connectors.DeviceConnector import DeviceConnector
-from src.controller.device_connectors.BasicLightVirtualConnector import BasicLightVirtualConnector
+from src.controller.device_connectors.BasicLightVirtualConnector import (
+    BasicLightVirtualConnector,
+)
 from src.controller.device_connectors.BasicLightPiConnector import BasicLightPiConnector
-from src.controller.device_connectors.ComplexLightPiConnector import ComplexLightPiConnector
-from src.controller.device_connectors.ComplexLightVirtualConnector import ComplexLightVirtualConnector
-from src.controller.device_connectors.ThermometerPiConnector import ThermometerPiConnector
-from src.controller.device_connectors.ThermometerVirtualConnector import ThermometerVirtualConnector
+from src.controller.device_connectors.ComplexLightPiConnector import (
+    ComplexLightPiConnector,
+)
+from src.controller.device_connectors.ComplexLightVirtualConnector import (
+    ComplexLightVirtualConnector,
+)
+from src.controller.device_connectors.ThermometerPiConnector import (
+    ThermometerPiConnector,
+)
+from src.controller.device_connectors.ThermometerVirtualConnector import (
+    ThermometerVirtualConnector,
+)
 from src.controller.observer.Subscriber import Subscriber
 from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 from src.controller.observer.DeviceConnectionPublisher import DeviceConnectionPublisher
@@ -27,7 +37,7 @@ class DevicesManager(Manager, DeviceConnectionPublisher):
         super().__init__(cid)
         self._devices: dict[str, Device] = {}
         self._announcer = MessageAnnouncer()
-    
+
     def announcer(self) -> MessageAnnouncer:
         return self._announcer
 
@@ -76,7 +86,9 @@ class DevicesManager(Manager, DeviceConnectionPublisher):
         device = self._devices.pop(uid, None)
         if device == None:
             raise ApiException("No device with uid " + uid + " to disconnect")
-        Logger().info(f"Device '{device.find()['name']}' with uid '{uid}' disconnected.")
+        Logger().info(
+            f"Device '{device.find()['name']}' with uid '{uid}' disconnected."
+        )
         self.notify_disconnect(uid, {"device": device})
         device.get().disconnect()
 
@@ -132,17 +144,21 @@ class DevicesManager(Manager, DeviceConnectionPublisher):
             # decorator capabililty class based on the capability name. This should be safe since only capabilities
             # are present in the folder of capability modules.
             device_classname = f"{capability.title().replace('_', '')}Cap"
-            device_module = importlib.import_module(f"src.model.devices.capabilities.{device_classname}")
+            device_module = importlib.import_module(
+                f"src.model.devices.capabilities.{device_classname}"
+            )
             device_class = getattr(device_module, device_classname)
             device = device_class(device, notifier, data)
-            
+
             # Devices that are subscribers should subscribe to the connector
             if isinstance(device, Subscriber):
                 connector.subscribe(device)
 
         return device
 
-    def _make_connectors(self, cid: str, uid: str, config: dict) -> list[DeviceConnector]:
+    def _make_connectors(
+        self, cid: str, uid: str, config: dict
+    ) -> list[DeviceConnector]:
         category = config.get("category")
         subcategory = config.get("subcategory")
         protocol = config.get("protocol")

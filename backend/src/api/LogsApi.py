@@ -17,7 +17,7 @@ class LogsApi(BaseApi):
     def all(self):
         def inner():
             logs = DB().get(Collection.LOGS).find_all(include=True)
-            logs = [ {**log, '_id': None, 'id': str(log['_id'])} for log in logs]
+            logs = [{**log, "_id": None, "id": str(log["_id"])} for log in logs]
             return {"logs": logs}
 
         return self.handle_request(inner)

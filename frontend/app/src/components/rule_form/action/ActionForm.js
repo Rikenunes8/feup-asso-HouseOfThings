@@ -39,7 +39,7 @@ export default function ActionForm() {
       {actionCards.map((card, index) => (
         <NewActionCard
           index={index}
-          key={card.id}
+          key={`action-${card.id}`}
           card={card}
           handleDelete={() => deleteActionCard(card.id)}
           deleteDisabled={actionCards.length == 1}

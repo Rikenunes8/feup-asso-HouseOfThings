@@ -14,7 +14,7 @@ class PowerCap(BaseCapability):
 
     def build_state(self, state={}) -> dict:
         power = state.get("power")
-        if power == None:
+        if power is None:
             return
         return self._build_state(power)
 

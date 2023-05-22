@@ -14,7 +14,7 @@ class ColorCap(BaseCapability):
 
     def build_state(self, state: dict = {}) -> dict:
         color = state.get("color")
-        if color == None:
+        if color is None:
             return
         return self._build_state(color)
 

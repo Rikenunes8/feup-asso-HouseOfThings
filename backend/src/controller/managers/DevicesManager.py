@@ -51,13 +51,13 @@ class DevicesManager(Manager, DeviceConnectionPublisher):
 
     def all(self) -> list[Device]:
         def valid(dev: Device) -> bool:
-            return dev != None and dev.get().is_connected()
+            return dev is not None and dev.get().is_connected()
 
         return list(filter(valid, self._devices.values()))
 
     def get(self, uid: str) -> Device:
         device = self._devices.get(uid)
-        if device == None:
+        if device is None:
             raise ApiException(f"Device {uid} not found")
         return device
 
@@ -68,9 +68,9 @@ class DevicesManager(Manager, DeviceConnectionPublisher):
             raise ApiException("Failed to connect to device with uid: " + uid)
         name = config.get("name")
         divisions = config.get("divisions")
-        if name != None:
+        if name is not None:
             concrete_device.rename(name)
-        if divisions != None:
+        if divisions is not None:
             concrete_device.set_divisions(divisions)
         self._add(uid, new_device)
         self.notify_connect(uid, {"device": new_device})
@@ -84,7 +84,7 @@ class DevicesManager(Manager, DeviceConnectionPublisher):
 
     def delete(self, uid) -> None:
         device = self._devices.pop(uid, None)
-        if device == None:
+        if device is None:
             raise ApiException("No device with uid " + uid + " to disconnect")
         Logger().info(
             f"Device '{device.find()['name']}' with uid '{uid}' disconnected."
@@ -170,19 +170,19 @@ class DevicesManager(Manager, DeviceConnectionPublisher):
 
         connectors = []
         if subcategory == "light bulb":
-            if protocol == "virtual" or protocol == None:
+            if protocol == "virtual" or protocol is None:
                 connectors.append(BasicLightVirtualConnector(cid, uid, config))
-            if protocol == "raspberry pi" or protocol == None:
+            if protocol == "raspberry pi" or protocol is None:
                 connectors.append(BasicLightPiConnector(cid, uid, config))
         elif subcategory == "light bulb rgb":
-            if protocol == "virtual" or protocol == None:
+            if protocol == "virtual" or protocol is None:
                 connectors.append(ComplexLightVirtualConnector(cid, uid, config))
-            if protocol == "raspberry pi" or protocol == None:
+            if protocol == "raspberry pi" or protocol is None:
                 connectors.append(ComplexLightPiConnector(cid, uid, config))
         elif subcategory == "thermometer":
-            if protocol == "virtual" or protocol == None:
+            if protocol == "virtual" or protocol is None:
                 connectors.append(ThermometerVirtualConnector(cid, uid, config))
-            if protocol == "raspberry pi" or protocol == None:
+            if protocol == "raspberry pi" or protocol is None:
                 connectors.append(ThermometerPiConnector(cid, uid, config))
 
         if len(connectors) == 0:

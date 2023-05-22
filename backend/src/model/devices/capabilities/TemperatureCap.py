@@ -15,7 +15,7 @@ class TemperatureCap(BaseCapability, Subscriber):
 
     def build_state(self, state={}) -> dict:
         temperature = state.get("temperature")
-        if temperature == None:
+        if temperature is None:
             return
         return self._build_state(temperature)
 

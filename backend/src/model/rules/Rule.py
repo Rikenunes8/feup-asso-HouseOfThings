@@ -24,7 +24,7 @@ class Rule(Subscriber):
         self._operation = operation
         self._conditions = conditions
         self._actions = actions
-        if id != None:
+        if id is not None:
             self._id = id
         else:
             self._id = self._create()

@@ -82,7 +82,7 @@ class ConcreteDevice(Device):
         if not isinstance(self._connector, ActuatorDeviceConnector):
             return True
         if self._connector.action(action, data):
-            if updated_state != None:
+            if updated_state is not None:
                 self.update(updated_state)
                 self.notify(updated_state)
             return True

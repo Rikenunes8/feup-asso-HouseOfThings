@@ -88,7 +88,7 @@ class RulesManager(Manager, Subscriber):
 
     def get(self, id: str) -> Rule:
         rule = self._rules.get(id)
-        if rule == None:
+        if rule is None:
             raise ApiException("Rule not found")
         return rule
 
@@ -99,7 +99,7 @@ class RulesManager(Manager, Subscriber):
 
     def delete(self, rule_id: str):
         rule = self._rules.pop(rule_id, None)
-        if rule == None:
+        if rule is None:
             raise ApiException("Rule not found")
         Logger().info(f"Rule '{rule.get_name()}' deleted.")
         rule.delete()
@@ -115,7 +115,7 @@ class RulesManager(Manager, Subscriber):
     def execute(self, rule_id: str) -> list[Device]:
         rule = self.get(rule_id)
         devices = rule.execute(self._device_manager)
-        devices = list(filter(lambda d: d != None, devices))
+        devices = list(filter(lambda d: d is not None, devices))
         self._device_manager.announce(
             [device.to_json() for device in devices], "update"
         )

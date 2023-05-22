@@ -14,7 +14,7 @@ class BrightnessCap(BaseCapability):
 
     def build_state(self, state: dict = {}) -> dict:
         brightness = state.get("brightness")
-        if brightness == None:
+        if brightness is None:
             return
         return self._build_state(brightness)
 

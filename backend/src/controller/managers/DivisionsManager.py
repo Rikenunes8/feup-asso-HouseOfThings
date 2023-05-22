@@ -22,7 +22,7 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
 
     def get(self, id: str):
         division = self._divisions.get(id)
-        if division == None:
+        if division is None:
             raise ApiException("Division not found")
         return division
 
@@ -60,7 +60,7 @@ class DivisionsManager(CrudManager, DeviceConnectionSubscriber):
 
     def delete(self, id: str):
         division = self._divisions.pop(id, None)
-        if division == None:
+        if division is None:
             raise ApiException("Division not found")
         Logger().info(f"Division '{division.get_name()}' removed.")
         for device_uid in division.get_devices():

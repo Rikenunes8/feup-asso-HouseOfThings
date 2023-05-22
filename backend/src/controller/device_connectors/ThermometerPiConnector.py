@@ -55,7 +55,7 @@ class ThermometerPiConnector(DeviceConnector):
 
     def on_available(self, client, userdata, msg):
         uid = msg.payload.decode()
-        if self._uid == None:
+        if self._uid is None:
             self._available.append(uid)
         elif self._uid == uid:
             publish(self._client, f"{self._uid}-connect", self._cid)

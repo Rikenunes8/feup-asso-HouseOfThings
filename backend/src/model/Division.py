@@ -11,7 +11,7 @@ class Division:
         self._icon = icon
         self._devices = devices
 
-        if id != None:
+        if id is not None:
             self._id = id
         else:
             self._id = self._create()

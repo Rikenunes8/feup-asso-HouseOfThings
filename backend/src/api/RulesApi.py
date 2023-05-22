@@ -35,15 +35,15 @@ class RulesApi(CrudApi):
         operation = rule.get("operation")
         when = rule.get("when")
         then = rule.get("then")
-        if name == None:
+        if name is None:
             return "No name provided"
-        if operation == None:
+        if operation is None:
             return "No operation provided"
         if operation not in ["and", "or"]:
             return "Invalid operation provided"
-        if when == None:
+        if when is None:
             return "No when provided"
-        if then == None:
+        if then is None:
             return "No then provided"
         if not isinstance(when, list):
             return "When must be a list"
@@ -63,7 +63,7 @@ class RulesApi(CrudApi):
 
     def _validate_condition(self, condition: dict):
         kind = condition.get("kind")
-        if kind == None:
+        if kind is None:
             return "No kind provided"
         if kind not in ["device", "schedule"]:
             return "Invalid kind provided"
@@ -72,26 +72,26 @@ class RulesApi(CrudApi):
             comparator = condition.get("comparator")
             attribute = condition.get("attribute")
             state = condition.get("state")
-            if device_id == None:
+            if device_id is None:
                 return "No device_id provided"
-            if comparator == None:
+            if comparator is None:
                 return "No comparator provided"
             if comparator not in ["==", ">", "<"]:
                 return "Invalid comparator provided"
-            if attribute == None:
+            if attribute is None:
                 return "No attribute provided"
-            if state == None:
+            if state is None:
                 return "No state provided"
         elif kind == "schedule":
             time = condition.get("time")
             days = condition.get("days")
-            if time == None:
+            if time is None:
                 return "No time provided"
-            if days == None:
+            if days is None:
                 return "No days provided"
             try:
                 datetime.strptime(time, "%H:%M")
-            except:
+            except ValueError:
                 return "Invalid time provided"
             if not isinstance(days, list):
                 return "Days must be a list"
@@ -101,25 +101,25 @@ class RulesApi(CrudApi):
 
     def _validate_action(self, action: dict):
         kind = action.get("kind")
-        if kind == None:
+        if kind is None:
             return "No kind provided"
         if kind not in ["device", "message"]:
             return "Invalid kind provided"
         if kind == "device":
             device_id = action.get("device_id")
             action_concrete = action.get("action")
-            if device_id == None:
+            if device_id is None:
                 return "No device_id provided"
-            if action_concrete == None:
+            if action_concrete is None:
                 return "No action provided"
         elif kind == "message":
             service = action.get("service")
-            if service == None:
+            if service is None:
                 return "No service provided"
             data = action.get("data")
-            if data == None or type(data) != dict:
+            if data is None or type(data) != dict:
                 return "No data provided"
             if service == "discord":
                 url = data.get("url")
-                if url == None:
+                if url is None:
                     return "No url provided"

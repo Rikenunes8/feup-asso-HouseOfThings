@@ -52,7 +52,7 @@ class ComplexLightPiConnector(ActuatorDeviceConnector):
 
     def on_available(self, client, userdata, msg):
         uid = msg.payload.decode()
-        if self._uid == None:
+        if self._uid is None:
             self._available.append(uid)
         elif self._uid == uid:
             publish(self._client, f"{self._uid}-connect", self._cid)
@@ -72,7 +72,7 @@ class ComplexLightPiConnector(ActuatorDeviceConnector):
         return aux
 
     def action(self, action: str, data: dict or None) -> bool:
-        if data == None:
+        if data is None:
             data = {}
         if action == "turn_on" or action == "set_color" or action == "set_brightness":
             publish(

@@ -40,7 +40,7 @@ class DevicesApi(CrudApi):
     def action(self, id):
         def inner(data):
             action = data.get("action")
-            if action == None:
+            if action is None:
                 raise ApiException("No action provided")
             payload = data.get("data")
             device = self._manager.action(id, action, payload)

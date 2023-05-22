@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import Row from "../grid/Row";
 import Col from "../grid/Column";
 
@@ -10,8 +10,7 @@ import ConfigurationsForm from "./condition/ConfigurationsForm";
 import colors from "../../../configs/colors";
 
 export default function DeviceForm(props) {
-
-  const [possibleConfigurations, setPossibleConfigurations] = useState([{}]);
+  const [possibleConfigurations, setPossibleConfigurations] = useState([]);
   const capabilitiesMap = {
     power: {
       label: "Power",
@@ -33,18 +32,21 @@ export default function DeviceForm(props) {
 
   const updateConfigurations = () => {
     setPossibleConfigurations(
-      props.capabilities.map((capability) => {
-        return capabilitiesMap[capability];
+      props.capabilities.map((capability, index) => {
+        return {
+          ...capabilitiesMap[capability],
+          key: index,
+        };
       })
     );
     setFeat(capabilitiesMap[props.capabilities[0]]);
     setCurrentConfiguration(capabilitiesMap[props.capabilities[0]].value);
   };
- 
+
   const [currentConfiguration, setCurrentConfiguration] = useState(
     capabilitiesMap[props.capabilities[0].value]
   );
-  const [feat, setFeat] = useState(capabilitiesMap[props.capabilities[0]])
+  const [feat, setFeat] = useState(capabilitiesMap[props.capabilities[0]]);
 
   const modalProps = {
     transparent: true,
@@ -57,11 +59,9 @@ export default function DeviceForm(props) {
   };
 
   useEffect(() => {
-    if (props.capabilities != undefined) 
-    {
+    if (props.capabilities != undefined) {
       updateConfigurations();
     }
-      
   }, [props.capabilities]);
 
   return (
@@ -75,8 +75,7 @@ export default function DeviceForm(props) {
           listMode={"MODAL"}
           modalProps={modalProps}
           modalContentContainerStyle={styles.modalContent}
-          onSelectItem={(item ) => handleConfigurationChange(item)}
-       
+          onSelectItem={(item) => handleConfigurationChange(item)}
         ></DynamicDropDown>
       </Col>
       {currentConfiguration != undefined ? (
@@ -88,7 +87,6 @@ export default function DeviceForm(props) {
       ) : null}
     </Row>
   );
-
 }
 
 const styles = StyleSheet.create({

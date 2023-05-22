@@ -29,6 +29,7 @@ class ThermometerPiConnector(DeviceConnector):
         self._client = connect_mqtt()
         self._client.loop_start()
 
+        subscribe(self._client, "thermometer-pi-is-available", self.on_available)
         subscribe(self._client, f"{self._cid}-connected", self.on_connect)
         publish(self._client, f"{self._uid}-connect", self._cid)
         print("Waiting for device to connect...")
@@ -56,14 +57,16 @@ class ThermometerPiConnector(DeviceConnector):
 
 
     def on_available(self, client, userdata, msg):
-        self._available.append(msg.payload.decode())
+        uid = msg.payload.decode()
+        if self._uid == None: self._available.append(uid)
+        elif self._uid == uid: publish(self._client, f"{self._uid}-connect", self._cid)
 
     def start_discovery(self):
         self._client = connect_mqtt()
         self._client.loop_start()
 
-        subscribe(self._client, f"{self._cid}-thermometer-available-pi", self.on_available)
-        publish(self._client, "thermometer-available-pi", self._cid)
+        subscribe(self._client, "thermometer-pi-is-available", self.on_available)
+        publish(self._client, "is-thermometer-pi-available", self._cid)
 
     def finish_discovery(self) -> list[str]:
         disconnect_mqtt(self._client)

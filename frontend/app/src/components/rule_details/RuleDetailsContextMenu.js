@@ -55,10 +55,10 @@ export default function RuleDetailsContextMenu({
   const editCallback = () => {
     setIsContextMenuVisible(false);
     setIsEditingRule(true);
-    setRuleName(rule.name);
-    setRuleOperation(rule.operation);
-    setRuleConditions(rule.when);
-    setRuleActions(rule.then);
+    setRuleName(rule.name.slice());
+    setRuleOperation(rule.operation.slice());
+    setRuleConditions(JSON.parse(JSON.stringify(rule.when)));
+    setRuleActions(JSON.parse(JSON.stringify(rule.then)));
   };
 
   return (

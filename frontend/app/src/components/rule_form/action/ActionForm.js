@@ -41,7 +41,7 @@ export default function ActionForm({ actions }) {
       {actionCards.map((card, index) => (
         <NewActionCard
           index={index}
-          key={card.id}
+          key={index}
           card={card}
           action={actions ? actions[index] : null}
           handleDelete={() => deleteActionCard(card.id)}

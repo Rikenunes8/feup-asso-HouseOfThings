@@ -94,7 +94,7 @@ export default function ConditionForm({ conditions }) {
         {conditionCards.map((card, index) => (
           <NewConditionCard
             index={index}
-            key={card.id}
+            key={index}
             card={card}
             condition={conditions ? conditions[index] : null}
             handleDelete={() => deleteConditionCard(card.id)}

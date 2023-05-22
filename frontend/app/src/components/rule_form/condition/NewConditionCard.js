@@ -15,6 +15,7 @@ import DeletableCard from "../../DeletableCard";
 export default function NewConditionCard(props) {
   const { devices } = useContext(DevicesContext);
   const { addRuleCondition } = useContext(CreateRuleContext);
+  const [info, setInfo] = useState({});
 
   const [type, setType] = useState(
     !props.condition
@@ -55,12 +56,12 @@ export default function NewConditionCard(props) {
     if (devices.length != 0)
       all_items.push({ label: "Devices", value: "device" });
 
+    setInfo(
+      props.condition ? all_items.find((item) => item.value == type) : {}
+    );
+
     return all_items;
   });
-
-  const [info, setInfo] = useState(
-    props.condition ? items.find((item) => item.value == type) : {}
-  );
 
   const handleTypeChange = (item) => {
     setInfo(item);

@@ -1,11 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import Col from "../../../grid/Column";
 import DynamicDropDown from "../../../form/DynamicDropDown";
 import CreateRuleContext from "../../../../contexts/CreateRuleContext";
 import colors from "../../../../../configs/colors";
 
-export default function BrightnessAction({ index, action }) {
+export default function DropdownAction({
+  index,
+  action,
+  action_name,
+  attribute,
+}) {
   const { updateRuleAction } = useContext(CreateRuleContext);
 
   const [step, setStep] = useState(
@@ -16,11 +21,11 @@ export default function BrightnessAction({ index, action }) {
   );
 
   const [value, setValue] = useState(
-    action && action.brightness ? action.brightness : step[0].value
+    action && action[attribute] ? action[attribute] : step[0].value
   );
 
   const handleValueChange = (item) => {
-    updateRuleAction(index, "set_brightness", { brightness: item.value });
+    updateRuleAction(index, action_name, { [attribute]: item.value });
     setValue(item);
   };
 
@@ -28,6 +33,10 @@ export default function BrightnessAction({ index, action }) {
     transparent: true,
     presentationStyle: "overFullScreen",
   };
+
+  useEffect(() => {
+    updateRuleAction(index, action_name, { [attribute]: value });
+  }, []);
 
   return (
     <Col flex={0.9}>

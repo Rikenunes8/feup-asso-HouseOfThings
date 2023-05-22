@@ -44,10 +44,10 @@ export default function EditRuleContextMenu({
       setIsRuleDetailsModalLoading(false);
       if (updatedRule != null) {
         updateRule(updatedRule, rule.id);
-        setRuleDetailsModalVisible(null);
         resetCreateRuleContext();
         setIsContextMenuVisible(false);
         setIsEditingRule(false);
+        setRuleDetailsModalVisible(null);
       } else {
         utils.showErrorMessage("Failed to update rule");
       }
@@ -57,6 +57,7 @@ export default function EditRuleContextMenu({
   const cancelCallback = () => {
     setIsContextMenuVisible(false);
     setIsEditingRule(false);
+    resetCreateRuleContext();
   };
 
   return (

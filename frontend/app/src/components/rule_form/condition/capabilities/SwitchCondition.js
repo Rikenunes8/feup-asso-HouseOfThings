@@ -1,17 +1,21 @@
+import React, { useState, useContext, useEffect } from "react";
 import { StyleSheet, View, Switch } from "react-native";
-import React, { useState, useContext } from "react";
 import colors from "../../../../../configs/colors";
 import CreateRuleContext from "../../../../contexts/CreateRuleContext";
 
-export default function PowerCondition({ index, status }) {
+export default function SwitchCondition({ index, status, attribute }) {
   const { addRuleConditionState } = useContext(CreateRuleContext);
 
   const [state, setState] = useState(status ?? false);
 
   const handleStatusChange = (item) => {
-    setState(!state);
-    addRuleConditionState(index, "power", item, "==");
+    setState(item);
+    addRuleConditionState(index, attribute, item, "==");
   };
+
+  useEffect(() => {
+    addRuleConditionState(index, attribute, state, "==");
+  }, [index, attribute, state]);
 
   return (
     <View style={styles.center}>

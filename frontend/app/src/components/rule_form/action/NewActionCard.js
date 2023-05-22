@@ -16,6 +16,9 @@ import colors from "../../../../configs/colors";
 export default function NewActionCard(props) {
   const { addRuleAction, updateRuleActionData } = useContext(CreateRuleContext);
   const { devices } = useContext(DevicesContext);
+  const [url, setURL] = useState(null);
+  const [info, setInfo] = useState({});
+
   const [device, setDevice] = useState(
     !props.action
       ? null
@@ -23,7 +26,6 @@ export default function NewActionCard(props) {
       ? props.action.device_id
       : "message"
   );
-  const [url, setURL] = useState(null);
 
   const [items, setItems] = useState(() => {
     fixed_fields = [
@@ -64,11 +66,11 @@ export default function NewActionCard(props) {
         });
       }
     }
-  });
 
-  const [info, setInfo] = useState(
-    props.action ? items.find((item) => item.value == device) : {}
-  );
+    setInfo(props.action ? all_items.find((item) => item.value == device) : {});
+
+    return all_items;
+  });
 
   const handleDeviceChange = (item) => {
     setInfo(item);

@@ -1,18 +1,21 @@
+import React, { useState, useContext, useEffect } from "react";
 import { StyleSheet, View, Switch } from "react-native";
-import React, { useState, useContext } from "react";
 import colors from "../../../../../configs/colors";
 import CreateRuleContext from "../../../../contexts/CreateRuleContext";
 
-export default function PowerAction({ index, action }) {
+export default function SwitchAction({ index, action }) {
   const { updateRuleAction } = useContext(CreateRuleContext);
 
   const [state, setState] = useState(action ?? false);
 
   const handleStatusChange = (item) => {
-    setState(!state);
-    action = item ? "turn_on" : "turn_off";
-    updateRuleAction(index, action, null);
+    setState(item);
+    updateRuleAction(index, item ? "turn_on" : "turn_off", null);
   };
+
+  useEffect(() => {
+    updateRuleAction(index, state ? "turn_on" : "turn_off", null);
+  }, []);
 
   return (
     <View style={styles.center}>

@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 
 import TitleModal from "../../components/modal/TitleModal";
 import ModalsContext from "../../contexts/ModalsContext";
+import CreateRuleContext from "../../contexts/CreateRuleContext";
 import RuleDetails from "../../components/rule_details/RuleDetails";
 import RuleDetailsContextMenu from "../../components/rule_details/RuleDetailsContextMenu";
 import EditRuleContextMenu from "../../components/rule_details/EditRuleContextMenu";
@@ -13,6 +14,8 @@ export default function RuleDetailsModal({ rule }) {
     setRuleDetailsModalVisible,
     isRuleDetailsModalLoading,
   } = useContext(ModalsContext);
+
+  const { resetCreateRuleContext } = useContext(CreateRuleContext);
 
   const [isEditingRule, setIsEditingRule] = useState(false);
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
@@ -28,6 +31,7 @@ export default function RuleDetailsModal({ rule }) {
         setRuleDetailsModalVisible(null);
         setIsContextMenuVisible(false);
         setIsEditingRule(false);
+        resetCreateRuleContext();
       }}
       rightIconCallback={() => {
         setIsContextMenuVisible(!isContextMenuVisible);

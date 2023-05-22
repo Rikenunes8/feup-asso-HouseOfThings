@@ -14,18 +14,22 @@ export default function DeviceForm(props) {
   const capabilitiesMap = {
     power: {
       label: "Power",
+      attribute: "power",
       value: "switch",
     },
     brightness: {
       label: "Brightness",
-      value: props.isRuleCondition ? "slider" : "dropdown",
+      attribute: "brightness",
+      value: props.isRuleCondition ? "comparator_dropdown" : "dropdown",
     },
     temperature: {
       label: "Temperature",
-      value: props.isRuleCondition ? "slider" : "dropdown",
+      attribute: "temperature",
+      value: props.isRuleCondition ? "comparator_dropdown" : "dropdown",
     },
     color: {
       label: "Color",
+      attribute: "color",
       value: "color",
     },
   };
@@ -37,9 +41,7 @@ export default function DeviceForm(props) {
     set_color: "color",
   };
 
-  const [feat, setFeat] = useState(
-    props.capabilities ? capabilitiesMap[props.capabilities[0]] : []
-  );
+  const [feat, setFeat] = useState({});
 
   const [currentConfiguration, setCurrentConfiguration] = useState(
     capabilitiesMap[props.capabilities[0]].value
@@ -52,12 +54,23 @@ export default function DeviceForm(props) {
       })
     );
 
-    const config =
-      props.condition && props.condition.attribute
-        ? capabilitiesMap[props.condition.attribute]
-        : props.action && props.action.action
-        ? capabilitiesMap[capabilitiesActionsMap[props.action.action]]
-        : capabilitiesMap[props.capabilities[0]];
+    let config = null;
+    if (
+      props.isRuleCondition &&
+      props.condition != null &&
+      props.capabilities.includes(props.condition.attribute)
+    ) {
+      config = capabilitiesMap[props.condition.attribute];
+    } else if (
+      !props.isRuleCondition &&
+      props.action != null &&
+      props.capabilities.includes(capabilitiesActionsMap[props.action.action])
+    ) {
+      config = capabilitiesMap[capabilitiesActionsMap[props.action.action]];
+    } else {
+      config = capabilitiesMap[props.capabilities[0]];
+    }
+
     setFeat(config);
     setCurrentConfiguration(config.value);
   };
@@ -79,7 +92,7 @@ export default function DeviceForm(props) {
   }, [props.capabilities]);
 
   return (
-    <Row>
+    <Row style={{ flexWrap: true }}>
       <Col flex={2}>
         <DynamicDropDown
           items={possibleConfigurations}

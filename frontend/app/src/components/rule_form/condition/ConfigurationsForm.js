@@ -1,63 +1,67 @@
 import React from "react";
-import TemperatureCondition from "./capabilities/TemperatureCondition";
-import BrightnessCondition from "./capabilities/BrightnessCondition";
-import PowerCondition from "./capabilities/PowerCondition";
-import PowerAction from "../action/capabilities/PowerAction";
-import BrightnessAction from "../action/capabilities/BrightnessAction";
+import ComparatorDropdownCondition from "./capabilities/ComparatorDropdownCondition";
+import SwitchCondition from "./capabilities/SwitchCondition";
+import SwitchAction from "../action/capabilities/SwitchAction";
+import DropdownAction from "../action/capabilities/DropdownAction";
 import ColorAction from "../action/capabilities/ColorAction";
 
 export default function ConfigurationsForm(props) {
-  if (props.isCondition) {
-    switch (props.feat.label.toLowerCase()) {
-      case "power":
-        return (
-          <PowerCondition
-            index={props.index}
-            status={props.condition && props.condition.state}
-          />
-        );
-      case "brightness":
-        return (
-          <BrightnessCondition
-            index={props.index}
-            status={props.condition && props.condition.state}
-          />
-        );
-      case "temperature":
-        return (
-          <TemperatureCondition
-            index={props.index}
-            status={props.condition && props.condition.state}
-          />
-        );
-      default:
-        return null;
-    }
-  } else {
-    switch (props.feat.label.toLowerCase()) {
-      case "power":
-        return (
-          <PowerAction
-            index={props.index}
-            action={props.action && props.action.action == "turn_on"}
-          />
-        );
-      case "brightness":
-        return (
-          <BrightnessAction
-            index={props.index}
-            action={props.action ? props.action.data : null}
-          />
-        );
-      case "color":
-        return (
-          <ColorAction
-            index={props.index}
-            action={props.action ? props.action.data : null}
-          />
-        );
-      default:
-        return null;
+  if (props.feat.value) {
+    if (props.isCondition) {
+      switch (props.feat.value.toLowerCase()) {
+        case "switch":
+          return (
+            <SwitchCondition
+              index={props.index}
+              attribute={props.feat.attribute}
+              status={props.condition && props.condition.state}
+            />
+          );
+        case "comparator_dropdown":
+          return (
+            <ComparatorDropdownCondition
+              index={props.index}
+              attribute={props.feat.attribute}
+              current_comparator={
+                props.condition ? props.condition.comparator : null
+              }
+              current_state={props.condition ? props.condition.state : null}
+            />
+          );
+        default:
+          return null;
+      }
+    } else {
+      switch (props.feat.value.toLowerCase()) {
+        case "switch":
+          return (
+            <SwitchAction
+              index={props.index}
+              attribute={props.feat.attribute}
+              action={props.action && props.action.action == "turn_on"}
+            />
+          );
+        case "dropdown":
+          return (
+            <DropdownAction
+              index={props.index}
+              attribute={props.feat.attribute}
+              action_name={`set_${props.feat.attribute}`}
+              action={props.action ? props.action.data : null}
+            />
+          );
+        case "color":
+          return (
+            <ColorAction
+              index={props.index}
+              attribute={props.feat.attribute}
+              action_name={`set_${props.feat.attribute}`}
+              action={props.action ? props.action.data : null}
+            />
+          );
+        default:
+          return null;
+      }
     }
   }
 }

@@ -28,7 +28,7 @@ export default function ChooseDeviceSideBar({
             key={index}
             onPress={() => {
               setSelectedCategory(category);
-              setDeviceCategory(category);
+              setDeviceCategory(category.name);
             }}
           >
             <Text style={styles(category === selectedCategory).categoryTitle}>

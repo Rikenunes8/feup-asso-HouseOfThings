@@ -14,6 +14,7 @@ export const ModalsProvider = ({ children }) => {
     useState(null);
 
   const [createRuleModalVisible, setCreateRuleModalVisible] = useState(false);
+  const [ruleDetailsModalVisible, setRuleDetailsModalVisible] = useState(null);
 
   const [isChooseDeviceModalLoading, setIsChooseDeviceModalLoading] =
     useState(false);
@@ -24,6 +25,8 @@ export const ModalsProvider = ({ children }) => {
   const [isDeviceDetailsModalLoading, setIsDeviceDetailsModalLoading] =
     useState(false);
   const [isDivisionDetailsModalLoading, setIsDivisionDetailsModalLoading] =
+    useState(false);
+  const [isRuleDetailsModalLoading, setIsRuleDetailsModalLoading] =
     useState(false);
 
   const [isMenuModalRenaming, setIsMenuModalRenaming] = useState(false);
@@ -57,6 +60,10 @@ export const ModalsProvider = ({ children }) => {
         setIsDivisionFormModalLoading,
         isMenuModalRenaming,
         setIsMenuModalRenaming,
+        ruleDetailsModalVisible,
+        setRuleDetailsModalVisible,
+        isRuleDetailsModalLoading,
+        setIsRuleDetailsModalLoading,
         isDivisionDetailsModalLoading,
         setIsDivisionDetailsModalLoading,
         isMenuModalChangeIcon,

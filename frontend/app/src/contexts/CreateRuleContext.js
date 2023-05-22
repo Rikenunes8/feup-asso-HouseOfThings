@@ -27,11 +27,13 @@ export const CreateRuleProvider = ({ children }) => {
     }
   };
 
-  const addRuleConditionState = (index, value) => {
+  const addRuleConditionState = (index, attribute, state, comparator) => {
     let newConditions = [...ruleConditions];
 
     if (newConditions[index]) {
-      newConditions[index]["state"] = value;
+      newConditions[index]["attribute"] = attribute;
+      newConditions[index]["state"] = state;
+      newConditions[index]["comparator"] = comparator;
       setRuleConditions(newConditions);
     }
   };
@@ -54,11 +56,12 @@ export const CreateRuleProvider = ({ children }) => {
     }
   };
 
-  const updateRuleAction = (index, value) => {
+  const updateRuleAction = (index, action, data) => {
     let newActions = [...ruleActions];
 
     if (newActions[index]) {
-      newActions[index]["action"] = value;
+      newActions[index]["action"] = action;
+      newActions[index]["data"] = data;
       setRuleActions(newActions);
     }
   };

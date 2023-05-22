@@ -4,7 +4,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  FlatList,
 } from "react-native";
 
 import ContextMenu from "../../ContextMenu";
@@ -18,11 +17,13 @@ import CreateRuleContext from "../../../contexts/CreateRuleContext";
 import colors from "../../../../configs/colors";
 import { createIconSetFromFontello } from "react-native-vector-icons";
 
-export default function ConditionForm() {
+export default function ConditionForm({ conditions }) {
   const { setRuleOperation } = useContext(CreateRuleContext);
 
   const [conditionCards, setConditionCards] = useState([
-    { id: Date.now().toString() },
+    conditions
+      ? conditions.map((_) => ({ id: Date.now().toString() }))
+      : { id: Date.now().toString() },
   ]);
 
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
@@ -95,6 +96,7 @@ export default function ConditionForm() {
             index={index}
             key={`condition-${card.id}`}
             card={card}
+            condition={conditions ? conditions[index] : null}
             handleDelete={() => deleteConditionCard(card.id)}
             deleteDisabled={conditionCards.length == 1}
           />

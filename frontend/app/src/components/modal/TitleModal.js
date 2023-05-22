@@ -21,6 +21,7 @@ export default function TitleModal({
   leftIconCallback,
   rightIconCallback,
   modalContent,
+  contextMenu,
   isLoading = false,
 }) {
   return (
@@ -52,7 +53,7 @@ export default function TitleModal({
             ) : null}
           </View>
           <Text style={styles.modalTitle}>{title}</Text>
-
+          {contextMenu}
           <View style={styles.modalBody}>{modalContent}</View>
         </View>
       </View>

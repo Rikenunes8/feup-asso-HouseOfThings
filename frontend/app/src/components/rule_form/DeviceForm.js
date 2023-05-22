@@ -11,24 +11,44 @@ import colors from "../../../configs/colors";
 
 export default function DeviceForm(props) {
   const [possibleConfigurations, setPossibleConfigurations] = useState([]);
+  const [feat, setFeat] = useState({});
   const capabilitiesMap = {
     power: {
       label: "Power",
+      attribute: "power",
       value: "switch",
     },
     brightness: {
       label: "Brightness",
-      value: props.isRuleCondition ? "slider" : "dropdown",
+      attribute: "brightness",
+      value: props.isRuleCondition ? "comparator_dropdown" : "dropdown",
+      start: 0,
+      stop: 100,
     },
     temperature: {
       label: "Temperature",
-      value: props.isRuleCondition ? "slider" : "dropdown",
+      attribute: "temperature",
+      value: props.isRuleCondition ? "comparator_dropdown" : "dropdown",
+      start: -20,
+      stop: 50,
     },
     color: {
       label: "Color",
+      attribute: "color",
       value: "color",
     },
   };
+
+  const capabilitiesActionsMap = {
+    turn_on: "power",
+    turn_off: "power",
+    set_brightness: "brightness",
+    set_color: "color",
+  };
+
+  const [currentConfiguration, setCurrentConfiguration] = useState(
+    capabilitiesMap[props.capabilities[0]].value
+  );
 
   const updateConfigurations = () => {
     setPossibleConfigurations(
@@ -39,14 +59,27 @@ export default function DeviceForm(props) {
         };
       })
     );
-    setFeat(capabilitiesMap[props.capabilities[0]]);
-    setCurrentConfiguration(capabilitiesMap[props.capabilities[0]].value);
-  };
 
-  const [currentConfiguration, setCurrentConfiguration] = useState(
-    capabilitiesMap[props.capabilities[0].value]
-  );
-  const [feat, setFeat] = useState(capabilitiesMap[props.capabilities[0]]);
+    let config = null;
+    if (
+      props.isRuleCondition &&
+      props.condition != null &&
+      props.capabilities.includes(props.condition.attribute)
+    ) {
+      config = capabilitiesMap[props.condition.attribute];
+    } else if (
+      !props.isRuleCondition &&
+      props.action != null &&
+      props.capabilities.includes(capabilitiesActionsMap[props.action.action])
+    ) {
+      config = capabilitiesMap[capabilitiesActionsMap[props.action.action]];
+    } else {
+      config = capabilitiesMap[props.capabilities[0]];
+    }
+
+    setFeat(config);
+    setCurrentConfiguration(config.value);
+  };
 
   const modalProps = {
     transparent: true,
@@ -65,7 +98,7 @@ export default function DeviceForm(props) {
   }, [props.capabilities]);
 
   return (
-    <Row>
+    <Row style={styles.container}>
       <Col flex={2}>
         <DynamicDropDown
           items={possibleConfigurations}
@@ -83,6 +116,8 @@ export default function DeviceForm(props) {
           feat={feat}
           index={props.index}
           isCondition={props.isRuleCondition}
+          condition={props.condition ? props.condition : null}
+          action={props.action ? props.action : null}
         ></ConfigurationsForm>
       ) : null}
     </Row>
@@ -90,6 +125,9 @@ export default function DeviceForm(props) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexWrap: "wrap",
+  },
   modalContent: {
     backgroundColor: colors.white,
     marginHorizontal: 28,

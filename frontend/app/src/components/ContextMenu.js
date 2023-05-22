@@ -51,6 +51,12 @@ const styles = (
       paddingEnd: 10,
       borderRadius: 10,
       backgroundColor: backgroundColor,
+      zIndex: 1,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.1,
+      shadowRadius: 3.5,
+      elevation: 5,
     },
     menuOption: {
       flexDirection: "row",

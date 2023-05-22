@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 
 import TitleModal from "../../components/modal/TitleModal";
 import CreateRuleForm from "../../components/rule_form/CreateRuleForm";

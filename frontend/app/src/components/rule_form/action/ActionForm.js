@@ -6,9 +6,11 @@ import AntDesignIcon from "react-native-vector-icons/AntDesign";
 
 import colors from "../../../../configs/colors";
 
-export default function ActionForm() {
+export default function ActionForm({ actions }) {
   const [actionCards, setActionCards] = useState([
-    { id: Date.now().toString() },
+    actions
+      ? actions.map((_) => ({ id: Date.now().toString() }))
+      : { id: Date.now().toString() },
   ]);
 
   const addActionCard = () => {
@@ -41,6 +43,7 @@ export default function ActionForm() {
           index={index}
           key={`action-${card.id}`}
           card={card}
+          action={actions ? actions[index] : null}
           handleDelete={() => deleteActionCard(card.id)}
           deleteDisabled={actionCards.length == 1}
         />

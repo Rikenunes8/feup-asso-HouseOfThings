@@ -238,6 +238,27 @@ const executeRule = async (id) => {
   }
 };
 
+const updateRule = async (id, rule) => {
+  try {
+    const response = await apiClient.post(`/rules/${id}/`, rule);
+    if (response.data.error) throw Error(response.data.error);
+    return response.data.rule;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const deleteRule = async (id) => {
+  try {
+    const response = await apiClient.delete(`/rules/${id}`);
+    if (response.data.error) throw Error(response.data.error);
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 export default {
   getDevicesListenerURL,
   getDevices,
@@ -255,6 +276,8 @@ export default {
   renameDevice,
   availableDevices,
   executeRule,
+  updateRule,
+  deleteRule,
   deleteDivision,
   renameDivision,
   changeDivisionIcon,

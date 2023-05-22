@@ -12,20 +12,17 @@ import DynamicDropDown from "../../form/DynamicDropDown";
 import DeletableCard from "../../DeletableCard";
 
 export default function NewConditionCard(props) {
-  const [type, setType] = useState(null);
-  const [info, setInfo] = useState({});
   const { devices } = useContext(DevicesContext);
   const { addRuleCondition } = useContext(CreateRuleContext);
+  const [info, setInfo] = useState({});
 
-  const handleTypeChange = (item) => {
-    setType(item.value);
-    setInfo(item);
-    x =
-      item.parent == "device"
-        ? { kind: item.parent, device_id: item.value }
-        : { kind: item.parent };
-    addRuleCondition(props.index, x);
-  };
+  const [type, setType] = useState(
+    !props.condition
+      ? {}
+      : props.condition.kind == "device"
+      ? props.condition.device_id
+      : "time"
+  );
 
   const [items, setItems] = useState(() => {
     fixed_fields = [
@@ -45,6 +42,7 @@ export default function NewConditionCard(props) {
       capabilities = Object.keys(item).filter(
         (key) => !fixed_fields.includes(key)
       );
+      capabilities = capabilities.filter((capability) => capability != "color");
       all_items.push({
         label: utils.capitalize(item.name),
         value: item.uid,
@@ -57,8 +55,22 @@ export default function NewConditionCard(props) {
     if (devices.length != 0)
       all_items.push({ label: "Devices", value: "device" });
 
+    setInfo(
+      props.condition ? all_items.find((item) => item.value == type) : {}
+    );
+
     return all_items;
   });
+
+  const handleTypeChange = (item) => {
+    setType(item.value);
+    setInfo(item);
+    x =
+      item.parent == "device"
+        ? { kind: item.parent, device_id: item.value }
+        : { kind: item.parent };
+    addRuleCondition(props.index, x);
+  };
 
   const modalProps = {
     transparent: true,
@@ -89,6 +101,7 @@ export default function NewConditionCard(props) {
             index={props.index}
             capabilities={info.capabilities}
             category={info.category}
+            condition={props.condition}
           ></SpecificDetails>
         ) : null}
       </View>

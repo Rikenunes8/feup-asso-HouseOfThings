@@ -26,4 +26,5 @@ export default {
   orange: "#FFA500",
   coolYellow: "#CCCC66",
   turquoise: "#40E0D0",
+  yellow: "#FFD740",
 };

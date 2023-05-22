@@ -136,6 +136,7 @@ export default function HistoryScreen() {
         height: 1,
         backgroundColor: colors.secondaryText,
         opacity: 0.28,
+        marginHorizontal: 20,
       }}
     />
   );
@@ -211,10 +212,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 130,
     backgroundColor: colors.white,
-    paddingHorizontal: 20,
   },
   cardContainer: {
     paddingVertical: 16,
+    paddingHorizontal: 20,
   },
   cardHeader: {
     flexDirection: "row",

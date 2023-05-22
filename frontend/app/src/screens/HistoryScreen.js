@@ -71,6 +71,7 @@ export default function HistoryScreen() {
     setIsLoading(true);
     const logs = await api.getLogs();
     setIsLoading(false);
+    logs.sort((a, b) => new Date(b.time) - new Date(a.time));
     setLogs(logs);
   };
 

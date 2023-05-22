@@ -7,16 +7,18 @@ import CreateRuleContext from "../../../contexts/CreateRuleContext";
 import Row from "../../grid/Row";
 import DynamicDropDown from "../../form/DynamicDropDown";
 import DeviceForm from "../DeviceForm";
+import NotificationForm from "../NotificationForm";
 import DeletableCard from "../../DeletableCard";
 
 import utils from "../../../utils/utils";
 import colors from "../../../../configs/colors";
 
 export default function NewActionCard(props) {
-  const { addRuleAction } = useContext(CreateRuleContext);
+  const { addRuleAction, updateRuleActionData } = useContext(CreateRuleContext);
   const { devices } = useContext(DevicesContext);
   const [device, setDevice] = useState(null);
   const [info, setInfo] = useState({});
+  const [url, setURL] = useState(null);
 
   const [items, setItems] = useState(() => {
     fixed_fields = [
@@ -28,25 +30,52 @@ export default function NewActionCard(props) {
       "subcategory",
       "uid",
     ];
-    all_items = [];
-    devices.map((item) => {
-      capabilities = Object.keys(item).filter(
-        (key) => !fixed_fields.includes(key)
+
+    all_items = [
+      { label: "Notification", value: "message" },
+      { label: "Discord Message", value: "discord", parent: "message" },
+    ];
+
+    if (Array.isArray(devices)) {
+      const actuators = devices.filter(
+        (device) => device.category !== "sensor"
       );
-      all_items.push({
-        label: utils.capitalize(item.name),
-        value: item.uid,
-        category: item.category,
-        capabilities: capabilities,
-      });
-    });
-    console.log("All Items:", all_items);
+
+      if (actuators.length > 0) {
+        all_items.push({ label: "Devices", value: "device" });
+
+        actuators.map((item) => {
+          capabilities = Object.keys(item).filter(
+            (key) => !fixed_fields.includes(key)
+          );
+
+          all_items.push({
+            label: utils.capitalize(item.name),
+            value: item.uid,
+            category: item.category,
+            capabilities: capabilities,
+            parent: "device",
+          });
+        });
+      }
+    }
+
     return all_items;
   });
 
   const handleDeviceChange = (item) => {
     setInfo(item);
-    addRuleAction(props.index, { device_id: item.value });
+
+    if (item.parent == "device") {
+      addRuleAction(props.index, { device_id: item.value });
+    } else {
+      addRuleAction(props.index, { kind: item.parent, service: item.value });
+    }
+  };
+
+  const handleURLChange = (webhook) => {
+    setURL(webhook);
+    updateRuleActionData(props.index, { url: webhook });
   };
 
   const modalProps = {
@@ -70,15 +99,26 @@ export default function NewActionCard(props) {
             modalProps={modalProps}
             modalContentContainerStyle={styles.modalContent}
             onSelectItem={(e) => handleDeviceChange(e)}
-          ></DynamicDropDown>
-        </Row>
-        <Row>
-          <DeviceForm
-            index={props.index}
-            category={info.category}
-            isRuleCondition={false}
-            capabilities={info.capabilities}
+            hasCategory={true}
           />
+        </Row>
+
+        <Row>
+          {info.parent == "device" && (
+            <DeviceForm
+              index={props.index}
+              category={info.category}
+              isRuleCondition={false}
+              capabilities={info.capabilities}
+            />
+          )}
+
+          {info.parent == "message" && (
+            <NotificationForm
+              webhookURL={url}
+              setWebhookURL={handleURLChange}
+            />
+          )}
         </Row>
       </View>
     </DeletableCard>

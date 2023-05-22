@@ -23,8 +23,18 @@ const getDevices = async () => {
   } catch (error) {
     console.error(error);
     return [
-      { name: "Philips Bulb", divisions: ["Family Room"], enabled: true },
-      { name: "Philips Bulb", divisions: ["Tiago Room"], enabled: false },
+      {
+        uid: 0,
+        name: "Philips Bulb",
+        divisions: ["Family Room"],
+        enabled: true,
+      },
+      {
+        uid: 1,
+        name: "Philips Bulb",
+        divisions: ["Tiago Room"],
+        enabled: false,
+      },
     ];
   }
 };
@@ -91,7 +101,6 @@ const getCategories = async () => {
 
 const addRule = async (rule) => {
   try {
-    console.log(rule);
     const response = await apiClient.post(`/rules`, rule);
     if (response.data.error) throw new Error(response.data.error);
     if (response.data.rule == null) throw new Error("No rule returned");

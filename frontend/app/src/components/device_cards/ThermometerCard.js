@@ -15,7 +15,9 @@ export default function ThermometerCard({ device }) {
     <DeviceCard
       device={device}
       specificFeature={
-        <Text style={styles(isCold).feature}>{device.temperature}ºC</Text>
+        <Text style={styles(isCold).feature}>
+          {Number(device.temperature.toFixed(1))}ºC
+        </Text>
       }
       modal={
         <DeviceDetailsModal

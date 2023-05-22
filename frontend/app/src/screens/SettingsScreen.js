@@ -44,11 +44,15 @@ export default function SettingsScreen() {
   };
 
   const subsectionHeaderButton = (name, callback) => {
+    let color = colors.primary;
+    if (name === "close") color = colors.red;
+    if (name === "check") color = colors.active;
+
     return (
       <SimpleLineIcons
         name={name}
         size={20}
-        color={colors.primary}
+        color={color}
         style={styles.icon}
         onPress={callback}
       />
@@ -61,6 +65,7 @@ export default function SettingsScreen() {
 
       <View style={styles.body}>
         <Text style={styles.sectionHeader}>Settings</Text>
+
         <View style={styles.sectionBody}>
           <View style={styles.subsectionHeader}>
             <Text style={styles.subsectionTitle}>Server Address</Text>
@@ -111,11 +116,11 @@ const styles = StyleSheet.create({
   },
   sectionBody: {
     width: "100%",
-    borderRadius: 22,
-    marginTop: 20,
     backgroundColor: colors.white,
-    elevation: 3,
-    padding: 20,
+    borderRadius: 15,
+    marginTop: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
   },
   subsectionHeader: {
     flexDirection: "row",
@@ -125,17 +130,12 @@ const styles = StyleSheet.create({
   subsectionTitle: {
     flexGrow: 1,
     fontSize: 15,
-    fontWeight: "bold",
     color: colors.primary,
+    textTransform: "uppercase",
   },
   icon: {
     flexGrow: 0,
     marginRight: 5,
-  },
-
-  body: {
-    margin: 20,
-    width: "90%",
   },
   input: {
     height: 40,

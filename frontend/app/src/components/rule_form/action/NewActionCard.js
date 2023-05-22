@@ -7,13 +7,14 @@ import CreateRuleContext from "../../../contexts/CreateRuleContext";
 import Row from "../../grid/Row";
 import DynamicDropDown from "../../form/DynamicDropDown";
 import DeviceForm from "../DeviceForm";
+import NotificationForm from "../NotificationForm";
 import DeletableCard from "../../DeletableCard";
 
 import utils from "../../../utils/utils";
 import colors from "../../../../configs/colors";
 
 export default function NewActionCard(props) {
-  const { addRuleAction } = useContext(CreateRuleContext);
+  const { addRuleAction, updateRuleActionData } = useContext(CreateRuleContext);
   const { devices } = useContext(DevicesContext);
   const [device, setDevice] = useState(
     !props.action
@@ -22,6 +23,7 @@ export default function NewActionCard(props) {
       ? props.action.device_id
       : "message"
   );
+  const [url, setURL] = useState(null);
 
   const [items, setItems] = useState(() => {
     fixed_fields = [
@@ -33,21 +35,35 @@ export default function NewActionCard(props) {
       "subcategory",
       "uid",
     ];
-    all_items = [];
-    devices.map((item) => {
-      if (item.subcategory != "thermometer") {
-        capabilities = Object.keys(item).filter(
-          (key) => !fixed_fields.includes(key)
-        );
-        all_items.push({
-          label: utils.capitalize(item.name),
-          value: item.uid,
-          category: item.category,
-          capabilities: capabilities,
+
+    all_items = [
+      { label: "Notification", value: "message" },
+      { label: "Discord Message", value: "discord", parent: "message" },
+    ];
+
+    if (Array.isArray(devices)) {
+      const actuators = devices.filter(
+        (device) => device.category !== "sensor"
+      );
+
+      if (actuators.length > 0) {
+        all_items.push({ label: "Devices", value: "device" });
+
+        actuators.map((item) => {
+          capabilities = Object.keys(item).filter(
+            (key) => !fixed_fields.includes(key)
+          );
+
+          all_items.push({
+            label: utils.capitalize(item.name),
+            value: item.uid,
+            category: item.category,
+            capabilities: capabilities,
+            parent: "device",
+          });
         });
       }
-    });
-    return all_items;
+    }
   });
 
   const [info, setInfo] = useState(
@@ -56,7 +72,17 @@ export default function NewActionCard(props) {
 
   const handleDeviceChange = (item) => {
     setInfo(item);
-    addRuleAction(props.index, { kind: "device", device_id: item.value });
+
+    if (item.parent == "device") {
+      addRuleAction(props.index, { kind: "device", device_id: item.value });
+    } else {
+      addRuleAction(props.index, { kind: item.parent, service: item.value });
+    }
+  };
+
+  const handleURLChange = (webhook) => {
+    setURL(webhook);
+    updateRuleActionData(props.index, { url: webhook });
   };
 
   const modalProps = {
@@ -80,10 +106,12 @@ export default function NewActionCard(props) {
             modalProps={modalProps}
             modalContentContainerStyle={styles.modalContent}
             onSelectItem={(e) => handleDeviceChange(e)}
-          ></DynamicDropDown>
+            hasCategory={true}
+          />
         </Row>
+
         <Row>
-          {device != undefined ? (
+          {info.parent == "device" && (
             <DeviceForm
               index={props.index}
               category={info.category}
@@ -91,7 +119,14 @@ export default function NewActionCard(props) {
               capabilities={info.capabilities}
               action={props.action}
             />
-          ) : null}
+          )}
+
+          {info.parent == "message" && (
+            <NotificationForm
+              webhookURL={url}
+              setWebhookURL={handleURLChange}
+            />
+          )}
         </Row>
       </View>
     </DeletableCard>

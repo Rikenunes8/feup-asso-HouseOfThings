@@ -4,6 +4,7 @@ from src.model.rules.actions.Action import Action
 from src.model.devices.Device import Device
 from src.controller.managers.DevicesManager import DevicesManager
 from src.controller.observer.Subscriber import Subscriber
+from src.controller.Logger import Logger
 
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
@@ -24,6 +25,9 @@ class Rule(Subscriber):
 
     def get_id(self) -> str:
         return self._id
+
+    def get_name(self) -> str:
+        return self._name
 
     def _create(self):
         return DB().get(Collection.RULES).add(self.to_json())
@@ -46,11 +50,13 @@ class Rule(Subscriber):
 
     def execute(self, device_manager: DevicesManager) -> list[Device]:
         devices_updated: list[Device] = []
+        Logger().info(f"Rule '{self._name}' was triggered.")
         for action in self._actions:
             try:
                 result = action.execute({"rule_id": self._id, "rule_name": self._name, "device_manager": device_manager})
                 devices_updated.append(result)
             except ApiException as e:
+                Logger().warn(f"Action in rule '{self._name}' not executed: {str(e)}")
                 print(e)
         return devices_updated
 

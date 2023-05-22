@@ -13,6 +13,7 @@ from src.model.devices.Device import Device
 from src.controller.managers.Manager import Manager
 from src.controller.managers.DevicesManager import DevicesManager
 from src.controller.observer.Subscriber import Subscriber
+from src.controller.Logger import Logger
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 
@@ -47,6 +48,7 @@ class RulesManager(Manager, Subscriber):
         rule = Rule(data['name'], data['operation'], conditions, actions, rule_id)
         rule.init_notifier(self, self._device_manager)
         self._rules[rule.get_id()] = rule
+        
         return rule
 
     def all(self) -> list[Rule]:
@@ -59,12 +61,15 @@ class RulesManager(Manager, Subscriber):
         return rule
 
     def create(self, data: dict) -> Rule:
-        return self._create(data)
+        rule = self._create(data)
+        Logger().info(f"Rule '{data['name']}' created.")
+        return rule
 
     def delete(self, rule_id: str):
         rule = self._rules.pop(rule_id, None)
         if rule == None:
             raise ApiException("Rule not found")
+        Logger().info(f"Rule '{rule.get_name()}' deleted.")
         rule.delete()
 
     def update(self, id: str, data: dict) -> Rule:

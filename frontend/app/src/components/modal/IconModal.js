@@ -1,20 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
   Modal,
   View,
-  Image,
   TouchableOpacity,
   SafeAreaView,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
   TextInput,
+  Dimensions,
 } from "react-native";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../../../configs/colors";
+import utils from "../../utils/utils";
+import { icons } from "../division_cards/DivisionIcon";
+import DynamicDropDown from "../form/DynamicDropDown";
+import DivisionIcon from "../division_cards/DivisionIcon";
 
 //INFO detailsIcon names: close, check and ellipsis1
 
@@ -30,11 +34,46 @@ export default function IconModal({
   leftIconCallback,
   rightIconCallback,
   icon,
+  iconEditable = false,
+  iconOnChangeCallback,
+  type,
   contextMenu,
   modalContent,
   inputOnFocus,
   isLoading = false,
 }) {
+  const [iconItems, setIconItems] = useState(
+    Object.keys(icons).map((icon) => {
+      return {
+        label: utils.capitalize(icon.replace("-icon", "")),
+        value: icon,
+        icon: () => <DivisionIcon icon={icon} size={20} color={colors.black} />,
+      };
+    })
+  );
+
+  const modalProps = {
+    transparent: true,
+    presentationStyle: "overFullScreen",
+  };
+
+  const [divisionIcon, setDivisionIcon] = useState(
+    type === "division" ? icon : null
+  );
+
+  function displayIcon() {
+    if (inputOnFocus) return null;
+
+    switch (type) {
+      case "device":
+        return utils.getDeviceImg(icon);
+      case "division":
+        return utils.getDivisionImg(icon);
+      default:
+        return utils.getDeviceImg(icon);
+    }
+  }
+
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
       {/*TODO: remove the transparent view when we get the bottom page to be darker*/}
@@ -94,8 +133,25 @@ export default function IconModal({
                     </View>
                     <Text style={styles.detailsSubtitle}>{subtitle}</Text>
                   </View>
-                  {inputOnFocus ? null : (
-                    <Image style={styles.detailsIcon} source={icon} /> // TODO accept entire Image component instead of just source
+                  {iconEditable ? (
+                    <View
+                      style={{
+                        width: 200,
+                      }}
+                    >
+                      <DynamicDropDown
+                        label={"ICON *"}
+                        items={iconItems}
+                        setItems={setIconItems}
+                        value={icon}
+                        setValue={(icon) => iconOnChangeCallback(icon)}
+                        listMode={"MODAL"}
+                        modalProps={modalProps}
+                        modalContentContainerStyle={styles.modalContent}
+                      />
+                    </View>
+                  ) : (
+                    displayIcon()
                   )}
                 </View>
                 {contextMenu}
@@ -135,7 +191,6 @@ const styles = StyleSheet.create({
   },
   detailsInfo: {
     flexDirection: "column",
-    marginLeft: 50,
   },
   detailsSubtitle: {
     color: colors.white,
@@ -157,7 +212,7 @@ const styles = StyleSheet.create({
     flex: 0.55,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
   },
   modalView: {
     backgroundColor: colors.primary,
@@ -177,5 +232,14 @@ const styles = StyleSheet.create({
   modalHeader: {
     flex: 0.5,
     justifyContent: "space-around",
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    marginHorizontal: 28,
+    marginBottom: 25,
+    marginTop:
+      105 +
+      Dimensions.get("window").height *
+        (Platform.OS === "android" ? 0.15 : 0.3),
   },
 });

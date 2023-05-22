@@ -3,17 +3,7 @@ from src.controller.managers.RulesManager import RulesManager
 from src.controller.managers.DivisionsManager import DivisionsManager
 
 
-class HoTMeta(type):
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            instance = super().__call__(*args, **kwargs)
-            cls._instances[cls] = instance
-        return cls._instances[cls]
-
-
-class HoT(metaclass=HoTMeta):
+class HoT:
     def __init__(self):
         self._cid = "HoT"
         self._device_manager = DevicesManager(self._cid)
@@ -22,12 +12,13 @@ class HoT(metaclass=HoTMeta):
         self._device_manager.load()
         self._rules_manager.load()
         self._rules_manager.run_alarms()
-
-    def get_device_manager(self):
+        self._divisions_manager.load()
+    
+    def get_devices_manager(self) -> DevicesManager:
         return self._device_manager
-
-    def get_rules_manager(self):
+    
+    def get_rules_manager(self) -> RulesManager:
         return self._rules_manager
-
-    def get_divisions_manager(self):
+    
+    def get_divisions_manager(self) -> DivisionsManager:
         return self._divisions_manager

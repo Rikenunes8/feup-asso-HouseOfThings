@@ -66,6 +66,15 @@ export const CreateRuleProvider = ({ children }) => {
     }
   };
 
+  const updateRuleActionData = (index, value) => {
+    let newActions = [...ruleActions];
+
+    if (newActions[index]) {
+      newActions[index]["data"] = value;
+      setRuleActions(newActions);
+    }
+  };
+
   // TODO
   /*const removeAction = (index) => {
     let newActions = [...ruleActions];
@@ -98,6 +107,7 @@ export const CreateRuleProvider = ({ children }) => {
         addRuleConditionState,
         addRuleAction,
         updateRuleAction,
+        updateRuleActionData,
         //removeAction,
       }}
     >

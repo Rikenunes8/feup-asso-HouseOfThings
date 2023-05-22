@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import Row from "../grid/Row";
 import Col from "../grid/Column";
 

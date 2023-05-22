@@ -1,7 +1,7 @@
 import os
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask import Flask
-from src.api.api import api
+from src.api.Api import Api
 from dotenv import load_dotenv
 from logging.config import dictConfig
 
@@ -32,6 +32,12 @@ dictConfig({
             "delay": "True",
         },
     },
+    'loggers': {
+        'HoT': {
+            'handlers': [],
+            'level': "DEBUG" if debug_mode else "INFO",
+        },
+    },
     "root": {
         "level": "DEBUG" if debug_mode else "INFO",
         "handlers": ["console", "file"],
@@ -52,7 +58,7 @@ SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
 app = Flask(__name__)
 
 app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
-app.register_blueprint(api)
+app.register_blueprint(Api().get_api())
 
 if __name__ == '__main__':
     if debug_mode:

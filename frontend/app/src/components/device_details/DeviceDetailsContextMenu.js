@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 
 import ContextMenu from "../ContextMenu";
 import DevicesContext from "../../contexts/DevicesContext";
+import DivisionsContext from "../../contexts/DivisionsContext";
 import ModalsContext from "../../contexts/ModalsContext";
 
 import colors from "../../../configs/colors";
@@ -15,10 +16,16 @@ export default function DeviceDetailsContextMenu({
   deviceContextMenuUid,
 }) {
   const { removeDevice } = useContext(DevicesContext);
+  const { setDivisions } = useContext(DivisionsContext);
 
   const { setIsDeviceDetailsModalLoading, setIsMenuModalRenaming } =
     useContext(ModalsContext);
 
+  const fetchDivisions = async () => {
+    const divs = await api.getDivisions();
+    if (divs != null) setDivisions(divs);
+  };
+  
   const disconnectCallback = () => {
     utils.showConfirmDialog(
       "Disconnect device",
@@ -32,6 +39,7 @@ export default function DeviceDetailsContextMenu({
           setIsContextMenuVisible(false);
 
           if (success) {
+            fetchDivisions();
             console.log("Device disconnected successfully");
             setIsDetailsModalVisible(null);
             removeDevice(deviceContextMenuUid);

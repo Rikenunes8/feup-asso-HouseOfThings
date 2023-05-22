@@ -20,13 +20,16 @@ import colors from "../../configs/colors";
 import api from "../api/api";
 
 export default function HomeScreen() {
-  const { devices, setDevices } = useContext(DevicesContext);
+  const { devices, setDevices, setInitialized } = useContext(DevicesContext);
   const { divisions, setDivisions } = useContext(DivisionsContext);
   const [selectedDivision, setSelectedDivision] = useState(null);
 
   const fetchDevices = async () => {
     const devs = await api.getDevices();
-    setDevices(devs);
+    setDevices(devs.filter((device) => device !== null));
+    setTimeout(() => {
+      setInitialized(true);
+    }, 200);
   };
 
   const fetchDivisions = async () => {

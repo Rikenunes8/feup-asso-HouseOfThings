@@ -45,6 +45,51 @@ const getCategories = async () => {
   }
 };
 
+const getRules = async () => {
+  try {
+    const response = await apiClient.get("/rules");
+    return response.data.rules;
+  } catch (error) {
+    console.error(error);
+    return [
+      {
+        id: 1,
+        name: "Family Room Lights Off",
+        operation: "and",
+        when: [],
+        then: [
+          {
+            device_id: 1,
+            action: "turn_off",
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: "Lights Off at Night",
+        operation: "or",
+        when: [
+          {
+            kind: "schedule",
+            time: "22:30",
+            days: [1, 2, 3, 4, 5, 6, 7],
+          },
+        ],
+        then: [
+          {
+            device_id: 1,
+            action: "turn_off",
+          },
+          {
+            device_id: 2,
+            action: "turn_off",
+          },
+        ],
+      },
+    ];
+  }
+};
+
 const addRule = async (rule) => {
   try {
     const response = await apiClient.post(`/rules`, rule);

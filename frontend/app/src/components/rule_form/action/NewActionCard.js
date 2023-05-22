@@ -40,15 +40,6 @@ export default function NewActionCard(props) {
       const actuators = devices.filter(
         (device) => device.category !== "sensor"
       );
-<<<<<<< HEAD
-      all_items.push({
-        label: utils.capitalize(item.name),
-        value: item.uid,
-        category: item.category,
-        capabilities: capabilities,
-      });
-    });
-=======
 
       if (actuators.length > 0) {
         all_items.push({ label: "Devices", value: "device" });
@@ -68,7 +59,6 @@ export default function NewActionCard(props) {
         });
       }
     }
->>>>>>> develop
 
     return all_items;
   });

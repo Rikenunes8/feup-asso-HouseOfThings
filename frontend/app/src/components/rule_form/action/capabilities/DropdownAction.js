@@ -39,7 +39,7 @@ export default function DropdownAction({
   }, []);
 
   return (
-    <Col flex={0.9}>
+    <Col flex={1.5}>
       <DynamicDropDown
         items={step}
         setItems={setStep}

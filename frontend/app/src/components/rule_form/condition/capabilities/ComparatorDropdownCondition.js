@@ -54,7 +54,7 @@ export default function ComparatorDropdownCondition({
 
   return (
     <Row style={{ width: "100%", justifyContent: "space-around" }}>
-      <Col flex={0.3}>
+      <Col flex={0.4}>
         <DynamicDropDown
           items={comparators}
           setItems={setComparators}
@@ -66,7 +66,7 @@ export default function ComparatorDropdownCondition({
           onSelectItem={handleComparatorChange}
         ></DynamicDropDown>
       </Col>
-      <Col flex={0.4}>
+      <Col flex={0.5}>
         <DynamicDropDown
           items={step}
           setItems={setStep}

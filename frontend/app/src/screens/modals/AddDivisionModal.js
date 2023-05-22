@@ -65,6 +65,7 @@ export default function AddDivisionModal() {
       fetchDevices();
       setAddDivisionFormModalVisible(false);
       resetAddDivisionContext();
+      console.log("Division added successfully");
     } else {
       console.log("Failed to create division");
       utils.showErrorMessage("Failed to create division");

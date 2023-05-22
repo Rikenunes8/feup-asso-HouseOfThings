@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 
 import DevicesContext from "../../../contexts/DevicesContext";
 import CreateRuleContext from "../../../contexts/CreateRuleContext";
@@ -89,20 +89,17 @@ export default function NewActionCard(props) {
       handleDelete={props.handleDelete}
     >
       <View style={styles.container}>
-        <Row>
-          <DynamicDropDown
-            items={items}
-            setItems={setItems}
-            value={device}
-            setValue={setDevice}
-            listMode={"MODAL"}
-            modalProps={modalProps}
-            modalContentContainerStyle={styles.modalContent}
-            onSelectItem={(e) => handleDeviceChange(e)}
-            hasCategory={true}
-            
-          />
-        </Row>
+        <DynamicDropDown
+          items={items}
+          setItems={setItems}
+          value={device}
+          setValue={setDevice}
+          listMode={"MODAL"}
+          modalProps={modalProps}
+          modalContentContainerStyle={styles.modalContent}
+          onSelectItem={(e) => handleDeviceChange(e)}
+          hasCategory={true}
+        />
 
         <Row>
           {info.parent == "device" && (
@@ -137,16 +134,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 3,
-    padding: 15,
-    marginVertical: 10,
-    paddingHorizontal: 20,
-    zIndex: 0,
     marginHorizontal: 3,
+    marginVertical: 10,
+    paddingHorizontal: 5,
+    zIndex: 0,
   },
   modalContent: {
     backgroundColor: colors.white,
-    marginHorizontal: 28,
-    marginBottom: 25,
-    marginTop: "92.5%",
+    paddingHorizontal: 28,
+    marginHorizontal: 0,
+    paddingBottom: 25,
+    marginTop:
+      67 +
+      Dimensions.get("window").height *
+        (Platform.OS === "android" ? 0.15 : 0.3),
+    borderRadius: 30,
   },
 });

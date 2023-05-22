@@ -15,12 +15,17 @@ export default function DivisionDetailsContextMenu({
   setIsDetailsModalVisible,
   isContextMenuVisible,
   setIsContextMenuVisible,
-  divisionContextMenuId
+  divisionContextMenuId,
+  onDivisionDelete,
 }) {
-  const { removeDivision } = useContext(DivisionsContext)
+  const { removeDivision } = useContext(DivisionsContext);
   const { setDevices } = useContext(DevicesContext);
 
-  const { setIsDivisionDetailsModalLoading, setIsMenuModalRenaming, setIsMenuModalChangeIcon } = useContext(ModalsContext);
+  const {
+    setIsDivisionDetailsModalLoading,
+    setIsMenuModalRenaming,
+    setIsMenuModalChangeIcon,
+  } = useContext(ModalsContext);
 
   const fetchDevices = async () => {
     const devs = await api.getDevices();
@@ -34,21 +39,21 @@ export default function DivisionDetailsContextMenu({
       () => {
         console.log("Deleting division...");
 
-        
         setIsDivisionDetailsModalLoading(true);
-        
+
         api.deleteDivision(divisionContextMenuId).then((success) => {
           setIsDivisionDetailsModalLoading(false);
           setIsContextMenuVisible(false);
-  
+
           if (success) {
             fetchDevices();
             console.log("Division deleted successfully");
             setIsDetailsModalVisible(false);
             removeDivision(divisionContextMenuId);
+            onDivisionDelete();
             return;
           }
-  
+
           console.log("Failed to delete division");
           utils.showErrorMessage("Failed to delete division");
         });

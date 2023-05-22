@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
-import Row from "../grid/Row";
 import WeekDayPicker from "../form/WeekDayPicker";
 import TimePicker from "../form/TimePicker";
 
@@ -27,10 +26,9 @@ export default function ScheduleForm(props) {
   }, []);
 
   return (
-    <View  style={styles.container}>
-      <Row>
-        <TimePicker time={time} setTime={updateTime}></TimePicker>
-      </Row>
+    <View>
+      <TimePicker time={time} setTime={updateTime}></TimePicker>
+
       <View style={styles.weekDays}>
         <WeekDayPicker updateWeekdays={updateWeekDays}></WeekDayPicker>
       </View>
@@ -39,10 +37,7 @@ export default function ScheduleForm(props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width: "95%"
-  },
   weekDays: {
-    paddingTop: 10
-  }
+    paddingVertical: 15,
+  },
 });

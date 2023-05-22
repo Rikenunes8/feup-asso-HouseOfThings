@@ -37,8 +37,7 @@ export default function CreateRuleModal() {
       then: ruleActions,
     };
 
-    console.log("Adding rule: ", rule);
-
+    console.log("Adding Rule...", rule);
     setIsCreateRuleModalLoading(true);
 
     api.addRule(rule).then((newRule) => {
@@ -47,7 +46,9 @@ export default function CreateRuleModal() {
         addRule(newRule);
         setCreateRuleModalVisible(false);
         resetCreateRuleContext();
+        console.log("Rule created successfully");
       } else {
+        console.log("Failed to create rule");
         utils.showErrorMessage("Failed to create rule");
       }
     });

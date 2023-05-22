@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 
 import DevicesContext from "../../../contexts/DevicesContext";
 import CreateRuleContext from "../../../contexts/CreateRuleContext";
@@ -7,7 +7,6 @@ import CreateRuleContext from "../../../contexts/CreateRuleContext";
 import utils from "../../../utils/utils";
 import colors from "../../../../configs/colors";
 
-import Row from "../../grid/Row";
 import SpecificDetails from "./SpecificDetails";
 import DynamicDropDown from "../../form/DynamicDropDown";
 import DeletableCard from "../../DeletableCard";
@@ -25,7 +24,6 @@ export default function NewConditionCard(props) {
       item.parent == "device"
         ? { kind: item.parent, device_id: item.value }
         : { kind: item.parent };
-    console.log(x);
     addRuleCondition(props.index, x);
   };
 
@@ -73,19 +71,17 @@ export default function NewConditionCard(props) {
       handleDelete={props.handleDelete}
     >
       <View style={styles.container}>
-        <Row>
-          <DynamicDropDown
-            items={items}
-            setItems={setItems}
-            value={type}
-            setValue={setType}
-            listMode={"MODAL"}
-            modalProps={modalProps}
-            modalContentContainerStyle={styles.modalContent}
-            onSelectItem={(e) => handleTypeChange(e)}
-            hasCategory={true}
-          />
-        </Row>
+        <DynamicDropDown
+          items={items}
+          setItems={setItems}
+          value={type}
+          setValue={setType}
+          listMode={"MODAL"}
+          modalProps={modalProps}
+          modalContentContainerStyle={styles.modalContent}
+          onSelectItem={(e) => handleTypeChange(e)}
+          hasCategory={true}
+        />
 
         {type != {} ? (
           <SpecificDetails
@@ -111,16 +107,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 3,
-    padding: 15,
-    marginVertical: 10,
-    paddingHorizontal: 20,
-    zIndex: 0,
     marginHorizontal: 3,
+    marginVertical: 10,
+    paddingHorizontal: 5,
+    zIndex: 0,
   },
   modalContent: {
     backgroundColor: colors.white,
-    marginHorizontal: 28,
-    marginBottom: 25,
-    marginTop: "92.5%",
+    paddingHorizontal: 28,
+    marginHorizontal: 0,
+    paddingBottom: 25,
+    marginTop:
+      67 +
+      Dimensions.get("window").height *
+        (Platform.OS === "android" ? 0.15 : 0.3),
+    borderRadius: 30,
   },
 });

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import Row from "../grid/Row";
 import Col from "../grid/Column";
 
@@ -27,9 +27,11 @@ export default function LightSpecs({ index, isRuleCondition, capabilities }) {
 
   const [possibleConfigurations, setPossibleConfigurations] = useState(
     capabilities.map((capability) => {
+      const cap = capabilitiesMap[capability.toLowerCase()];
+
       return {
-        label: capabilitiesMap[capability].name,
-        value: capabilitiesMap[capability].component,
+        label: cap.name,
+        value: cap.component,
       };
     })
   );
@@ -71,8 +73,13 @@ export default function LightSpecs({ index, isRuleCondition, capabilities }) {
 const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: colors.white,
-    marginHorizontal: 28,
-    marginBottom: 25,
-    marginTop: "92.5%",
+    paddingHorizontal: 28,
+    marginHorizontal: 0,
+    paddingBottom: 25,
+    marginTop:
+      67 +
+      Dimensions.get("window").height *
+        (Platform.OS === "android" ? 0.15 : 0.3),
+    borderRadius: 30,
   },
 });

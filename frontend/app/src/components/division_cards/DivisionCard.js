@@ -27,6 +27,7 @@ export default function DivisionCard({
   onPress,
   allowLongPress,
   highlighted,
+  onDelete = () => {},
 }) {
   const { devices, setDevices } = useContext(DevicesContext);
   const { setDivisions } = useContext(DivisionsContext);
@@ -149,6 +150,7 @@ export default function DivisionCard({
               isContextMenuVisible={isContextMenuVisible}
               setIsContextMenuVisible={setIsContextMenuVisible}
               divisionContextMenuId={division.id}
+              onDivisionDelete={onDelete}
             />
           )
         }

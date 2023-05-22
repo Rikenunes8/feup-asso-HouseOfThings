@@ -26,6 +26,8 @@ export default function ConfigurationsForm(props) {
                 props.condition ? props.condition.comparator : null
               }
               current_state={props.condition ? props.condition.state : null}
+              start={props.feat.start}
+              stop={props.feat.stop}
             />
           );
         default:

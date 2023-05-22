@@ -11,6 +11,8 @@ export default function ComparatorDropdownCondition({
   attribute,
   current_comparator,
   current_state,
+  start,
+  stop,
 }) {
   const { addRuleConditionState } = useContext(CreateRuleContext);
 
@@ -20,12 +22,12 @@ export default function ComparatorDropdownCondition({
     { label: "==", value: "==" },
   ]);
 
-  const [step, setStep] = useState(
-    Array.from({ length: 21 }, (_, index) => ({
-      label: `${index * 5}`,
-      value: index * 5,
-    }))
-  );
+  const [step, setStep] = useState([
+    {
+      label: "",
+      value: "",
+    },
+  ]);
 
   const [comparator, setComparator] = useState(
     current_comparator ? current_comparator : comparators[0].value
@@ -49,6 +51,12 @@ export default function ComparatorDropdownCondition({
   };
 
   useEffect(() => {
+    setStep(
+      Array.from({ length: (stop - start) / 5 + 1 }, (_, index) => ({
+        label: `${start + index * 5}`,
+        value: start + index * 5,
+      }))
+    );
     addRuleConditionState(index, attribute, value, comparator);
   }, [index, attribute, value, comparator]);
 

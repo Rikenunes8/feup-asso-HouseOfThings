@@ -22,11 +22,15 @@ export default function DeviceForm(props) {
       label: "Brightness",
       attribute: "brightness",
       value: props.isRuleCondition ? "comparator_dropdown" : "dropdown",
+      start: 0,
+      stop: 100,
     },
     temperature: {
       label: "Temperature",
       attribute: "temperature",
       value: props.isRuleCondition ? "comparator_dropdown" : "dropdown",
+      start: -20,
+      stop: 50,
     },
     color: {
       label: "Color",

@@ -1,7 +1,7 @@
 import apiClient, { getServerAddress } from "./client";
 
 const getDevicesListenerURL = async () => {
-  return await getServerAddress() + "/devices/listener";
+  return (await getServerAddress()) + "/devices/listener";
 };
 
 const getDivisions = async () => {

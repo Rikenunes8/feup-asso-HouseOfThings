@@ -25,7 +25,7 @@ export default function DeviceDetailsContextMenu({
     const divs = await api.getDivisions();
     if (divs != null) setDivisions(divs);
   };
-  
+
   const disconnectCallback = () => {
     utils.showConfirmDialog(
       "Disconnect device",

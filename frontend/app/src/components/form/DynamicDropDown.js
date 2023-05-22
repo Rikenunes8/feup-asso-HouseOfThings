@@ -20,12 +20,11 @@ export default function DynamicDropDown({
   hasCategory = false,
 }) {
   const [open, setOpen] = React.useState(false);
+  const hasLabel = label !== undefined && label !== "";
 
   return (
-    <View style={styles().container}>
-      {label && label !== "" && (
-        <Text style={styles(label && label !== "").field}>{label}</Text>
-      )}
+    <View style={styles(hasLabel).container}>
+      {hasLabel && <Text style={styles().field}>{label}</Text>}
 
       <DropDownPicker
         open={open}
@@ -42,7 +41,7 @@ export default function DynamicDropDown({
         disabled={disabled}
         showArrowIcon={showArrowIcon}
         listMode={listMode}
-        modalTitle={label}
+        modalTitle={hasLabel ? label : "OPTIONS"}
         modalTitleStyle={styles().modalTitle}
         modalProps={modalProps}
         modalAnimationType={modalAnimationType}
@@ -58,10 +57,8 @@ export default function DynamicDropDown({
 const styles = (label = true) =>
   StyleSheet.create({
     container: {
-      marginTop: label ? 15 : 0,
-      marginBottom: label ? 15 : 7,
-      marginHorizontal: 15,
-      width: "100%",
+      margin: 15,
+      marginTop: label ? 15 : 7,
     },
     dropdown: {
       backgroundColor: colors.background,
@@ -75,6 +72,8 @@ const styles = (label = true) =>
     closeIcon: {
       height: 20,
       width: 20,
+      marginTop: 10,
+      marginBottom: 5,
     },
     iconContainer: {
       width: 25,
@@ -86,6 +85,8 @@ const styles = (label = true) =>
     modalTitle: {
       color: colors.primary,
       fontSize: 14,
+      marginTop: 10,
+      marginBottom: 5,
     },
     parent: {
       fontWeight: "bold",

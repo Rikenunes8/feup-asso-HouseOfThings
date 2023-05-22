@@ -38,7 +38,7 @@ export default function HistoryScreen() {
 
   const renderItem = ({ item }) => (
     <View style={styles.cardContainer}>
-      <View style={styles.card}>
+      <View style={styles.cardHeader}>
         <Text style={styles.description}>{item.content}</Text>
         <Badge
           color={
@@ -62,6 +62,7 @@ export default function HistoryScreen() {
         height: 1,
         backgroundColor: colors.secondaryText,
         opacity: 0.28,
+        marginHorizontal: 20,
       }}
     />
   );
@@ -92,15 +93,13 @@ export default function HistoryScreen() {
           />
         )}
 
-        <View style={styles.scrollBody}>
-          <View style={styles.content}>
-            <FlatList
-              data={logs}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
-              ItemSeparatorComponent={renderSeparator}
-            />
-          </View>
+        <View style={styles.logsContainer}>
+          <FlatList
+            data={logs}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            ItemSeparatorComponent={renderSeparator}
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -127,37 +126,32 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 5,
   },
-  scrollBody: {
-    height: "100%",
-    width: "100%",
-    borderRadius: 22,
-    marginTop: 20,
-    backgroundColor: colors.white,
-    shadowColor: "#171717",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3,
-    padding: 20,
-  },
   loadingIndicator: {
     width: "100%",
     marginVertical: 10,
   },
-  time: { color: colors.secondaryText, marginTop: 10, fontSize: 10 },
-  cardContainer: {
-    paddingHorizontal: 10,
-    paddingVertical: 15,
+  logsContainer: {
+    width: "100%",
+    borderRadius: 15,
+    marginTop: 10,
+    marginBottom: 130,
+    backgroundColor: colors.white,
   },
-  card: {
+  cardContainer: {
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+  },
+  cardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  time: {
+    color: colors.secondaryText,
+    marginTop: 3,
+    fontSize: 12,
   },
   description: {
     flex: 1,
     flexWrap: "wrap",
-  },
-  content: {
-    marginBottom: 120,
   },
 });

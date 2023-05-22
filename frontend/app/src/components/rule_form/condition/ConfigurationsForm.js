@@ -4,6 +4,7 @@ import SwitchCondition from "./capabilities/SwitchCondition";
 import SwitchAction from "../action/capabilities/SwitchAction";
 import DropdownAction from "../action/capabilities/DropdownAction";
 import ColorAction from "../action/capabilities/ColorAction";
+import React from "react";
 
 export default function ConfigurationsForm(props) {
   if (props.feat.value) {

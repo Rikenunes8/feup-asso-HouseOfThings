@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
-import Row from "../grid/Row";
 import WeekDayPicker from "../form/WeekDayPicker";
 import TimePicker from "../form/TimePicker";
 

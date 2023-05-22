@@ -28,6 +28,10 @@ export default function DeletableCard(props) {
     );
   };
 
+  if (props.deleteDisabled) {
+    return props.children;
+  }
+
   return <Swipeable renderLeftActions={leftSwipe}>{props.children}</Swipeable>;
 }
 

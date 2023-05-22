@@ -91,6 +91,11 @@ export default function HomeScreen() {
                 highlighted={
                   selectedDivision && selectedDivision.id === division.id
                 }
+                onDelete={() => {
+                  if (selectedDivision && selectedDivision.id === division.id) {
+                    setSelectedDivision(null);
+                  }
+                }}
               />
             ))}
             <NewDivisionCard />

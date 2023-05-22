@@ -12,11 +12,9 @@ export const ModalsProvider = ({ children }) => {
   // Now corresponds to the device uid whose details are being shown
   const [deviceDetailsModalVisible, setDeviceDetailsModalVisible] =
     useState(null);
-  
-  const [createRuleModalVisible, setCreateRuleModalVisible] =
-    useState(false);
-  const [ruleDetailsModalVisible, setRuleDetailsModalVisible] =
-    useState(null);
+
+  const [createRuleModalVisible, setCreateRuleModalVisible] = useState(false);
+  const [ruleDetailsModalVisible, setRuleDetailsModalVisible] = useState(null);
 
   const [isChooseDeviceModalLoading, setIsChooseDeviceModalLoading] =
     useState(false);
@@ -26,15 +24,16 @@ export const ModalsProvider = ({ children }) => {
     useState(false);
   const [isDeviceDetailsModalLoading, setIsDeviceDetailsModalLoading] =
     useState(false);
-  const [isDivisionDetailsModalLoading, setIsDivisionDetailsModalLoading] = 
+  const [isDivisionDetailsModalLoading, setIsDivisionDetailsModalLoading] =
     useState(false);
   const [isRuleDetailsModalLoading, setIsRuleDetailsModalLoading] =
     useState(false);
 
   const [isMenuModalRenaming, setIsMenuModalRenaming] = useState(false);
   const [isMenuModalChangeIcon, setIsMenuModalChangeIcon] = useState(false);
-  
-  const [isCreateRuleModalLoading, setIsCreateRuleModalLoading] = useState(false);
+
+  const [isCreateRuleModalLoading, setIsCreateRuleModalLoading] =
+    useState(false);
 
   return (
     <ModalsContext.Provider
@@ -68,11 +67,12 @@ export const ModalsProvider = ({ children }) => {
         isDivisionDetailsModalLoading,
         setIsDivisionDetailsModalLoading,
         isMenuModalChangeIcon,
-        setIsMenuModalChangeIcon
+        setIsMenuModalChangeIcon,
       }}
     >
       {children}
     </ModalsContext.Provider>
   );
 };
+
 export default ModalsContext;

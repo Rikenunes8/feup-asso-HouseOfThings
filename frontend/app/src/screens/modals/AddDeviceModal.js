@@ -74,7 +74,9 @@ export default function AddDeviceModal() {
         fetchDivisions();
         setAddDeviceFormModalVisible(false);
         resetAddDeviceContext();
+        console.log("Added device successfully");
       } else {
+        console.log("Failed to connect device");
         utils.showErrorMessage("Failed to connect device");
       }
     });

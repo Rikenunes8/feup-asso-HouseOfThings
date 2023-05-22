@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, Dimensions } from "react-native";
 
+import Row from "../grid/Row";
 import Col from "../grid/Column";
 import DynamicDropDown from "./DynamicDropDown";
 
@@ -10,15 +11,19 @@ export default function TimePicker({ time = "00:00", setTime }) {
   const [hour, setHour] = useState(time.split(":")[0]);
   const [minute, setMinute] = useState(time.split(":")[1]);
 
-  const [hours, setHours] = useState(Array.from({ length: 24 }, (_, i) => ({
-    label: `${i + 1}`.padStart(2, "0"),
-    value: `${i + 1}`.padStart(2, "0"),
-  })));
+  const [hours, setHours] = useState(
+    Array.from({ length: 24 }, (_, i) => ({
+      label: `${i + 1}`.padStart(2, "0"),
+      value: `${i + 1}`.padStart(2, "0"),
+    }))
+  );
 
-  const [minutes, setMinutes] = useState(Array.from({ length: 60 }, (_, i) => ({
-    label: `${i + 1}`.padStart(2, "0"),
-    value: `${i + 1}`.padStart(2, "0"),
-  })));
+  const [minutes, setMinutes] = useState(
+    Array.from({ length: 60 }, (_, i) => ({
+      label: `${i + 1}`.padStart(2, "0"),
+      value: `${i + 1}`.padStart(2, "0"),
+    }))
+  );
 
   const updateHour = (item) => {
     const updated_hour = `${item.value}:${minute}`;
@@ -38,7 +43,7 @@ export default function TimePicker({ time = "00:00", setTime }) {
   };
 
   return (
-    <>
+    <Row>
       <Col flex={1}>
         <DynamicDropDown
           items={hours}
@@ -52,9 +57,7 @@ export default function TimePicker({ time = "00:00", setTime }) {
           key="hour-dropdown"
         />
       </Col>
-      <Col flex={0}>
-        <Text style={styles.text}>H</Text>
-      </Col>
+      <Text style={styles.text}>H</Text>
 
       <Col flex={1}>
         <DynamicDropDown
@@ -69,23 +72,26 @@ export default function TimePicker({ time = "00:00", setTime }) {
           key="minute-dropdown"
         />
       </Col>
-      <Col>
-        <Text style={styles.text}>M</Text>
-      </Col>
-    </>
+      <Text style={styles.text}>M</Text>
+    </Row>
   );
 }
 
 const styles = StyleSheet.create({
   text: {
-    textAlign: "center",
-    marginHorizontal: 10,
+    textAlign: "left",
+    marginRight: 15,
     fontSize: 15,
   },
   modalContent: {
     backgroundColor: colors.white,
-    marginHorizontal: 28,
-    marginBottom: 25,
-    marginTop: "92.5%",
+    paddingHorizontal: 28,
+    marginHorizontal: 0,
+    paddingBottom: 25,
+    marginTop:
+      67 +
+      Dimensions.get("window").height *
+        (Platform.OS === "android" ? 0.15 : 0.3),
+    borderRadius: 30,
   },
 });

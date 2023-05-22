@@ -52,7 +52,6 @@ export default function AddDeviceModal() {
     if (divs != null) setDivisions(divs);
   };
 
-
   const connectCallback = () => {
     if (!checkRequiredFields()) return;
 
@@ -74,6 +73,7 @@ export default function AddDeviceModal() {
         setAddDeviceFormModalVisible(false);
         resetAddDeviceContext();
       } else {
+        console.log("Failed to connect device");
         utils.showErrorMessage("Failed to connect device");
       }
     });

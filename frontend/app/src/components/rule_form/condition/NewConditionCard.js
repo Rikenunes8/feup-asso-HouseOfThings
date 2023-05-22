@@ -23,7 +23,6 @@ export default function NewConditionCard(props) {
       item.parent == "device"
         ? { kind: item.parent, device_id: item.value }
         : { kind: item.parent };
-    console.log(x);
     addRuleCondition(props.index, x);
   };
 

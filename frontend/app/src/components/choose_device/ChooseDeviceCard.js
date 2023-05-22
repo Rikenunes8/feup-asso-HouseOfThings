@@ -39,6 +39,7 @@ export default function ChooseDeviceCard({ subcategory }) {
         setAvailableDevices(deviceIdsProtocols);
         setIsChooseDeviceModalLoading(false);
         if (0 === deviceIdsProtocols.length) {
+          console.log(`No ${subcategory} device found!`);
           utils.showErrorMessage(`No ${subcategory} device found!`);
           return;
         }

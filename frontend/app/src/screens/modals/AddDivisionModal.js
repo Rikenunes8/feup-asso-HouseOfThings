@@ -66,6 +66,7 @@ export default function AddDivisionModal() {
       setAddDivisionFormModalVisible(false);
       resetAddDivisionContext();
     } else {
+      console.log("Failed to create division");
       utils.showErrorMessage("Failed to create division");
     }
   };

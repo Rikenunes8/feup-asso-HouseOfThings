@@ -9,8 +9,8 @@ from PIL import ImageColor
 
 sense = SenseHat()
 
-color_yellow = (255, 255, 0)
-color_black = (0, 0, 0)
+turned_off_color = ImageColor.getrgb('#9D9FA4')
+initial_color = ImageColor.getrgb('#FFFF00')
 color_red = (255, 0, 0)
 
 start = time.time()
@@ -21,7 +21,7 @@ cid = None # id of the controller that is connected to the light
 
 def is_connected() -> bool: return cid != None
 state = False
-rgb = color_yellow
+rgb = initial_color
 brightness = 100
 
 
@@ -39,7 +39,7 @@ def on_connect(client, userdata, msg):
     print(f"Light was already connected by `{cid}`")
     return
   cid = msg.payload.decode()
-  fill(color_black)
+  fill(turned_off_color)
   print(f"Light was connected by `{cid}`")
   publish(client, f"{cid}-connected", uid)
 
@@ -49,10 +49,10 @@ def on_disconnect(client, userdata, msg):
     print(f"Light is not connected or is connected to other cid")
     return
   print(f"Light was disconnected by `{cid}`")
-  fill(color_black)
+  fill(turned_off_color)
   cid = None
   state = False
-  rgb = color_yellow
+  rgb = initial_color
   brightness = 100
 
 
@@ -80,7 +80,7 @@ def on_turn_off(client, userdata, msg):
     print(f"Light is not connected or is connected to other cid")
     return
   state = False
-  fill(color_black)
+  fill(turned_off_color)
   print(f"Light was turned off by `{cid}`")
 
 def on_available(client, userdata, msg):
@@ -88,8 +88,7 @@ def on_available(client, userdata, msg):
   if (cid != None):
     print(f"Light is not available")
     return
-  cidTemp = msg.payload.decode()
-  publish(client, f"{cidTemp}-light-complex-available-pi", uid)
+  publish(client, "light-complex-pi-is-available", uid)
 
   
 def start_mqtt():
@@ -99,7 +98,7 @@ def start_mqtt():
   subscribe(client, f"{uid}-disconnect", on_disconnect)
   subscribe(client, f"{uid}-turnOn", on_turn_on)
   subscribe(client, f"{uid}-turnOff", on_turn_off)
-  subscribe(client, "light-complex-available-pi", on_available)
+  subscribe(client, "is-light-complex-pi-available", on_available)
 
   client.loop_start()
   return client
@@ -108,19 +107,23 @@ red_screen = False
 
 if __name__ == '__main__':
   if (len(sys.argv) > 2):
-    print("Usage: python3 vLightBulbPi.py [uuid]")
+    print("Usage: python3 ComplexLightBulbPi.py [uuid]")
     exit(1)
   elif (len(sys.argv) == 2):
     uid = sys.argv[1]
     
   mqtt_client = start_mqtt()
+  publish(mqtt_client, "light-pi-is-available", uid)
+
+  fill(turned_off_color)
+
   running = True
   while running:
     if mqtt_client == None: running = False
     if not is_connected():
         brightness = 100
         if red_screen and int(time.time() - start) % 2 == 0:
-            fill(color_black)
+            fill(turned_off_color)
             red_screen = False
         elif not red_screen and int(time.time() - start) % 2 == 1:
             fill(color_red)

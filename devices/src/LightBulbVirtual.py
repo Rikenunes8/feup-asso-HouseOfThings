@@ -52,8 +52,7 @@ def on_available(client, userdata, msg):
   if (cid != None):
     print(f"Light is not available")
     return
-  cidTemp = msg.payload.decode()
-  publish(client, f"{cidTemp}-light-available-virtual", uid)
+  publish(client, "light-virtual-is-available", uid)
 
   
 def start_mqtt():
@@ -63,9 +62,10 @@ def start_mqtt():
   subscribe(client, f"{uid}-disconnect", on_disconnect)
   subscribe(client, f"{uid}-turnOn", on_turn_on)
   subscribe(client, f"{uid}-turnOff", on_turn_off)
-  subscribe(client, "light-available-virtual", on_available)
+  subscribe(client, "is-light-virtual-available", on_available)
 
   client.loop_start()
+  return client
 
 def start_drawer():
   global drawer
@@ -83,15 +83,17 @@ if __name__ == '__main__':
   elif (len(sys.argv) == 2):
     uid = sys.argv[1]
     
+  mqtt_client = start_mqtt()
+  publish(mqtt_client, "light-virtual-is-available", uid)
   start_drawer()
-  start_mqtt()
-  run = True
-  while run:
+
+  running = True
+  while running:
     drawer.drawLight(is_connected(), state)
     time.sleep(0.1)
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
-        run = False
+        running = False
   pygame.quit()
 
     

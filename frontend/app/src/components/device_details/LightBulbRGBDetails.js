@@ -32,7 +32,8 @@ export default function LightBulbRGBDetails({
     powerHandler(power, setDisabled);
   };
 
-  useEffect(() => {
+  useEffect(() => {    
+    if (!power) return;
     let colorTimeoutId;
 
     // Change color - after 300ms of no change
@@ -65,6 +66,7 @@ export default function LightBulbRGBDetails({
   }, [pickerColor]);
 
   useEffect(() => {
+    if (!power) return;
     let brightnessTimeoutId;
 
     // Change brightness - after 500ms of no change

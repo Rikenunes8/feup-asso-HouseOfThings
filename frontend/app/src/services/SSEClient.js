@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import EventSource from "react-native-event-source";
 
 import DevicesContext from "../contexts/DevicesContext";
@@ -6,11 +6,22 @@ import api from "../api/api";
 
 export default function SSEClient() {
   const { initialized, devices, updateDevice } = useContext(DevicesContext);
+  const [listenerURL, setApiUrl] = useState(null);
+
+  const getApiUrl = async () => {
+    const url = await api.getDevicesListenerURL();
+    setApiUrl(url);
+  };
+
+  useEffect(() => {
+    getApiUrl();
+  }, []);
 
   useEffect(() => {
     if (!initialized) return;
+    if (!listenerURL) return;
 
-    const devicesSSE = new EventSource(api.devicesListenerURL);
+    const devicesSSE = new EventSource(listenerURL);
 
     const updateHandler = (event) => {
       console.log("SSE: devices update...");
@@ -27,7 +38,7 @@ export default function SSEClient() {
     return () => {
       devicesSSE.close();
     };
-  }, [initialized, devices]);
+  }, [initialized, devices, listenerURL]);
 
   return null;
 }

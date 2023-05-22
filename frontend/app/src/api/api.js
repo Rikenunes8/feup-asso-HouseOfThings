@@ -1,6 +1,8 @@
-import apiClient from "./client";
+import apiClient, { getServerAddress } from "./client";
 
-const devicesListenerURL = apiClient.defaults.baseURL + "/devices/listener";
+const getDevicesListenerURL = async () => {
+  return await getServerAddress() + "/devices/listener";
+};
 
 const getDivisions = async () => {
   try {
@@ -258,7 +260,7 @@ const deleteRule = async (id) => {
 };
 
 export default {
-  devicesListenerURL,
+  getDevicesListenerURL,
   getDevices,
   getCategories,
   getDivisions,

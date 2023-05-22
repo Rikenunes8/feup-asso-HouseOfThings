@@ -39,9 +39,15 @@ export default function HistoryScreen() {
   const renderItem = ({ item }) => (
     <View style={styles.cardContainer}>
       <View style={styles.card}>
-        <Text>{item.content}</Text>
+        <Text style={styles.description}>{item.content}</Text>
         <Badge
-          color={item.type === "info" ? colors.cold : colors.red}
+          color={
+            item.type === "info"
+              ? colors.cold
+              : item.type === "warn"
+              ? colors.yellow
+              : colors.red
+          }
           content={item.type}
         ></Badge>
       </View>
@@ -60,7 +66,6 @@ export default function HistoryScreen() {
     />
   );
 
-  // TODO - Implement when joining with backend
   const fetchLogs = async () => {
     setIsLoading(true);
     const logs = await api.getLogs();
@@ -147,6 +152,10 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  description: {
+    flex: 1,
+    flexWrap: "wrap",
   },
   content: {
     marginBottom: 120,

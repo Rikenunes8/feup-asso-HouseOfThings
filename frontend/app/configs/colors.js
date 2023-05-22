@@ -15,4 +15,5 @@ export default {
   transparent: "#FFFFFF00",
   cold: "#73C0E6",
   warm: "#FF7044",
+  yellow: "#FFD740",
 };

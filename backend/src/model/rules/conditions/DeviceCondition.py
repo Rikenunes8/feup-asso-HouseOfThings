@@ -18,7 +18,8 @@ class DeviceCondition(Condition, Subscriber, DeviceConnectionSubscriber):
 
     def configure(self, data: dict = None):
         device_manager: DevicesManager = data.get("device_manager")
-        # Subscribe device manager to be notified when a new device with the same id is added
+        # Subscribe device manager to be notified when a new device
+        # with the same id is added
         device_manager.subscribe(self._device_id, self)
         device = device_manager.get(self._device_id)
         # Subscribe device to be notified when its state changes

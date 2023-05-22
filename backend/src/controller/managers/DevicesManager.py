@@ -140,9 +140,10 @@ class DevicesManager(Manager, DeviceConnectionPublisher):
         notifier = DeviceStateNotifier(self)
         device = ConcreteDevice(uid, config, connector, notifier)
         for capability in capabilities:
-            # In order to avoid large if-else statements, we use importlib to get and instanciate the respective
-            # decorator capabililty class based on the capability name. This should be safe since only capabilities
-            # are present in the folder of capability modules.
+            # In order to avoid large if-else statements, we use importlib to get and
+            # instanciate the respective decorator capabililty class based on the
+            # capability name. This should be safe since only capabilities are present
+            # in the folder of capability modules.
             device_classname = f"{capability.title().replace('_', '')}Cap"
             device_module = importlib.import_module(
                 f"src.model.devices.capabilities.{device_classname}"

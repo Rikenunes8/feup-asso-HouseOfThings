@@ -66,7 +66,7 @@ if __name__ == "__main__":
 
             For production environments, please set the environment variable APP_ENV to 'production'
             before starting the server.
-        """
+            """
         )
 
         app.run(host="0.0.0.0", debug=True)

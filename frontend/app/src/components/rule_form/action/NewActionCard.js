@@ -74,8 +74,6 @@ export default function NewActionCard(props) {
   };
 
   const handleURLChange = (webhook) => {
-    // TODO: just to test purposes it must be written in the input field
-    // webhook = "https://discord.com/api/webhooks/1108084159903178892/-wfJopfOfAmXNI-XYh2sZA20Q1CxMmgOYN9eEu0EoRJ69TatLzWaVoh89_mqunzP8RG6";
     setURL(webhook);
     updateRuleActionData(props.index, { url: webhook });
   };
@@ -116,7 +114,10 @@ export default function NewActionCard(props) {
           )}
 
           {info.parent == "message" && (
-            <NotificationForm webhookURL={url} setWebhookURL={handleURLChange} />
+            <NotificationForm
+              webhookURL={url}
+              setWebhookURL={handleURLChange}
+            />
           )}
         </Row>
       </View>

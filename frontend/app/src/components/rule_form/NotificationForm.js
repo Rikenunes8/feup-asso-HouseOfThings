@@ -9,6 +9,7 @@ export default function NotificationForm({ webhookURL, setWebhookURL }) {
         label={"Webhook URL"}
         name={webhookURL ?? ""}
         setName={setWebhookURL}
+        maxLength={200}
       />
     </View>
   );

@@ -44,7 +44,7 @@ export default function TimePicker({ time = "00:00", setTime }) {
 
   return (
     <Row>
-      <Col numRows={1}>
+      <Col flex={1}>
         <DynamicDropDown
           items={hours}
           setItems={setHours}
@@ -59,7 +59,7 @@ export default function TimePicker({ time = "00:00", setTime }) {
       </Col>
       <Text style={styles.text}>H</Text>
 
-      <Col numRows={1}>
+      <Col flex={1}>
         <DynamicDropDown
           items={minutes}
           setItems={setMinutes}

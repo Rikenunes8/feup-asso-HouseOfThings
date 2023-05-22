@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
 import WeekDayPicker from "../form/WeekDayPicker";
@@ -19,6 +19,11 @@ export default function ScheduleForm(props) {
   const updateWeekDays = (item) => {
     updateRuleCondition(props.index, "days", item);
   };
+
+  useEffect(() => {
+    updateRuleCondition(props.index, "time", time);
+    updateRuleCondition(props.index, "days", []);
+  }, []);
 
   return (
     <View>

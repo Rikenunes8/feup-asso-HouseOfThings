@@ -18,6 +18,7 @@ export default function NewConditionCard(props) {
   const { addRuleCondition } = useContext(CreateRuleContext);
 
   const handleTypeChange = (item) => {
+    setType(item.value);
     setInfo(item);
     x =
       item.parent == "device"

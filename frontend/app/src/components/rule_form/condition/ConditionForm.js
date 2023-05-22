@@ -16,6 +16,7 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import CreateRuleContext from "../../../contexts/CreateRuleContext";
 
 import colors from "../../../../configs/colors";
+import { createIconSetFromFontello } from "react-native-vector-icons";
 
 export default function ConditionForm() {
   const { setRuleOperation } = useContext(CreateRuleContext);
@@ -92,7 +93,7 @@ export default function ConditionForm() {
         {conditionCards.map((card, index) => (
           <NewConditionCard
             index={index}
-            key={card.id}
+            key={`condition-${card.id}`}
             card={card}
             handleDelete={() => deleteConditionCard(card.id)}
             deleteDisabled={conditionCards.length == 1}

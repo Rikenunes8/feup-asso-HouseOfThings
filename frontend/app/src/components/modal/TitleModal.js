@@ -5,7 +5,10 @@ import {
   Platform,
   Modal,
   View,
+  Keyboard,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
 } from "react-native";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Icon from "react-native-vector-icons/AntDesign";
@@ -27,41 +30,51 @@ export default function TitleModal({
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
       {/*TODO: remove the transparent view when we get the bottom page to be darker*/}
-      <View style={{ flex: 1, backgroundColor: colors.transparentGray }}>
-        <LoadingSpinner isLoading={isLoading} />
-        <View style={styles.modalView}>
-          <View style={styles.iconsView}>
-            {leftIcon ? (
-              <TouchableOpacity onPress={leftIconCallback}>
-                <Icon
-                  name={leftIcon}
-                  size={30}
-                  color={colors.white}
-                  style={styles.leftIcon}
-                />
-              </TouchableOpacity>
-            ) : null}
-            {rightIcon ? (
-              <TouchableOpacity onPress={rightIconCallback}>
-                <Icon
-                  name={rightIcon}
-                  size={30}
-                  color={colors.white}
-                  style={styles.rightIcon}
-                />
-              </TouchableOpacity>
-            ) : null}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={{ flex: 1, backgroundColor: colors.transparentGray }}>
+            <LoadingSpinner isLoading={isLoading} />
+            <View style={styles.modalView}>
+              <View style={styles.iconsView}>
+                {leftIcon ? (
+                  <TouchableOpacity onPress={leftIconCallback}>
+                    <Icon
+                      name={leftIcon}
+                      size={30}
+                      color={colors.white}
+                      style={styles.leftIcon}
+                    />
+                  </TouchableOpacity>
+                ) : null}
+                {rightIcon ? (
+                  <TouchableOpacity onPress={rightIconCallback}>
+                    <Icon
+                      name={rightIcon}
+                      size={30}
+                      color={colors.white}
+                      style={styles.rightIcon}
+                    />
+                  </TouchableOpacity>
+                ) : null}
+              </View>
+              <Text style={styles.modalTitle}>{title}</Text>
+              {contextMenu}
+              <View style={styles.modalBody}>{modalContent}</View>
+            </View>
           </View>
-          <Text style={styles.modalTitle}>{title}</Text>
-          {contextMenu}
-          <View style={styles.modalBody}>{modalContent}</View>
-        </View>
-      </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   iconsView: {
     flexDirection: "row",
     justifyContent: "space-between",

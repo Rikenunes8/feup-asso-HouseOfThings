@@ -26,6 +26,6 @@ const _icons = {
   ...icons,
 };
 
-export default function IconModal({ icon, size, color }) {
+export default function DivisionIcon({ icon, size, color }) {
   return _icons[icon].family(_icons[icon].icon, size, color);
 }

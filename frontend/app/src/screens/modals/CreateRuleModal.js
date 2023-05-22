@@ -29,6 +29,10 @@ export default function CreateRuleModal() {
     resetCreateRuleContext,
   } = useContext(CreateRuleContext);
 
+<<<<<<< HEAD
+=======
+  // TODO: Função que valida a questão da operation
+>>>>>>> develop
   const connectCallback = () => {
     const rule = {
       name: ruleName ?? "undefined",

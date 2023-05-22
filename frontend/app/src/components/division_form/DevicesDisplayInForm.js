@@ -13,8 +13,6 @@ export default function DevicesDisplayInForm() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.field}>DEVICES</Text>
-        {/* TODO: action of search */}
-        <FontAwesome5Icon name="search" size={15} color={colors.primary} />
       </View>
 
       <View style={styles.list}>

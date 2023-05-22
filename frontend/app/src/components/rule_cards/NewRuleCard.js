@@ -12,7 +12,7 @@ export default function NewRuleCard({}) {
 
   return (
     <View>
-      <CreateRuleModal></CreateRuleModal>
+      <CreateRuleModal />
       <TouchableOpacity
         style={styles.card}
         onPress={() => setCreateRuleModalVisible(!createRuleModalVisible)}

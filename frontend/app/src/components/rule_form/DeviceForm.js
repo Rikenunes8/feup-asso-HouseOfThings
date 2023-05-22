@@ -10,6 +10,7 @@ import ConfigurationsForm from "./condition/ConfigurationsForm";
 import colors from "../../../configs/colors";
 
 export default function DeviceForm(props) {
+<<<<<<< HEAD
   const [possibleConfigurations, setPossibleConfigurations] = useState([{}]);
   const capabilitiesMap = {
     power: {
@@ -86,6 +87,22 @@ export default function DeviceForm(props) {
       ) : null}
     </Row>
   );
+=======
+  switch (props.category) {
+    case "light":
+      return (
+        <LightSpecs
+          index={props.index}
+          capabilities={props.capabilities}
+          isRuleCondition={props.isRuleCondition}
+        ></LightSpecs>
+      );
+    case "sensor":
+      return <Text>Sensor</Text>;
+    default:
+      return null;
+  }
+>>>>>>> develop
 }
 
 const styles = StyleSheet.create({

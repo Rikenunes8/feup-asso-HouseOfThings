@@ -8,7 +8,7 @@ import DevicesDisplayInForm from "./DevicesDisplayInForm";
 
 import colors from "../../../configs/colors";
 import utils from "../../utils/utils";
-import IconModal, { icons } from "../division_cards/DivisionIcon";
+import DivisionIcon, { icons } from "../division_cards/DivisionIcon";
 
 export default function AddDivisionForm() {
   const { divisionName, divisionIcon, setDivisionName, setDivisionIcon } =
@@ -19,7 +19,7 @@ export default function AddDivisionForm() {
       return {
         label: utils.capitalize(icon.replace("-icon", "")),
         value: icon,
-        icon: () => <IconModal icon={icon} size={20} color={colors.black} />,
+        icon: () => <DivisionIcon icon={icon} size={20} color={colors.black} />,
       };
     })
   );

@@ -22,20 +22,20 @@ const getDevices = async () => {
   }
 };
 
-const getRules = async () => {
+const getCategories = async () => {
   try {
-    const response = await apiClient.get("/rules");
-    return response.data.rules;
+    const response = await apiClient.get("/categories");
+    return response.data.categories;
   } catch (error) {
     console.error(error);
     return [];
   }
 };
 
-const getCategories = async () => {
+const getRules = async () => {
   try {
-    const response = await apiClient.get("/categories");
-    return response.data.categories;
+    const response = await apiClient.get("/rules");
+    return response.data.rules;
   } catch (error) {
     console.error(error);
     return [];

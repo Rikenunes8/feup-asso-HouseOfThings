@@ -8,7 +8,7 @@ export default function Row({ children, style }) {
 const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
-    alignItems: "flex-end",
+    alignItems: "center",
     justifyContent: "center",
     gap: 2,
     marginBottom: 3,

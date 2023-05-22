@@ -4,15 +4,15 @@ import CustomMarker from "./CustomMarker";
 
 import colors from "../../../configs/colors";
 
-export default function RangeSlider({ setValue, name }) {
+export default function RangeSlider({ setValue, values }) {
   return (
     <Slider
-      min={0}
+      min={1}
       max={100}
-      values={[50, 80]}
+      values={values}
       markerComponent={CustomMarker}
       trackStyle={{ color: colors.primary }}
-      onChange={(e) => setValue(e, name)}
+      onChange={(newValues) => setValue(newValues)}
     />
   );
 }

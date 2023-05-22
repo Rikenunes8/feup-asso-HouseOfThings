@@ -8,6 +8,7 @@ export const ModalsProvider = ({ children }) => {
     useState(false);
   const [addDivisionFormModalVisible, setAddDivisionFormModalVisible] =
     useState(false);
+
   // Now corresponds to the device uid whose details are being shown
   const [deviceDetailsModalVisible, setDeviceDetailsModalVisible] =
     useState(null);
@@ -22,10 +23,14 @@ export const ModalsProvider = ({ children }) => {
     useState(false);
   const [isDeviceDetailsModalLoading, setIsDeviceDetailsModalLoading] =
     useState(false);
-  const [isCreateRuleModalLoading, setIsCreateRuleModalLoading] =
+  const [isDivisionDetailsModalLoading, setIsDivisionDetailsModalLoading] =
     useState(false);
 
   const [isMenuModalRenaming, setIsMenuModalRenaming] = useState(false);
+  const [isMenuModalChangeIcon, setIsMenuModalChangeIcon] = useState(false);
+
+  const [isCreateRuleModalLoading, setIsCreateRuleModalLoading] =
+    useState(false);
 
   return (
     <ModalsContext.Provider
@@ -52,10 +57,15 @@ export const ModalsProvider = ({ children }) => {
         setIsDivisionFormModalLoading,
         isMenuModalRenaming,
         setIsMenuModalRenaming,
+        isDivisionDetailsModalLoading,
+        setIsDivisionDetailsModalLoading,
+        isMenuModalChangeIcon,
+        setIsMenuModalChangeIcon,
       }}
     >
       {children}
     </ModalsContext.Provider>
   );
 };
+
 export default ModalsContext;

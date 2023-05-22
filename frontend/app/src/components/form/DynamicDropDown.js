@@ -24,7 +24,7 @@ export default function DynamicDropDown({
 
   return (
     <View style={styles(hasLabel).container}>
-      {label && label !== "" && <Text style={styles().field}>{label}</Text>}
+      {hasLabel && <Text style={styles().field}>{label}</Text>}
 
       <DropDownPicker
         open={open}
@@ -41,7 +41,7 @@ export default function DynamicDropDown({
         disabled={disabled}
         showArrowIcon={showArrowIcon}
         listMode={listMode}
-        modalTitle={label && label !== "" ? label : "OPTIONS"}
+        modalTitle={hasLabel ? label : "OPTIONS"}
         modalTitleStyle={styles().modalTitle}
         modalProps={modalProps}
         modalAnimationType={modalAnimationType}

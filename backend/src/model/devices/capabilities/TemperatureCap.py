@@ -24,4 +24,4 @@ class TemperatureCap(BaseCapability, Subscriber):
         state = self.find()
         if self.build_state(state) == self.build_state(data): return
         self.update_state(data)
-        self._notifier.announce(state)
+        self._notifier.announce(self.find())

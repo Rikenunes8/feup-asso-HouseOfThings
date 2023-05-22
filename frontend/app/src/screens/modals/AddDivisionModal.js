@@ -4,12 +4,14 @@ import ModalsContext from "../../contexts/ModalsContext";
 import DivisionsContext from "../../contexts/DivisionsContext";
 import AddDivisionContext from "../../contexts/AddDivisionContext";
 import AddDivisionForm from "../../components/division_form/AddDivisionForm";
+import DevicesContext from "../../contexts/DevicesContext";
 
 import utils from "../../utils/utils";
 import api from "../../api/api";
 
 export default function AddDivisionModal() {
   const { addDivision } = useContext(DivisionsContext);
+  const { setDevices } = useContext(DevicesContext);
 
   const {
     addDivisionFormModalVisible,
@@ -29,6 +31,11 @@ export default function AddDivisionModal() {
     { field: divisionName, message: "Division name is required." },
     { field: divisionIcon, message: "Division icon is required." },
   ];
+
+  const fetchDevices = async () => {
+    const devs = await api.getDevices();
+    if (devs != null) setDevices(devs);
+  };
 
   const checkRequiredFields = () => {
     for (let i = 0; i < requiredFields.length; i++) {
@@ -55,6 +62,7 @@ export default function AddDivisionModal() {
     setIsDivisionFormModalLoading(false);
     if (newDivision != null) {
       addDivision(newDivision);
+      fetchDevices();
       setAddDivisionFormModalVisible(false);
       resetAddDivisionContext();
     } else {

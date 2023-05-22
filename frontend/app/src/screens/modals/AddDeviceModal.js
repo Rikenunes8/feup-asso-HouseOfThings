@@ -3,6 +3,7 @@ import IconModal from "../../components/modal/IconModal";
 import AddDeviceForm from "../../components/device_form/AddDeviceForm";
 import ModalsContext from "../../contexts/ModalsContext";
 import DevicesContext from "../../contexts/DevicesContext";
+import DivisionsContext from "../../contexts/DivisionsContext";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 
 import utils from "../../utils/utils";
@@ -10,6 +11,7 @@ import api from "../../api/api";
 
 export default function AddDeviceModal() {
   const { addDevice } = useContext(DevicesContext);
+  const { setDivisions } = useContext(DivisionsContext);
 
   const {
     addDeviceFormModalVisible,
@@ -45,6 +47,12 @@ export default function AddDeviceModal() {
     return true;
   };
 
+  const fetchDivisions = async () => {
+    const divs = await api.getDivisions();
+    if (divs != null) setDivisions(divs);
+  };
+
+
   const connectCallback = () => {
     if (!checkRequiredFields()) return;
 
@@ -62,6 +70,7 @@ export default function AddDeviceModal() {
       setIsDeviceFormModalLoading(false);
       if (newDevice != null) {
         addDevice(newDevice);
+        fetchDivisions();
         setAddDeviceFormModalVisible(false);
         resetAddDeviceContext();
       } else {
@@ -88,6 +97,7 @@ export default function AddDeviceModal() {
         connectCallback();
       }}
       icon={utils.getDeviceIcon(deviceSubcategory)}
+      type="device"
       modalContent={
         <AddDeviceForm
           inputOnFocus={inputOnFocus}

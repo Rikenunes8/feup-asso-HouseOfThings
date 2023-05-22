@@ -7,13 +7,14 @@ export default function DynamicTextInput({
   name,
   setName,
   inputOnFocus,
-  setInputOnFocus,
+  setInputOnFocus = () => {},
+  maxLength = 40,
 }) {
   return (
     <View style={styles.container}>
       <Text style={styles.field}>{label}</Text>
       <TextInput
-        maxLength={40}
+        maxLength={maxLength}
         onChangeText={(name) => setName(name)}
         onFocus={() => setInputOnFocus(true)}
         onEndEditing={() => setInputOnFocus(false)}

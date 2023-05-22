@@ -3,10 +3,10 @@ from src.model.devices.Device import Device
 from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 
 
-class ColorPalleteCap(BaseCapability):
+class ColorCap(BaseCapability):
     def __init__(self, device: Device, notifier: DeviceStateNotifier, state: dict = {}):
         super().__init__(device, notifier)
-        color = state.get('color', 'yellow')
+        color = state.get('color', '#FFFF00')
         self.update_state({'color': color})
 
     def _build_state(self, color: str) -> dict:

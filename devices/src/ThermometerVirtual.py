@@ -36,8 +36,7 @@ def on_available(client, userdata, msg):
   if (cid != None):
     print(f"Thermometer is not available")
     return
-  cidTemp = msg.payload.decode()
-  publish(client, f"{cidTemp}-thermometer-available-virtual", uid)
+  publish(client, "thermometer-virtual-is-available", uid)
 
   
 def start_mqtt():
@@ -45,7 +44,7 @@ def start_mqtt():
 
   subscribe(client, f"{uid}-connect", on_connect)
   subscribe(client, f"{uid}-disconnect", on_disconnect)
-  subscribe(client, "thermometer-available-virtual", on_available)
+  subscribe(client, "is-thermometer-virtual-available", on_available)
 
   client.loop_start()
   return client
@@ -66,6 +65,7 @@ if __name__ == '__main__':
     uid = sys.argv[1]
     
   mqtt_client = start_mqtt()
+  publish(mqtt_client, "thermometer-virtual-is-available", uid)
   start_drawer()
 
   running = True

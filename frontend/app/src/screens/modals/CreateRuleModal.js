@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 
 import TitleModal from "../../components/modal/TitleModal";
 import CreateRuleForm from "../../components/rule_form/CreateRuleForm";
@@ -29,7 +29,6 @@ export default function CreateRuleModal() {
     resetCreateRuleContext,
   } = useContext(CreateRuleContext);
 
-  // TODO: Função que valida a questão da operation
   const connectCallback = () => {
     const rule = {
       name: ruleName ?? "undefined",

@@ -4,7 +4,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  FlatList,
 } from "react-native";
 
 import ContextMenu from "../../ContextMenu";
@@ -16,6 +15,7 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import CreateRuleContext from "../../../contexts/CreateRuleContext";
 
 import colors from "../../../../configs/colors";
+import { createIconSetFromFontello } from "react-native-vector-icons";
 
 export default function ConditionForm({ conditions }) {
   const { setRuleOperation } = useContext(CreateRuleContext);
@@ -94,7 +94,7 @@ export default function ConditionForm({ conditions }) {
         {conditionCards.map((card, index) => (
           <NewConditionCard
             index={index}
-            key={index}
+            key={`condition-${card.id}`}
             card={card}
             condition={conditions ? conditions[index] : null}
             handleDelete={() => deleteConditionCard(card.id)}

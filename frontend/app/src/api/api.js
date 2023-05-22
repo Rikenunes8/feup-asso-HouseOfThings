@@ -8,11 +8,7 @@ const getDivisions = async () => {
     return response.data.divisions;
   } catch (error) {
     console.error(error);
-    return [
-      { id: 0, name: "Family Room", icon: "bedroom-icon", numDevices: 1 },
-      { id: 1, name: "Tiago Room", icon: "bedroom-icon", numDevices: 1 },
-      { id: 2, name: "Kitchen", icon: "kitchen-icon", numDevices: 0 },
-    ];
+    return [];
   }
 };
 
@@ -22,79 +18,7 @@ const getDevices = async () => {
     return response.data.devices;
   } catch (error) {
     console.error(error);
-    return [
-      {
-        name: "Simple light",
-        divisions: ["Family Room"],
-        category: "light",
-        subcategory: "light bulb",
-        power: "true",
-        uid: 0,
-      },
-      {
-        name: "RGB light",
-        divisions: ["Family Room"],
-        category: "light",
-        subcategory: "light bulb rgb",
-        power: "false",
-        color: "#222222",
-        brightness: 100,
-        uid: 1,
-      },
-      {
-        name: "Thermometer",
-        divisions: ["Family Room"],
-        category: "thermometer",
-        subcategory: "thermometer",
-        temperature: 25,
-        uid: 2,
-      },
-    ];
-  }
-};
-
-const getRules = async () => {
-  try {
-    const response = await apiClient.get("/rules");
-    return response.data.rules;
-  } catch (error) {
-    console.error(error);
-    return [
-      {
-        id: 1,
-        name: "Family Room Lights Off",
-        operation: "and",
-        when: [],
-        then: [
-          {
-            device_id: 1,
-            action: "turn_off",
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: "Lights Off at Night",
-        operation: "or",
-        when: [
-          {
-            kind: "schedule",
-            time: "22:30",
-            days: [1, 2, 3, 4, 5, 6, 7],
-          },
-        ],
-        then: [
-          {
-            device_id: 1,
-            action: "turn_off",
-          },
-          {
-            device_id: 2,
-            action: "turn_off",
-          },
-        ],
-      },
-    ];
+    return [];
   }
 };
 
@@ -104,12 +28,27 @@ const getCategories = async () => {
     return response.data.categories;
   } catch (error) {
     console.error(error);
-    return [
-      {
-        name: "light",
-        subcategories: ["light1"],
-      },
-    ];
+    return [];
+  }
+};
+
+const getRules = async () => {
+  try {
+    const response = await apiClient.get("/rules");
+    return response.data.rules;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const getLogs = async () => {
+  try {
+    const response = await apiClient.get("/logs");
+    return response.data.logs;
+  } catch (error) {
+    console.error(error);
+    return [];
   }
 };
 
@@ -324,6 +263,7 @@ export default {
   getCategories,
   getDivisions,
   getRules,
+  getLogs,
   addDivision,
   addDevice,
   addRule,

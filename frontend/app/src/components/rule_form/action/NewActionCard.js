@@ -109,6 +109,7 @@ export default function NewActionCard(props) {
             modalContentContainerStyle={styles.modalContent}
             onSelectItem={(e) => handleDeviceChange(e)}
             hasCategory={true}
+            
           />
         </Row>
 

@@ -11,6 +11,7 @@ import colors from "../../../configs/colors";
 
 export default function DeviceForm(props) {
   const [possibleConfigurations, setPossibleConfigurations] = useState([{}]);
+  const [feat, setFeat] = useState({});
   const capabilitiesMap = {
     power: {
       label: "Power",
@@ -41,16 +42,17 @@ export default function DeviceForm(props) {
     set_color: "color",
   };
 
-  const [feat, setFeat] = useState({});
-
   const [currentConfiguration, setCurrentConfiguration] = useState(
     capabilitiesMap[props.capabilities[0]].value
   );
 
   const updateConfigurations = () => {
     setPossibleConfigurations(
-      props.capabilities.map((capability) => {
-        return capabilitiesMap[capability];
+      props.capabilities.map((capability, index) => {
+        return {
+          ...capabilitiesMap[capability],
+          key: index,
+        };
       })
     );
 

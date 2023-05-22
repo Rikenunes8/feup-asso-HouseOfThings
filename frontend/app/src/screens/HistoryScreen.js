@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -14,89 +14,9 @@ import Header from "../components/header/Header";
 
 import colors from "../../configs/colors";
 import Badge from "../components/Badge";
+import api from "../api/api";
 
 import moment from "moment";
-
-const data = [
-  {
-    id: "1",
-    content: "Added a new device",
-    type: "error",
-    time: "2023-05-18T07:30:00",
-  },
-  {
-    id: "2",
-    content: "Added a new device",
-    type: "info",
-    time: "2023-05-18T10:30:00",
-  },
-  {
-    id: "3",
-    content: "Added a new device",
-    type: "error",
-    time: "2023-05-18T09:30:00",
-  },
-  {
-    id: "4",
-    content: "Added a new device",
-    type: "error",
-    time: "2023-04-18T09:30:00",
-  },
-  {
-    id: "5",
-    content: "Added a new device",
-    type: "info",
-    time: "2023-04-18T09:30:00",
-  },
-  {
-    id: "6",
-    content: "Added a new device",
-    type: "error",
-    time: "2023-04-18T09:30:00",
-  },
-  {
-    id: "7",
-    content: "Added a new device",
-    type: "error",
-    time: "2023-04-18T09:30:00",
-  },
-  {
-    id: "8",
-    content: "Added a new device",
-    type: "error",
-    time: "2023-04-18T09:30:00",
-  },
-  {
-    id: "9",
-    content: "Added a new device",
-    type: "info",
-    time: "2023-04-18T09:30:00",
-  },
-  {
-    id: "10",
-    content: "Added a new device",
-    type: "error",
-    time: "2023-04-18T09:30:00",
-  },
-  {
-    id: "11",
-    content: "Added a new device",
-    type: "error",
-    time: "2023-04-18T09:30:00",
-  },
-  {
-    id: "12",
-    content: "Added a new device",
-    type: "info",
-    time: "2023-04-18T09:30:00",
-  },
-  {
-    id: "13",
-    content: "Added a new device",
-    type: "error",
-    time: "2022-04-18T09:30:00",
-  },
-];
 
 const getTimeAgo = (time) => {
   const momentTime = moment(time);
@@ -114,14 +34,20 @@ const getTimeAgo = (time) => {
 
 export default function HistoryScreen() {
   const [isLoading, setIsLoading] = useState(false);
-  const [logs, setLogs] = useState(data);
+  const [logs, setLogs] = useState([]);
 
   const renderItem = ({ item }) => (
     <View style={styles.cardContainer}>
       <View style={styles.card}>
-        <Text>{item.content}</Text>
+        <Text style={styles.description}>{item.content}</Text>
         <Badge
-          color={item.type === "info" ? colors.cold : colors.red}
+          color={
+            item.type === "info"
+              ? colors.cold
+              : item.type === "warn"
+              ? colors.yellow
+              : colors.red
+          }
           content={item.type}
         ></Badge>
       </View>
@@ -140,18 +66,16 @@ export default function HistoryScreen() {
     />
   );
 
-  // TODO - Implement when joining with backend
-  /*const fetchLogs = async () => {
+  const fetchLogs = async () => {
     setIsLoading(true);
     const logs = await api.getLogs();
     setIsLoading(false);
-    setLogs(rules);
+    setLogs(logs);
   };
 
   useEffect(() => {
     fetchLogs();
   }, []);
-  */
 
   return (
     <SafeAreaView style={styles.container}>
@@ -171,7 +95,7 @@ export default function HistoryScreen() {
         <View style={styles.scrollBody}>
           <View style={styles.content}>
             <FlatList
-              data={data}
+              data={logs}
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
               ItemSeparatorComponent={renderSeparator}
@@ -228,6 +152,10 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  description: {
+    flex: 1,
+    flexWrap: "wrap",
   },
   content: {
     marginBottom: 120,

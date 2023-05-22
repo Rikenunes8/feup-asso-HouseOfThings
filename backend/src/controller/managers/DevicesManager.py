@@ -1,4 +1,5 @@
 import time
+import importlib
 
 from src.api.ApiException import ApiException
 from src.api.utils import format_sse
@@ -19,12 +20,6 @@ from src.controller.announcer.MessageAnnouncer import MessageAnnouncer
 from src.controller.Logger import Logger
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
-
-# DO NOT REMOVE THESE IMPORTS, THEY ARE NEEDED FOR THE EVAL TO WORK
-from src.model.devices.capabilities.PowerCap import PowerCap
-from src.model.devices.capabilities.TemperatureCap import TemperatureCap
-from src.model.devices.capabilities.ColorCap import ColorCap
-from src.model.devices.capabilities.BrightnessCap import BrightnessCap
 
 
 class DevicesManager(Manager, DeviceConnectionPublisher):
@@ -133,11 +128,15 @@ class DevicesManager(Manager, DeviceConnectionPublisher):
         notifier = DeviceStateNotifier(self)
         device = ConcreteDevice(uid, config, connector, notifier)
         for capability in capabilities:
-            # eval to get the respective decorator capabililty class instead of making an inifinite if-else
-            # TODO check if getattr is better
-            device = eval(f"{capability.title().replace('_', '')}Cap")(
-                device, notifier, data
-            )
+            # In order to avoid large if-else statements, we use importlib to get and instanciate the respective
+            # decorator capabililty class based on the capability name. This should be safe since only capabilities
+            # are present in the folder of capability modules.
+            device_classname = f"{capability.title().replace('_', '')}Cap"
+            device_module = importlib.import_module(f"src.model.devices.capabilities.{device_classname}")
+            device_class = getattr(device_module, device_classname)
+            device = device_class(device, notifier, data)
+            
+            # Devices that are subscribers should subscribe to the connector
             if isinstance(device, Subscriber):
                 connector.subscribe(device)
 

@@ -55,8 +55,6 @@ export default function AddDeviceModal() {
   const connectCallback = () => {
     if (!checkRequiredFields()) return;
 
-    console.log("Device UUID: ", deviceCategory);
-
     const device = {
       name: deviceName,
       divisions: deviceDivision != null ? [deviceDivision] : [],

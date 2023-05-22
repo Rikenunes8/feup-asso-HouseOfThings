@@ -10,7 +10,7 @@ import ConfigurationsForm from "./condition/ConfigurationsForm";
 import colors from "../../../configs/colors";
 
 export default function DeviceForm(props) {
-  const [possibleConfigurations, setPossibleConfigurations] = useState([{}]);
+  const [possibleConfigurations, setPossibleConfigurations] = useState([]);
   const [feat, setFeat] = useState({});
   const capabilitiesMap = {
     power: {
@@ -94,7 +94,7 @@ export default function DeviceForm(props) {
   }, [props.capabilities]);
 
   return (
-    <Row style={{ flexWrap: true }}>
+    <Row style={styles.container}>
       <Col flex={2}>
         <DynamicDropDown
           items={possibleConfigurations}
@@ -121,6 +121,9 @@ export default function DeviceForm(props) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexWrap: "wrap",
+  },
   modalContent: {
     backgroundColor: colors.white,
     marginHorizontal: 28,

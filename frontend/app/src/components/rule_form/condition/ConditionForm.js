@@ -15,11 +15,11 @@ export default function ConditionForm() {
   const { setRuleOperation, ruleConditions, removeRuleCondition } =
     useContext(CreateRuleContext);
 
-  const [conditionCards, setConditionCards] = useState([
+  const [conditionCards, setConditionCards] = useState(
     ruleConditions
       ? ruleConditions.map((_) => ({ id: Date.now().toString() }))
-      : { id: Date.now().toString() },
-  ]);
+      : [{ id: Date.now().toString() }]
+  );
 
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
@@ -91,7 +91,7 @@ export default function ConditionForm() {
         {conditionCards.map((card, index) => (
           <NewConditionCard
             index={index}
-            key={`condition-${card.id}`}
+            key={index}
             card={card}
             condition={ruleConditions ? ruleConditions[index] : null}
             handleDelete={() => deleteConditionCard(card.id)}

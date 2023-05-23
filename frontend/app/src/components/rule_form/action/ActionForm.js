@@ -9,11 +9,11 @@ import colors from "../../../../configs/colors";
 
 export default function ActionForm() {
   const { removeRuleAction, ruleActions } = useContext(CreateRuleContext);
-  const [actionCards, setActionCards] = useState([
+  const [actionCards, setActionCards] = useState(
     ruleActions
       ? ruleActions.map((_) => ({ id: Date.now().toString() }))
-      : { id: Date.now().toString() },
-  ]);
+      : [{ id: Date.now().toString() }]
+  );
 
   const addActionCard = () => {
     const newCard = { id: Date.now().toString() };
@@ -45,7 +45,7 @@ export default function ActionForm() {
       {actionCards.map((card, index) => (
         <NewActionCard
           index={index}
-          key={`action-${card.id}`}
+          key={index}
           card={card}
           action={ruleActions ? ruleActions[index] : null}
           handleDelete={() => deleteActionCard(card.id)}

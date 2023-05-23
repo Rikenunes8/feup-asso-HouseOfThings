@@ -52,6 +52,8 @@ class ConcreteDevice(Device):
 
     def add_division(self, division: str) -> None:
         divisions = self.find()["divisions"]
+        if division in divisions:
+            return
         divisions.append(division)
         self.set_divisions(divisions)
 

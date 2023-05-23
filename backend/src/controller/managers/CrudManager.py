@@ -1,10 +1,11 @@
 from abc import abstractmethod
 from src.controller.managers.Manager import Manager
 
+
 class CrudManager(Manager):
     def __init__(self, cid) -> None:
         super().__init__(cid)
-        
+
     @abstractmethod
     def all(self) -> list:
         pass

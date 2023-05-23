@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from src.controller.device_connectors.DeviceConnector import DeviceConnector
 
+
 class ActuatorDeviceConnector(DeviceConnector, ABC):
     def __init__(self):
         super().__init__()

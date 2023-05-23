@@ -29,13 +29,15 @@ class DB(metaclass=DBMeta):
 
         self._client = pymongo.MongoClient(mongo_uri)
         self._db = self._client[database]
-    
-    def _get_uri(self, user: str or None, password: str or None, host: str, port: str or None) -> str:
+
+    def _get_uri(
+        self, user: str or None, password: str or None, host: str, port: str or None
+    ) -> str:
         if password:
             credentials = f"{user}:{password}"
         else:
             credentials = user
-        
+
         if port:
             address = f"{host}:{port}"
         else:

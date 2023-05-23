@@ -19,7 +19,7 @@ export const DivisionsProvider = ({ children }) => {
   const renameDivision = (id, name) => {
     setDivisions(
       divisions.map((division) =>
-      division.id === id ? { ...division, name: name } : division
+        division.id === id ? { ...division, name: name } : division
       )
     );
   };
@@ -41,7 +41,7 @@ export const DivisionsProvider = ({ children }) => {
         addDivision,
         removeDivision,
         updateDivision,
-        renameDivision
+        renameDivision,
       }}
     >
       {children}

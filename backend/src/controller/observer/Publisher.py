@@ -1,6 +1,7 @@
 from abc import ABC
 from src.controller.observer.Subscriber import Subscriber
 
+
 class Publisher(ABC):
     def __init__(self):
         super().__init__()

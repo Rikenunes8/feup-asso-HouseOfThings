@@ -2,16 +2,25 @@ from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 from src.model.devices.Device import Device
 from src.controller.device_connectors.DeviceConnector import DeviceConnector
-from src.controller.device_connectors.ActuatorDeviceConnector import ActuatorDeviceConnector
+from src.controller.device_connectors.ActuatorDeviceConnector import (
+    ActuatorDeviceConnector,
+)
 from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 
 
 class ConcreteDevice(Device):
     NO_NAME = "Unamed"
 
-    def get(self): return self
+    def get(self):
+        return self
 
-    def __init__(self, id: str, config: dict[str, object], connector: DeviceConnector, notifier: DeviceStateNotifier) -> None:
+    def __init__(
+        self,
+        id: str,
+        config: dict[str, object],
+        connector: DeviceConnector,
+        notifier: DeviceStateNotifier,
+    ) -> None:
         super().__init__(id, notifier)
         self._config: dict[str, object] = config
         self._connector: DeviceConnector = connector
@@ -23,22 +32,24 @@ class ConcreteDevice(Device):
         self.update({"connected": connected})
 
     def add(self) -> None:
-        DB().get(Collection.DEVICES).add({
-            "uid": self._id,
-            "category": self._config.get("category"),
-            "subcategory": self._config.get("subcategory"),
-            "protocol": self._config.get("protocol"),
-            "name": self.NO_NAME,
-            "divisions": [],
-            "connected": self._connected
-        })
+        DB().get(Collection.DEVICES).add(
+            {
+                "uid": self._id,
+                "category": self._config.get("category"),
+                "subcategory": self._config.get("subcategory"),
+                "protocol": self._config.get("protocol"),
+                "name": self.NO_NAME,
+                "divisions": [],
+                "connected": self._connected,
+            }
+        )
 
     def rename(self, name: str) -> None:
         self.update({"name": name})
 
     def set_divisions(self, divisions: list) -> None:
         self.update({"divisions": divisions})
-    
+
     def add_division(self, division: str) -> None:
         divisions = self.find()["divisions"]
         divisions.append(division)
@@ -55,7 +66,7 @@ class ConcreteDevice(Device):
             return False
         self.set_connected(True)
         return True
-    
+
     def disconnect(self) -> bool:
         self._connector.disconnect()
         self.set_connected(False)
@@ -65,11 +76,13 @@ class ConcreteDevice(Device):
     def is_connected(self) -> bool:
         return self._connected
 
-    def action(self, action: str, data: dict = None, updated_state: dict = None) -> bool:
+    def action(
+        self, action: str, data: dict = None, updated_state: dict = None
+    ) -> bool:
         if not isinstance(self._connector, ActuatorDeviceConnector):
             return True
         if self._connector.action(action, data):
-            if updated_state != None:
+            if updated_state is not None:
                 self.update(updated_state)
                 self.notify(updated_state)
             return True

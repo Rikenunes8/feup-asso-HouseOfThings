@@ -37,7 +37,7 @@ export default function EditRuleContextMenu({
       then: ruleActions,
     };
 
-    console.log("Updating RULE:", rule);
+    console.log("Updating rule...", updatedRule);
     setIsRuleDetailsModalLoading(true);
 
     api.updateRule(rule.id, updatedRule).then((updatedRule) => {

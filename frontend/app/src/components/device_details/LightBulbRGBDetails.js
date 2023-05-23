@@ -32,7 +32,7 @@ export default function LightBulbRGBDetails({
     powerHandler(power, setDisabled);
   };
 
-  useEffect(() => {    
+  useEffect(() => {
     if (!power) return;
     let colorTimeoutId;
 

@@ -34,11 +34,11 @@ class DivisionsApi(CrudApi):
         icon = division.get("icon")
         devices = division.get("devices")
 
-        if name == None:
+        if name is None:
             return "No name provided"
-        if icon == None:
+        if icon is None:
             return "No icon provided"
-        if devices == None:
+        if devices is None:
             division["devices"] = []
         if not isinstance(devices, list):
             return "devices must be a list of device UIDs"
@@ -52,7 +52,7 @@ class DivisionsApi(CrudApi):
     def add_device(self, id):
         def inner(data):
             uid = data.get("device")
-            if uid == None:
+            if uid is None:
                 raise ApiException("No device uid provided")
             self._manager.add_device(id, uid)
             return {}
@@ -62,7 +62,7 @@ class DivisionsApi(CrudApi):
     def remove_device(self, id):
         def inner(data):
             uid = data.get("device")
-            if uid == None:
+            if uid is None:
                 raise ApiException("No device uid provided")
             self._manager.remove_device(id, uid)
             return {}

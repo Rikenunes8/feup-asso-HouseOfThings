@@ -1,10 +1,5 @@
 import React, { useState, useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 import ContextMenu from "../../ContextMenu";
 import NewConditionCard from "./NewConditionCard";

@@ -1,4 +1,6 @@
-from src.controller.observer.DeviceConnectionSubscriber import DeviceConnectionSubscriber
+from src.controller.observer.DeviceConnectionSubscriber import (
+    DeviceConnectionSubscriber,
+)
 
 
 class DeviceConnectionPublisher:

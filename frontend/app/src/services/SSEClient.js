@@ -6,15 +6,15 @@ import api from "../api/api";
 
 export default function SSEClient() {
   const { initialized, devices, updateDevice } = useContext(DevicesContext);
-  const [listenerURL, setApiUrl] = useState(null);
+  const [listenerURL, setListenerURL] = useState(null);
 
-  const getApiUrl = async () => {
+  const getListenerURL = async () => {
     const url = await api.getDevicesListenerURL();
-    setApiUrl(url);
+    setListenerURL(url);
   };
 
   useEffect(() => {
-    getApiUrl();
+    getListenerURL();
   }, []);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function SSEClient() {
     const devicesSSE = new EventSource(listenerURL);
 
     const updateHandler = (event) => {
-      console.log("SSE: devices update...");
+      console.log("SSE: devices update...", event.data);
       const json = event.data
         .replace(/'/g, '"')
         .replace(/True/g, "true")

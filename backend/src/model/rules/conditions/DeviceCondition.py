@@ -1,13 +1,15 @@
 from src.model.rules.conditions.Condition import Condition
 from src.controller.managers.DevicesManager import DevicesManager
 from src.controller.observer.Publisher import Publisher
-from src.controller.observer.Subscriber import Subscriber
+from src.controller.observer.subscribers.DeviceStateSubscriber import (
+    DeviceStateSubscriber,
+)
 from src.controller.observer.DeviceConnectionSubscriber import (
     DeviceConnectionSubscriber,
 )
 
 
-class DeviceCondition(Condition, Subscriber, DeviceConnectionSubscriber):
+class DeviceCondition(Condition, DeviceStateSubscriber, DeviceConnectionSubscriber):
     def __init__(self, device_id: str, data: dict) -> None:
         super().__init__("device")
         self._device_id = device_id

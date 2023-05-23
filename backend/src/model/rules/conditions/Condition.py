@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from src.controller.observer.Subscriber import Subscriber
+from src.controller.observer.subscribers.ConditionSubscriber import ConditionSubscriber
 
 
 class Condition(ABC):
@@ -8,7 +8,7 @@ class Condition(ABC):
         self._kind = kind
         self._check = False
 
-    def initialize(self, subscriber: Subscriber, data: dict = None):
+    def initialize(self, subscriber: ConditionSubscriber, data: dict = None):
         self._subscriber = subscriber
         self.configure(data)
 

@@ -14,13 +14,13 @@ from src.model.rules.conditions.Condition import Condition
 from src.model.devices.Device import Device
 from src.controller.managers.Manager import Manager
 from src.controller.managers.DevicesManager import DevicesManager
-from src.controller.observer.Subscriber import Subscriber
+from src.controller.observer.subscribers.RuleSubscriber import RuleSubscriber
 from src.controller.Logger import Logger
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 
 
-class RulesManager(Manager, Subscriber):
+class RulesManager(Manager, RuleSubscriber):
     def __init__(self, cid: str, device_manager: DevicesManager):
         super().__init__(cid)
         self._rules: dict[str, Rule] = {}

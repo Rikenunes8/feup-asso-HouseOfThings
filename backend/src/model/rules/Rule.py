@@ -3,14 +3,15 @@ from src.model.rules.conditions.Condition import Condition
 from src.model.rules.actions.Action import Action
 from src.model.devices.Device import Device
 from src.controller.managers.DevicesManager import DevicesManager
-from src.controller.observer.Subscriber import Subscriber
+from src.controller.observer.subscribers.ConditionSubscriber import ConditionSubscriber
+from src.controller.observer.subscribers.RuleSubscriber import RuleSubscriber
 from src.controller.Logger import Logger
 
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 
 
-class Rule(Subscriber):
+class Rule(ConditionSubscriber):
     def __init__(
         self,
         name: str,
@@ -89,7 +90,7 @@ class Rule(Subscriber):
         }
 
     def init_notifier(
-        self, subscriber: Subscriber, device_manager: DevicesManager
+        self, subscriber: RuleSubscriber, device_manager: DevicesManager
     ) -> None:
         self._subscriber = subscriber
         for condition in self._conditions:

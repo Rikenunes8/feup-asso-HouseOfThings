@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from src.database.DB import DB
 from src.database.CollectionTypes import Collection
 from src.controller.observer.Publisher import Publisher
-from src.controller.observer.Subscriber import Subscriber
+from src.controller.observer.subscribers.DeviceStateSubscriber import DeviceStateSubscriber
 from src.controller.observer.DeviceStateNotifier import DeviceStateNotifier
 
 
@@ -38,11 +38,11 @@ class Device(Publisher, ABC):
     def to_json(self) -> dict:
         pass
 
-    def subscribe(self, subscriber: Subscriber):
+    def subscribe(self, subscriber: DeviceStateSubscriber):
         self._notifier.subscribe(subscriber)
         self.notify(self.find())
 
-    def unsubscribe(self, subscriber: Subscriber):
+    def unsubscribe(self, subscriber: DeviceStateSubscriber):
         self._notifier.unsubscribe(subscriber)
         self.notify(self.find())
 

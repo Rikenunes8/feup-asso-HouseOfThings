@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import NewActionCard from "./NewActionCard";
 import AntDesignIcon from "react-native-vector-icons/AntDesign";
+import CreateRuleContext from "../../../contexts/CreateRuleContext";
 
 import colors from "../../../../configs/colors";
 
-export default function ActionForm({ actions }) {
+export default function ActionForm() {
+  const { removeRuleAction, ruleActions } = useContext(CreateRuleContext);
   const [actionCards, setActionCards] = useState([
-    actions
-      ? actions.map((_) => ({ id: Date.now().toString() }))
+    ruleActions
+      ? ruleActions.map((_) => ({ id: Date.now().toString() }))
       : { id: Date.now().toString() },
   ]);
 
@@ -20,6 +22,8 @@ export default function ActionForm({ actions }) {
 
   const deleteActionCard = (id) => {
     if (actionCards.length > 1) {
+      const index = actionCards.findIndex((card) => card.id == id);
+      removeRuleAction(index);
       setActionCards((prevCards) => prevCards.filter((card) => card.id !== id));
     }
   };
@@ -43,7 +47,7 @@ export default function ActionForm({ actions }) {
           index={index}
           key={`action-${card.id}`}
           card={card}
-          action={actions ? actions[index] : null}
+          action={ruleActions ? ruleActions[index] : null}
           handleDelete={() => deleteActionCard(card.id)}
           deleteDisabled={actionCards.length == 1}
         />

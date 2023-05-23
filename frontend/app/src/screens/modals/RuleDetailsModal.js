@@ -41,7 +41,6 @@ export default function RuleDetailsModal({ rule }) {
           <CreateRuleForm
             inputOnFocus={inputOnFocus}
             setInputOnFocus={setInputOnFocus}
-            rule={rule}
           />
         ) : (
           <RuleDetails rule={rule} />

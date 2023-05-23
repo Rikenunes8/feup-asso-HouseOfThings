@@ -10,14 +10,14 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import CreateRuleContext from "../../../contexts/CreateRuleContext";
 
 import colors from "../../../../configs/colors";
-import { createIconSetFromFontello } from "react-native-vector-icons";
 
-export default function ConditionForm({ conditions }) {
-  const { setRuleOperation } = useContext(CreateRuleContext);
+export default function ConditionForm() {
+  const { setRuleOperation, ruleConditions, removeRuleCondition } =
+    useContext(CreateRuleContext);
 
   const [conditionCards, setConditionCards] = useState([
-    conditions
-      ? conditions.map((_) => ({ id: Date.now().toString() }))
+    ruleConditions
+      ? ruleConditions.map((_) => ({ id: Date.now().toString() }))
       : { id: Date.now().toString() },
   ]);
 
@@ -35,6 +35,8 @@ export default function ConditionForm({ conditions }) {
 
   const deleteConditionCard = (id) => {
     if (conditionCards.length > 1) {
+      const index = conditionCards.findIndex((card) => card.id == id);
+      removeRuleCondition(index);
       setConditionCards((prevCards) =>
         prevCards.filter((card) => card.id !== id)
       );
@@ -91,7 +93,7 @@ export default function ConditionForm({ conditions }) {
             index={index}
             key={`condition-${card.id}`}
             card={card}
-            condition={conditions ? conditions[index] : null}
+            condition={ruleConditions ? ruleConditions[index] : null}
             handleDelete={() => deleteConditionCard(card.id)}
             deleteDisabled={conditionCards.length == 1}
           />

@@ -3,44 +3,45 @@ const DivisionsContext = createContext();
 
 export const DivisionsProvider = ({ children }) => {
   const [divisions, setDivisions] = useState([]);
-  const [divisionEdit, setDivisionEdit] = useState({
-    edit: false,
-    division: {},
-  });
 
-  const addDivision = (newDivision) => {
-    setDivisions([newDivision, ...divisions]);
+  const getDivision = (id) => {
+    return divisions.find((division) => division.id === id);
   };
 
-  const updateDivision = (newUpdateDivision, uid) => {
+  const addDivision = (newDivision) => {
+    setDivisions([...divisions, newDivision]);
+  };
+
+  const removeDivision = (id) => {
+    setDivisions(divisions.filter((division) => division.id !== id));
+  };
+
+  const renameDivision = (id, name) => {
     setDivisions(
       divisions.map((division) =>
-        division.uid === uid ? { ...division, ...newUpdateDivision } : division
+        division.id === id ? { ...division, name: name } : division
       )
     );
   };
 
-  const removeDivision = (uid) => {
-    setDivisions(divisions.filter((division) => division.uid !== uid));
+  const updateDivision = (newUpdateDivision, id) => {
+    setDivisions(
+      divisions.map((division) =>
+        division.id === id ? { ...division, ...newUpdateDivision } : division
+      )
+    );
   };
 
-  const editDivision = (newEditDivision) => {
-    setDivisionEdit({
-      edit: true,
-      division: { ...newEditDivision },
-    });
-  };
   return (
     <DivisionsContext.Provider
       value={{
         divisions,
         setDivisions,
+        getDivision,
         addDivision,
         removeDivision,
-        editDivision,
         updateDivision,
-        divisionEdit,
-        setDivisionEdit,
+        renameDivision,
       }}
     >
       {children}

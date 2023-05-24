@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../../../configs/colors";
+import AddDivisionModal from "../../screens/modals/AddDivisionModal";
+import ModalsContext from "../../contexts/ModalsContext";
 
-export default function DivisionCard({ division }) {
+export default function NewDivisionCard() {
+  const { setAddDivisionFormModalVisible } = useContext(ModalsContext);
+
   return (
-    <TouchableOpacity
-      style={styles.divisionCard}
-      //   onPress={() => setIsDetailsModalVisible(!isDetailsModalVisible)}
-    >
-      <Icon name={"plus"} size={35} color={colors.primaryText} />
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity
+        style={styles.divisionCard}
+        onPress={() => setAddDivisionFormModalVisible(true)}
+      >
+        <Icon name={"plus"} size={35} color={colors.primaryText} />
+      </TouchableOpacity>
+      <AddDivisionModal />
+    </>
   );
 }
 

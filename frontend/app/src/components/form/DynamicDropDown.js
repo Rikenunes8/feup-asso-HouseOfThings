@@ -16,12 +16,15 @@ export default function DynamicDropDown({
   modalProps = {},
   modalAnimationType = "fade",
   modalContentContainerStyle = {},
+  onSelectItem = () => {},
+  hasCategory = false,
 }) {
   const [open, setOpen] = React.useState(false);
+  const hasLabel = label !== undefined && label !== "";
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.field}>{label}</Text>
+    <View style={styles(hasLabel).container}>
+      {hasLabel && <Text style={styles().field}>{label}</Text>}
 
       <DropDownPicker
         open={open}
@@ -31,39 +34,62 @@ export default function DynamicDropDown({
         setValue={setValue}
         setItems={setItems}
         placeholder=""
-        dropDownContainerStyle={styles.dropdown}
-        style={styles.selector}
+        dropDownContainerStyle={styles().dropdown}
+        style={styles().selector}
+        closeIconStyle={styles().closeIcon}
+        iconContainerStyle={styles().iconContainer}
         disabled={disabled}
         showArrowIcon={showArrowIcon}
         listMode={listMode}
-        modalTitle={label}
-        modalTitleStyle={styles.modalTitle}
+        modalTitle={hasLabel ? label : "OPTIONS"}
+        modalTitleStyle={styles().modalTitle}
         modalProps={modalProps}
         modalAnimationType={modalAnimationType}
         modalContentContainerStyle={modalContentContainerStyle}
+        onSelectItem={onSelectItem}
+        categorySelectable={!hasCategory}
+        listParentLabelStyle={hasCategory ? styles().parent : null}
       />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    margin: 15,
-  },
-  dropdown: {
-    backgroundColor: colors.background,
-  },
-  selector: {
-    borderColor: colors.white,
-    borderBottomColor: colors.black,
-    borderRadius: 0,
-    backgroundColor: colors.transparent,
-  },
-  field: {
-    color: colors.primary,
-  },
-  modalTitle: {
-    color: colors.primary,
-    fontSize: 14,
-  },
-});
+const styles = (label = true) =>
+  StyleSheet.create({
+    container: {
+      margin: 15,
+      marginTop: label ? 15 : 7,
+    },
+    dropdown: {
+      backgroundColor: colors.background,
+    },
+    selector: {
+      borderColor: colors.white,
+      borderBottomColor: colors.black,
+      borderRadius: 0,
+      backgroundColor: colors.transparent,
+    },
+    closeIcon: {
+      height: 20,
+      width: 20,
+      marginTop: 10,
+      marginBottom: 5,
+    },
+    iconContainer: {
+      width: 25,
+      alignItems: "center",
+    },
+    field: {
+      color: colors.primary,
+    },
+    modalTitle: {
+      color: colors.primary,
+      fontSize: 14,
+      marginTop: 10,
+      marginBottom: 5,
+    },
+    parent: {
+      fontWeight: "bold",
+      color: colors.primary,
+    },
+  });

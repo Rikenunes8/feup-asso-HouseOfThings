@@ -20,13 +20,16 @@ import colors from "../../configs/colors";
 import api from "../api/api";
 
 export default function HomeScreen() {
-  const { devices, setDevices } = useContext(DevicesContext);
+  const { devices, setDevices, setInitialized } = useContext(DevicesContext);
   const { divisions, setDivisions } = useContext(DivisionsContext);
   const [selectedDivision, setSelectedDivision] = useState(null);
 
   const fetchDevices = async () => {
     const devs = await api.getDevices();
-    setDevices(devs);
+    setDevices(devs.filter((device) => device !== null));
+    setTimeout(() => {
+      setInitialized(true);
+    }, 200);
   };
 
   const fetchDivisions = async () => {
@@ -38,7 +41,7 @@ export default function HomeScreen() {
     let filteredDevices = devices;
     if (selectedDivision) {
       filteredDevices = filteredDevices.filter((device) =>
-        device.divisions.includes(selectedDivision)
+        device.divisions.includes(selectedDivision.id)
       );
     }
 
@@ -51,7 +54,7 @@ export default function HomeScreen() {
     return (
       <Text style={styles.sectionMessage}>
         No devices connected
-        {selectedDivision ? " in " + selectedDivision : "..."}
+        {selectedDivision ? " in " + selectedDivision.name : "..."}
       </Text>
     );
   };
@@ -83,9 +86,16 @@ export default function HomeScreen() {
               <DivisionCard
                 key={key}
                 division={division}
-                onPress={() => setSelectedDivision(division.name)}
+                onPress={() => setSelectedDivision(division)}
                 allowLongPress={true}
-                highlighted={selectedDivision === division.name}
+                highlighted={
+                  selectedDivision && selectedDivision.id === division.id
+                }
+                onDelete={() => {
+                  if (selectedDivision && selectedDivision.id === division.id) {
+                    setSelectedDivision(null);
+                  }
+                }}
               />
             ))}
             <NewDivisionCard />

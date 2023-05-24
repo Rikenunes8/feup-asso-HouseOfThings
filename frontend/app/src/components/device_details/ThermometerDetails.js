@@ -25,7 +25,9 @@ export default function ThermometerDetails({ temperature, isCold }) {
       <View style={styles().circleView}>
         <View style={styles().circle}>
           <View style={styles(isCold).circleOppacity}>
-            <Text style={styles().circleText}>{temperature}°C</Text>
+            <Text style={styles().circleText}>
+              {Number(temperature.toFixed(1))}°C
+            </Text>
           </View>
         </View>
       </View>

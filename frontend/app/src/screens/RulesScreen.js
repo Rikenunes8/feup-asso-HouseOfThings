@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,7 @@ import {
   Platform,
   View,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 
 import Header from "../components/header/Header";
@@ -16,12 +17,16 @@ import RulesContext from "../contexts/RulesContext";
 
 import colors from "../../configs/colors";
 import api from "../api/api";
+import { CreateRuleProvider } from "../contexts/CreateRuleContext";
 
 export default function RulesScreen() {
+  const [isLoading, setIsLoading] = useState(false);
   const { rules, setRules } = useContext(RulesContext);
 
   const fetchRules = async () => {
+    setIsLoading(true);
     const rules = await api.getRules();
+    setIsLoading(false);
     setRules(rules);
   };
 
@@ -36,13 +41,22 @@ export default function RulesScreen() {
       <View style={styles.body}>
         <Text style={styles.sectionHeader}>Rules</Text>
 
-        <ScrollView style={styles.scrollBody}>
-          {rules.map((rule) => (
-            <RuleCard key={rule.id} rule={rule} />
-          ))}
+        {isLoading && (
+          <ActivityIndicator
+            size={"large"}
+            color={colors.white}
+            style={styles.loadingIndicator}
+          />
+        )}
 
-          <NewRuleCard />
-        </ScrollView>
+        <CreateRuleProvider>
+          <ScrollView style={styles.scrollBody}>
+            {rules.map((rule) => (
+              <RuleCard key={rule.id} rule={rule} />
+            ))}
+            <NewRuleCard />
+          </ScrollView>
+        </CreateRuleProvider>
       </View>
     </SafeAreaView>
   );
@@ -71,5 +85,9 @@ const styles = StyleSheet.create({
   scrollBody: {
     marginBottom: 110,
     width: "100%",
+  },
+  loadingIndicator: {
+    width: "100%",
+    marginVertical: 10,
   },
 });

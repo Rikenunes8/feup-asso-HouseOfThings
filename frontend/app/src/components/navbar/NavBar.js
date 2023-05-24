@@ -3,8 +3,8 @@ import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/AntDesign";
 
-import HomeScreen from "../../screens/HomeScreen";
 import ChooseDeviceModal from "../../screens/modals/ChooseDeviceModal";
+import HomeScreenWithContext from "../../screens/HomeScreenWithContext";
 import SettingsScreen from "../../screens/SettingsScreen";
 import RulesScreen from "../../screens/RulesScreen";
 import HistoryScreen from "../../screens/HistoryScreen";
@@ -28,7 +28,7 @@ export default function NavBar() {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeScreenWithContext}
         options={{
           tabBarIcon: ({ focused }) => (
             <NavBarIcon name={"home"} focused={focused} />

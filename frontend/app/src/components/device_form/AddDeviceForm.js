@@ -1,11 +1,12 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, Dimensions } from "react-native";
 
 import DynamicTextInput from "../form/DynamicTextInput";
 import DynamicDropDown from "../form/DynamicDropDown";
 import AddDeviceContext from "../../contexts/AddDeviceContext";
 import DivisionsContext from "../../contexts/DivisionsContext";
 
+import DivisionIcon from "../division_cards/DivisionIcon";
 import colors from "../../../configs/colors";
 import utils from "../../utils/utils";
 
@@ -24,7 +25,20 @@ export default function AddDeviceForm({ inputOnFocus, setInputOnFocus }) {
 
   const [items, setItems] = useState(
     divisions.map((item) => {
-      return { label: utils.capitalize(item.name), value: item.name };
+      return {
+        label: utils.capitalize(item.name),
+        value: item.id,
+        icon: () => {
+          return (
+            <DivisionIcon
+              type="device"
+              icon={item.icon}
+              size={20}
+              color={colors.black}
+            />
+          );
+        },
+      };
     })
   );
 
@@ -86,8 +100,12 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: colors.white,
-    marginHorizontal: 28,
-    marginBottom: 25,
-    marginTop: "92.5%",
+    paddingHorizontal: 28,
+    marginHorizontal: 0,
+    paddingBottom: 25,
+    marginTop:
+      Dimensions.get("window").height *
+      (Platform.OS === "android" ? 0.5 : 0.65),
+    borderRadius: 30,
   },
 });

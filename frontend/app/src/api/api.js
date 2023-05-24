@@ -1,25 +1,17 @@
-import apiClient from "./client";
+import apiClient, { getServerAddress } from "./client";
+
+const getDevicesListenerURL = async () => {
+  return (await getServerAddress()) + "/devices/listener";
+};
 
 const getDivisions = async () => {
-  return [
-    { name: "Family Room", icon: "bedroom-icon", numDevices: 1 },
-    { name: "Tiago Room", icon: "bedroom-icon", numDevices: 1 },
-    { name: "Kitchen", icon: "kitchen-icon", numDevices: 0 },
-  ];
-  /*
   try {
-    // TODO
     const response = await apiClient.get("/divisions");
     return response.data.divisions;
   } catch (error) {
     console.error(error);
-    return [
-      { name: "Family Room", icon: "bedroom-icon", numDevices: 1 },
-      { name: "Tiago Room", icon: "bedroom-icon", numDevices: 1 },
-      { name: "Kitchen", icon: "kitchen-icon", numDevices: 0 },
-    ];
+    return [];
   }
-  */
 };
 
 const getDevices = async () => {
@@ -28,10 +20,7 @@ const getDevices = async () => {
     return response.data.devices;
   } catch (error) {
     console.error(error);
-    return [
-      { name: "Philips Bulb", divisions: ["Family Room"], enabled: true },
-      { name: "Philips Bulb", divisions: ["Tiago Room"], enabled: false },
-    ];
+    return [];
   }
 };
 
@@ -41,12 +30,120 @@ const getCategories = async () => {
     return response.data.categories;
   } catch (error) {
     console.error(error);
-    return [
-      {
-        name: "light",
-        subcategories: ["light1"],
-      },
-    ];
+    return [];
+  }
+};
+
+const getRules = async () => {
+  try {
+    const response = await apiClient.get("/rules");
+    return response.data.rules;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const getLogs = async () => {
+  try {
+    const response = await apiClient.get("/logs");
+    return response.data.logs;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const addRule = async (rule) => {
+  try {
+    const response = await apiClient.post(`/rules`, rule);
+    if (response.data.error) throw new Error(response.data.error);
+    if (response.data.rule == null) throw new Error("No rule returned");
+    return response.data.rule;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+const addDivision = async (division) => {
+  try {
+    const response = await apiClient.post(`/divisions`, division);
+    if (response.data.error) throw new Error(response.data.error);
+    if (response.data.division == null) throw new Error("No division returned");
+    return response.data.division;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+const deleteDivision = async (id) => {
+  try {
+    const response = await apiClient.delete(`/divisions/${id}`);
+    if (response.data.error) throw new Error(response.data.error);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+const addDivisionDevice = async (id, deviceId) => {
+  try {
+    const response = await apiClient.post(`/divisions/${id}/add-device`, {
+      device: deviceId,
+    });
+    if (response.data.error) throw new Error(response.data.error);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+const removeDivisionDevice = async (id, deviceId) => {
+  try {
+    const response = await apiClient.post(`/divisions/${id}/remove-device`, {
+      device: deviceId,
+    });
+    if (response.data.error) throw new Error(response.data.error);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+const renameDivision = async (id, name) => {
+  try {
+    const response = await apiClient.post(`/divisions/${id}/rename`, {
+      name: name,
+    });
+    if (response.data.error) {
+      console.error(response.data.error);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+const changeDivisionIcon = async (id, icon) => {
+  try {
+    const response = await apiClient.post(`/divisions/${id}/change-icon`, {
+      icon: icon,
+    });
+    if (response.data.error) {
+      console.error(response.data.error);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
   }
 };
 
@@ -81,12 +178,26 @@ const actionDevice = async (id, action) => {
     const response = await apiClient.post(`/devices/${id}/action`, {
       ...action,
     });
-    if (response.data.error) {
-      console.error(response.data.error);
-    }
+
+    if (response.data.error) throw Error(response.data.error);
+    return response.data.device;
   } catch (error) {
     console.error(error);
   }
+};
+
+const actionSetColorDevice = async (id, color) => {
+  return await actionDevice(id, {
+    action: "set_color",
+    data: { color: color },
+  });
+};
+
+const actionSetBrightnessDevice = async (id, brightness) => {
+  return await actionDevice(id, {
+    action: "set_brightness",
+    data: { brightness: brightness },
+  });
 };
 
 const renameDevice = async (id, name) => {
@@ -117,59 +228,59 @@ const availableDevices = async (body) => {
   }
 };
 
-const getRules = async () => {
+const executeRule = async (id) => {
   try {
-    const response = await apiClient.get("/rules");
-    return response.data.rules;
+    const response = await apiClient.post(`/rules/${id}/execute`);
+    if (response.data.error) throw Error(response.data.error);
+    return response.data.devices;
   } catch (error) {
     console.error(error);
-    return [
-      {
-        id: 1,
-        name: "Family Room Lights Off",
-        operation: "and",
-        when: [],
-        then: [
-          {
-            device_id: 1,
-            action: "turn_off",
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: "Lights Off at Night",
-        operation: "or",
-        when: [
-          {
-            kind: "schedule",
-            time: "22:30",
-            days: [1, 2, 3, 4, 5, 6, 7],
-          },
-        ],
-        then: [
-          {
-            device_id: 1,
-            action: "turn_off",
-          },
-          {
-            device_id: 2,
-            action: "turn_off",
-          },
-        ],
-      },
-    ];
+  }
+};
+
+const updateRule = async (id, rule) => {
+  try {
+    const response = await apiClient.post(`/rules/${id}/`, rule);
+    if (response.data.error) throw Error(response.data.error);
+    return response.data.rule;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const deleteRule = async (id) => {
+  try {
+    const response = await apiClient.delete(`/rules/${id}`);
+    if (response.data.error) throw Error(response.data.error);
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
   }
 };
 
 export default {
+  getDevicesListenerURL,
   getDevices,
   getCategories,
   getDivisions,
+  getRules,
+  getLogs,
+  addDivision,
   addDevice,
+  addRule,
   disconnectDevice,
   actionDevice,
+  actionSetColorDevice,
+  actionSetBrightnessDevice,
   renameDevice,
   availableDevices,
-  getRules,
+  executeRule,
+  updateRule,
+  deleteRule,
+  deleteDivision,
+  renameDivision,
+  changeDivisionIcon,
+  addDivisionDevice,
+  removeDivisionDevice,
 };

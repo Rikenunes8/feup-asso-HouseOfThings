@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Switch } from "react-native";
 
 import DevicesContext from "../../contexts/DevicesContext";
@@ -12,13 +12,26 @@ import colors from "../../../configs/colors";
 
 export default function LightBulbCard({ device }) {
   const { updateDevice } = useContext(DevicesContext);
+  const [disabled, setDisabled] = useState(false);
 
-  const onOffHandler = (isEnabled) => {
+  const onOffHandler = (isEnabled, setDisabled) => {
     console.log(`Turning ${isEnabled ? "off" : "on"} device...`);
 
-    const action = isEnabled ? "turnOff" : "turnOn";
-    api.actionDevice(device.uid, { action: action });
-    updateDevice({ on: !device.on }, device.uid);
+    setDisabled(true);
+    device.power = !device.power; // Optimistic update (may be reverted if the request fails)
+
+    const action = isEnabled ? "turn_off" : "turn_on";
+    api.actionDevice(device.uid, { action: action }).then((deviceUpdated) => {
+      setDisabled(false);
+      if (deviceUpdated != null) {
+        console.log(`Changed light status successfully`);
+        updateDevice(deviceUpdated, device.uid);
+        return;
+      }
+
+      updateDevice({ power: !device.power }, device.uid);
+      console.log("Failed to change light status");
+    });
   };
 
   return (
@@ -27,9 +40,10 @@ export default function LightBulbCard({ device }) {
       specificFeature={
         <Switch
           trackColor={{ false: colors.desactive, true: colors.active }}
-          thumbColor={device.on ? colors.white : colors.white}
-          onValueChange={() => onOffHandler(device.on)}
-          value={device.on}
+          thumbColor={device.power ? colors.white : colors.white}
+          onValueChange={() => onOffHandler(device.power, setDisabled)}
+          value={device.power}
+          disabled={disabled}
         />
       }
       modal={
@@ -37,7 +51,7 @@ export default function LightBulbCard({ device }) {
           device={device}
           icon={utils.getDeviceIcon(device.subcategory)}
           modalContent={
-            <LightBulbDetails on={device.on} handler={onOffHandler} />
+            <LightBulbDetails power={device.power} handler={onOffHandler} />
           }
         />
       }

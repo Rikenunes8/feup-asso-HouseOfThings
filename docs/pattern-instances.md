@@ -22,7 +22,7 @@ Likewise, in this document each section should describe a different pattern inst
 
 # House of Things – Pattern Instances
 
-## Database Connection: Singleton
+## Database Connection: Singleton [OUTDATED, TODO: UPDATE]
 
 ### Context
 
@@ -62,7 +62,7 @@ As an alternative to this pattern, we could encapsulate the connection to the da
 
 ---
 
-## PyMongo Abstraction: Facade
+## PyMongo Abstraction: Facade [OUTDATED, TODO: UPDATE]
 
 ### Context
 
@@ -103,40 +103,7 @@ This last problem, could be minimized by using Additional Facade classes to prev
 
 ---
 
-## Devices Adapters Creation: Simple Factory
-
-### Context
-
-The model and controller class to be instanciated when a device is added is determined by a JSON object sent by the client in the request. This leads to a problem where the those classes can't be instanciated _a priori_, so they need to be created dynamically, according to a certain input.
-
-#### Problem in Context
-
-Devices can have different communication protocols, data formats, and capabilities. When a new device is added, the server needs to know how to communicate with it and how to interpret its data. However, the server should determine the adapter to be used to communicate with the device and that is able to manage the device model in runtime according to the device's category and communication protocol sent by the client in a JSON object as strings.
-
-#### The Pattern
-
-The pattern corresponds to the existence of a factory class that has a single creational method and is able to create classes of a certain parent dynamically, according to the input.
-
-### Mapping
-
-The class [`DevicesManager`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/DevicesManager.py) is the factory class responsible to create the device adapters classes (entities that know how to communicate to a physical device and create a certain device model), according to the input received from the client. On the factory perspective, it has a single method `fabricate` that receives the configuration details of the adapter to be created and returns the device adapter class or any of its sub classes ([`DeviceAdapter`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/adapter/DeviceAdapter.py)).
-
-<div align="center">
-  <img src="./img/patterns/SimpleFactory.png" alt="SimpleFactoryPattern">
-  <p style="margin-top:10px"><i>Figure 3: HoT Simple Factory Pattern</i></p>
-</div>
-
-### Consequences
-
-This pattern has a big disadvantage, since it forces the `fabricate` method of the class `DevicesManager` to be updated every time there is a new device adapter class responsible for deal with a new device. However, there aren't many alternatives to solve this problem, since the device adapter classes are created dynamically and the factory class needs to know the classes to be created.
-
-The `Builder` pattern could be used to minimize the changes needed to be done since it would be possible to reuse the communication protocol or the device model. However, we would still not avoid the bad switch case.
-
-Despite that, there is a solution that can be further explored to solve this problem consisting on metaprograming to determine what DeviceAdapter classes could be feasible to be created from the configuration details received from the client.
-
----
-
-## Devices Creation: Factory Method
+## Devices Creation: Factory Method [OUTDATED, TODO: REMOVE]
 
 ### Context
 
@@ -164,3 +131,70 @@ The class [`DeviceAdapter`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/devel
 This pattern has a big advantage, since it allows the creation of new device models without the need to change the `DeviceAdapter` class. However, it may lead to a lot of subclasses of `DeviceAdapter` that can be hard to maintain. Since we expect to have multiple adapters for each single device model, we expect that we will not run into the parallel hierarchy problem.
 
 ---
+
+## Real Devices Interaction: Strategy
+
+### Context
+
+#### Problem in Context
+
+#### The Pattern
+
+### Mapping
+
+### Consequences
+
+---
+
+## Devices Connector Creation: Simple Factory
+
+### Context
+
+The model and controller class to be instanciated when a device is added is determined by a JSON object sent by the client in the request. This leads to a problem where those classes can't be instanciated _a priori_, so they need to be created dynamically, according to a certain input.
+
+#### Problem in Context
+
+Devices can have different communication protocols, data formats, and capabilities. When a new device is added, the server needs to know how to communicate with it and how to interpret its data. However, the server should determine the connector to be used to communicate with the device, serving as the bridge between the real device and the one represented by the application, according to the device's category and communication protocol sent by the client in a JSON object as strings.
+
+#### The Pattern
+
+The pattern corresponds to the existence of a factory class that has a single creational method and is able to create classes of a certain parent dynamically, according to the input.
+
+### Mapping
+
+The class [`DevicesManager`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/master/backend/src/controller/managers/DevicesManager.py) is the factory class responsible to create the device connector classes (entities that know how to communicate to a physical device), according to the input received from the client. On the factory perspective, it has a single method `make_connector` that receives the configuration details of the connector to be created and returns the device connector class or any of its sub classes ([`DeviceConnector`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/master/backend/src/controller/device_connectors/DeviceConnector.py)).
+
+<div align="center">
+  <img src="./img/patterns/SimpleFactory.png" alt="SimpleFactoryPattern">
+  <p style="margin-top:10px"><i>Figure 3: HoT Simple Factory Pattern</i></p>
+</div>
+
+### Consequences
+
+This pattern has a big disadvantage, since it forces the `make_connector` method of the class `DevicesManager` to be updated every time there is a new device connector class responsible for deal with a new real device. However, there aren't many alternatives to solve this problem, since the device adapter classes are created dynamically and the factory class needs to know the classes to be created.
+
+The `Builder` pattern could be used to minimize the changes needed to be done since it would be possible to reuse, at least, parts of the communication protocol like the discoverability methods or connect and disconnect protocols. However, we would still not avoid the bad switch case.
+
+Despite that, there is a solution that can be further explored to solve this problem consisting on metaprograming to determine what DeviceConnector classes could be feasible to be created from the configuration details received from the client.
+
+---
+
+## Device Structure: Decorator
+
+## Device Creation: ? TODO: is there a name for what we did?
+
+## Device Actions: Chain of Responsibility
+
+## Devics Self Updated: Observer
+
+## Device State Update: Template Method
+
+## Division Devices Management: Observer
+
+## Rule Execution: Command
+
+## Rules Different Actions: Template Method
+
+## Device Bridge To Notify Rules: Bridge And Observer
+
+## Rule Automated Execution: Observer and Chain of Responsibility

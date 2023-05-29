@@ -8,11 +8,7 @@
 * Cross-platform using React Native
 * Simple and user-friendly
 
-Native-like User Experience: React Native allows you to build mobile applications with a native-like user experience. It provides access to device-specific features and native components, resulting in an app that feels and performs like a native application.
-Cross-Platform Development: With React Native, you can write code once and deploy it on multiple platforms, such as iOS and Android. This significantly reduces development time and effort compared to building separate native apps for each platform.
-Access to Device Functionality: React Native provides access to device features like the camera, geolocation, sensors, and push notifications. This enables you to leverage the full capabilities of the device in your "House of Things" application.
-
-desired user experience 
+React Native allows you to build mobile applications with a native-like user experience. It provides access to device-specific features and native components, resulting in an app that feels and performs like a native application. It also can also provide access to device features like the camera, geolocation, sensors, and push notifications. This enables you to leverage the full capabilities of the device.
 
 ## What kind of data storage?
 * MongoDB: We have choosen to use a non-relational database, such as MongoDB, to store data like login information, rules, configurations, and other heterogeneous IoT protocol-related data. Given the diverse nature of IoT protocols and the custom rules users can create, a non-relational database offers flexibility and scalability to accommodate varying data structures and handle large volumes of data efficiently. MongoDB's document-oriented approach allows us to store and retrieve data in a schema-less manner, making it well-suited for our project's requirements.

@@ -134,15 +134,25 @@ This pattern has a big advantage, since it allows the creation of new device mod
 
 ## Real Devices Interaction: Strategy
 
-### Context
+### Problem in Context
+Each real world device has its own way of being controlled and its own way of sending data. This means that each device has its own communication protocol, including the discoverabilty, connection and action protocols. Therefore, it is necessary to have a way to interact with each device in a different way, what would lead to a lot of dependencies between the classes that interact with the devices and the classes that represent the devices.
 
-#### Problem in Context
+### The Pattern
+In order to make the device class unaware of the specific protocol used to communicate with the device, we have used the Strategy pattern. This pattern allows the device to simple know an interface that it can use to communicate with the device, and the specific protocol is implemented in a class that implements that interface. This way, the device class is not aware of the specific protocol used to communicate with the device.
 
-#### The Pattern
+Since the device connector is attached to the device class on its creation, every time the device needs to communicate with the real device, it simply calls the methods of the connector, without knowing the specific protocol used to communicate with the device, but knowing that somehow the connector will be able to communicate with the device, independently of the protocol used.
 
-### Mapping
+<div align="center">
+  <img src="./img/patterns/Strategy.svg" alt="RealDeviceInteraction_Strategy">
+  <p style="margin-top:10px"><i>Figure x: HoT Real Device Interaction - Strategy Pattern</i></p>
+</div>
+
 
 ### Consequences
+
+This pattern allows the device class to be unaware of the specific protocol used to communicate with the device, which is a big advantage, since it allows the device class to be independent of the specific protocol used to communicate with the device.
+
+Devices manager must be aware of the different strategies to be able to select a proper one for a device.
 
 ---
 
@@ -181,9 +191,45 @@ Despite that, there is a solution that can be further explored to solve this pro
 
 ## Device Structure: Decorator
 
+### Context
+
+#### Problem in Context
+
+#### The Pattern
+
+### Mapping
+
+### Consequences
+
+---
+
 ## Device Creation: ? TODO: is there a name for what we did?
 
+### Context
+
+#### Problem in Context
+
+#### The Pattern
+
+### Mapping
+
+### Consequences
+
+---
+
 ## Device Actions: Chain of Responsibility
+
+### Context
+
+#### Problem in Context
+
+#### The Pattern
+
+### Mapping
+
+### Consequences
+
+---
 
 ## Devics Self Updated: Observer
 

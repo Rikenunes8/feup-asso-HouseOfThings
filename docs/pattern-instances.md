@@ -248,9 +248,44 @@ The main disadvantage of this pattern is that the request is passed through the 
 
 ---
 
-## Devics Self Updated: Observer
+## Device Self Updated: Observer
+
+### Problem in Context
+There some devices where its state is updated by itself, like a temperature sensor that records changes not upon an action request but at every moment. Therefore, the server needs to be aware of these changes to change its state according to the new updated temperature.
+The new temperature record is capture by a specific `DeviceConnector`, that can, for instance, be a MQTT client that is subscribed to a topic where the temperature sensor publishes its new records. The problem is that this works assynchronously, so the server needs to be aware of the new record to update the device state but the `DeviceConnector` doesn't know how to update the device state directly.
+
+### The Pattern
+The solution to this problem was to use the Observer pattern. On the creation of capabilities for a device that needs to be updated by itself, the capability is subscribed to the `DeviceConnector` as it implements, undirectly,  a `Subscriber` interface while the connector extends a `Publisher`. This way, the capability is notified when the `DeviceConnector` receives a new record and can update the device state accordingly.
+
+This kind of cabality should extend the SelfUpdatedCap class, which implements the `Subscriber` interface and take the action when it is notified by the `DeviceConnector`.
+
+NOTE: The Publisher is an Abstract Class instead of an Interface because the implementation of its methods are needed in other places and this way they can be reused.
+
+<div align="center">
+  <img src="./img/patterns/Observer.svg" alt="Device Self Updated - Observer">
+  <p style="margin-top:10px"><i>Figure x: HoT Device Self Updated - Observer Pattern</i></p>
+</div>
+
+### Consequences
+The use of this pattern in this context allows the server to be aware of the changes in the device state without the need of making a request to the device to get the new state.
+
+The main advantage of this pattern is that the `DeviceConnector` stays decoupled from the capabilities, since it only needs to notify the general `Subscriber` interface.
 
 ## Device State Update: Template Method
+
+### Problem in Context
+There are some devices capabilities that need to be updated by a specific action from the user, like a light that needs to be turned on or off and others that are updated by themselves. The update of a capability state should have always the same procedure, like the update of the state in the database and the notification of the state changed to its listeners, including the SSE listening route. However, each capability has its own state and because of that it slightly varies from capability to capability.
+
+### The Pattern
+To better approach this situation we used the Template Method pattern. This pattern consists on a method that defines the steps of an algorithm, but leaves some of the steps to be implemented by the subclasses. In this case, the `update_state` method is defined in the `BaseCapability` class and, beyond the steps that are always the same, it calls the `build_state` method to get the state structure for a specific capability. This method is an abstract method that is implemented in each capability class so that everyone of them can update its state accordingly.
+
+<div align="center">
+  <img src="./img/patterns/TemplateMethod.svg" alt="Device State Update - Template Method">
+  <p style="margin-top:10px"><i>Figure x: HoT Device State Update - Template Method Pattern</i></p>
+</div>
+
+### Consequences
+The main advantage of this pattern is that it allows to define all the steps of the update of a capability state in a single method, which makes the code more readable and maintainable and it also allows to save the state in a very defined way, accoridng to the capability.
 
 ## Division Devices Management: Observer
 

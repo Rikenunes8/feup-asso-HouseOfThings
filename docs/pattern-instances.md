@@ -158,19 +158,15 @@ Devices manager must be aware of the different strategies to be able to select a
 
 ## Devices Connector Creation: Simple Factory
 
-### Context
+### Problem in Context
 
 The model and controller class to be instanciated when a device is added is determined by a JSON object sent by the client in the request. This leads to a problem where those classes can't be instanciated _a priori_, so they need to be created dynamically, according to a certain input.
 
-#### Problem in Context
-
 Devices can have different communication protocols, data formats, and capabilities. When a new device is added, the server needs to know how to communicate with it and how to interpret its data. However, the server should determine the connector to be used to communicate with the device, serving as the bridge between the real device and the one represented by the application, according to the device's category and communication protocol sent by the client in a JSON object as strings.
 
-#### The Pattern
+### The Pattern
 
 The pattern corresponds to the existence of a factory class that has a single creational method and is able to create classes of a certain parent dynamically, according to the input.
-
-### Mapping
 
 The class [`DevicesManager`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/master/backend/src/controller/managers/DevicesManager.py) is the factory class responsible to create the device connector classes (entities that know how to communicate to a physical device), according to the input received from the client. On the factory perspective, it has a single method `make_connector` that receives the configuration details of the connector to be created and returns the device connector class or any of its sub classes ([`DeviceConnector`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/master/backend/src/controller/device_connectors/DeviceConnector.py)).
 
@@ -191,13 +187,9 @@ Despite that, there is a solution that can be further explored to solve this pro
 
 ## Device Structure: Decorator
 
-### Context
+### Problem in Context
 
-#### Problem in Context
-
-#### The Pattern
-
-### Mapping
+### The Pattern
 
 ### Consequences
 
@@ -205,13 +197,9 @@ Despite that, there is a solution that can be further explored to solve this pro
 
 ## Device Creation: ? TODO: is there a name for what we did?
 
-### Context
+### Problem in Context
 
-#### Problem in Context
-
-#### The Pattern
-
-### Mapping
+### The Pattern
 
 ### Consequences
 
@@ -219,13 +207,9 @@ Despite that, there is a solution that can be further explored to solve this pro
 
 ## Device Actions: Chain of Responsibility
 
-### Context
+### Problem in Context
 
-#### Problem in Context
-
-#### The Pattern
-
-### Mapping
+### The Pattern
 
 ### Consequences
 

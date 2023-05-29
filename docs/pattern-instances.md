@@ -229,10 +229,22 @@ An other possibility to address this problem would be to use the `Composite` pat
 ## Device Actions: Chain of Responsibility
 
 ### Problem in Context
+There is a specific command (e.g. turn_on, set_color, ...) to make an action in a device but only a respective capability has the capacity to understand the request and execute it. Therefore, the server needs to know which capability is responsible for the action requested by the client and send the request to the respective capability. It would be very hard to get the correct handler _à priori_.
 
 ### The Pattern
+The solution to this problem was to use the Chain of Responsibility pattern. This pattern consists on a chain of objects - already implicit due to the Decorator structure used to represent devices - that can handle a action request. If it can handle the request, it executes the action, either way it passes the request to the next object in the chain. The request transmission is not stoped when it is handled because it needs to achieve the `ConcreteDevice` to execute the action in the real device, as only this one knows the connector. This way, the server only needs to send the request to the first object of the chain, and the request will be passed through the chain until it reaches the correct handlers.
+
+<div align="center">
+  <img src="./img/patterns/ChainOfResponsibility.svg" alt="Device Actions - Chain of Responsibility">
+  <p style="margin-top:10px"><i>Figure x: HoT Device Actions - Chain of Responsibility Pattern</i></p>
+</div>
 
 ### Consequences
+This pattern is very suitable together with the Decorator pattern already in use and explianed before, as it is already a chain of objects.
+
+The main advantage of this pattern is that the server does not need to know which capability is responsible for the action requested by the client, it only needs to send the request to the first object of the chain. This way, the server is decoupled from the capabilities and the capabilities are decoupled from each other.
+
+The main disadvantage of this pattern is that the request is passed through the chain until it reaches the final handler, which means that the request is passed through all the capabilities of the device. This can be a problem when the chain of responsibilities is long, since it is passed through all the capabilities of the device. However, we are not counting with a long chain of responsibilities, since the devices use to be simple and have a few capabilities so this issue may not be a problem on practice.
 
 ---
 

@@ -188,10 +188,31 @@ Despite that, there is a solution that can be further explored to solve this pro
 ## Device Structure: Decorator
 
 ### Problem in Context
+There are almost infinite devices in the world and each one has its own capabilities and combination of funcionalities. This means that it would be necessary to create a class for each device, which would be impossible to maintain, and would lead to a lot of duplicated code. Although, each device has a finite set of capabilities like turning it on or off, getting the environment temperature, etc, and these capabilities may be reused among different devices.
 
 ### The Pattern
+In order to solve this problem, we have used the Decorator pattern. This pattern allows us to create a class for each capability, and then combine them to create an object that has all the capabilities of the device and represent it. This way, we can reuse the capabilities among different devices, and we can create a class for each device by combining the capabilities that the device has.
+
+Beyond the device capabilities, it also has some specific attributes like the name of the device, the divisions that it belongs to and the knowledge of how to communicate with the real device (through the `DeviceConnector`). Therefore, the `Device` class is the decorator class that combines the capabilities and the concrete device (`ConcreteDevice`), the one that has the other attributes. Each capability is represented by a class that inherits from the `Device` class, the `BaseCapability`. The `BaseCapability` must contain another `Device` object, which is another capability or the concrete device. Each subclass of `BaseCapability` must be a single and small capability, like a Power capability or a Temperature capability. Each capability has its own state and its own way of being updated.
+
+The final representation of a device will consist on `BaseCapability` on top of other `BaseCapability` until the concrete device is reached. This way, the concrete device will be always reachable as well as all the capabilities of the device.
+
+<div align="center">
+  <img src="./img/patterns/Decorator.svg" alt="DeviceStructure_Decorator">
+  <p style="margin-top:10px"><i>Figure x: HoT Device Structure - Decorator Pattern</i></p>
+</div>
+
 
 ### Consequences
+This pattern allows us to reuse the capabilities among different devices and create an instance of a device from any capabilities combination.
+
+The creation of the device could become very complex, since it is necessary to create a lot of objects and combine them. However, the solution to this problem was figured out and it is explained in the next section.
+
+As a disadvantage, any `Device` is aware of the concrete device through the `get` method that, from any point of the stack of `BaseCapability`, returns the concrete device by calling the `get` method of the `Device` object that it contains until the concrete device is reached and returns itself. This makes the methods of the `ConcreteDevice` being accessible from any `BaseCapability` without overload the `Device` class with methods not needed for a simple capability class, however it makes a bidirectional dependecy, even though it is not severe.
+
+This structure ended by not being very helpfull since it made the decisions fall on a chain of responsabilities through all the `Device`s stacked very often.
+
+An other possibility to address this problem would be to use the `Composite` pattern, which associate the capabiilities to a device without making them a `Device`. It would be probably simpler, although it would not eliminate all the problems with the chain of responsabilities previously mentioned.
 
 ---
 

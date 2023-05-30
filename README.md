@@ -8,18 +8,18 @@ Welcome to the repository for the _House of Things_ project, developed in the co
 
 Our product currently permits:
 
-- Configuring the system visually with an intuitive and aesthetically pleasing mobile application.
-- Checking the system state live by opening the respective device in the application. For virtual devices, it is also possible to check its state from its virtual control panel.
-- Adding triggers and actions, so that based on a given condition the state of the devices is changed.
-- Defining as an action sending a message to a Discord server through the corresponding WebHook URL.
-- Grouping devices in divisions, which may or may not correspond to physical divisions in your house.
-- Seeing the complete logs history of every task ever performed in your house.
-- Editing the server address in the settings page, so that this information can be updated without the need to access the code.
-- Using virtual devices. Moreover, our design is ready to extend to real devices and to new kinds of devices (with different state or protocol).
-- Discovering new devices that are available.
-- Integrating easily with other systems such as Discord or Whatsapp, provided that the integration program (i.e. Discord bot) communicates with our backend with the REST API we defined.
-- Easily deploying our backend to different kinds of hardware and infrastructure thanks to Docker, as well as our backend to different kinds of platforms (IOS, Android, Web) thanks to React Native.
-- Gracious exception handling.
+    - Configuring the system visually with an intuitive and aesthetically pleasing mobile application.
+    - Checking the system state live by opening the respective device in the application. For virtual devices, it is also possible to check its state from its virtual control panel.
+    - Adding triggers and actions, so that based on a given condition the state of the devices is changed.
+    - Defining as an action sending a message to a Discord server through the corresponding WebHook URL.
+    - Grouping devices in divisions, which may or may not correspond to physical divisions in your house.
+    - Seeing the complete logs history of every task ever performed in your house.
+    - Editing the server address in the settings page, so that this information can be updated without the need to access the code.
+    - Using virtual devices. Moreover, our design is ready to extend to real devices and to new kinds of devices (with different state or protocol).
+    - Discovering new devices that are available.
+    - Integrating easily with other systems such as Discord or Whatsapp, provided that the integration program (i.e. Discord bot) communicates with our backend with the REST API we defined.
+    - Easily deploying our backend to different kinds of hardware and infrastructure thanks to Docker, as well as our backend to different kinds of platforms (IOS, Android, Web) thanks to React Native.
+    - Gracious exception handling.
 
 <!-- Enumerate and describe the features (functional requirements) that your product currently provides -->
 
@@ -56,7 +56,7 @@ Furthermore, regarding the rules it is possible to specify (besides conditions a
 
 <div align="center">
   <img src="./docs/img/usage/HoT-create_rules.png" alt="HoT_create_rules" height="500">
-  <p style="margin-top:10px"><i>Figure 2: House of Things Application - Create Rules</i></p>
+  <p style="margin-top:10px"><i>Figure 3: House of Things Application - Create Rules</i></p>
 </div>
 
 ## Getting started with development

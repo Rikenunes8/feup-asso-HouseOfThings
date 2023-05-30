@@ -34,17 +34,17 @@ The users of our software will only need to interact with the phone's applicatio
   <p style="margin-top:10px"><i>Figure 1: House of Things Application Demo</i></p>
 </div>
 
-To **add a device**, just click on the `+` button always visible in the navigation bar, choose the respective category and fill in the device form indicating which of the available devices its to connect, its name and division (if any). After having a device connected, it is possible to **change its configuration**, including renaming and even disconnecting, from its details page, which is accessed by clicking on the device's card. This card already includes some shortcuts for some of the most common actions or readings for each device.
+To **add a device**, just click on the `+` button always visible in the navigation bar, choose the respective category, and fill in the device form indicating which of the available devices is to connect, its name, and division (if any). After having a device connected, it is possible to **change its configuration**, including renaming and even disconnecting, from its details page, which is accessed by clicking on the device's card. This card already includes some shortcuts for some of the most common actions or readings for each device.
 
-On the home page, the user can also **add new divisions** and associate devices to them. To **see the details of a division**, just press and hold on the respective division, as only one click corresponds to the filter action.
+On the home page, the user can also **add new divisions** and associate devices to them. To **see the details of a division**, just press and hold on to the respective division, as only one click corresponds to the filter action.
 
-**Managing the system's rules** in done through the 2nd option in the navigation menu. The user is able to see all the list of all the rules that exist and add a new one. Regarding a rule, a user can see it in detail, edit and delete it and even run it manually.
+**Managing the system's rules** is done through the 2nd option in the navigation menu. The user can see all the list of all the rules that exist and add a new one. Regarding a rule, a user can see it in detail, edit and delete it and even run it manually.
 
 The house's **log history** is listed in the 3rd option of the navigation menu. The 4th menu option corresponds to the settings page where the user **configures the address** where the server is running.
 
 --
 
-In order to simplify the demonstration, the thermometer is excluded, however, below are some screen shots that represent the visual apperance that the user can expect when using this device, visualizing its temperature.
+To simplify the demonstration, the thermometer is excluded, however, below are some screenshots that represent the visual appearance that the user can expect when using this device, visualizing its temperature.
 
 <div align="center">
   <img src="./docs/img/usage/HoT-thermometer_hot.png" alt="HoT_thermometer_details_hot" height="500">

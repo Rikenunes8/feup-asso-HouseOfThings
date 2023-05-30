@@ -78,6 +78,8 @@ For the frontend, you may run `npm start --no-dev --minify` to quickly run the a
 - [Domain analysis](docs/domain-analysis.md) <!-- Includes description of the domain, illustrated by a domain model (UML class diagram). -->
 - [Architectural overview](docs/architectural-overview.md) <!-- Includes description of the architecture, illustrated by architectural diagrams (UML component and/or deployment diagrams). The description should enumerate and describe the quality attributes (non-functional requirements) that your product currently provides, and how does that relate to the architecture. -->
 - [Pattern instances](docs/pattern-instances.md) <!-- See sample file for further instructions -->
+- [Technology choices](docs/technology-choices.md)
+
 
 ## Group members
 

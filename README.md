@@ -27,7 +27,7 @@ Our product currently permits:
 
 <!-- Briefly explain how to use your software from the standpoint of its users. This can include a short video, one or two screenshots, and a textual explanation.-->
 
-The users of our software will only need to interact with the phone's application provided. The following video briefly explains how to use our software from the standpoint of the users, showing some of the basic operations that they can perform.
+The users of our software will only need to interact with the phone's application provided. The following video briefly explains how to use our software from the standpoint of the users, showing some of the basic operations that they can perform ([Demo](https://drive.google.com/file/d/1-I3N7qTJZbuE28FL2W4yTLCOLcXgOM1z/view?usp=sharing)) .
 
 <div align="center">
   <img src="./docs/img/usage/HoT-demo.gif" alt="Demo_HoT_Application" height="500">

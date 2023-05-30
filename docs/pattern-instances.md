@@ -189,13 +189,32 @@ An other possibility to address this problem would be to use the `Composite` pat
 
 ---
 
-## Device Creation: ? TODO: is there a name for what we did?
+## Device Creation: Reflection
 
 ### Problem in Context
+The creation of a device is a complex process since it is necessary to create a lot of objects and combine them. The objects to be created vary with the capabilities that a real device has, and consequently the list of capabilities a `DeviceConnector` provides. An obvious way to do this would be to have a switch case and for each capability create the respective object and combine them. However, this would be very hard to maintain and would not be scalable.
 
 ### The Pattern
+The solution to this problem was to use the Reflection pattern on a smaller scale. The capabilities provided by the `DeviceConnector` should have names that matches with the cabalities classes names. At the time of the device creation, as it already knows its connector, and consequently the capabilities that it provides, it can use the Reflection pattern to create the capabilities objects dynamically and combine them.
 
+The piece of code below demonstrates how a device structure is created from a list of capabilities by getting the module and class for a capability just from its name and the path to the capabilities classes package.
+
+```python
+connector: DeviceConnector = make_connector(cid, uid, config)
+capabilities: list[str] = connector.get_capabilities()
+device = ConcreteDevice(uid, config, connector, notifier)
+for capability in capabilities:
+    capability_classname = f"{capability.title().replace('_', '')}Cap"
+    capability_module = importlib.import_module(
+        f"src.model.devices.capabilities.{capability_classname}"
+    )
+    capability_class = getattr(capability_module, capability_classname)
+    device = capability_class(device, notifier, data)
+```
 ### Consequences
+This pattern allows us to create a device from a list of capabilities and it doesn't scale with the number of possible capabilities as it would happen with a switch case.
+
+It makes the code very flexible and scalable, however it has the disadvantage of not being able to check if the capability name is correct at compile time, which could lead to errors at runtime.
 
 ---
 
@@ -244,6 +263,8 @@ The use of this pattern in this context allows the server to be aware of the cha
 
 The main advantage of this pattern is that the `DeviceConnector` stays decoupled from the capabilities, since it only needs to notify the general `Subscriber` interface.
 
+---
+
 ## Device State Update: Template Method
 
 ### Problem in Context
@@ -259,6 +280,8 @@ To better approach this situation we used the Template Method pattern. This patt
 
 ### Consequences
 The main advantage of this pattern is that it allows to define all the steps of the update of a capability state in a single method, which makes the code more readable and maintainable and it also allows to save the state in a very defined way, accoridng to the capability.
+
+---
 
 ## Division Devices Management: Observer [TODO Pedro Gonçalo]
 
@@ -279,6 +302,8 @@ The solution to this situation was to use a combination of the Composite and the
 The main advantage of this pattern is that it allows to execute a rule and all its actions in a single method call, which makes the code more readable and maintainable.
 
 The composite and command patterns are known to be very compatible with each other and allow to create a very flexible and extensible code. This is the case of this pattern, since it allows to add new actions to the system without the need of changing the code of the rule execution.
+
+---
 
 ## Device Bridge To Notify Rules: Bridge And Observer
 
@@ -302,6 +327,8 @@ This means that the `DeviceStateSubscriber` is in fact subscribed to a `DeviceSt
 The main advantage of this pattern combination is that it allows to notify the `DeviceCondition` that the device state has changed without the need of polling the device state and reduce the complexity that would exists if the condition needed to be subscribed to each capability of a device individually.
 
 The bridge pattern allows to decouple the `Device` from the `DeviceStateSubscriber`s, although it acts as a middle man between the `DeviceCondition` and the actual `Publisher`, the `DeviceStateNotifier`.
+
+---
 
 ## Rule Automated Execution: Observer and Chain of Responsibility
 
@@ -327,6 +354,8 @@ The main advantage of this pattern combination is that it allows to notify the `
 This patterns also allowed to avoid the bidirectional dependecy between `Condition` and `Rule`, and between `Rule` and `RulesManager`.
 
 On the other hand, this strategy makes the code more complex and harder to understand. It also, forces the existence of subinterfaces of `ConditionSubscriber` and `RuleSubscriber` that does not add any value to the `Subscriber`. However, they are helpful to make the code more readable and to force the subscribers to be of a more specific type.
+
+---
 
 ## CRUD API: Template Model [TODO Pedro Gonçalo]
 

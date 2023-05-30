@@ -12,7 +12,7 @@ Our system focuses on simplifying the configuration process by offering a visual
 
 ### Real-time System Monitoring
 
-We prioritize providing users with live updates on the state of their home automation system. Users can access real-time information about device statuses, rules and activity logs. This enhances the user experience by enabling quick identification and resolution of potential issues or inefficiencies within the system.
+We prioritize providing users with live updates on the state of their home automation system. Users can access real-time information about device statuses, rules and activity logs. This ensures users can stay informed and take necessary actions promptly.
 
 ### Extensibility and Device Integration
 

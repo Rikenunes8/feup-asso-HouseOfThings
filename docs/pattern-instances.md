@@ -22,7 +22,7 @@ Likewise, in this document each section should describe a different pattern inst
 
 # House of Things – Pattern Instances
 
-## Database Connection: Singleton [OUTDATED, TODO: UPDATE]
+## Database Connection: Singleton [OUTDATED, TODO: UPDATE] [TODO Pedro Gonçalo]
 
 ### Context
 
@@ -292,13 +292,26 @@ The main advantage of this pattern is that it allows to define all the steps of 
 ## Rule Execution: Command & Composite
 
 ### Problem in Context
+The system has rules that can be executed manually or upon a fullfiled condition combination. The rules are composed by a set of actions that are all executed when the rule is executed. Each kind of action can have a different behavior when executed, like a notification that is sent to a user and a device action that is sent to a device. However, the skeleton can be the same since they are all an execution of a specific action.
 
 ### The Pattern
+The solution to this situation was to use a combination of the Composite and the Command patterns. Since both the rule and each of its specific action can be "executed" they can all implement the `ActionExecutor` interface. This interface has a single method, `execute` that is called when the instance should execute its action. Since the rule is composed by a set of actions, it can be represented by a composite of `ActionExecutor` instances. This way, when the rule is executed, it calls the `execute` method of each of its actions, which are executed accordingly.
+
+<div align="center">
+  <img src="./img/patterns/CommandComposite.svg" alt="Rule Execution - Command & Composite">
+  <p style="margin-top:10px"><i>Figure x: HoT Rule Execution - Command & Composite Pattern</i></p>
+</div>
 
 ### Consequences
+The main advantage of this pattern is that it allows to execute a rule and all its actions in a single method call, which makes the code more readable and maintainable.
+
+The composite and command patterns are known to be very compatible with each other and allow to create a very flexible and extensible code. This is the case of this pattern, since it allows to add new actions to the system without the need of changing the code of the rule execution.
+
 
 ## Rules Different Actions: Template Method
 
 ## Device Bridge To Notify Rules: Bridge And Observer
 
 ## Rule Automated Execution: Observer and Chain of Responsibility
+
+## API: template model [TODO Pedro Gonçalo]

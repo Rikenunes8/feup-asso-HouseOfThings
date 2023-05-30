@@ -31,9 +31,7 @@ The HoT system contains the following components:
 
 ## Activity Diagram
 
-The activity diagram describing how our system behaves is illustrated below.
-
-#TODO - divided by main concept
+The activity diagram describing how our system behaves is illustrated below. To ease the readibility, it was divided by 4 main concepts: devices, divisions, rules and logs.
 
 <div align="center">
   <img src="./img/HoT-activity_diagram_devices.svg" alt="UML_Activity_Diagram_Devices">
@@ -68,12 +66,12 @@ The deployment diagram describing how our system is deployed is illustrated belo
 
 The HoT system contains the following nodes and respective components:
 
-#TODO
-- **Cross-Platform Application**: provides a user interface for users to interact with the system, allowing them to send requests and receive feedback.
-- **Server**: handles requests via REST API and sends and receives messages to and from the MQTT broker to interact with the devices, which can include retrieving data from sensors or sending commands to actuators. Also retrieves or updates data from the database as needed.
-- **MQTT Broker**: serves as the middleman between the server and the devices, facilitating communication between the two.
-- **Devices**: generate data that is transmitted to the server, e.g., sensors that detect changes in the physical environment, such as temperature or humidity or actuators that can trigger actions in response to commands from the server. May be physical or virtual.
-- **Database**: stores all the necessary data.
+- **Smart Phone**: mobile device (Android and/or iOS) that has the `HoT - House of Things` application installed.
+- **Server**: machine that has the server running with which the phone can communicate with to request data.
+- **Database**: machine that has allocated the storage database. The server must establish a connection to it.
+- **MQTT Broker** (public): facilitates communication between the server and devices using the publish-subscribe (PUB-SUB) messaging protocol.
+- **Devices**: virtual and physical IoT devices with a specific communication protocol.
+
 
 <!-- ## Several subsystems and how they are connected
 

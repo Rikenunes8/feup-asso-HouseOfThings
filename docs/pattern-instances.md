@@ -289,7 +289,13 @@ The main advantage of this pattern is that it allows to define all the steps of 
 
 ## Division Devices Management: Observer
 
-## Rule Execution: Command
+## Rule Execution: Command & Composite
+
+### Problem in Context
+
+### The Pattern
+
+### Consequences
 
 ## Rules Different Actions: Template Method
 

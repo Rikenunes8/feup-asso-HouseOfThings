@@ -28,7 +28,7 @@ The system supports the discoverability of new devices, allowing users to easily
 
 ### Easy Integration with Communication Systems
 
-We prioritize seamless integration with well-known communication systems, such as Discord. This integration allows users to receive notifications through this communication channel. This enhances user convenience and extends the functionality of the system beyond the dedicated user interface.
+We prioritize seamless integration with well-known communication systems, such as Discord. This integration allows users to receive notifications through this communication channel on rule execution, if required. This enhances user convenience and extends the functionality of the system beyond the user interface.
 
 
 ## Quality Attributes

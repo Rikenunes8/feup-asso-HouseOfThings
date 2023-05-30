@@ -62,13 +62,11 @@ As an alternative to this pattern, we could encapsulate the connection to the da
 
 ---
 
-## PyMongo Abstraction: Facade [OUTDATED, TODO: UPDATE]
+## PyMongo Abstraction: Facade
 
-### Context
+### Problem in Context
 
 PyMongo is the Python distribution containing tools for working with MongoDB and it offers a large amount of tools not necessary for the development of House of Things.
-
-#### Problem in Context
 
 We start using PyMongo to interact with the MongoDB database on the server side of the House of Things. The library offers many tools, since the simpler ones, like creating collections and inserting documents, until the most complex ones, like indexes and replication.
 However, the use of the library in the House of Things project is very restrict and focused on the basic operations of a database and having so many operations available can be messy.
@@ -76,20 +74,18 @@ Beyond that, it is needed to ensure the connection between the aplication and th
 
 These two problems together can lead to a greater difficulty in development and make the code become more confusing and complex.
 
-#### The Pattern
+### The Pattern
 
 We have selected the Facade pattern to solve this problem, since it offers the following advantages:
 
 - provides a single way to connect the database and avoid it to be called everytime it is need to make a database operation.
 - provides specific methods, only the ones required for the context of House Of Things, abstracting the entire application of the PyMongo library but a single a class.
 
-### Mapping
-
-The class [`DB`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/database/DB.py) is the Facade class which depends on **PyMongo**.
-This class is associated with every class that needs to access the Database ([`Device`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/model/devices/Device.py), [`Rule`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/model/rules/Rule.py), [`HoT`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/HoT.py#L82))
+The class [`DBCollection`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/master/backend/src/database/DBCollection.py) is the Facade class which depends on **PyMongo**.
+This class is associated with every class that needs to access the Database ([`Device`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/master/backend/src/model/devices/Device.py), [`Rule`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/master/backend/src/model/rules/Rule.py), [`Division`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/master/backend/src/model/Division.py), etc.)
 
 <div align="center">
-  <img src="./img/patterns/Facade.png" alt="FacadePattern">
+  <img src="./img/patterns/Facade.svg" alt="FacadePattern">
   <p style="margin-top:10px"><i>Figure 2: HoT Facade Pattern</i></p>
 </div>
 
@@ -97,13 +93,11 @@ This class is associated with every class that needs to access the Database ([`D
 
 This pattern revealed to be very useful to reduce the quantity of code needed to interact with the database and keep them consistent. It allowed to have a single spot where the schema of the documents in the database are defined for each collection. It also allowed to have a dozen of simple and concise methods instead of having to choose between many more by choosing to interact directly with PyMongo.
 
-This pattern also have downsides like being a "god instance", in which every class that accesses the database must know. It also violates the Single Responsability Principle since it knows how to interact with device, categories, rules, divisions and all other future collections in the database.
+This pattern also have downsides like being a "god instance", in which every class that accesses the database must know. 
 
-This last problem, could be minimized by using Additional Facade classes to prevent polluting a single facade with unrelated features.
+As it was generalized to be able to access different collections with similar methods the Single Responsability Principle  was not violated, even though it knows how to interact with device, categories, rules, divisions and all other future collections in the database.
 
 ---
-
-
 
 ## Real Devices Interaction: Strategy
 
@@ -144,7 +138,7 @@ The pattern corresponds to the existence of a factory class that has a single cr
 The class [`DevicesManager`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/master/backend/src/controller/managers/DevicesManager.py) is the factory class responsible to create the device connector classes (entities that know how to communicate to a physical device), according to the input received from the client. On the factory perspective, it has a single method `make_connector` that receives the configuration details of the connector to be created and returns the device connector class or any of its sub classes ([`DeviceConnector`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/master/backend/src/controller/device_connectors/DeviceConnector.py)).
 
 <div align="center">
-  <img src="./img/patterns/SimpleFactory.png" alt="SimpleFactoryPattern">
+  <img src="./img/patterns/SimpleFactory.svg" alt="SimpleFactoryPattern">
   <p style="margin-top:10px"><i>Figure 3: HoT Simple Factory Pattern</i></p>
 </div>
 

@@ -36,11 +36,7 @@ We prioritize seamless integration with well-known communication systems, such a
 Our product prioritizes the following quality attributes to ensure a superior user experience and system performance:
 
 - Usability: The system offers an intuitive and user-friendly interface, simplifying the configuration and management processes for users of all technical backgrounds.
-
 - Interoperability: The system is designed to support a wide range of devices and communication protocols, facilitating seamless integration and compatibility with various manufacturers and technologies.
-
 - Scalability: The system is capable of expanding and accommodating a growing number of devices and rules without sacrificing performance or user experience.
-
 - Flexibility: The system offers customization options, such as division creation for grouping different devices, allowing users to tailor their home automation network to their specific needs and preferences.
-
 - Maintainability: We emphasize our clean and modular code architecture and comprehensive documentation to facilitate system maintenance and enable developers to extend and enhance the system as needed.

@@ -306,10 +306,27 @@ The bridge pattern allows to decouple the `Device` from the `DeviceStateSubscrib
 ## Rule Automated Execution: Observer and Chain of Responsibility
 
 ### Problem in Context
+Besides the manual execution of rules, the system also has the capability of automatically executing rules when a condition is verified. This means that the system needs to be aware of the changes in the device state to verify if a condition is fullfiled or not in the case of a `DeviceCondition` or the alarm received when a `ScheduleCondition` is triggered. However, the `Rule` and consequently its actions, should only be exxecuted if all the conditions are met in the `AND` operation case or if at least one of the conditions is met in the `OR` operation case.
+
+As the trigger happens on the condition level, the `Rule` should be notified when a condition is met in order to verify if the rule can be executed or not. However, the `Rule` is not capable of self executing, since it needs some external properties to execute, like the `DeviceManager` in order to get a device instance and take an action on it, for example in the case of a `DeviceAction`. Therefore, the `Rule` should notify the `RuleManager` that it can be executed and the `RulesManager` should execute the rule.
 
 ### The Pattern
 
+The solution to this problem was to use a combination of the Observer and Chain of Responsibility patterns. Excluding the manual execution, the rule execution starts always from a condition trigger. As the rule already contains the conditions and the trigger information should be passed backwards until the top, each `Rule` implements a `ConditionSubscriber` and each condition has its own `ConditionSubscriber` that it is responsible to notify when the condition is met. In the same way, each `Rule` as a `RuleSubscriber`, implemented by the `RulesManager`, that is notified when the rule must be executed.
+
+Before notify the `Rule`, the condition verifies if it is met or not. If it meets the condition, it notifies the `Rule` which by its turn notifies the `RulesManager` only if all the conditions associated are met or at least, depending on the operation value of the rule. The `RulesManager` then executes the rule passing it the `DevicesManager` instance that is needed to execute some of the actions of the rule. This is clearly a chain of responsibility.
+
+<div align="center">
+  <img src="./img/patterns/ObserverChainResponsibility.svg" alt="Rule Automated Execution - Observer and Chain of Responsibility">
+  <p style="margin-top:10px"><i>Figure x: HoT Rule Automated Execution - Observer and Chain of Responsibility Pattern</i></p>
+</div>
+
 ### Consequences
+The main advantage of this pattern combination is that it allows to notify the `Rule` that it can be executed without the need of polling the conditions.
+
+This patterns also allowed to avoid the bidirectional dependecy between `Condition` and `Rule`, and between `Rule` and `RulesManager`.
+
+On the other hand, this strategy makes the code more complex and harder to understand. It also, forces the existence of subinterfaces of `ConditionSubscriber` and `RuleSubscriber` that does not add any value to the `Subscriber`. However, they are helpful to make the code more readable and to force the subscribers to be of a more specific type.
 
 ## CRUD API: Template Model [TODO Pedro Gonçalo]
 

@@ -103,34 +103,7 @@ This last problem, could be minimized by using Additional Facade classes to prev
 
 ---
 
-## Devices Creation: Factory Method [OUTDATED, TODO: REMOVE]
 
-### Context
-
-There are different models that can be created according to a specific input. Each model has its specific state and behavior.
-
-#### Problem in Context
-
-Devices can have different data formats, and capabilities. When a new device is added, the server needs to create the model of the device in order to save it in the database. This leads to a problem where each device model needs to be treated in a different way and with a different data structure.
-
-#### The Pattern
-
-The pattern **Factory Method** is a creational pattern that provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created. The pattern is used to create objects without specifying the exact class to create, while this responsability is delegated to the Factory subclasses.
-
-### Mapping
-
-The class [`DeviceAdapter`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/adapter/DeviceAdapter.py) is the Creator/Factory class that as an abstract method `create_model` that is implemented by the subclasses of `DeviceAdapter` ([`LightBulbPiAdapter`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/adapter/LightBulbPiAdapter.py), [`ThermometerPiAdapter`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/adapter/ThermometerPiAdapter.py), and others). In this context the factory method is the `create_model` method and it does not returns the model class as most known one, but instead it assigns it to the `model` attribute of the `DeviceAdapter` class to be used later in the flow.
-
-<div align="center">
-  <img src="./img/patterns/FactoryMethod.png" alt="FactoryMethodPattern">
-  <p style="margin-top:10px"><i>Figure 4: HoT Factory Method Pattern</i></p>
-</div>
-
-### Consequences
-
-This pattern has a big advantage, since it allows the creation of new device models without the need to change the `DeviceAdapter` class. However, it may lead to a lot of subclasses of `DeviceAdapter` that can be hard to maintain. Since we expect to have multiple adapters for each single device model, we expect that we will not run into the parallel hierarchy problem.
-
----
 
 ## Real Devices Interaction: Strategy
 
@@ -287,7 +260,7 @@ To better approach this situation we used the Template Method pattern. This patt
 ### Consequences
 The main advantage of this pattern is that it allows to define all the steps of the update of a capability state in a single method, which makes the code more readable and maintainable and it also allows to save the state in a very defined way, accoridng to the capability.
 
-## Division Devices Management: Observer
+## Division Devices Management: Observer [TODO Pedro Gonçalo]
 
 ## Rule Execution: Command & Composite
 
@@ -307,11 +280,65 @@ The main advantage of this pattern is that it allows to execute a rule and all i
 
 The composite and command patterns are known to be very compatible with each other and allow to create a very flexible and extensible code. This is the case of this pattern, since it allows to add new actions to the system without the need of changing the code of the rule execution.
 
-
-## Rules Different Actions: Template Method
-
 ## Device Bridge To Notify Rules: Bridge And Observer
+
+### Problem in Context
+The rules can be executed upon the verification of a certain composition of conditions and a type of these conditions is a `DeviceCondition` that is verified according to a device state. Therefore, this kind of condition should be aware of the changes in the device state to verify if the condition is fullfiled or not. However, the `DeviceCondition` doesn't have direct access to the device state and it would also be preferable to avoid polling the device state to check this.
+
+A simple observer pattern would not be enough to solve this problem since a `DeviceCondition` should subscribe a `Device` but, since the device instance is a composition of capabilities and when a capability is updated just the self knows about the update of its state, this would not be enough to notify the `DeviceCondition` that the device state has changed.
+
+### The Pattern
+
+The solution to this problem was to use a combination of the Bridge and Observer patterns. The `DeviceCondition` implements a `DeviceStateSubscriber` interface that thinks to be subscribed to a `Device` (a subclass of a `Publisher`). However, for the condition to be subscribed to the whole device and not just some capabilities it is demanded that each `Device` that composes a device instance has the same `DeviceStateNotifier` instance. This way, when a capability updates its state, it notifies the `DeviceStateNotifier` instance that notifies the `DeviceCondition` that the device state has changed.
+
+This means that the `DeviceStateSubscriber` is in fact subscribed to a `DeviceStateNotifier`, although it thinks it is subscribed to a `Device`, and it will be notified on every change of the device as a whole since every capability redirects the notify action to the notifier common to all the capabilities of the device. 
+
+<div align="center">
+  <img src="./img/patterns/BridgeObserver.svg" alt="Device Bridge To Notify Rules - Bridge And Observer">
+  <p style="margin-top:10px"><i>Figure x: HoT Device Bridge To Notify Rules - Bridge And Observer Pattern</i></p>
+</div>
+
+### Consequences
+The main advantage of this pattern combination is that it allows to notify the `DeviceCondition` that the device state has changed without the need of polling the device state and reduce the complexity that would exists if the condition needed to be subscribed to each capability of a device individually.
+
+The bridge pattern allows to decouple the `Device` from the `DeviceStateSubscriber`s, although it acts as a middle man between the `DeviceCondition` and the actual `Publisher`, the `DeviceStateNotifier`.
 
 ## Rule Automated Execution: Observer and Chain of Responsibility
 
-## API: template model [TODO Pedro Gonçalo]
+### Problem in Context
+
+### The Pattern
+
+### Consequences
+
+## CRUD API: Template Model [TODO Pedro Gonçalo]
+
+
+<!-- ## Devices Creation: Factory Method [OUTDATED, TODO: REMOVE]
+
+### Context
+
+There are different models that can be created according to a specific input. Each model has its specific state and behavior.
+
+#### Problem in Context
+
+Devices can have different data formats, and capabilities. When a new device is added, the server needs to create the model of the device in order to save it in the database. This leads to a problem where each device model needs to be treated in a different way and with a different data structure.
+
+#### The Pattern
+
+The pattern **Factory Method** is a creational pattern that provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created. The pattern is used to create objects without specifying the exact class to create, while this responsability is delegated to the Factory subclasses.
+
+### Mapping
+
+The class [`DeviceAdapter`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/adapter/DeviceAdapter.py) is the Creator/Factory class that as an abstract method `create_model` that is implemented by the subclasses of `DeviceAdapter` ([`LightBulbPiAdapter`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/adapter/LightBulbPiAdapter.py), [`ThermometerPiAdapter`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/adapter/ThermometerPiAdapter.py), and others). In this context the factory method is the `create_model` method and it does not returns the model class as most known one, but instead it assigns it to the `model` attribute of the `DeviceAdapter` class to be used later in the flow.
+
+<div align="center">
+  <img src="./img/patterns/FactoryMethod.png" alt="FactoryMethodPattern">
+  <p style="margin-top:10px"><i>Figure 4: HoT Factory Method Pattern</i></p>
+</div>
+
+### Consequences
+
+This pattern has a big advantage, since it allows the creation of new device models without the need to change the `DeviceAdapter` class. However, it may lead to a lot of subclasses of `DeviceAdapter` that can be hard to maintain. Since we expect to have multiple adapters for each single device model, we expect that we will not run into the parallel hierarchy problem.
+
+--- -->

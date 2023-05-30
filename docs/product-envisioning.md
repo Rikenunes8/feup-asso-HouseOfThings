@@ -40,3 +40,6 @@ Our product prioritizes the following quality attributes to ensure a superior us
 - Scalability: The system is capable of expanding and accommodating a growing number of devices and rules without sacrificing performance or user experience.
 - Flexibility: The system offers customization options, such as division creation for grouping different devices, allowing users to tailor their home automation network to their specific needs and preferences.
 - Maintainability: We emphasize our clean and modular code architecture and comprehensive documentation to facilitate system maintenance and enable developers to extend and enhance the system as needed.
+- Portability: Our backend can be easily deployed our backend to different kinds of hardware and infrastructure thanks to Docker, from simple raspberry pi's to cloud servers.
+- Crossplatform: Our application can be used in different kinds of platforms (IOS, Android, Web).
+- Fault tolerance: Our system is designed to be fault tolerant, so in case of a failure in the service or one of the devices, data lost is minimized to the extent reasonable.

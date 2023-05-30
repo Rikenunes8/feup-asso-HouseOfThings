@@ -8,7 +8,7 @@
 * Cross-platform using React Native
 * Simple and user-friendly
 
-React Native allows you to build mobile applications with a native-like user experience. It provides access to device-specific features and native components, resulting in an app that feels and performs like a native application. It also can also provide access to device features like the camera, geolocation, sensors, and push notifications. This enables you to leverage the full capabilities of the device.
+React Native allows you to build mobile applications with a native-like user experience. It provides access to device-specific features and native components, resulting in an app that feels and performs like a native application. It also can provide a superior user experience compared to web applications, leveraging the full potential of mobile devices for enhanced functionality and interactivity in the "House of Things" application.
 
 ## What kind of data storage?
 * MongoDB: We have choosen to use a non-relational database, such as MongoDB, to store data like login information, rules, configurations, and other heterogeneous IoT protocol-related data. Given the diverse nature of IoT protocols and the custom rules users can create, a non-relational database offers flexibility and scalability to accommodate varying data structures and handle large volumes of data efficiently. MongoDB's document-oriented approach allows us to store and retrieve data in a schema-less manner, making it well-suited for our project's requirements.
@@ -19,4 +19,4 @@ React Native allows you to build mobile applications with a native-like user exp
 * RESTful APIs (Representational State Transfer) were chosen for communication between the frontend and backend components of the system. RESTful APIs provide a standardized and scalable approach for communication over HTTP. They enable the frontend to make HTTP requests to specific endpoints on the backend, allowing data retrieval, updates, and other operations.
 
 ## Additional Choices:
-* Virtual device, since they offer the convenience of quick and easy creation, enabling faster testing and development cycles. By eliminating the need for physical hardware, virtual devices significantly reduce costs associated with device acquisition and maintenance. Moreover, they facilitate device diversity by allowing emulation of various configurations, operating systems, and screen sizes. This ensures that your application functions seamlessly across different devices, ultimately delivering an exceptional user experience.
+* Virtual devices, since they offer the convenience of quick and easy creation, enabling faster testing and development cycles. By eliminating the need for physical hardware, virtual devices significantly reduce costs associated with device acquisition and maintenance.

@@ -2,8 +2,6 @@
 
 Welcome to the repository for the _House of Things_ project, developed in the context of the [ASSO/2022-23 course](https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=501938). Our product is a software system to monitor, control, and manage home automation devices and activities. We provide a user-friendly mobile frontend, as well as a robust backend capable of operating in contexts with multiple devices, including sensors, actuators and hubs.
 
-<!-- Explain here in one or two sentences what are the goals of your product. -->
-
 ## Features and usage
 
 Our product currently permits:
@@ -17,15 +15,11 @@ Our product currently permits:
 - Editing the server address in the settings page, so that this information can be updated without the need to access the code.
 - Using virtual devices. Moreover, our design is ready to extend to real devices and to new kinds of devices (with different state or protocol).
 - Discovering new devices that are available.
-- Integrating easily with other systems such as Discord or Whatsapp, provided that the integration program (i.e. Discord bot) communicates with our backend with the REST API we defined.
+- Integrating easily with other systems such as Discord.
 - Easily deploying our backend to different kinds of hardware and infrastructure thanks to Docker, as well as our backend to different kinds of platforms (IOS, Android, Web) thanks to React Native.
 - Gracious exception handling.
 
-<!-- Enumerate and describe the features (functional requirements) that your product currently provides -->
-
 ### Usage
-
-<!-- Briefly explain how to use your software from the standpoint of its users. This can include a short video, one or two screenshots, and a textual explanation.-->
 
 The users of our software will only need to interact with the phone's application provided. The following video briefly explains how to use our software from the standpoint of the users, showing some of the basic operations that they can perform ([Demo](https://drive.google.com/file/d/1-I3N7qTJZbuE28FL2W4yTLCOLcXgOM1z/view?usp=sharing)) .
 
@@ -61,8 +55,6 @@ Furthermore, regarding the rules it is possible to specify (besides conditions a
 
 ## Getting started with development
 
-<!-- Very briefly explain how to build, run the tests and run the application itself in a development environment. -->
-
 In order to run the application, you need to run both the frontend and the backend. For the backend, you may use docker with the commands `docker-compose build` to build and `docker-compose up` to run in the `backend` folder. For more information, namely regarding environment variables, see the [backend README](backend/README.md). For the frontend you may install dependencies with `npm install` and run with the command `npm start` in the `frontend` folder, and then scan the QR code in the console with your phone (provided you have installed [ExpoGo](https://expo.dev/client)). You may need to change the server IP address to connect to the backend in the `frontend/.env` file. For more information, see the [frontend README](frontend/README.md).
 
 You may want to connect virtual devices to test the application. For running virtual devices, refer to the [devices README](devices/README.md).
@@ -75,10 +67,10 @@ For the frontend, you may run `npm start --no-dev --minify` to quickly run the a
 
 ## Design and architecture
 
-- [Product Envisioning](docs/product-envisioning.md) <!-- Includes the main product themes and quality attributes clearly identified and described. -->
-- [Domain analysis](docs/domain-analysis.md) <!-- Includes description of the domain, illustrated by a domain model (UML class diagram). -->
-- [Architectural overview](docs/architectural-overview.md) <!-- Includes description of the architecture, illustrated by architectural diagrams (UML component and/or deployment diagrams). The description should enumerate and describe the quality attributes (non-functional requirements) that your product currently provides, and how does that relate to the architecture. -->
-- [Pattern instances](docs/pattern-instances.md) <!-- See sample file for further instructions -->
+- [Product Envisioning](docs/product-envisioning.md)
+- [Domain analysis](docs/domain-analysis.md)
+- [Architectural overview](docs/architectural-overview.md)
+- [Pattern instances](docs/pattern-instances.md)
 - [Technology choices](docs/technology-choices.md)
 
 ## Group members

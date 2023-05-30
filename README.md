@@ -42,7 +42,7 @@ On the home page, the user can also **add new divisions** and associate devices 
 
 The house's **log history** is listed in the 3rd option of the navigation menu. The 4th menu option corresponds to the settings page where the user **configures the address** where the server is running.
 
---
+---
 
 To simplify the demonstration, the thermometer is excluded, however, below are some screenshots that represent the visual appearance that the user can expect when using this device, visualizing its temperature.
 

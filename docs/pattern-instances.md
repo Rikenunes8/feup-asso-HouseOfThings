@@ -1,6 +1,6 @@
 # House of Things – Pattern Instances
 
-## Database Connection: Singleton [OUTDATED, TODO: UPDATE] [TODO Pedro Gonçalo]
+## Database Connection: Singleton
 
 ### Context
 
@@ -26,7 +26,7 @@ Due to the specificities of Python, namely the fact that there is no way to decl
 The class [`DB`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/database/DB.py) is the Singleton, of which only one instance may exist. Its metaclass, [`DBMeta`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/database/DB.py) overrides the `__call__` method, which takes the role of getting the instance to `DB`, creating one if needed (tradicionally, this role would have been fulfilled by a `getInstance()` method in the Singleton class). Overriding the `__call__` method of the metaclass also has the side effect of hiding the constructor of the Singleton class, which is a good thing, since it effectively has a similar effect to making the constructor private. The metaclass also holds the set of instances of Singleton classes that use it as a metaclass. In our current implementation, only `DB` uses it as its metaclass, so there may only be one instance.
 
 <div align="center">
-  <img src="./img/patterns/Singleton.png" alt="SingletonPattern">
+  <img src="./img/patterns/Singleton.svg" alt="SingletonPattern">
   <p style="margin-top:10px"><i>Figure 1: HoT Singleton Pattern</i></p>
 </div>
 
@@ -89,7 +89,7 @@ Since the device connector is attached to the device class on its creation, ever
 
 <div align="center">
   <img src="./img/patterns/Strategy.svg" alt="RealDeviceInteraction_Strategy">
-  <p style="margin-top:10px"><i>Figure x: HoT Real Device Interaction - Strategy Pattern</i></p>
+  <p style="margin-top:10px"><i>Figure 3: HoT Real Device Interaction - Strategy Pattern</i></p>
 </div>
 
 
@@ -117,7 +117,7 @@ The class [`DevicesManager`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/mast
 
 <div align="center">
   <img src="./img/patterns/SimpleFactory.svg" alt="SimpleFactoryPattern">
-  <p style="margin-top:10px"><i>Figure 3: HoT Simple Factory Pattern</i></p>
+  <p style="margin-top:10px"><i>Figure 4: HoT Simple Factory Pattern</i></p>
 </div>
 
 ### Consequences
@@ -144,7 +144,7 @@ The final representation of a device will consist on `BaseCapability` on top of 
 
 <div align="center">
   <img src="./img/patterns/Decorator.svg" alt="DeviceStructure_Decorator">
-  <p style="margin-top:10px"><i>Figure x: HoT Device Structure - Decorator Pattern</i></p>
+  <p style="margin-top:10px"><i>Figure 5: HoT Device Structure - Decorator Pattern</i></p>
 </div>
 
 
@@ -155,19 +155,19 @@ The creation of the device could become very complex, since it is necessary to c
 
 As a disadvantage, any `Device` is aware of the concrete device through the `get` method that, from any point of the stack of `BaseCapability`, returns the concrete device by calling the `get` method of the `Device` object that it contains until the concrete device is reached and returns itself. This makes the methods of the `ConcreteDevice` being accessible from any `BaseCapability` without overload the `Device` class with methods not needed for a simple capability class, however it makes a bidirectional dependecy, even though it is not severe.
 
-This structure ended by not being very helpfull since it made the decisions fall on a chain of responsabilities through all the `Device`s stacked very often.
+This structure ended by not being very helpful since it made the decisions fall on a chain of responsabilities through all the `Device`s stacked very often.
 
-An other possibility to address this problem would be to use the `Composite` pattern, which associate the capabiilities to a device without making them a `Device`. It would be probably simpler, although it would not eliminate all the problems with the chain of responsabilities previously mentioned.
+An other possibility to address this problem would be to use the `Composite` pattern, which associate the capabilities to a device without making them a `Device`. It would be probably simpler, although it would not eliminate all the problems with the chain of responsabilities previously mentioned.
 
 ---
 
-## Device Creation: Reflection
+## Device Creation
 
 ### Problem in Context
 The creation of a device is a complex process since it is necessary to create a lot of objects and combine them. The objects to be created vary with the capabilities that a real device has, and consequently the list of capabilities a `DeviceConnector` provides. An obvious way to do this would be to have a switch case and for each capability create the respective object and combine them. However, this would be very hard to maintain and would not be scalable.
 
 ### The Pattern
-The solution to this problem was to use the Reflection pattern on a smaller scale. The capabilities provided by the `DeviceConnector` should have names that matches with the cabalities classes names. At the time of the device creation, as it already knows its connector, and consequently the capabilities that it provides, it can use the Reflection pattern to create the capabilities objects dynamically and combine them.
+The solution to this problem was to use the python's reflection features on a smaller scale. The capabilities provided by the `DeviceConnector` should have names that matches with the cabalities classes names. At the time of the device creation, as it already knows its connector, and consequently the capabilities that it provides, it can create the capabilities objects dynamically and combine them.
 
 The piece of code below demonstrates how a device structure is created from a list of capabilities by getting the module and class for a capability just from its name and the path to the capabilities classes package.
 
@@ -200,7 +200,7 @@ The solution to this problem was to use the Chain of Responsibility pattern. Thi
 
 <div align="center">
   <img src="./img/patterns/ChainOfResponsibility.svg" alt="Device Actions - Chain of Responsibility">
-  <p style="margin-top:10px"><i>Figure x: HoT Device Actions - Chain of Responsibility Pattern</i></p>
+  <p style="margin-top:10px"><i>Figure 6: HoT Device Actions - Chain of Responsibility Pattern</i></p>
 </div>
 
 ### Consequences
@@ -227,7 +227,7 @@ NOTE: The Publisher is an Abstract Class instead of an Interface because the imp
 
 <div align="center">
   <img src="./img/patterns/Observer.svg" alt="Device Self Updated - Observer">
-  <p style="margin-top:10px"><i>Figure x: HoT Device Self Updated - Observer Pattern</i></p>
+  <p style="margin-top:10px"><i>Figure 7: HoT Device Self Updated - Observer Pattern</i></p>
 </div>
 
 ### Consequences
@@ -247,7 +247,7 @@ To better approach this situation we used the Template Method pattern. This patt
 
 <div align="center">
   <img src="./img/patterns/TemplateMethod.svg" alt="Device State Update - Template Method">
-  <p style="margin-top:10px"><i>Figure x: HoT Device State Update - Template Method Pattern</i></p>
+  <p style="margin-top:10px"><i>Figure 8: HoT Device State Update - Template Method Pattern</i></p>
 </div>
 
 ### Consequences
@@ -255,7 +255,36 @@ The main advantage of this pattern is that it allows to define all the steps of 
 
 ---
 
-## Division Devices Management: Observer [TODO Pedro Gonçalo]
+## Division Devices Management: Observer
+
+### Context
+
+Associating devices with divisions may happen when connecting or disconnecting a device, or when editing a division, which creates a bidirectional dependency between the respective Manager classes.
+
+#### Problem in Context
+
+When a device is added to a division from a division endpoint, the DivisionsManager needs to update the devices to associate that division to them. On the other hand, when a new device is connected from a device endpoint and is associated with a division, the DevicesManager would need to update the divisions to associate the device with them. This creates an undesirable bidirectional dependency between the two managers, which complicates the code. Ideally, only the DivisionsManager would have a dependency on the DevicesManager, since it needs to control which devices are associated with a division, but not the other way around.
+
+#### The Pattern
+
+We have selected the Observer pattern to solve this problem, since it provides the following advantage:
+
+- we can reuse the existing [`DeviceConnectionPublisher`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/observer/DeviceConnectionPublisher.py) and [`DeviceConnectionSubscriber`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/observer/DeviceConnectionSubscriber.py) classes, so we avoid the bidirectional dependency without any additional effort or complexity.
+
+### Mapping
+
+The class [`DeviceConnectionPublisher`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/observer/DeviceConnectionPublisher.py) is the publisher, keeps a list to all subscribers that it notifies when needed. The concrete publisher [`DevicesManager`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/managers/DevicesManager.py) notifies the subscribers when the `create()` or `delete()` methods are called. The concrete subscriber [`DivisionsManager`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/managers/DivisionsManager.py) implements the `on_device_connect()` and `on_device_disconnect()` methods from the subscriber class [`DeviceConnectionSubscriber`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/controller/observer/DeviceConnectionSubscriber.py), which handle the publisher notifications.
+
+<div align="center">
+  <img src="./img/patterns/ObserverDeviceDivision.svg" alt="Observer Pattern">
+  <p style="margin-top:10px"><i>Figure 9: HoT Observer Pattern</i></p>
+</div>
+
+### Consequences
+
+The usage of this pattern had little impact in the complexity of the system, since the Observer pattern was already used. Thanks to this solution, a bidirectional coupling between the `DevicesManager` and the `DivisionsManager` was avoided.
+
+The alternative would have been to have the bidirectional tight coupling between the two classes, which would have made the code harder to maintain and make the `DevicesManager` too complex, as it would have to handle the division association of devices. This would break the single responsibility principle.
 
 ## Rule Execution: Command & Composite
 
@@ -267,7 +296,7 @@ The solution to this situation was to use a combination of the Composite and the
 
 <div align="center">
   <img src="./img/patterns/CommandComposite.svg" alt="Rule Execution - Command & Composite">
-  <p style="margin-top:10px"><i>Figure x: HoT Rule Execution - Command & Composite Pattern</i></p>
+  <p style="margin-top:10px"><i>Figure 10: HoT Rule Execution - Command & Composite Pattern</i></p>
 </div>
 
 ### Consequences
@@ -292,7 +321,7 @@ This means that the `DeviceStateSubscriber` is in fact subscribed to a `DeviceSt
 
 <div align="center">
   <img src="./img/patterns/BridgeObserver.svg" alt="Device Bridge To Notify Rules - Bridge And Observer">
-  <p style="margin-top:10px"><i>Figure x: HoT Device Bridge To Notify Rules - Bridge And Observer Pattern</i></p>
+  <p style="margin-top:10px"><i>Figure 11: HoT Device Bridge To Notify Rules - Bridge And Observer Pattern</i></p>
 </div>
 
 ### Consequences
@@ -317,7 +346,7 @@ Before notify the `Rule`, the condition verifies if it is met or not. If it meet
 
 <div align="center">
   <img src="./img/patterns/ObserverChainResponsibility.svg" alt="Rule Automated Execution - Observer and Chain of Responsibility">
-  <p style="margin-top:10px"><i>Figure x: HoT Rule Automated Execution - Observer and Chain of Responsibility Pattern</i></p>
+  <p style="margin-top:10px"><i>Figure 12: HoT Rule Automated Execution - Observer and Chain of Responsibility Pattern</i></p>
 </div>
 
 ### Consequences
@@ -329,4 +358,36 @@ On the other hand, this strategy makes the code more complex and harder to under
 
 ---
 
-## CRUD API: Template Model [TODO Pedro Gonçalo]
+## CRUD API: Template Method
+
+### Context
+
+Most API endpoints follow a similar structure where only specific parts change, since they are RESTful and expose the CRUD operations. It is desirable to have a common structure for all those endpoints, so that the code is more reusable, maintainable and readable.
+
+#### Problem in Context
+
+The backend exposes endpoints to deal with devices, divisions, rules, and other entities. All of these endpoints expose similar operations, namely the CRUD operations. Those operations are very similar in behavior, only changing the Manager class that is used to perform the operation, the data validation and the name of the entity. Repeating all the code for each endpoint would be very undesirable and quickly become hard to maintain.
+
+#### The Pattern
+
+We have selected the Template pattern to solve this problem, since it provides the following advantages:
+
+- promotes code deduplication, as the common logic of all endpoints can be written only once in the super class;
+- let's each endpoint override the specific parts of the logic, namely the validation of data;
+
+### Mapping
+
+The class [`CrudApi`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/api/CrudApi.py) is the Abstract Class, which defines the skeleton of the algorithm. It actually contains many different template methods, `all()`, `get()`, `create()`, `update()`, `partial_update()`, and `delete()`, which every concrete class gets for free by implementing `get_element_name()`, `get_collection_name()`, and `validate()`. The `get_collection_name()` has a default implementation that only appends an "s" to the value returned by `get_element_name()`.
+
+The concrete classes are [`DevicesApi`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/api/DevicesApi.py), [`DivisionsApi`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/api/DivisionsApi.py), and [`RulesApi`](https://github.com/FEUP-MEIC-ASSO-2023/G5/blob/develop/backend/src/api/RulesApi.py), 
+
+<div align="center">
+  <img src="./img/patterns/TemplateMethodApi.svg" alt="TemplateMethodPattern">
+  <p style="margin-top:10px"><i>Figure 13: HoT Template Method Pattern</i></p>
+</div>
+
+### Consequences
+
+The usage of the template method made the code much more readable and maintainable, as it avoided code duplication. It also made it easier to add new endpoints with CRUD operations in the future, as those operations don't need to be implemented from scratch. The concrete classes aren't limited by the provided template methods, as they can always define new methods for operations not covered by the abstract class.
+
+However, is the disadvantage that sometimes the concrete classes do not actually require all the template methods given by the abstract class. This could be mitigated by creating a different abstract class for each method, however, we consider that that would complicate the code too much and make it harder to understand. The classes may simply not use some of the inherited methods, without much harm.

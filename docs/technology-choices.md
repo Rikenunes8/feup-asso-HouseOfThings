@@ -1,7 +1,7 @@
 # Technology Choices
 
 ## What programming languages to use?
-* Backend/Server: Python was chosen for its simplicity and readability, extensive libraries and frameworks, and seamless integration capabilities with databases and third-party APIs.
+* Backend/Server: Python was chosen for its simplicity and readability, extensive libraries and frameworks, and seamless integration capabilities with databases and third-party APIs. Flask was selected as the web framework, as it is lightweight and better suited for interacting with non-relational databases than Django, the other popular Python web framework.
 * Frontend/UI: React Native (JS) was selected to take advantage of code reusability across platforms (iOS and Android), native-like user interface, hot-reloading for real-time development, increased productivity, and a large developer community with abundant resources and libraries.
 
 ## What kind of UI? Web-based, other?
@@ -20,3 +20,5 @@ React Native allows one to build mobile applications with a native-like user exp
 
 ## Additional Choices:
 * Virtual devices, since they offer the convenience of quick and easy creation, enabling faster testing and development cycles. By eliminating the need for physical hardware, virtual devices significantly reduce costs associated with device acquisition and maintenance.
+* Docker for containerization of the backend, allowing for easy deployment in different infrastructure, from simple raspberry pi's to cloud servers.
+* 

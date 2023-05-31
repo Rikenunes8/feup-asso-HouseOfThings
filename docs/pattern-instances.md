@@ -2,17 +2,13 @@
 
 ## Database Connection: Singleton
 
-### Context
-
-When accessing the database, we need to be able to keep a single connection that we access in the different endpoints of our application.
-
-#### Problem in Context
+### Problem in Context
 
 We want to ensure that there is a single database connection opened in our application at any time, and that this same connection can be used in any part of the application. This last requisite isn't so trivial to solve given that each endpoint to our REST API is a Flask view, so it doesn't receive parameters other than the URL parameters. This makes passing objects around more difficult.
 
 Moreover, we desire that establishing the connection to the database is abstracted away from its use, since it should be established only once and the code that uses the database shouldn't have to worry about whether the connection has already been established or not.
 
-#### The Pattern
+### The Pattern
 
 We have selected the Singleton pattern to solve this problem, since it provides the following advantages:
 
@@ -257,15 +253,11 @@ The main advantage of this pattern is that it allows to define all the steps of 
 
 ## Division Devices Management: Observer
 
-### Context
+### Problem in Context
 
-Associating devices with divisions may happen when connecting or disconnecting a device, or when editing a division, which creates a bidirectional dependency between the respective Manager classes.
+When a device is added or removed to a division using a `divisions` endpoint, the DivisionsManager needs to update the devices to associate/dissociate that division to them. On the other hand, when a new device that is associated with a division is connected or disconnected using a `devices` endpoint, the DevicesManager would need to update the divisions to associate/dissociate the device with them. This creates an undesirable bidirectional dependency between the two managers, which complicates the code. Ideally, only the DivisionsManager would have a dependency on the DevicesManager, since it needs to control which devices are associated with a division, but not the other way around.
 
-#### Problem in Context
-
-When a device is added to a division from a division endpoint, the DivisionsManager needs to update the devices to associate that division to them. On the other hand, when a new device is connected from a device endpoint and is associated with a division, the DevicesManager would need to update the divisions to associate the device with them. This creates an undesirable bidirectional dependency between the two managers, which complicates the code. Ideally, only the DivisionsManager would have a dependency on the DevicesManager, since it needs to control which devices are associated with a division, but not the other way around.
-
-#### The Pattern
+### The Pattern
 
 We have selected the Observer pattern to solve this problem, since it provides the following advantage:
 
@@ -360,15 +352,11 @@ On the other hand, this strategy makes the code more complex and harder to under
 
 ## CRUD API: Template Method
 
-### Context
+### Problem in Context
 
-Most API endpoints follow a similar structure where only specific parts change, since they are RESTful and expose the CRUD operations. It is desirable to have a common structure for all those endpoints, so that the code is more reusable, maintainable and readable.
+The backend exposes endpoints to deal with devices, divisions, rules, and other entities. All of these endpoints expose similar operations, namely the CRUD operations. Those operations are very similar in behavior and their implementation would follow a similar structure, only changing the Manager class that is used to perform the operation, the data validation and the name of the entity. Repeating all the code for each endpoint would be very undesirable and quickly become hard to maintain.
 
-#### Problem in Context
-
-The backend exposes endpoints to deal with devices, divisions, rules, and other entities. All of these endpoints expose similar operations, namely the CRUD operations. Those operations are very similar in behavior, only changing the Manager class that is used to perform the operation, the data validation and the name of the entity. Repeating all the code for each endpoint would be very undesirable and quickly become hard to maintain.
-
-#### The Pattern
+### The Pattern
 
 We have selected the Template pattern to solve this problem, since it provides the following advantages:
 
@@ -388,6 +376,6 @@ The concrete classes are [`DevicesApi`](https://github.com/FEUP-MEIC-ASSO-2023/G
 
 ### Consequences
 
-The usage of the template method made the code much more readable and maintainable, as it avoided code duplication. It also made it easier to add new endpoints with CRUD operations in the future, as those operations don't need to be implemented from scratch. The concrete classes aren't limited by the provided template methods, as they can always define new methods for operations not covered by the abstract class.
+The usage of the template method made the code much more readable and maintainable, as it avoided code duplication. It also made it easier to add new endpoints with CRUD operations in the future, as those operations don't need to be implemented from scratch and are instead reusable. The concrete classes aren't limited by the provided template methods, as they can always define new methods for operations not covered by the abstract class.
 
 However, is the disadvantage that sometimes the concrete classes do not actually require all the template methods given by the abstract class. This could be mitigated by creating a different abstract class for each method, however, we consider that that would complicate the code too much and make it harder to understand. The classes may simply not use some of the inherited methods, without much harm.

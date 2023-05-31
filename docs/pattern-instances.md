@@ -255,7 +255,7 @@ The main advantage of this pattern is that it allows to define all the steps of 
 
 ### Problem in Context
 
-When a device is added or removed to a division using a `divisions` endpoint, the DivisionsManager needs to update the devices to associate/dissociate that division to them. On the other hand, when a new device that is associated with a division is connected or disconnected using a `devices` endpoint, the DevicesManager would need to update the divisions to associate/dissociate the device with them. This creates an undesirable bidirectional dependency between the two managers, which complicates the code. Ideally, only the DivisionsManager would have a dependency on the DevicesManager, since it needs to control which devices are associated with a division, but not the other way around.
+When a device is added or removed to a division using a `divisions` endpoint, the `DivisionsManager` needs to update the devices to associate/dissociate that division with them. On the other hand, when a new device that is associated with a division is connected or disconnected using a `devices` endpoint, the `DevicesManager` would need to update the divisions to associate/dissociate the device with them. This creates an undesirable bidirectional dependency between the two managers, which complicates the code. Ideally, only the `DivisionsManager` would have a dependency on the `DevicesManager`, since it needs to control which devices are associated with a division, but not the other way around.
 
 ### The Pattern
 
